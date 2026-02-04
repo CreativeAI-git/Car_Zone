@@ -13,10 +13,11 @@ import { Auth } from '@angular/fire/auth';
 import { browserPopupRedirectResolver, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../services/user.service';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-log-in',
-  imports: [ReactiveFormsModule, CommonModule, FormsModule, RouterLink, SubmitButtonComponent, TranslateModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, SubmitButtonComponent, TranslateModule],
   templateUrl: './log-in.component.html',
   styleUrl: './log-in.component.css'
 })
@@ -27,7 +28,7 @@ export class LogInComponent {
   private destroy$ = new Subject<void>();
   private roleService = inject(RoleService);
   role = this.roleService.currentRole;
-  constructor( private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private authService: AuthService, private router: Router, private translate: TranslateService, private userService: UserService) {
+  constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private authService: AuthService, private router: Router, private translate: TranslateService, private userService: UserService, public modal: ModalService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.Form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -36,16 +37,6 @@ export class LogInComponent {
   }
 
   ngOnInit(): void {
-    // if (!this.role()) {
-    //   const modalElement = document.getElementById('ct_login_modal_1');
-    //   if (modalElement) {
-    //     const modal = new bootstrap.Modal(modalElement, {
-    //       backdrop: 'static',
-    //       keyboard: false
-    //     });
-    //     modal.show();
-    //   }
-    // }
   }
 
   onSubmit() {
@@ -67,34 +58,14 @@ export class LogInComponent {
         this.loading = false
         this.toastr.success(res.message)
         this.authService.setValues(res.data.jwt_token, res.data.userId)
-        if (this.role() == 'buyer') {
-          this.router.navigate(['/'])
-        } else {
-          this.router.navigate(['/home'])
-        }
+        this.modal.closeLoginModal()
+        this.commonService.getProfile()
       },
       error: (error) => {
         this.loading = false
         this.toastr.error(error)
       }
     })
-  }
-
-  switchRole(role: string) {
-    const newRole: UserRole = role as UserRole;
-    this.roleService.setRole(newRole);
-    if (role === 'buyer') {
-      this.router.navigate(['/signup']);
-      return
-    } else {
-      this.router.navigate(['/seller-signup']);
-      return
-    }
-  }
-
-  switchRole1(role: string) {
-    const newRole: UserRole = role as UserRole;
-    this.roleService.setRole(newRole);
   }
 
   ngOnDestroy(): void {
@@ -128,7 +99,7 @@ export class LogInComponent {
         this.loading = false;
         this.toastr.success(res.message);
         this.authService.setValues(res.token, res.user.id);
-        this.userService.handleAddOrUpdateUser(res.user.id, fullName, '')
+        // this.userService.handleAddOrUpdateUser(res.user.id, fullName, '')
         if (this.role() == 'buyer') {
           this.router.navigate(['/']);
         } else {
@@ -140,6 +111,14 @@ export class LogInComponent {
         this.toastr.error(error);
       }
     });
+  }
+
+  openModal() {
+    if (this.role() == 'buyer') {
+      this.modal.openBuyerSignUpModal()
+    } else {
+      this.modal.openSellerSignUpModal()
+    }
   }
 }
 

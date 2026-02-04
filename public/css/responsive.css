@@ -1,216 +1,390 @@
-@media screen and (max-width:1326px){
- .ct_login_white_bg {
-    
-    overflow-y: auto;
-    height: auto;
-    max-height: 471px;
+@media screen and (max-width: 1400px){
+      .vehicle-carousel-contetn{
+            flex-direction: column;
+      }
 }
+@media screen and (max-width: 1199px) {
+      .navbar-nav .nav-link{
+            font-size: 13px;
+      }
+      .step-image .accordian-right-img{
+            width: 400px;
+      }
+       .ct_rs_fs_16 {
+            font-size: 16px !important;
+      }
+      .price-wrapper .view-btn{
+            padding: 12px 20px 12px 20px;
+      }
+.hero-content h1 {
+      font-size: 45px;
+}
+      .btn-close:focus {
+            box-shadow: none;
+      }
+
+      .seller-carousel .owl-item img {
+            display: block;
+            width: inherit;
+      }
+
+      .cta-section {
+            overflow: hidden;
+
+      }
+
+
+
+      .app-section {
+            padding: 90px 0px;
+      }
+
+      .cta-buy .cta-sell {
+            padding: 100px 50px;
+      }
 }
 
-@media screen and (max-width:1199px){
+@media (max-width: 991px) {
       .chatlist {
-    width: 300px;
-  }
-  .chat-list a.d-flex {
-    padding-inline: 8px;
-  }
-  .ct_ads_slider button.owl-prev  {
-    left: -15px;
-    position: relative;
+            width: 370px;
+      }
+       .text-limit-mail {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 45px; /* adjust as needed */
 }
- .ct_ads_slider button.owl-next{
-  right:-15px
- }
+      .text-limit-chat {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 45px; /* adjust as needed */
 }
-@media screen and (max-width:991px){
-    .ct_menu_bar{
-        display: block;
-    }
-    .ct_navlist ul {
-    flex-direction: column;
-    position: fixed;
-    right: -100%;
-    height: 100%;
-    background-color: #fff;
-    top: 0px;
-    max-width: 300px;
-    width: 100%;
-    z-index: 999999;
-    padding: 60px 20px;
-    gap: 30px;
-    display: flex;
-        align-items: self-start;
-        transition: 0.4s ease all;
+      .ct_rs_fs_12 {
+            font-size: 12px !important;
+      }
+
+      .notification-dropdown {
+            left: 50%;
+            transform: translateX(-50%);
+            width: 350px;
+      }
+
+      .filter-preview {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+      }
+
+      .profile-sidebar {
+            position: fixed;
+            top: 72px;
+            left: 0;
+            width: 350px;
+            height: calc(100vh - 72px);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1050;
+            display: flex;
+            flex-direction: column;
+            border-radius: 0;
+      }
+
+      .profile-sidebar.active {
+            transform: translateX(0);
+      }
+
+      .profile-sidebar-menu {
+            overflow-y: auto;
+            flex: 1;
+      }
+
+      .profile-overlay.active {
+            display: block;
+      }
 
 
-    }
-       .ct_navlist ul.active{
-        right: 0px;
-       }
-    .ct_close_bar{
-        display: block;
-    }
-    .ct_menu_bar{
-        display: block;
-    }
-    .ct_fs_74 {
-    font-size: 40px;
-}
-#ct_filter_modal .modal-content {
-    /* position: fixed;
-    max-width: 350px;
-    right: -100%;
-    top: 0px; */
-    height: 100vh;
-    /* overflow-y: auto;
-    width: 100%; */
-}
-/* div#ct_filter_modal {
-    display: block;
-    opacity: 1;
-} */
-#ct_filter_modal .modal-dialog {
-    transform: unset !important;
-    position: fixed;
-    right: -100%;
-    width: 300px;
-    height: 100vh;
-    top: 0px;
-    margin: 0px;
-    transition: 0.4s ease all;
-}
-div#ct_filter_modal.show .modal-dialog{
-     right: 0%;
-}
-.ct_grid_4 {
+      .mobile-navs {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+      }
 
-    grid-template-columns: repeat(3, 1fr);
-}
-}
+      .btn-login {
+            background: var(--primary-color);
+      }
 
-@media screen and (max-width:767px){
-    .ct_card_item_animated img {
-    height: 214px;
-}
-    .ct_fs_74 ,.ct_fs_44  {
-        font-size: 28px;
-    }
-    .ct_card_item_animated h1 {
-    font-size: 24px;
-}
-    .ct_gallery {
-        grid-template-columns: 0 1fr;
-    }
+      .social-icons,
+      .footer-nav {
+            margin-bottom: 30px;
+      }
 
-    .chat-icon {
-  display: block;
-  margin-right: 5px;
-}
-.chatlist {
-  width: 100%;
-}
-.chatbox {
-  width: 100%;
-  position: absolute;
-  left: 1000px;
-  right: 0;
-  padding: 20px;
-  border-radius: 10px;
-  background-color: #fff;
-  transition: all 0.5s ease;
-  border-left: none;
-}
-.showbox {
-  left: 0 !important;
-  transition: all 0.5s ease;
-  padding-inline: 15px;
-}
-.msg-head h3 {
-  font-size: 14px;
-}
-.msg-head p {
-  font-size: 12px;
-}
-.msg-head .flex-shrink-0 img {
-  height: 30px;
-}
-.send-box button {
-  width: 28%;
+      .footer {
+            padding-bottom: 0;
+      }
+
+      .step-image .accordian-right-img {
+            width: 100%;
+      }
+
+      .about-section {
+            padding: 0px;
+      }
+
+      .app-section {
+            padding: 20px;
+            margin-top: 20px;
+      }
+
+      .cta-buy {
+            padding: 45px 55px;
+      }
+
+      .cta-sell {
+            /* transform: scale(1);
+            clip-path: none; */
+            padding: 45px 45px;
+      }
+
+      .footer::before {
+
+            display: none;
+      }
+
+      .w-sm-100 {
+            width: 100%;
+      }
+
+      .navbar {
+            padding-top: 10px;
+      }
+
+      .navbar-collapse {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 10px;
+      }
+
+      .navbar.scrolled .navbar-collapse {
+            background: #ffffff;
+      }
+
+      .navbar.scrolled .navbar-collapse .nav-link {
+            color: #000 !important;
+      }
+
+      .btn-login {
+            width: 100%;
+      }
+
 }
 
-.chat-list h3 {
-  font-size: 14px;
-}
-.chat-list p {
-  font-size: 12px;
-}
-.msg-body ul li.sender {
-  font-size: 13px;
-  padding: 8px;
-  border-bottom-left-radius: 6px;
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
-.msg-body ul li.repaly p {
-  font-size: 13px;
-  padding: 8px;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-  border-bottom-left-radius: 6px;
-}
-.msg-body ul li img {
-  width: 30px;
-  height: 30px;
-}
-.ct_grid_4 {
-
-    grid-template-columns: repeat(2, 1fr);
-}
-.ct_edit_profile_bg {
-    padding: 40px 15px;
-}
-}
-
-@media screen and (max-width:575px) {
-    .ct_logo img {
-
-    max-width: 101px;
-}
-        .ct_fs_74 {
-        font-size: 25px;
-    }
-    .ct_card_item_animated h1{
-        font-size: 20px;
-    }
-  
-.ct_right_dropdown p {
-    white-space: nowrap;
-    width: auto;
-    max-width: 39px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.ct_custom_tabs{
-  flex-direction: column;
-  width: 100%;
-}
-.ct_custom_tabs li ,.ct_custom_tabs.nav-pills .nav-link{
-  width: 100%;
-}
-.ct_right_nav,.ct_right_dropdown  {
-
-    gap: 6px;
-}
-.ct_ads_slider button{
-  transform:translateY(-100%)
-}
-    .ct_ads_slider button.owl-prev {
-      left:15px
-
-    }
-    
-    .ct_ads_slider button.owl-next {
-      right:15px
+@media (max-width: 767px) {
+      .user-profile-img{
+            height: 30px;
+            width: 30px;
+            object-fit: cover;
+      }
+      .search-vehicle-modal-box{
+            width: 270px;
+      }
+    .text-limit-chat {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 150px;
     }
 
+      .ct_img_35 {
+            height: 35px;
+            height: 35px;
+      }
+
+      .ct_rs_fs_12 {
+            font-size: 12px !important;
+      }
+
+      .chat-icon {
+            display: block;
+            margin-right: 5px;
+      }
+
+      .chatlist {
+            width: 100%;
+      }
+
+      .chatbox {
+            width: 100%;
+            position: absolute;
+            left: 1000px;
+            right: 0;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            transition: all 0.5s ease;
+            border-left: none;
+      }
+
+      .showbox {
+            left: 0 !important;
+            transition: all 0.5s ease;
+            padding-inline: 15px;
+      }
+
+      .msg-head h3 {
+            font-size: 14px;
+      }
+
+      .msg-head p {
+            font-size: 12px;
+      }
+
+      .msg-head .flex-shrink-0 img {
+            height: 30px;
+      }
+
+      .send-box button {
+            width: 28%;
+      }
+
+      .chat-list h3 {
+            font-size: 14px;
+      }
+
+      .chat-list p {
+            font-size: 12px;
+      }
+
+      .msg-body ul li.sender {
+            font-size: 13px;
+            padding: 8px;
+            border-bottom-left-radius: 6px;
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+      }
+
+      .msg-body ul li.repaly p {
+            font-size: 13px;
+            padding: 8px;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            border-bottom-left-radius: 6px;
+      }
+
+      .msg-body ul li img {
+            width: 30px;
+            height: 30px;
+      }
+
+      .ct_grid_4 {
+
+            grid-template-columns: repeat(2, 1fr);
+      }
+
+      .ct_edit_profile_bg {
+            padding: 40px 15px;
+      }
+
+      .app-section {
+            padding: 20px !important;
+      }
+
+      .about-section,
+      .collections-section {
+            padding: 0px 0px !important;
+      }
+
+      .ct_mt_90 {
+            margin-top: 90px;
+      }
+
+      .filter-preview-box p {
+            font-size: 14px;
+      }
+
+      .filter-preview {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+      }
+
+      .main-logo {
+            width: 80px;
+      }
+
+
+      .btn-login {
+            background: var(--primary-color);
+      }
+
+      .social-icons,
+      .footer-nav {
+            margin-bottom: 30px;
+      }
+
+      .footer {
+            padding-bottom: 0;
+      }
+
+      .step-image .accordian-right-img {
+            width: 100%;
+      }
+
+      .about-section {
+            padding: 0px;
+      }
+
+      .app-section {
+            padding: 20px;
+            margin-top: 20px;
+      }
+
+      .cta-buy {
+            padding: 40px 60px;
+      }
+
+      .cta-sell {
+            transform: scale(1) !important;
+            clip-path: none !important;
+            padding: 40px 60px;
+      }
+
+      .footer::before {
+
+            display: none;
+      }
+
+      .w-sm-100 {
+            width: 100% !important;
+      }
+
+      .hero-content h1 {
+            font-size: 2rem;
+      }
+
+      .section-heading {
+            font-size: 1.8rem;
+      }
+
+      .price-wrapper {
+            max-width: 100%;
+      }
+
+      .car-card img {
+            height: 300px;
+      }
+
+      .car-features {
+            margin-top: 20px;
+      }
+
+      .car-specs {
+            margin-block: 0px;
+      }
+}
+
+.navbar-toggler:focus {
+      box-shadow: none;
 }

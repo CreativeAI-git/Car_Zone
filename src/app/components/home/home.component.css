@@ -17,3 +17,109 @@
   object-fit: cover;
   background-color: #e6e6e6;
 }
+
+
+::ng-deep .main-header-section .navbar {
+  background: transparent;
+  padding: 1rem 0;
+  transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link {
+  color: var(--subheading-color);
+  font-family: DM Sans;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+::ng-deep .navbar {
+  transition: all 0.3s ease;
+}
+
+::ng-deep .navbar-nav .nav-link {
+  color: var(--white) !important;
+  font-family: DM Sans;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+::ng-deep span.navbar-toggler-icon i {
+  color: #fff;
+  font-size: 20px;
+  border-radius: 4px;
+}
+
+::ng-deep .main-header-section .navbar {
+  border-bottom: none !important;
+}
+
+::ng-deep .logo-sticky {
+  display: block;
+}
+
+::ng-deep .logo-default {
+  display: none;
+}
+
+::ng-deep .navbar h5,
+::ng-deep .navbar p {
+  color: #fff;
+}
+
+::ng-deep .main-header-section .navbar.scrolled {
+  background: #111;
+}
+
+::ng-deep .main-header-section .navbar .ct_language_select {
+  color: #fff !important;
+}
+
+
+
+
+/* NEW */
+.favorite-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ffffff9e;
+  color: #111;
+  height: 35px;
+  width: 37px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  z-index: 9;
+}
+
+
+.pagination-ui {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background-color: #111111ae;
+  color: #fff;
+  padding: 2px 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 12px;
+  z-index: 9;
+}
+
+.full-screen-ui {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #111111ae;
+  color: #fff;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  z-index: 9;
+}

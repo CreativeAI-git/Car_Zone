@@ -1,585 +1,874 @@
-<section class="ct_py_70">
+<div class="ct_mt_100">
       <div class="container">
-            <div class="row">
-                  <div class="mb-4 mb-lg-0"
-                        [ngClass]="carData?.isLeasing === 1 ? 'col-xxl-5 col-xl-5 col-lg-5' : 'col-xxl-6 col-xl-6 col-lg-6'">
-                        <div class="p-0" [ngClass]="carData?.carImages.length > 1 ? 'ct_gallery' : 'ct_gallery_1'">
-                              <div class="ct_gallery_left">
-                                    <img [src]="carData?.carImages[0]" class="img-fluid" alt="Main"
-                                          data-bs-toggle="modal" data-bs-target="#ct_show_all_photos"
-                                          style="cursor: pointer;">
-                              </div>
-                              @if(carData?.carImages.length > 1){
-                              <div class="ct_gallery_right"
-                                    [ngClass]="carData?.carImages.length == 2 ? 'ct_gallery_right_1_img' : carData?.carImages.length == 3 ? 'ct_gallery_right_2_img' : carData?.carImages.length == 4 ? 'ct_gallery_right_4_img' : ''">
-                                    @for (item of carData?.carImages.slice(1, 5); track $index) {
-                                    <img [src]="item" class="img-fluid" alt="Bathroom" data-bs-toggle="modal"
-                                          data-bs-target="#ct_show_all_photos">
-                                    }
-                                    <button class="ct_show_all_images_btn" data-bs-toggle="modal"
-                                          data-bs-target="#ct_show_all_photos">
-                                          <i class="fa-regular fa-image me-1"></i>
-                                          {{'ShowAllPhotos' | translate}}
-                                    </button>
-                              </div>
-                              }
-                        </div>
-                  </div>
-                  <div class="mb-4 mb-lg-0"
-                        [ngClass]="carData?.isLeasing === 1 ? 'col-xxl-4 col-xl-4 col-lg-4' : 'col-xxl-6 col-xl-6 col-lg-6'">
-                        <div class="ct_car_info_title">
-                              <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
-                                    <h4 class="ct_fs_24 ct_fw_600 mb-3">{{carData?.brandName}} {{carData?.carModel}}
-                                          {{carData?.selectYear}}
-                                    </h4>
-                                    <ng-container *appRole="'buyer'">
-                                          <i class="fa-heart ct_text_red"
-                                                [ngClass]="carData?.isWishlist ? 'fa-solid' : 'fa-regular'"
-                                                (click)="carData?.isWishlist ? removeFromWishlist(carData) : addToWishlist(carData)"></i>
-                                    </ng-container>
-                              </div>
-                              <div class="d-flex align-items-center gap-3">
-                                    <h3 class="ct_fs_20 ct_text_red ct_fw_700 mb-0">
-                                          {{carData?.totalPrice | chfFormat}}
-                                    </h3>
-                                    @if(carData?.isLeasing === 1){
-                                    <small class="ct_fs_14 ct_text_op_6">/ Leasing ab {{ carData?.leasingPrice |
-                                          chfFormat }}</small>
-                                    }
-                              </div>
-
-                              <div class="ct_address_info mt-4">
-                                    <ul class="mb-0">
-                                          <!-- @if(carData?.location){
-                                          <li>
-                                                <i class="fa-solid fa-location-dot"></i>
-                                                <p class="mb-0">{{carData?.location}}</p>
-                                          </li>
-                                          } -->
-                                          <li>
-                                                <i class="fa-solid fa-clock"></i>
-                                                <p class="mb-0">{{timeAgo(carData?.createdAt)}}</p>
-                                          </li>
-                                    </ul>
-                              </div>
-
-                              <!-- <div class="ct_note_box">
-                                    <p class="mb-0 ">Payment should be discussed and arranged directly between buyer and
-                                          seller.</p>
-                              </div> -->
-                              <div class="d-flex align-items-center gap-2 flex-wrap mt-3">
-                                    <p class="mb-0"><i class="fa-solid fa-check me-1 text-success"></i> Ab MFK</p>
-                                    <p class="mb-0"><i class="fa-solid fa-check me-1 text-success"></i> Mit Garantie</p>
-                              </div>
-                              <p class="ct_fs_16 ct_green_text mt-2 mb-0">Share On: <a
-                                          (click)="shareOnWhatsapp(carData)" class="ct_green_text"><i
-                                                class="fa-brands fa-whatsapp"></i></a></p>
-                              <div class="mt-4">
-                                    <ng-container *appRole="'buyer'">
-                                          <a (click)="contactSeller(carData)"
-                                                class="ct_red_btn w-100 text-center">{{'ContactSeller' | translate}}</a>
-                                    </ng-container>
-                                    <ng-container *appRole="'seller'">
-                                          <a routerLink="/edit-listing" [queryParams]="{id: carData?.id}"
-                                                class="ct_red_btn w-100 text-center">{{'EditListing' | translate}}</a>
-                                          <button class="ct_red_btn w-100 text-center ct_outline_btn mt-2"
-                                                (click)="deleteListing(carData)">{{'DeleteListing' |
-                                                translate}}</button>
-                                    </ng-container>
-                              </div>
-                        </div>
-                  </div>
-                  @if(carData?.isLeasing === 1){
-                  <div class="col-xxl-3 col-xl-3 mt-4 mt-xl-0 mb-lg-0">
-                        <div class="ct_seller_company_add">
-                              <!-- <img src="img/brand_img.jpg" alt=""> -->
-                              <h2 style="font-weight: 900;">Leasing Possibilities</h2>
-                              <h6 class="mb-0 ct_fs_20 ct_fw_600 mb-3 mt-2">Autowelt von Rotz AG</h6>
-
-                              <ul>
-                                    <li>
-                                          <div class="d-flex align-items-center gap-1">
-                                                <svg width="24px" height="24px" viewBox="0 0 24 24" focusable="false"
-                                                      class="chakra-icon css-146pps0">
-                                                      <title>Google icon</title>
-                                                      <circle cx="12" cy="12" r="12" fill="#fff"></circle>
-                                                      <path fill="#4285F4"
-                                                            d="M12.164 10.68v3.161h4.393a3.764 3.764 0 0 1-1.64 2.457l2.65 2.055C19.11 16.928 20 14.836 20 12.35c0-.578-.052-1.135-.149-1.67h-7.688Z">
-                                                      </path>
-                                                      <path fill="#34A853"
-                                                            d="m7.588 13.717-.598.457-2.115 1.648c1.343 2.664 4.096 4.504 7.287 4.504 2.204 0 4.052-.727 5.403-1.974l-2.65-2.055c-.727.49-1.654.786-2.753.786-2.122 0-3.925-1.432-4.571-3.361l-.003-.005Z">
-                                                      </path>
-                                                      <path fill="#FBBC05"
-                                                            d="M4.876 8.504A8.063 8.063 0 0 0 4 12.163c0 1.32.32 2.56.876 3.658 0 .008 2.716-2.107 2.716-2.107a4.891 4.891 0 0 1-.26-1.552c0-.541.097-1.06.26-1.55L4.876 8.503Z">
-                                                      </path>
-                                                      <path fill="#EA4335"
-                                                            d="M12.163 7.25c1.202 0 2.27.416 3.124 1.218l2.338-2.338C16.207 4.809 14.367 4 12.163 4 8.97 4 6.218 5.833 4.875 8.505l2.716 2.107c.646-1.93 2.45-3.362 4.572-3.362Z">
-                                                      </path>
-                                                </svg>
-                                                <p class="mb-0">4.9</p>
-                                                <div class="d-flex align-items-center gap-1">
-                                                      <i class="fa-solid fa-star ct_start_yellow"></i>
-                                                      <i class="fa-solid fa-star ct_start_yellow"></i>
-                                                      <i class="fa-solid fa-star ct_start_yellow"></i>
-                                                      <i class="fa-solid fa-star ct_start_yellow"></i>
-                                                      <i class="fa-solid fa-star ct_start_yellow"></i>
-                                                </div>
-                                                <p class="mb-0">(3355)</p>
-                                          </div>
-                                    </li>
-                                    <li>
-                                          <div class="d-flex align-items-center gap-1">
-                                                <i class="fa-solid fa-location-dot"></i>
-                                                <span>Wilerstrasse 72, 9542 Münchwilen</span>
-                                          </div>
-                                    </li>
-                              </ul>
-                        </div>
-                  </div>
-                  }
-            </div>
-      </div>
-</section>
-
-<section class=" pb-5 pt-0">
-      <div class="container">
-            <div class="row">
-                  <div class="col-md-12">
-                        <div class="ct_light_grey_bg">
-                              <div class=" mb-4 d-flex  align-items-center justify-content-between gap-2 flex-wrap">
-                                    <h4 class="ct_fs_20 ct_fw_600 mb-0">{{'VehicleDetails' | translate}}</h4>
-                                    <ng-container *ngIf="carData?.last_mfk_date">
-                                          <span class="ct_green_text ct_fw_600">{{'MFKValidTill' | translate}}
-                                                {{carData?.last_mfk_date | date: 'MMM yyyy'}}
-                                          </span>
-                                    </ng-container>
-                              </div>
-                              <div class="ct_grid_4">
-                                    <div class="ct_small_grey_card">
-                                          <img src="img/icon_1.png" alt="" class="ct_flex_shrink_0">
-                                          <div>
-                                                <h6 class="ct_fs_16 ct_fw_600 mb-1">{{'Kilometers' | translate}}</h6>
-                                                <p class="mb-0">{{carData?.carMileage}} km</p>
-
-                                          </div>
-                                    </div>
-                                    <div class="ct_small_grey_card">
-                                          <img src="img/icon_2.png" alt="" class="ct_flex_shrink_0">
-                                          <div>
-                                                <h6 class="ct_fs_16 ct_fw_600 mb-1">{{'BodyType' | translate}}</h6>
-                                                <p class="mb-0">{{carData?.body_type}}</p>
-
-                                          </div>
-                                    </div>
-                                    <div class="ct_small_grey_card">
-                                          <img src="img/icon_2.png" alt="" class="ct_flex_shrink_0">
-                                          <div>
-                                                <h6 class="ct_fs_16 ct_fw_600 mb-1">{{'Year' | translate}}</h6>
-                                                <p class="mb-0">{{carData?.selectYear}}</p>
-
-                                          </div>
-                                    </div>
-                                    <div class="ct_small_grey_card">
-                                          <img src="img/icon_3.png" alt="" class="ct_flex_shrink_0">
-                                          <div>
-                                                <h6 class="ct_fs_16 ct_fw_600 mb-1">{{'Exterior' | translate}}</h6>
-                                                <p class="mb-0">{{carData?.carColor}}</p>
-
-                                          </div>
-                                    </div>
-                                    <div class="ct_small_grey_card">
-                                          <img src="img/icon_4.png" alt="" class="ct_flex_shrink_0">
-                                          <div>
-                                                <h6 class="ct_fs_16 ct_fw_600 mb-1">{{'Transmission' | translate}}</h6>
-                                                <p class="mb-0">{{carData?.transmission}}</p>
-
-                                          </div>
-                                    </div>
-                                    <div class="ct_small_grey_card">
-                                          <img src="img/icon_5.png" alt="" class="ct_flex_shrink_0">
-                                          <div>
-                                                <h6 class="ct_fs_16 ct_fw_600 mb-1">{{'FuelType' | translate}}</h6>
-                                                <p class="mb-0">{{carData?.fuelType}}</p>
-
-                                          </div>
-                                    </div>
-                                    <div class="ct_small_grey_card">
-                                          <img src="img/icon_6.png" alt="" class="ct_flex_shrink_0">
-                                          <div>
-                                                <h6 class="ct_fs_16 ct_fw_600 mb-1">{{'Condition' | translate}}</h6>
-                                                <p class="mb-0">{{getCarCondition(carData?.carCondition)}}</p>
-
-                                          </div>
-                                    </div>
-                                    <div class="ct_small_grey_card">
-                                          <img src="img/icon_7.png" alt="" class="ct_flex_shrink_0">
-                                          <div>
-                                                <h6 class="ct_fs_16 ct_fw_600 mb-1">{{'SittingCapacity' | translate}}
-                                                </h6>
-                                                <p class="mb-0">{{carData?.sittingCapacity}}-Seater</p>
-                                          </div>
-                                    </div>
-                              </div>
-                        </div>
-                  </div>
-            </div>
-      </div>
-</section>
-@if(!ShoMore){
-<section class="pt-0 pb-3">
-      <div class="container">
-            <div class="row">
-                  <div class="col-md-12">
-                        <a class="text-primary mb-5" (click)="ShoMore = !ShoMore">{{'ShowMore' | translate}} ...</a>
-                  </div>
-            </div>
-      </div>
-</section>
-}
-@if(ShoMore){
-<section class="pt-0 pb-5">
-      <div class="container">
-            <div class="row">
-                  <div class="col-md-12">
-                        <div class="ct_light_grey_bg">
-                              <h4 class="ct_fs_20 ct_fw_600 mb-4">{{'FeaturesSpecifications' | translate}}</h4>
-                              <div class="ct_grid_4">
-                                    @for (item of getFeaturesArray(carData?.carFeatures); track $index) {
-                                    <div class="ct_small_grey_card">
-                                          <p class="mb-0">{{item}}</p>
-                                    </div>
-                                    }
-                              </div>
-                        </div>
-                  </div>
-                  <!-- <div class="col-md-12 pt-5">
-                        <div class="ct_light_grey_bg">
-                              <h4 class="ct_fs_20 ct_fw_600 mb-4">Warranty and Return</h4>
-                              <div class="ct_grid_4">
-                                    <div class="ct_small_grey_card d-block">
-                                          <h6 class="ct_fs_16 ct_fw_600 mb-1">Accident vehicle</h6>
-                                          <p class="mb-0">No</p>
-                                    </div>
-                                    <div class="ct_small_grey_card d-block">
-                                          <h6 class="ct_fs_16 ct_fw_600 mb-1">Guarantee</h6>
-                                          <p class="mb-0">Yes</p>
-                                    </div>
-
-                              </div>
-                        </div>
-                  </div> -->
-            </div>
-      </div>
-</section>
-<section class="ct_py_70 pt-0">
-      <div class="container">
-            <div class="row">
-                  <div class="col-md-12">
-                        <div class="ct_light_grey_bg">
-                              <h4 class="ct_fs_20 ct_fw_600 mb-3">{{'Description' | translate}}</h4>
-                              <p class="ct_para_scroll">{{carData?.description}}</p>
-                        </div>
-                  </div>
-            </div>
-      </div>
-</section>
-<section class="pb-5">
-      <div class="container">
-            <h4 class="ct_fs_24 ct_fw_600 mb-3"> Emi Calculator</h4>
-            <div class="row">
-                  <div class="col-md-8 mb-4">
-                        <form action="" class="ct_small_grey_card h-auto d-block p-4">
-                              <div class="row">
-                                    <div class="col-md-6">
-                                          <div class="form-group mb-3">
-                                                <label for="" class="mb-2 ct_fw_600">Term</label>
-                                                <select class="form-control ct_input">
-                                                      <option value="">60 Month</option>
-                                                      <option value="">90 Month</option>
-                                                      <option value="">120 Month</option>
-                                                </select>
-                                          </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                          <div class="form-group mb-3">
-                                                <label for="" class="mb-2 ct_fw_600">Down Payment</label>
-                                                <div class="position-relative">
-                                                      <input type="number" placeholder="Enter Down Payment"
-                                                            class="form-control ct_input pe-5">
-                                                      <span class="ct_show_eye">CHF</span>
-                                                </div>
-                                          </div>
-                                    </div>
-                              </div>
-
-                              <div class="form-group mb-3">
-                                    <label for="" class="mb-2 ct_fw_600">Km Per Year</label>
-                                    <select class="form-control ct_input">
-                                          <option value="">10.000</option>
-                                          <option value="">20.000</option>
-                                          <option value="">30</option>
-                                    </select>
-                              </div>
-                              <div class="mt-4">
-                                    <button class="ct_red_btn w-100">Update</button>
-                              </div>
-                        </form>
-                  </div>
-                  <div class="col-md-4 mb-4">
-                        <div class="ct_calculated_buyer_card">
-                              <!-- <img src="img/brand_img.jpg" alt=""> -->
-                              <h2 style="font-weight: 900;">Leasing Possibilities</h2>
-                              <div class="mt-4">
-                                    <h5 class="ct_fs_20 ct_fw_700">1618.58/ <small
-                                                class="ct_fs_14 ct_text_op_6">Month</small></h5>
-                                    <p class="mb-2">Residual Value CHF 31,200</p>
-                                    <p class="mb-2">Annual Interest Rate : 6.33%</p>
-                              </div>
-
-                              <div class="ct_small_grey_card d-block h-auto mt-3">
-                                    <p class="mb-0"><i class="fa-solid fa-circle-info me-1"></i>Since this vehicle is
-                                          relatively new, we only show leasing offers. Leasing is often cheaper for
-                                          newer models, as it offers lower monthly rates and flexible terms.</p>
-                              </div>
-                        </div>
-                  </div>
-            </div>
-      </div>
-</section>
-
-<!-- <section class="pb-5">
-      <div class="container">
-            <h4 class="ct_fs_24 ct_fw_700 mb-4">Leasing provider</h4>
-            <div class="row">
-                  <div class="col-lg-4 mb-4">
-                        <div class="ct_seller_company_add">
-                              <h6 class="mb-0 ct_fs_20 ct_fw_600 mb-3 mt-2">Autowelt von Rotz AG</h6>
-
-                              <ul>
-                                    <li>
-                                          <div class="d-flex align-items-center gap-1">
-                                                <svg width="24px" height="24px" viewBox="0 0 24 24" focusable="false"
-                                                      class="chakra-icon css-146pps0">
-                                                      <title>Google icon</title>
-                                                      <circle cx="12" cy="12" r="12" fill="#fff"></circle>
-                                                      <path fill="#4285F4"
-                                                            d="M12.164 10.68v3.161h4.393a3.764 3.764 0 0 1-1.64 2.457l2.65 2.055C19.11 16.928 20 14.836 20 12.35c0-.578-.052-1.135-.149-1.67h-7.688Z">
-                                                      </path>
-                                                      <path fill="#34A853"
-                                                            d="m7.588 13.717-.598.457-2.115 1.648c1.343 2.664 4.096 4.504 7.287 4.504 2.204 0 4.052-.727 5.403-1.974l-2.65-2.055c-.727.49-1.654.786-2.753.786-2.122 0-3.925-1.432-4.571-3.361l-.003-.005Z">
-                                                      </path>
-                                                      <path fill="#FBBC05"
-                                                            d="M4.876 8.504A8.063 8.063 0 0 0 4 12.163c0 1.32.32 2.56.876 3.658 0 .008 2.716-2.107 2.716-2.107a4.891 4.891 0 0 1-.26-1.552c0-.541.097-1.06.26-1.55L4.876 8.503Z">
-                                                      </path>
-                                                      <path fill="#EA4335"
-                                                            d="M12.163 7.25c1.202 0 2.27.416 3.124 1.218l2.338-2.338C16.207 4.809 14.367 4 12.163 4 8.97 4 6.218 5.833 4.875 8.505l2.716 2.107c.646-1.93 2.45-3.362 4.572-3.362Z">
-                                                      </path>
-                                                </svg>
-                                                <p class="mb-0">4.9</p>
-                                                <div class="d-flex align-items-center gap-1">
-                                                      <i class="fa-solid fa-star ct_start_yellow"></i>
-                                                      <i class="fa-solid fa-star ct_start_yellow"></i>
-                                                      <i class="fa-solid fa-star ct_start_yellow"></i>
-                                                      <i class="fa-solid fa-star ct_start_yellow"></i>
-                                                      <i class="fa-solid fa-star ct_start_yellow"></i>
-                                                </div>
-                                          </div>
-                                          <div class="mt-1">
-                                                <a href="http://www.autosteiner.ch" class="ct_text_red"
-                                                      target="_blank">http://www.autosteiner.ch</a>
-                                          </div>
-                                    </li>
-                                    <li>
-                                          <div class="d-flex align-items-center gap-1">
-                                                <i class="fa-solid fa-phone"></i>
-                                                <span>Geschäft 044 325 60 60</span>
-                                          </div>
-                                    </li>
-                                    <li>
-                                          <div class="d-flex align-items-center gap-1">
-                                                <i class="fa-solid fa-location-dot"></i>
-                                                <span>Winterthurerstrasse 698, 8051 Zürich</span>
-                                          </div>
-                                    </li>
-                                    <li>
-                                          <div class="d-flex align-items-center gap-1">
-                                                <i class="fa-solid fa-truck-fast"></i>
-                                                <span>Alle Fahrzeuge dieses Anbieters</span>
-                                          </div>
-                                    </li>
-                              </ul>
-
-                        </div>
-
-                  </div>
-                  <div class="col-lg-8 mb-4">
-                        <h4 class="mb-4 ct_fs_20 ct_fw_600">Öffnungszeiten</h4>
-                        <ul class="ct_working_hours_list12">
-                              <li>
-                                    <p class="mb-0 ct_fs_16 ct_fw_600">Mon</p>
-                                    <div>
-                                          <p class="mb-0 ct_fs_16 ct_text_op_6">09:00 - 12:00</p>
-                                          <p class="mb-0 ct_fs_16 ct_text_op_6">13:30 - 18:30</p>
-                                    </div>
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+                  <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                              <li class="breadcrumb-item">
+                                    <a class="ct_color_8f0c1f ct_fs_17 ct_fw_500" (click)="location.back()">
+                                          <img src="img/icons/chevron-right.png" class="me-2" />
+                                          Back | {{carData?.brandName}}</a>
                               </li>
-                              <li>
-                                    <p class="mb-0 ct_fs_16 ct_fw_600">Tue</p>
-                                    <div>
-                                          <p class="mb-0 ct_fs_16 ct_text_op_6">09:00 - 12:00</p>
-                                          <p class="mb-0 ct_fs_16 ct_text_op_6">13:30 - 18:30</p>
-                                    </div>
+                              <li class="breadcrumb-item">
+                                    <a class="ct_color_8f0c1f ct_fs_17 ct_fw_500">
+                                          <img src="img/icons/chevron-left.png" class="me-2" />
+                                          {{carData?.carModel}}
+                                    </a>
                               </li>
-                              <li>
-                                    <p class="mb-0 ct_fs_16 ct_fw_600">Wed</p>
-                                    <div>
-                                          <p class="mb-0 ct_fs_16 ct_text_op_6">09:00 - 12:00</p>
-                                          <p class="mb-0 ct_fs_16 ct_text_op_6">13:30 - 18:30</p>
-                                    </div>
+                              <li class="breadcrumb-item active ct_fs_17 ct_fw_300" aria-current="page">
+                                    <img src="img/icons/chevron-left.png" class="me-2" />
+                                    {{carData?.brandName}} {{carData?.carModel}}
                               </li>
-                              <li>
-                                    <p class="mb-0 ct_fs_16 ct_fw_600">Thu</p>
-                                    <div>
-                                          <p class="mb-0 ct_fs_16 ct_text_op_6">09:00 - 12:00</p>
-                                          <p class="mb-0 ct_fs_16 ct_text_op_6">13:30 - 18:30</p>
-                                    </div>
-                              </li>
-                              <li>
-                                    <p class="mb-0 ct_fs_16 ct_fw_600">Fri</p>
-                                    <div>
-                                          <p class="mb-0 ct_fs_16 ct_text_op_6">09:00 - 12:00</p>
-                                          <p class="mb-0 ct_fs_16 ct_text_op_6">13:30 - 18:30</p>
-                                    </div>
-                              </li>
-                              <li>
-                                    <p class="mb-0 ct_fs_16 ct_fw_600">Sat</p>
-                                    <div>
-                                          <p class="mb-0 ct_fs_16 ct_text_op_6">09:00 - 12:00</p>
-                                    </div>
-                              </li>
-                        </ul>
-                        <p class="mb-0">Vor und an Feiertagen können die Öffnungszeiten abweichen // Les horaires
-                              peuvent être modifiés // L’orario può variare // The opening hours may vary.
+                        </ol>
+                  </nav>
 
-                        </p>
-                  </div>
-
-            </div> 
-      </div>
-</section> -->
-}
-@if(ShoMore){
-<section class="pt-0 pb-3">
-      <div class="container">
-            <div class="row">
-                  <div class="col-md-12">
-                        <a class="text-primary mb-5" (click)="ShoMore = !ShoMore">{{'ShowLess' | translate}} ...</a>
-                  </div>
-            </div>
-      </div>
-</section>
-}
-@if(carData?.suggestedCar.length > 0){
-<section class="pb-5">
-      <div class="container">
-            <div class="row">
-                  <div class="col-md-12">
-                        <h4 class="ct_fs_24 ct_fw_600 mb-4">{{'SuggestedCars' | translate}}</h4>
-                        <div class="otherSwiper swiper">
-                              <div class="swiper-wrapper">
-                                    @for(car of carData?.suggestedCar; track $index){
-                                    <div class="swiper-slide">
-                                          <div class="ct_browse_car_card">
-                                                <figure class="mb-0">
-                                                      <div class="ct_browse_card_img">
-                                                            <img [src]="car.car_images[0] || 'img/placeHolder.webp'"
-                                                                  alt="" (click)="viewCarDetail(car.id)"
-                                                                  style="cursor: pointer;">
-                                                      </div>
-                                                      <figcaption class="mt-3">
-                                                            <div
-                                                                  class="d-flex align-items-center justify-content-between mb-2">
-                                                                  <span class="ct_fs_16 ct_fw_700 mb-0 ct_text_red">CHF
-                                                                        {{car.totalPrice | chfFormat}}</span>
-                                                            </div>
-                                                            <a (click)="viewCarDetail(car.id)"
-                                                                  class="ct_fs_20 ct_fw_700 d-block">{{car.brandName}}
-                                                                  {{car.carModel}}</a>
-                                                            <ul>
-                                                                  <li>
-                                                                        <small class="ct_text_op_6 ct_fw_600">{{'Transmission'
-                                                                              | translate}}</small>
-                                                                        <p class="mb-0 ct_fs_16 ct_fw_600">
-                                                                              {{car.transmission}}</p>
-                                                                  </li>
-                                                                  <li>
-                                                                        <small class="ct_text_op_6 ct_fw_600">{{'FuelType'
-                                                                              | translate}}</small>
-                                                                        <p class="mb-0 ct_fs_16 ct_fw_600">
-                                                                              {{car.fuelType}}</p>
-                                                                  </li>
-                                                                  <li>
-                                                                        <small class="ct_text_op_6 ct_fw_600">{{'Passenger'
-                                                                              | translate}} </small>
-                                                                        <p class="mb-0 ct_fs_16 ct_fw_600">
-                                                                              {{car.sittingCapacity}}
-                                                                              {{'Person' | translate}}
-                                                                        </p>
-                                                                  </li>
-                                                            </ul>
-                                                            <div class="mt-4">
-                                                                  <a (click)="viewCarDetail(car.id)"
-                                                                        class="ct_red_btn w-100 text-center">{{'ViewMore'
-                                                                        | translate}}
-                                                                  </a>
-                                                            </div>
-                                                      </figcaption>
-                                                </figure>
-                                          </div>
-                                    </div>
-                                    }
-                              </div>
-                              <div class="swiper-button-prev"></div>
-                              <div class="swiper-button-next"></div>
+                  <div class="d-flex gap-4 align-items-center mt-xl-0 mt-3">
+                        <div class="d-flex align-items-center gap-2">
+                              <img src="img/icons/wishlisht.png" />
+                              <span class="ct_fs_17 ct_fw_400">Shortlist</span>
                         </div>
-                  </div>
-            </div>
-      </div>
-</section>
-}
+                        <div class="d-flex align-items-center gap-2 ct_cursor_pointer" data-bs-toggle="modal"
+                              data-bs-target="#reportModal">
+                              <img src="img/icons/report.png" />
+                              <span class="ct_fs_17 ct_fw_400">Report Listing</span>
+                        </div>
 
-<section class="">
-      <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d58779.40320518232!2d76.00134663049279!3d22.960805561570414!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396317850c371de7%3A0x22947c209f24505!2sDewas%2C%20Madhya%20Pradesh%20455001!5e0!3m2!1sen!2sin!4v1757414982765!5m2!1sen!2sin"
-            width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"></iframe>
 
-</section>
-
-<!-- Show all Photos Modal S -->
-<div class="modal fade modal-lg" id="ct_show_all_photos" tabindex="-1" aria-labelledby="ct_show_all_photosLabel"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-            <div class=" modal-content">
-                  <div class="modal-header border-0 pb-2">
-                        <h4 class="ct_fs_20 ct_fw_600 mb-0">{{'AllPhotos' | translate}}</h4>
-                        <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                        <div class="mySwiper swiper ct_product_gallary_slider">
-                              <div class="swiper-wrapper">
-                                    @for (item of carData?.carImages; track $index) {
-                                    <div class="swiper-slide">
-                                          <div class="ct_product_gallry_img">
-                                                <img [src]="item" alt="">
-                                          </div>
-                                    </div>
-                                    }
-                              </div>
-                              <div class="swiper-button-prev"></div>
-                              <div class="swiper-button-next"></div>
+                        <div class="d-flex align-items-center gap-2">
+                              <img src="img/icons/share.png" />
+                              <span class="ct_fs_17 ct_fw_400">Share</span>
                         </div>
                   </div>
             </div>
       </div>
 </div>
-<!-- Show all Photos Modal E -->
+
+<!-- breadcrumb end -->
+
+<section>
+      <div class="container">
+            <div class="mb-4">
+                  <div class="row">
+                        <div class="col-lg-7">
+                              @if(carData?.carImages.length > 0){
+                              <div class="">
+                                    <nz-image-group>
+                                          <div class="swiper mySwiperMain">
+                                                <div class="swiper-wrapper">
+                                                      <div class="swiper-slide"
+                                                            *ngFor="let img of carData.carImages; trackBy: trackByImage">
+                                                            <img [nzSrc]="img || 'img/placeholder.png'" nz-image
+                                                                  nzPreview>
+                                                      </div>
+                                                </div>
+                                                <div class="swiper-pagination pagination-ui"></div>
+                                          </div>
+                                    </nz-image-group>
+
+                                    <div class="swiper mySwiperThumbs mySwiperThumbs mt-2">
+                                          <div class="swiper-wrapper">
+                                                <div class="swiper-slide"
+                                                      *ngFor="let img of carData.carImages; trackBy: trackByImage">
+                                                      <img [src]="img">
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+                              }
+                              <h4 class="ct_fs_20 ct_fw_600 ct_mt_40 mb-3">Vehicle Details</h4>
+                              <div class="d-flex gap-5 align-items-center">
+                                    <ul class="p-0 car-content-detail-list">
+                                          <li class="d-flex gap-3 align-items-start">
+                                                <img src="img/icons/calendar-brown.png" />
+                                                <span> {{carData?.selectYear}} </span>
+                                          </li>
+                                          <li class="d-flex gap-3 align-items-start">
+                                                <img src="img/icons/km-brown.png" />
+                                                <span> {{carData?.carMileage}} km </span>
+                                          </li>
+                                          <li class="d-flex gap-3 align-items-start">
+                                                <img src="img/icons/transmission-brown.png" />
+                                                <span> {{carData?.transmission}} </span>
+                                          </li>
+
+                                          <li class="d-flex gap-3 align-items-start">
+                                                <img src="img/icons/Hinterantrieb.png" />
+                                                <span> Hinterantrieb </span>
+                                          </li>
+                                    </ul>
+                                    <ul class="p-0 car-content-detail-list">
+                                          <li class="d-flex gap-3 align-items-start">
+                                                <img src="img/icons/carn.png" />
+                                                <span> {{carData?.body_type}} </span>
+                                          </li>
+                                          <li class="d-flex gap-3 align-items-start">
+                                                <img src="img/icons/fuel-brown.png" />
+                                                <span> {{carData?.fuelType}} </span>
+                                          </li>
+                                          <li class="d-flex gap-3 align-items-start">
+                                                <img src="img/icons/power-brown.png" />
+                                                <span> {{carData?.powerOutput}} ps </span>
+                                          </li>
+
+                                          <li class="d-flex gap-3 align-items-start">
+                                                <img src="img/icons/km-blackn.png" />
+                                                <span> {{carData?.consumption}} L / 100 Km </span>
+                                          </li>
+                                    </ul>
+                              </div>
+                              <div class="mt-3">
+                                    <a class="ct_color_3e1cff ct_fs_16">Show more vehicle data</a>
+                              </div>
+                              <hr class="my-4" />
+
+                              <div class="car-view-more-detail">
+                                    <div class="car-view-more-detail-head-img">
+                                          <img src="img/carvertical-img.png" />
+                                    </div>
+                                    <h5 class="ct_fs_18 ct_fw_500">
+                                          Get the real vehicle check with carVertical!
+                                    </h5>
+                                    <p class="ct_fs_16 ct_fw_700 mb-0">
+                                          Check any car in seconds and uncover hidden damage, mileage
+                                          fraud, theft records, old photos, and much more.
+                                    </p>
+                                    <p class="ct_fs_16 ct_fw_700 mb-0">
+                                          Before buying a used car: run a carVertical check and avoid
+                                          expensive surprises.
+                                    </p>
+                                    <p class="ct_fs_16 ct_fw_700 mb-0">
+                                          <strong>Buy safely – with a complete vehicle history.</strong>
+                                    </p>
+
+                                    <div class="mt-3">
+                                          <a class="btn-red">
+                                                Get Vehicle check
+                                          </a>
+                                    </div>
+                                    <hr class="my-4" />
+
+                                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Equipment & Features</h4>
+                                    <ul class="px-0 equipment-list">
+                                          <li>
+                                                <img src="img/icons/list-chk.png" />
+                                                Panoramic Sunroof
+                                          </li>
+                                          <li>
+                                                <img src="img/icons/list-chk.png" />
+                                                Leather Interior
+                                          </li>
+                                          <li>
+                                                <img src="img/icons/list-chk.png" />
+                                                Adaptive LED Headlights
+                                          </li>
+                                          <li>
+                                                <img src="img/icons/list-chk.png" />
+                                                Harman Kardon Sound System
+                                          </li>
+                                          <li>
+                                                <img src="img/icons/list-chk.png" />
+                                                360° Camera System
+                                          </li>
+                                    </ul>
+
+                                    <div class="mt-3">
+                                          <a class="ct_color_3e1cff ct_fs_16"> Show More </a>
+                                    </div>
+                                    <hr class="my-4" />
+
+                                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Description</h4>
+                                    <p>
+                                          Exceptional BMW X5 M Sport in pristine condition. This premium
+                                          SUV combines luxury, performance, and practicality. Full
+                                          service history, single owner, garage kept. All maintenance
+                                          done at official BMW service center. Powered by a refined and
+                                          powerful engine, the X5 M Sport delivers a smooth yet sporty
+                                          driving experience. The M Sport package enhances both exterior
+                                          and interior with aggressive styling, premium finishes, and
+                                          advanced technology.
+                                    </p>
+                                    <div class="mt-3">
+                                          <a class="ct_color_3e1cff ct_fs_16"> Show More </a>
+                                    </div>
+                                    <hr class="my-4" />
+
+                                    <h4 class="ct_fs_20 ct_fw_600 mb-3">
+                                          Vehicle inspection (MFK)
+                                    </h4>
+                                    <p>
+                                          <img src="img/icons/right.png" class="me-2" />
+                                          MFK for this vehicle was done on 12.06.2025 and is valid up to
+                                          one year.
+                                    </p>
+                                    <hr class="my-4" />
+
+                                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Warranty & Returns</h4>
+                                    <div class="d-flex gap-4 mb-2">
+                                          <div class="w-25">Warranty Included</div>
+                                          <div class="ct_color_0acc0a">
+                                                yes <img src="img/icons/right.png" class="ms-1" />
+                                          </div>
+                                    </div>
+                                    <p class="mb-2">From take-over, 12 months or 20,000 km</p>
+                                    <p class="mb-2">Quality 1 Q Base</p>
+                                    <div class="d-flex gap-4 mb-2">
+                                          <div class="w-25">Swiss car?</div>
+                                          <div class="ct_color_0acc0a">
+                                                yes <img src="img/icons/right.png" class="ms-1" />
+                                          </div>
+                                    </div>
+
+                                    <hr class="my-4" />
+                                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Leasing Calculator</h4>
+
+                                    <div class="calculator-box">
+                                          <p class="ct_fs_20 mb-0">
+                                                <img src="img/icons/calculator.png" clas="" />
+                                                <span class="ms-3">
+                                                      Calculate your approximate monthly lease rate</span>
+                                          </p>
+                                    </div>
+
+                                    <div class="row ct_mt_30">
+                                          <div class="col-6">
+                                                <label class="ct_fs_15 ct_fw_400 mb-2">Lease Duration</label>
+                                                <select class="form-select" aria-label="Default select example">
+                                                      <option selected>12 months</option>
+                                                      <option value="1">One</option>
+                                                      <option value="2">Two</option>
+                                                      <option value="3">Three</option>
+                                                </select>
+                                          </div>
+                                          <div class="col-6">
+                                                <label class="ct_fs_15 ct_fw_400 mb-2"> Km per Year</label>
+                                                <select class="form-select" aria-label="Default select example">
+                                                      <option selected>10,000 km</option>
+                                                      <option value="1">One</option>
+                                                      <option value="2">Two</option>
+                                                      <option value="3">Three</option>
+                                                </select>
+                                          </div>
+
+                                          <div class="col-lg-12">
+                                                <label class="mt-3 ct_fs_15 ct_fw_400 mb-2">
+                                                      Down Payment
+                                                </label>
+                                                <input type="text" class="form-control" placeholder="CHF 25’43.- "
+                                                      aria-label="Username" aria-describedby="basic-addon1" />
+                                          </div>
+                                    </div>
+
+                                    <div class="car-detail-value-sec mt-4">
+                                          <div class="d-flex justify-content-center align-items-center">
+                                                <h3 class="ct_fs_44 ct_fw_700">567</h3>
+                                                <p class="ct_fs_15 mb-0">
+                                                      .05
+                                                      <br />
+                                                      <span>/Mt.</span>
+                                                </p>
+                                          </div>
+
+                                          <div
+                                                class="d-flex w-50 mx-auto align-items-center justify-content-between mt-3">
+                                                <p class="ct_fs_15 mb-0">Residual value:</p>
+                                                <p class="ct_fs_15 mb-0">CHF 46’800.-</p>
+                                          </div>
+
+                                          <div
+                                                class="d-flex w-50 mx-auto align-items-center justify-content-between mt-2">
+                                                <p class="ct_fs_15 mb-0">Annual Interest Rate:</p>
+                                                <p class="ct_fs_15 mb-0">5.9%</p>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+
+                        <div class="col-lg-5 mt-lg-0 mt-4">
+                              <div class="car-content-right">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                          <div>
+                                                <h3 class="ct_fs_25 ct_fw_600 mb-2">
+                                                      {{carData?.brandName}} {{carData?.carModel}}
+                                                </h3>
+                                          </div>
+                                    </div>
+
+                                    <div class="mt-2">
+                                          <h3 class="ct_fs_25 ct_fw_700 mb-0 ct_color_8f0c1f">
+                                                CHF {{carData?.totalPrice | chfFormat}} /
+                                                <span class="mb-0 ct_fs_18 ct_fw_400 ct_color_3e1cff fst-italic">
+                                                      CHF 550.- per month
+                                                </span>
+                                          </h3>
+                                    </div>
+                              </div>
+
+                              <div class="row mt-4">
+                                    <div class="">
+                                          <img [src]="carData?.sellerDetails?.profileImage " class="seller-image" />
+                                          <h4 class="ct_fs_20 ct_fw_500 mt-2">{{carData?.sellerDetails?.fullName}}</h4>
+                                          <div class="d-flex align-items-center mt-3">
+                                                <img src="img/icons/ep_location.png" class="me-2" />
+                                                <p class="ct_fs_16 ct_fw_300 mb-0">
+                                                      {{carData?.sellerDetails?.pincode}}
+                                                      {{carData?.sellerDetails?.city}}
+                                                </p>
+                                          </div>
+
+                                          <div class="mt-2 d-flex gap-2 align-items-center">
+                                                <img src="img/icons/google.png" class="me-1" />
+                                                <span> 4.5</span>
+                                                <img src="img/icons/rating.png" />
+                                                <img src="img/icons/rating.png" />
+                                                <img src="img/icons/rating.png" />
+                                                <img src="img/icons/rating.png" />
+                                                <img src="img/icons/rating.png" />
+                                          </div>
+
+
+
+
+
+
+                                          <div class="d-flex align-items-center gap-3 my-3">
+                                                <div class="w-50">
+                                                      <a class="btn-red w-100 text-center ct_fw_500">Physical
+                                                            Visit</a>
+                                                </div>
+                                                <div class="w-50">
+                                                      <a class="btn-red-transparent w-100 text-center  ct_fw_500">
+                                                            Chat with seller</a>
+                                                </div>
+                                          </div>
+                                          <div class="d-flex gap-3">
+                                                <div class="w-100">
+                                                      <a class="btn-primary-transparent w-100 text-center ct_fw_400">
+                                                            <i class="fa-solid fa-phone me-2"></i>
+                                                            Call
+                                                      </a>
+                                                </div>
+                                                <div class="w-100">
+                                                      <a class="btn-green-transparent w-100 text-center  ct_fw_400">
+                                                            <i class="fa-brands fa-whatsapp me-2"></i>
+
+                                                            Whatsapp
+                                                      </a>
+                                                </div>
+                                                <div class="w-100">
+
+
+
+                                                      <a class="btn-purple-transparent w-100 text-center  ct_fw_400"
+                                                            data-bs-toggle="modal" data-bs-target="#EmailModal">
+                                                            <i class="fa-solid fa-envelope me-2"></i>
+                                                            Email
+                                                      </a>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <div class="mt-4 collapse-cont-wrapper">
+                                          <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                      <img src=" img/icons/timer-icon.png">
+                                                      Opening Timings
+                                                </div>
+                                                <div>
+                                                      <img src="img/icons/chevron-up-b.png" data-bs-toggle="collapse"
+                                                            data-bs-target="#collapseOpeningTimings"
+                                                            aria-expanded="true">
+                                                </div>
+                                          </div>
+
+                                          <div id="collapseOpeningTimings" class="collapse collapse-content show"
+                                                data-bs-parent="#filterAccordion">
+                                                <table class="table opening-timing-table mt-2">
+                                                      <tbody>
+                                                            <tr>
+                                                                  <td>Mon</td>
+                                                                  <td>09:00 - 11:45</td>
+                                                                  <td>13:00 - 18:00</td>
+                                                            </tr>
+                                                            <tr>
+                                                                  <td>Tues</td>
+                                                                  <td>09:00 - 11:45</td>
+                                                                  <td>13:00 - 18:00</td>
+                                                            </tr>
+                                                            <tr>
+                                                                  <td>Wed</td>
+                                                                  <td>09:00 - 11:45</td>
+                                                                  <td>13:00 - 18:00</td>
+                                                            </tr>
+                                                            <tr>
+                                                                  <td>Thurs</td>
+                                                                  <td>09:00 - 11:45</td>
+                                                                  <td>13:00 - 18:00</td>
+                                                            </tr>
+                                                            <tr>
+                                                                  <td>Fri</td>
+                                                                  <td>09:00 - 11:45</td>
+                                                                  <td>13:00 - 18:00</td>
+                                                            </tr>
+                                                            <tr>
+                                                                  <td>Sat</td>
+                                                                  <td>09:00 - 11:45</td>
+                                                                  <td>13:00 - 18:00</td>
+                                                            </tr>
+                                                      </tbody>
+                                                </table>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="ct_mt_30">
+                        <div class="container">
+                              <h4 class="ct_fw_600 ct_fs_20 mb-2">Location</h4>
+                              <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3669.849902513293!2d72.59278517437018!3d23.102589813339137!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8371c3b2d859%3A0x6035b10ac2e442ad!2seVitalRx%20-%20Pharmacy%20Billing%20and%20Inventory%20Management%20Software%20(PC%20%26%20Mobile)!5e0!3m2!1sen!2sin!4v1768815531384!5m2!1sen!2sin"
+                                    width="100%" height="429" style="border: 0; border-radius: 20px" allowfullscreen=""
+                                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                  </div>
+
+                  <section class="seller-vehicles mt-30">
+                        <div class="container">
+                              <div class="seller-header d-flex align-items-center justify-content-between mb-2">
+                                    <h5 class="ct_fs_20 ct_fw_600">
+                                          More vehicles from this seller
+                                    </h5>
+                                    <a href="view-seller-detail.html" class="ct_color_3e1cff ct_fs_18">Show all</a>
+                              </div>
+
+                              <div class="seller-carousel CarSwiper">
+                                    <div class="swiper-wrapper">
+                                          <div class="vehicle-box swiper-slide">
+                                                <div class="d-flex gap-4 vehicle-carousel-contetn">
+                                                      <div class="">
+                                                            <img src="img/seller-car.png" />
+                                                      </div>
+
+                                                      <div class="">
+                                                            <div class="car-content-right">
+                                                                  <div
+                                                                        class="d-flex justify-content-between align-items-center">
+                                                                        <div>
+                                                                              <h3 class="ct_fs_22 ct_fw_600 mb-2">
+                                                                                    Lamborghini Huracan
+                                                                              </h3>
+                                                                        </div>
+                                                                  </div>
+
+                                                                  <div class="mt-2">
+                                                                        <h3
+                                                                              class="ct_fs_18 ct_fw_400 mb-0 ct_color_8f0c1f">
+                                                                              CHF 45’900.-
+                                                                        </h3>
+                                                                        <p class="mb-0 ct_fs_14 ct_fw_300">
+                                                                              CHF 550.- per month
+                                                                        </p>
+                                                                  </div>
+                                                            </div>
+
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center mt-2">
+                                                                  <ul class="p-0 car-content-right-list">
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src=" img/icons/sppedmeter.png" />
+                                                                              <span>07.2018 </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src="img/icons/km.png" />
+                                                                              <span> 50’000 km </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src="img/icons/fuel-type.png" />
+                                                                              <span> Benzin </span>
+                                                                        </li>
+                                                                  </ul>
+
+                                                                  <ul class="p-0 car-content-right-list">
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src="img/icons/power-output.png" />
+                                                                              <span> 510 ps </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src="img/icons/transmision.png" />
+                                                                              <span> Automatic </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src="img/icons/year.png" />
+                                                                              <span> 7.0 L / 100 Km </span>
+                                                                        </li>
+                                                                  </ul>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="vehicle-box swiper-slide ">
+                                                <div class="d-flex gap-4 vehicle-carousel-contetn">
+                                                      <div class="">
+                                                            <img src="img/seller-car.png" />
+                                                      </div>
+
+                                                      <div class="">
+                                                            <div class="car-content-right">
+                                                                  <div class="d-flex justify-content-between">
+                                                                        <div>
+                                                                              <h3 class="ct_fs_22 ct_fw_600 mb-2">
+                                                                                    Lamborghini Huracan
+                                                                              </h3>
+                                                                        </div>
+                                                                  </div>
+
+                                                                  <div class="mt-2">
+                                                                        <h3
+                                                                              class="ct_fs_18 ct_fw_400 mb-0 ct_color_8f0c1f">
+                                                                              CHF 45’900.-
+                                                                        </h3>
+                                                                        <p class="mb-0 ct_fs_14 ct_fw_300">
+                                                                              CHF 550.- per month
+                                                                        </p>
+                                                                  </div>
+                                                            </div>
+
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center mt-2">
+                                                                  <ul class="p-0 car-content-right-list">
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src=" img/icons/sppedmeter.png" />
+                                                                              <span>07.2018 </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src="img/icons/km.png" />
+                                                                              <span> 50’000 km </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src="img/icons/fuel-type.png" />
+                                                                              <span> Benzin </span>
+                                                                        </li>
+                                                                  </ul>
+
+                                                                  <ul class="p-0 car-content-right-list">
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src="img/icons/power-output.png" />
+                                                                              <span> 510 ps </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src="img/icons/transmision.png" />
+                                                                              <span> Automatic </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src="img/icons/year.png" />
+                                                                              <span> 7.0 L / 100 Km </span>
+                                                                        </li>
+                                                                  </ul>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="vehicle-box swiper-slide ">
+                                                <div class="d-flex gap-4 vehicle-carousel-contetn">
+                                                      <div class="">
+                                                            <img src="img/seller-car.png" />
+                                                      </div>
+
+                                                      <div class="">
+                                                            <div class="car-content-right">
+                                                                  <div class="d-flex justify-content-between">
+                                                                        <div>
+                                                                              <h3 class="ct_fs_22 ct_fw_600 mb-2">
+                                                                                    Lamborghini Huracan
+                                                                              </h3>
+                                                                        </div>
+                                                                  </div>
+
+                                                                  <div class="mt-2">
+                                                                        <h3
+                                                                              class="ct_fs_18 ct_fw_400 mb-0 ct_color_8f0c1f">
+                                                                              CHF 45’900.-
+                                                                        </h3>
+                                                                        <p class="mb-0 ct_fs_14 ct_fw_300">
+                                                                              CHF 550.- per month
+                                                                        </p>
+                                                                  </div>
+                                                            </div>
+
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center mt-2">
+                                                                  <ul class="p-0 car-content-right-list">
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src=" img/icons/sppedmeter.png" />
+                                                                              <span>07.2018 </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src="img/icons/km.png" />
+                                                                              <span> 50’000 km </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src="img/icons/fuel-type.png" />
+                                                                              <span> Benzin </span>
+                                                                        </li>
+                                                                  </ul>
+
+                                                                  <ul class="p-0 car-content-right-list">
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src="img/icons/power-output.png" />
+                                                                              <span> 510 ps </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src="img/icons/transmision.png" />
+                                                                              <span> Automatic </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-2 align-items-center">
+                                                                              <img src="img/icons/year.png" />
+                                                                              <span> 7.0 L / 100 Km </span>
+                                                                        </li>
+                                                                  </ul>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                  </section>
+
+                  <div class="d-flex gap-3 ct_mt_40">
+                        <div>
+                              <a href="purchase-agreement.html" class="btn-red"><img src="img/icons/contract-cion.png"
+                                          class="me-2" />Buying
+                                    Contract</a>
+                        </div>
+
+                        <div>
+                              <a class="btn-red-transparent">
+                                    <img src="img/icons/download-icon.png" />
+                                    Download Pdf</a>
+                        </div>
+                  </div>
+            </div>
+      </div>
+</section>
+
+
+<!--Report listing modal -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <h5 class="modal-title">Report Car</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+
+                  <div class="modal-body pt-0">
+                        <div class="mb-3">
+                              <ul class="ps-0">
+                                    <li class="ps-0">
+                                          <div
+                                                class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
+                                                <label for="flexCheckDefault">
+                                                      Spam or misleading content
+                                                </label>
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                      id="flexCheckDefault" />
+                                          </div>
+                                    </li>
+                                    <li class="ps-0">
+                                          <div
+                                                class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
+                                                <label for="flexCheckDefault">
+                                                      Inappropriate or offensive language
+                                                </label>
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                      id="flexCheckDefault" />
+                                          </div>
+                                    </li>
+                                    <li class="ps-0">
+                                          <div
+                                                class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
+                                                <label for="flexCheckDefault">
+                                                      Suspicious Price
+                                                </label>
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                      id="flexCheckDefault" />
+                                          </div>
+                                    </li>
+                                    <li class="ps-0">
+                                          <div
+                                                class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
+                                                <label for="flexCheckDefault">
+                                                      Wrong Photos / Documents
+                                                </label>
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                      id="flexCheckDefault" />
+                                          </div>
+                                    </li>
+                                    <li class="ps-0">
+                                          <div
+                                                class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
+                                                <label for="flexCheckDefault">
+                                                      Misinformation
+                                                </label>
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                      id="flexCheckDefault" />
+                                          </div>
+                                    </li>
+
+                                    <li class="ps-0">
+                                          <div
+                                                class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
+                                                <label for="flexCheckDefault">
+                                                      Seller Misleading
+                                                </label>
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                      id="flexCheckDefault" />
+                                          </div>
+                                    </li>
+                                    <li class="ps-0">
+                                          <div
+                                                class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
+                                                <label for="flexCheckDefault">
+                                                      Copyright infringement
+                                                </label>
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                      id="flexCheckDefault" />
+                                          </div>
+                                    </li>
+                                    <li class="ps-0">
+                                          <div
+                                                class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
+                                                <label for="flexCheckDefault">
+                                                      Others
+                                                </label>
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                      id="flexCheckDefault" />
+                                          </div>
+                                    </li>
+                              </ul>
+                        </div>
+
+                        <div class="mb-3">
+                              <label class="form-label ct_fs_16 ct_fw_400">Custom message</label>
+                              <textarea class="form-control" rows="3" placeholder="Write reason..."></textarea>
+                        </div>
+                  </div>
+
+                  <div class="modal-footer border-0">
+
+                        <button type="button" class="btn-red w-100">
+                              Submit
+                        </button>
+                  </div>
+            </div>
+      </div>
+</div>
+
+<!-- Report listing modal end -->
+
+
+
+<!--Email  modal -->
+<div class="modal fade" id="EmailModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <h5 class="modal-title"> Send Inquiry</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+
+                  <div class="modal-body pt-0">
+                        <div class="mb-3">
+
+
+                              <div class="d-flex align-items-center gap-3 ">
+                                    <div class="ct_width_96 ct_border_8">
+                                          <img src="img/car-img2.png" alt="" class="w-100 h-100">
+                                    </div>
+                                    <div>
+                                          <h5 class="ct_fs_16 ct_fw_500">
+                                                Mercedes-Benz C-Class
+                                          </h5>
+                                          <h3 class="ct_fw_600 ct_fs_20">CHF 45,900</h3>
+                                    </div>
+                              </div>
+
+
+                              <div class="row">
+                                    <div class="col-6">
+
+                                          <label class="mt-3 ct_fs_15 ct_fw_400 mb-2">
+                                                Full Name
+                                          </label>
+                                          <input type="text" class="form-control" placeholder="Full Name"
+                                                aria-label="Username" aria-describedby="basic-addon1">
+
+                                    </div>
+                                    <div class="col-6">
+
+                                          <label class="mt-3 ct_fs_15 ct_fw_400 mb-2">
+                                                Full Name
+                                          </label>
+                                          <input type="text" class="form-control" placeholder="CHF 25’43.- "
+                                                aria-label="Username" aria-describedby="basic-addon1">
+
+                                    </div>
+                                    <div class="col-6">
+
+                                          <label class="mt-3 ct_fs_15 ct_fw_400 mb-2">
+                                                Email Address
+                                          </label>
+                                          <input type="text" class="form-control" placeholder="john.anderson@email.com"
+                                                aria-label="Username" aria-describedby="basic-addon1">
+
+                                    </div>
+                                    <div class="col-6">
+
+                                          <label class="mt-3 ct_fs_15 ct_fw_400 mb-2">
+                                                Phone Number
+                                          </label>
+                                          <input type="text" class="form-control" placeholder="+44 54 670 653"
+                                                aria-label="Username" aria-describedby="basic-addon1">
+
+                                    </div>
+
+                                    <div class="d-flex gap-3 flex-wrap">
+                                          <div class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                      id="flexCheckDefault">
+                                                <label for="flexCheckDefault"> Leasing </label>
+                                          </div>
+                                          <div class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                      id="flexCheckDefault">
+                                                <label for="flexCheckDefault">Payment </label>
+                                          </div>
+                                          <div class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                      id="flexCheckDefault">
+                                                <label for="flexCheckDefault">Insuarance </label>
+                                          </div>
+                                          <div class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                      id="flexCheckDefault">
+                                                <label for="flexCheckDefault">Trade-in </label>
+                                          </div>
+                                    </div>
+
+                              </div>
+                        </div>
+
+                        <div class="mt-3">
+                              <label class="form-label ct_fs_16 ct_fw_400"> Message <span
+                                          class="fst-italic">(Optional)</span></label>
+                              <textarea class="form-control" rows="3" placeholder="Write reason..."></textarea>
+                        </div>
+                  </div>
+
+                  <div class="modal-footer border-0">
+                        <button type="button" class="btn-red w-100">
+                              Submit
+                        </button>
+                  </div>
+            </div>
+      </div>
+</div>

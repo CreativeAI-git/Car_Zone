@@ -4,11 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzInputOtpComponent } from 'ng-zorro-antd/input';
 import { SubmitButtonComponent } from '../shared/submit-button/submit-button.component';
 import { CommonService } from '../../services/common.service';
-import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../services/user.service';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-otp-verification',
@@ -26,7 +26,7 @@ export class OtpVerificationComponent {
   loading: boolean = false
   isForgotPassword: string | undefined
   userName: string
-  constructor(private router: Router, private toster: NzMessageService, private commonService: CommonService, private translate: TranslateService, private userService: UserService) {
+  constructor(private toster: NzMessageService, private commonService: CommonService, private translate: TranslateService, private userService: UserService, private modal: ModalService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.email = sessionStorage.getItem('email') || ''
     this.userName = sessionStorage.getItem('userName') || ''
@@ -81,10 +81,10 @@ export class OtpVerificationComponent {
         this.loading = false
         this.toster.success(res.message)
         if (this.isForgotPassword === '1') {
-          this.router.navigate(['/reset-password'])
+          this.modal.openResetPasswordModal()
         } else {
-          this.userService.handleAddOrUpdateUser(res.data.userId, this.userName, '')
-          this.router.navigate(['/login'])
+          // this.userService.handleAddOrUpdateUser(res.data.userId, this.userName, '')
+          this.modal.openSignInModal()
         }
       },
       error: (error) => {

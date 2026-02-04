@@ -1,50 +1,83 @@
-.ct_seller_company_add li {
-    margin-bottom: 12px;
+/* Swiper container */
+.swiper {
+    width: 100%;
+    height: 380px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.ct_seller_company_add img {
-    width: 120px;
-    margin-bottom: 20px;
-}
-
-.ct_seller_company_add {
-    padding: 20px;
-    border: 1px solid #e6e6e6;
-    border-radius: 10px;
-}
-
-
-.ct_working_hours_list12 li {
+/* Swiper slide */
+.mySwiperThumbs .swiper-slide,
+.mySwiperMain .swiper-slide {
+    text-align: center;
+    font-size: 18px;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: #f0f0f0c9;
-    border-radius: 10px;
-    gap: 10px;
+    background-size: cover;
+    background-position: center;
 }
 
-.ct_working_hours_list12 li+li {
-    margin-top: 10px;
-}
-
-.ct_calculated_buyer_card {
-    background-color: #fff;
-    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.09);
-    padding: 20px;
-    border-radius: 10px;
+/* Image inside slide */
+.mySwiperThumbs .swiper-slide img,
+.mySwiperMain .swiper-slide img {
+    display: block;
+    width: 100%;
     height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
-.ct_gallery_right_2_img {
-    grid-template-columns: repeat(1, 1fr) !important;
+/* MAIN SWIPER */
+.mySwiperMain {
+    width: 100%;
 }
 
-.ct_gallery_right_1_img {
-    grid-template-rows: repeat(1, 1fr) !important;
-    display: block !important;
+/* THUMBS SWIPER */
+.mySwiperThumbs {
+    height: 100px;
+    box-sizing: border-box;
+    padding: 10px 0;
 }
 
-.ct_gallery_right.ct_gallery_right_1_img img {
+.mySwiperThumbs .swiper-slide {
+    width: 25%;
     height: 100%;
+    opacity: 0.4;
+    cursor: pointer;
+}
+
+.mySwiperThumbs .swiper-slide-thumb-active {
+    opacity: 1;
+}
+
+/* Hide navigation arrows */
+.swiper-button-next,
+.swiper-button-prev {
+    display: none !important;
+}
+
+.seller-image {
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+}
+
+.seller-carousel.CarSwiper {
+    overflow: hidden;
+}
+
+.pagination-ui {
+    position: absolute;
+    bottom: 10px;
+    left: 45%;
+    background-color: #111111ae;
+    color: #fff;
+    padding: 2px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 9;
 }

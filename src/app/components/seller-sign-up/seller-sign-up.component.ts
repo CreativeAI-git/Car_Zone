@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { QuillModule } from 'ngx-quill';
@@ -12,32 +12,43 @@ import { SubmitButtonComponent } from '../shared/submit-button/submit-button.com
 import { CommonService } from '../../services/common.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
-  imports: [ReactiveFormsModule, CommonModule, NzSelectModule, QuillModule, FormsModule, RouterLink, NgxIntlTelInputModule, SubmitButtonComponent, TranslateModule],
+  selector: 'app-seller-sign-up',
+  imports: [ReactiveFormsModule, CommonModule, NzSelectModule, QuillModule, FormsModule, NgxIntlTelInputModule, SubmitButtonComponent, TranslateModule],
   templateUrl: './seller-sign-up.component.html',
   styleUrl: './seller-sign-up.component.css'
 })
 export class SellerSignUpComponent {
   private destroy$ = new Subject<void>();
   Form: FormGroup;
-  formStep: number = 1;
-  atValues: any;
-  htmlText: string = '';
+  formStep: number = 2;
   SearchCountryField = SearchCountryField
   CountryISO = CountryISO;
   selectedCountry = CountryISO.Sweden;
-  lat: number | null = null;
-  lng: number | null = null;
   loading: boolean = false
   isShowPassword: boolean = false
   isShowConfirmPassword: boolean = false
-  constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private router: Router, private translate: TranslateService) {
+  sellerTypes: any[] = [{
+    label: 'PrivateSeller',
+    label2: 'ForIndividualSellers',
+    value: 'personal'
+  }, {
+    label: 'OfficialSeller',
+    label2: 'ForBusinesses',
+    value: 'business'
+  }];
+
+  selectedSellerType: string = 'personal';
+  constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private router: Router, private translate: TranslateService, public modal: ModalService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.Form = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20), NoWhitespaceDirective.validate]],
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.required]],
+      isWhatsappSameAsPhone: [false],
+      whatsappNumber: ['', [Validators.required]],
       typeOfSeller: ['personal', [Validators.required]],
       password: ['', [Validators.required, strongPasswordValidator]],
       confirmPassword: ['', [Validators.required]],
@@ -45,9 +56,10 @@ export class SellerSignUpComponent {
       legalForm: ['Sole Proprietorship'],
       companyName: [''],
       companyAddress: [''],
-      city: [''],
-      pincode: [''],
+      city: ['', [Validators.required, NoWhitespaceDirective.validate]],
+      pincode: ['', [Validators.required, NoWhitespaceDirective.validate]],
       vat: [''],
+      uid: [''],
     }, {
       validators: [
         passwordMatchValidator(),
@@ -58,57 +70,39 @@ export class SellerSignUpComponent {
   }
 
   ngOnInit(): void {
-    this.getLocation();
     this.Form.get('typeOfSeller')?.valueChanges.subscribe((value) => {
       if (value === 'business') {
         this.Form.get('companyName')?.setValidators([Validators.required]);
         this.Form.get('companyAddress')?.setValidators([Validators.required]);
-        this.Form.get('city')?.setValidators([Validators.required]);
-        this.Form.get('pincode')?.setValidators([Validators.required]);
         this.Form.get('companyName')?.updateValueAndValidity();
         this.Form.get('companyAddress')?.updateValueAndValidity();
-        this.Form.get('city')?.updateValueAndValidity();
-        this.Form.get('pincode')?.updateValueAndValidity();
       } else {
         this.Form.get('companyName')?.clearValidators();
         this.Form.get('companyAddress')?.clearValidators();
-        this.Form.get('city')?.clearValidators();
-        this.Form.get('pincode')?.clearValidators();
         this.Form.get('companyName')?.updateValueAndValidity();
         this.Form.get('companyAddress')?.updateValueAndValidity();
-        this.Form.get('city')?.updateValueAndValidity();
-        this.Form.get('pincode')?.updateValueAndValidity();
       }
     })
-
+    this.Form.get('isWhatsappSameAsPhone')?.valueChanges.subscribe((value) => {
+      if (value) {
+        this.Form.get('phoneNumber')?.setValue(this.Form.get('whatsappNumber')?.value);
+      } else {
+        this.Form.get('phoneNumber')?.setValue('');
+      }
+    })
   }
 
   nextStep() {
-    if (this.Form.get('fullName')?.invalid || this.Form.get('email')?.invalid || this.Form.get('phoneNumber')?.invalid || this.Form.get('password')?.invalid || this.Form.get('confirmPassword')?.invalid) {
+    if (this.Form.get('fullName')?.invalid || this.Form.get('email')?.invalid || this.Form.get('phoneNumber')?.invalid || this.Form.get('whatsappNumber')?.invalid || this.Form.get('password')?.invalid || this.Form.get('confirmPassword')?.invalid) {
       this.Form.get('fullName')?.markAsTouched();
       this.Form.get('email')?.markAsTouched();
+      this.Form.get('whatsappNumber')?.markAsTouched();
       this.Form.get('phoneNumber')?.markAsTouched();
       this.Form.get('password')?.markAsTouched();
       this.Form.get('confirmPassword')?.markAsTouched();
       return
     }
     this.formStep = this.formStep + 1
-  }
-
-  getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          this.lat = position.coords.latitude;
-          this.lng = position.coords.longitude;
-        },
-        (error) => {
-          // this.toastr.warning("Unable to retrieve location. Please enable GPS or location permissions.");
-        }
-      );
-    } else {
-      // this.toastr.warning("Geolocation is not supported by this browser.");
-    }
   }
 
   onSubmit() {
@@ -131,8 +125,6 @@ export class SellerSignUpComponent {
       city: this.Form.value.city,
       pincode: this.Form.value.pincode,
       vat: this.Form.value.vat,
-      latitude: this.lat,
-      longitude: this.lng,
       countryCode: this.Form.value.phoneNumber.dialCode,
       language: 'en',
       isSeller: 1

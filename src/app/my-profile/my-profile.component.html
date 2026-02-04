@@ -1,0 +1,126 @@
+<div class="ct_mt_100">
+    <section class="mb-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <!-- Mobile Sidebar Toggle Button -->
+                    <button class="btn d-lg-none mb-3" id="profileMenuBtn" (click)="openSidebar()">
+                        <i class="fa fa-bars"></i> Menu
+                    </button>
+
+                    <!-- Sidebar -->
+                    <aside class="profile-sidebar ct_right_main_box" id="profileSidebar" #profileSidebar>
+                        <!-- Sidebar Profile Info -->
+                        <div class="d-flex align-items-center gap-3 py-3 border-bottom">
+                            <div class="m-0">
+                                <img src="img/profile.png" alt="" class="ct_profile_img_56" />
+                            </div>
+                            <div>
+                                <h5 class="ct_fs_20 ct_fw_600 mb-0">John Wilson</h5>
+                                <p class="ct_fs_12 mb-0">alma.lawson&#64;example.com</p>
+                            </div>
+                        </div>
+
+                        <div class="profile-sidebar-header d-lg-none">
+
+                            <button class="btn p-0" id="profileSidebarClose" (click)="closeSidebar()">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+
+                        <ul class="profile-sidebar-menu px-0 mt-4">
+                            <li class="">
+                                <a routerLink="edit-profile" routerLinkActive="active">
+                                    <img src="img/menu-icons/edit-profile.png" alt="" class="me-2" />Edit Profile</a>
+                            </li>
+                            <li>
+                                <a routerLink="saved-reels" routerLinkActive="active">
+                                    <img src="img/menu-icons/saved.png" alt="" class="me-2" />
+                                    Saved Car Reels</a>
+                            </li>
+                            <li>
+                                <a routerLink="wishlist" routerLinkActive="active">
+                                    <img src="img/menu-icons/wishlist.png" alt="" class="me-2" />
+                                    Favorites</a>
+                            </li>
+                            <li>
+                                <a routerLink="change-password" routerLinkActive="active">
+                                    <img src="img/menu-icons/change-password.png" alt="" class="me-2" />
+                                    Change Password
+                                </a>
+                            </li>
+                            <li>
+                                <a routerLink="feedback" routerLinkActive="active">
+                                    <img src="img/menu-icons/feedback.png" alt="" class="me-2" />
+                                    Feedback
+                                </a>
+                            </li>
+
+                            <hr />
+                            <li>
+                                <a routerLink="switch-mode">
+                                    <img src="img/menu-icons/switch.png" alt="" class="me-2" />
+                                    Switch to seller mode
+                                </a>
+                            </li>
+                            <li>
+                                <a routerLink="notifications">
+                                    <img src="img/menu-icons/notification-bell.png" alt="" class="me-2" />
+                                    Push Notifications
+                                </a>
+                            </li>
+                            <li>
+                                <a href="help.html"><img src="img/menu-icons/help.png" alt="" class="me-2" />
+                                    help</a>
+                            </li>
+                            <li>
+                                <a href="download-data.html">
+                                    <img src="img/menu-icons/download.png" alt="" />
+                                    Download your data</a>
+                            </li>
+                            <li>
+                                <a href="delete-data.html">
+                                    <img src="img/menu-icons/delete.png" alt="" class="me-2" />
+                                    Delete your account
+                                </a>
+                            </li>
+                            <li class="text-danger mt-3">
+                                <a data-bs-target="#logoutModal" data-bs-toggle="modal" class="text-danger">
+                                    <img src="img/menu-icons/log-out.png" alt="" class="me-2" />Log
+                                    out</a>
+                            </li>
+                        </ul>
+                    </aside>
+                </div>
+                <div class="col-lg-9">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="profile-overlay" id="profileOverlay" #profileOverlay (click)="closeSidebar()"></div>
+
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel">Ready to Leave?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                Select "Logout" below if you are ready to end your current session.
+            </div>
+
+            <div class="modal-footer">
+                <button #close type="button" class="btn-red-transparent" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <a (click)="logout()" class="btn-red"> Logout </a>
+            </div>
+        </div>
+    </div>
+</div>

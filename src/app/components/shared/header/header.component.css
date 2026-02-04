@@ -1,20 +1,20 @@
 .logo_image {
-      max-width: 198px;
+    max-width: 198px;
 }
 
 
 .ct_language_select {
-      background-color: #f5f5f5;
-      border: 0px;
-      padding: 2px 6px;
-      border-radius: 6px;
-      width: 7rem;
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
+    background-color: #f5f5f51a;
+    border: 0px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    width: 7rem;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .ct_language_select button.dropdown-toggle.py-2.mt-0 {
-      background-color: transparent;
-      border: 0;
+    background-color: transparent;
+    border: 0;
 }

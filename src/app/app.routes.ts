@@ -8,22 +8,22 @@ export const routes: Routes = [
             loadComponent: () => import('./components/main/main.component').then(m => m.MainComponent),
             // canActivateChild: [authGuard],
             children: [
-                   {
-                        path: 'home',
-                        loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent),
-                  },
-                  {
-                        path: '',
-                        loadComponent: () => import('./components/browse-cars/browse-cars.component').then(m => m.BrowseCarsComponent)
-                  },
                   // {
-                  //       path: '',
+                  //       path: 'home',
                   //       loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent),
                   // },
                   // {
-                  //       path: 'browse-cars',
+                  //       path: '',
                   //       loadComponent: () => import('./components/browse-cars/browse-cars.component').then(m => m.BrowseCarsComponent)
                   // },
+                  {
+                        path: '',
+                        loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent),
+                  },
+                  {
+                        path: 'browse-cars',
+                        loadComponent: () => import('./components/browse-cars/browse-cars.component').then(m => m.BrowseCarsComponent)
+                  },
                   {
                         path: 'reels',
                         loadComponent: () => import('./components/reels/reels.component').then(m => m.ReelsComponent)
@@ -37,24 +37,30 @@ export const routes: Routes = [
                         loadComponent: () => import('./components/car-detail/car-detail.component').then(m => m.CarDetailComponent)
                   },
                   {
-                        path: 'saved-reels',
-                        loadComponent: () => import('./components/saved-reels/saved-reels.component').then(m => m.SavedReelsComponent),
-                  },
-                  {
-                        path: 'edit-profile',
-                        loadComponent: () => import('./components/edit-profile/edit-profile.component').then(m => m.EditProfileComponent),
-                  },
-                  {
-                        path: 'change-password',
-                        loadComponent: () => import('./components/change-password/change-password.component').then(m => m.ChangePasswordComponent),
-                  },
-                  {
-                        path: 'wishlist',
-                        loadComponent: () => import('./components/wishlist/wishlist.component').then(m => m.WishlistComponent)
-                  },
-                  {
-                        path: 'notifications',
-                        loadComponent: () => import('./components/notifications/notifications.component').then(m => m.NotificationsComponent)
+                        path: 'my-profile',
+                        loadComponent: () => import('./my-profile/my-profile.component').then(m => m.MyProfileComponent),
+                        children: [
+                              {
+                                    path: 'edit-profile',
+                                    loadComponent: () => import('./my-profile/edit-profile/edit-profile.component').then(m => m.EditProfileComponent),
+                              },
+                              {
+                                    path: 'saved-reels',
+                                    loadComponent: () => import('./my-profile/saved-reels/saved-reels.component').then(m => m.SavedReelsComponent),
+                              },
+                              {
+                                    path: 'change-password',
+                                    loadComponent: () => import('./my-profile/change-password/change-password.component').then(m => m.ChangePasswordComponent),
+                              },
+                              {
+                                    path: 'wishlist',
+                                    loadComponent: () => import('./my-profile/wishlist/wishlist.component').then(m => m.WishlistComponent)
+                              },
+                              {
+                                    path: 'notifications',
+                                    loadComponent: () => import('./my-profile/notifications/notifications.component').then(m => m.NotificationsComponent)
+                              }
+                        ]
                   },
                   {
                         path: 'contact-us',

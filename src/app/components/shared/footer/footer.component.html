@@ -1,72 +1,67 @@
-<footer class="ct_footer_bg">
+<footer class="footer">
       <div class="container">
             <div class="row">
-                  <div class="col-lg-4 col-md-12 mb-4">
-                        <div class="ct_footer_info">
-                              <a routerLink="/" class="ct_footer_logo">
-                                    <img src="img/carzone_logo_black.png" alt="">
+                  <div class="col-lg-4">
+                        <a class="footer-logo">
+                              <img src="img/logo.png" alt="Logo" />
+                        </a>
+                        <p class="ct_fs_16 ct_fw_400 ct_lh-2">
+                              Carzone is a modern platform to buy and sell cars easily. Connect
+                              with trusted buyers and sellers, chat in-app, and close deals
+                              seamlessly.
+                        </p>
+                        <div class="social-icons mt-3">
+                              <a>
+                                    <img src="img/icons/facebook.png" />
                               </a>
-                              <p class="mb-0 text-white">
-                                    {{'FooterDescription' | translate}}
-                              </p>
+                              <a>
+                                    <img src="img/icons/twitter.png" />
+                              </a>
+                              <a>
+                                    <img src="img/icons/instagram.png" />
+                              </a>
+                              <a>
+                                    <img src="img/icons/youtube.png" />
+                              </a>
                         </div>
                   </div>
-                  <ng-container *appRole="'buyer'">
-                        <div class="col-lg-4 col-md-4 mb-4">
-                              <div class="ct_menu_item">
-                                    <h4 class="ct_fs_20 ct_fw_600 text-white ct_ff_Epilogue mb-4">{{'BuySell' |
-                                          translate}}</h4>
-                                    <ul>
-                                          <li>
-                                                <a routerLink="/">{{'BrowseCars' | translate}}</a>
-                                          </li>
-                                          <li>
-                                                <a routerLink="/reels">{{'Reels' | translate}} </a>
-                                          </li>
-                                          <li>
-                                                <a routerLink="/wishlist">{{'Wishlist' | translate}}</a>
-                                          </li>
-                                    </ul>
-                              </div>
-                        </div>
-                  </ng-container>
-                  <ng-container *appRole="'seller'">
-                        <div class="col-lg-4 col-md-4 mb-4">
-                              <div class="ct_menu_item">
-                                    <h4 class="ct_fs_20 ct_fw_600 text-white ct_ff_Epilogue mb-4">{{'MenuLinks' |
-                                          translate}}</h4>
-                                    <ul>
-                                          <li>
-                                                <a routerLink="/">{{'Home' | translate}}</a>
-                                          </li>
-                                          <li>
-                                                <a routerLink="/my-listings">{{'MyListings' | translate}}</a>
-                                          </li>
-                                          <li>
-                                                <a routerLink="/listing-slot-plan">{{'ListingSlotsPlan' |
-                                                      translate}}</a>
-                                          </li>
-
-                                    </ul>
-                              </div>
-                        </div>
-                  </ng-container>
-                  <div class="col-lg-4 col-md-4 mb-4">
-                        <div class="ct_menu_item">
-                              <h4 class="ct_fs_20 ct_fw_600 text-white ct_ff_Epilogue mb-4">{{'Legal' | translate}}</h4>
+                  <div class="col-lg-2 col-md-4">
+                        <div class="footer-nav">
+                              <h5 class="text-white">Buy a Car</h5>
                               <ul>
-                                    <li>
-                                          <a routerLink="/contact-us">{{'ContactUs' | translate}}</a>
-                                    </li>
-                                    <li>
-                                          <a routerLink="/terms-conditions">{{'TermsAndConditions' | translate}}</a>
-                                    </li>
-                                    <li>
-                                          <a routerLink="/privacy-policy">{{'PrivacyPolicy' | translate}}</a>
-                                    </li>
+                                    <li><a routerLink="/buy-sell"> Buy & Sell</a></li>
+                                    <li><a routerLink="/quick-sell">Quick Sell Option</a></li>
+                                    <li><a routerLink="/car-reels">CarReels</a></li>
+                              </ul>
+                        </div>
+                  </div>
+                  <div class="col-lg-2 col-md-4">
+                        <div class="footer-nav">
+                              <h5 class="text-white">Support</h5>
+                              <ul>
+                                    <li><a routerLink="/help-center">Help Center</a></li>
+                                    <li><a routerLink="/contact-us">Contact Us</a></li>
+                                    <li><a routerLink="/faq">FAQ</a></li>
+                              </ul>
+                        </div>
+                  </div>
+                  <div class="col-lg-2 col-md-4">
+                        <div class="footer-nav">
+                              <h5 class="text-white">Legal</h5>
+                              <ul>
+                                    <li><a routerLink="/terms-conditions">Terms & Conditions</a></li>
+                                    <li><a routerLink="/privacy-policy">Privacy Policy</a></li>
                               </ul>
                         </div>
                   </div>
             </div>
       </div>
 </footer>
+<div class="copyright footer-bottom">
+      <div class="container">
+            <p class="mb-0 ct_fs_18 ct_fw_400">
+                  © 2025 CarZone. All rights reserved. Designed for car buyers & sellers
+                  worldwide.
+            </p>
+      </div>
+</div>

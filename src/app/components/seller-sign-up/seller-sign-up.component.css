@@ -6,7 +6,7 @@
 }
 
 .custom_border.active {
-      border: 1px solid var(--red);
+      border: 1px solid #9b0c1f;
 }
 
 .fs_10 {
@@ -16,5 +16,5 @@
 .cutom_radio_input {
       height: 25px;
       width: 25px;
-      accent-color: var(--red);
+      accent-color: #9b0c1f;
 }

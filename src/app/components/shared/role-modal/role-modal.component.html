@@ -1,27 +1,96 @@
-<div class="modal fade modal-md ct_login_bg" id="ct_login_modal" tabindex="-1" aria-labelledby="ct_login_modalLabel"
-      aria-hidden="true" data-bs-target="#staticBackdr">
-      <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                  <div class="modal-body pb-4">
-                        <img src="img/carzone_logo_black.png" alt="" class="mb-4 mx-auto d-block logo_image">
-                        <h5 class="ct_fs_20 ct_fw_600 text-white text-center">Choose your role to continue</h5>
-                        <div class="row mt-5">
-                              <div class="col-sm-6 mb-4 mb-sm-0">
-                                    <a (click)="switchRole('buyer')" class="ct_login_author_card"
-                                          data-bs-dismiss="modal">
-                                          <img src="img/buyer_icon.svg" alt="">
-                                          <h6 class="mb-0 ct_fs_20 ct_fw_600">Buyer</h6>
-                                    </a>
+<div class="modal fade login-popup" id="ct_login_modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 overflow-hidden p-5">
+                  <div class="row g-0">
+                        <div class="col-xl-5 login-popup__left p-5">
+                              <div>
+                                    <div class="login-popup__brand mb-4">
+                                          <img src="img/black-logo.png" class="main-logo" />
+                                    </div>
+
+                                    <h5 class="login-popup__title mb-4 ct_fs_32 text-center">
+                                          Choose Your Role
+                                    </h5>
                               </div>
-                              <div class="col-sm-6 mb-4 mb-sm-0">
-                                    <a (click)="switchRole('seller')" class="ct_login_author_card"
-                                          data-bs-dismiss="modal">
-                                          <img src="img/seller_login_icon.svg" alt="">
-                                          <h6 class="mb-0 ct_fs_20 ct_fw_600">Seller</h6>
-                                    </a>
+
+                              <div class="login-popup__roles">
+                                    <label class="login-popup__role">
+                                          <input type="radio" (change)="switchRole($event)" name="role" value="buyer"
+                                                [checked]="role() === 'buyer'" />
+                                          <span class="login-popup__text">
+                                                <img src="img/icons/buyer-login.png" class="me-2" />
+                                                I am a Buyer</span>
+                                    </label>
+
+                                    <label class="login-popup__role">
+                                          <input type="radio" (change)="switchRole($event)" name="role" value="seller"
+                                                [checked]="role() === 'seller'" />
+                                          <img src="img/icons/seller.png" class="me-2" />
+                                          <span class="login-popup__text">I am a Seller</span>
+                                    </label>
                               </div>
+
+                              <button class="btn login-popup__btn mt-4" (click)="modal.openSignInModal()">
+                                    Continue
+                              </button>
+                        </div>
+
+                        <div class="col-lg-7 d-none d-xl-block login-popup__right">
+                              <img src="img/login-img.jpg" />
                         </div>
                   </div>
+            </div>
+      </div>
+</div>
+
+
+<div class="modal fade login-popup" id="SignInModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 overflow-hidden p-5">
+                  <app-log-in />
+            </div>
+      </div>
+</div>
+
+<div class="modal fade login-popup" id="buyerSignUpModal" tabindex="-1">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 overflow-hidden p-5">
+                  <app-sign-up />
+            </div>
+      </div>
+</div>
+
+<div class="modal fade login-popup" id="sellerSignUpModal" tabindex="-1">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 overflow-hidden p-5">
+                  <app-seller-sign-up />
+            </div>
+      </div>
+</div>
+
+<div class="modal fade login-popup" id="ForgotPassword" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 overflow-hidden p-5">
+                  <app-forgot-password />
+            </div>
+      </div>
+</div>
+
+<!--  Verfication Code -->
+<div class="modal fade login-popup" id="VerificationCode" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 overflow-hidden p-5">
+                  <app-otp-verification />
+            </div>
+      </div>
+</div>
+
+<!--  Reset Password  -->
+
+<div class="modal fade login-popup" id="ResetPassword" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 overflow-hidden p-5">
+                  <app-reset-password />
             </div>
       </div>
 </div>

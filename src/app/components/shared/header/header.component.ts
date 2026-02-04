@@ -1,7 +1,6 @@
-import { Component, effect, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, HostListener, inject, Renderer2, ViewChild } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { RoleService, UserRole } from '../../../services/role.service';
-import { RoleDirective } from '../../../directives/role.directive';
+import { RoleService } from '../../../services/role.service';
 import { AuthService } from '../../../services/auth.service';
 import { CommonService } from '../../../services/common.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -9,10 +8,11 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../services/modal.service';
+import { RoleModalComponent } from '../role-modal/role-modal.component';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, RoleDirective, TranslateModule, CommonModule],
+  imports: [RouterLink, RouterLinkActive, TranslateModule, CommonModule, RoleModalComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -20,12 +20,13 @@ export class HeaderComponent {
   private roleService = inject(RoleService);
   role = this.roleService.currentRole;
   @ViewChild('close') close: ElementRef | undefined;
+  @ViewChild('navbar', { static: true }) navbar!: ElementRef;
   userData: any
   destroy$ = new Subject<void>();
   selectedLang: string = 'en'
   userRole: any;
   token: any
-  constructor(private router: Router, public authService: AuthService, private commonService: CommonService, private toster: NzMessageService, private translate: TranslateService, private modalService: ModalService) {
+  constructor(private router: Router, public authService: AuthService, private commonService: CommonService, private toster: NzMessageService, private translate: TranslateService, public modalService: ModalService, private renderer: Renderer2) {
     this.translate.setDefaultLang('en');
     this.token = this.authService.getToken();
     this.translate.use(localStorage.getItem('lang') || 'en');
@@ -36,33 +37,8 @@ export class HeaderComponent {
       this.commonService.getProfile()
     }
     effect(() => {
-      this.userData = this.commonService.userData
+      this.userData = this.commonService.userData()
     })
-  }
-  switchRole(role: string) {
-    if (!this.authService.isLogedIn()) {
-      const newRole: UserRole = role as UserRole;
-      this.roleService.setRole(newRole);
-      this.router.navigate(['/login']);
-      return
-    } else {
-      this.commonService.post('user/changeMode', { isSeller: role == 'seller' ? 1 : 0 }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-        if (res.success) {
-          const newRole: UserRole = role as UserRole;
-          this.roleService.setRole(newRole);
-          const existingScript = document.querySelector('script[src="js/main.js"]');
-          if (existingScript) {
-            existingScript.remove();
-          }
-          const scriptElement = document.createElement('script');
-          scriptElement.src = 'js/main.js';
-          scriptElement.async = true;
-          document.body.appendChild(scriptElement);
-          this.toster.success(res.message);
-          this.router.navigate(['/']);
-        }
-      })
-    }
   }
 
   logout() {
@@ -110,16 +86,13 @@ export class HeaderComponent {
     }
   }
 
-  notifications() {
-    if (this.token) {
-      this.router.navigateByUrl('/notifications');
+  @HostListener('window:scroll', [])
+  onScroll() {
+    if (window.scrollY > 50) {
+      this.renderer.addClass(this.navbar.nativeElement, 'scrolled');
     } else {
-      this.modalService.openLoginModal();
+      this.renderer.removeClass(this.navbar.nativeElement, 'scrolled');
     }
-  }
-
-  openLogin(): void {
-    this.modalService.openLoginModal();
   }
 
   ngOnDestroy(): void {

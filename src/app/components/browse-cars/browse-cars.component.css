@@ -1,111 +1,77 @@
- .ct_collapse_main i {
-   transition: transform 0.3s ease;
- }
+/* Swiper container */
+.swiper {
+  width: 100%;
+  height: 380px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
- .ct_collapse_main.collapsed i {
-   transform: rotate(0deg);
- }
+/* Swiper slide */
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+}
 
- .ct_collapse_main i {
-   transform: rotate(180deg);
- }
+/* Image inside slide */
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
 
- .cutom_radio_input {
-   height: 18px;
-   width: 18px;
-   accent-color: var(--red);
- }
+/* MAIN SWIPER */
+.mySwiperMain {
+  width: 100%;
+}
 
- ::ng-deep body {
-   overflow: unset;
- }
+/* THUMBS SWIPER */
+.mySwiperThumbs {
+  height: 100px;
+  box-sizing: border-box;
+  padding: 10px 0;
+}
 
- ::ng-deep .modal-open {
-   padding: 0px !important;
- }
+.mySwiperThumbs .swiper-slide {
+  width: 25%;
+  height: 100%;
+  opacity: 0.4;
+  cursor: pointer;
+}
 
- .ct_filter_bg {
-   background-color: #f2f2f2;
-   /* height: 100vh; */
-   padding: 40px 15px;
-   border-radius: 15px;
-   position: sticky;
-   top: 0px;
-   overflow-y: auto;
- }
+.mySwiperThumbs .swiper-slide-thumb-active {
+  opacity: 1;
+}
 
- .ct_brand_icon {
-   width: 60px;
-   height: 60px;
-   border-radius: 10px;
-   background-color: #f2f2f2;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   padding: 8px;
-   cursor: pointer;
- }
+/* Hide navigation arrows */
+.swiper-button-next,
+.swiper-button-prev {
+  display: none !important;
+}
 
- .ct_brand_icon_2 {
-   width: 35px;
-   height: 35px;
-   border-radius: 10px;
-   background-color: #f2f2f2;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   padding: 2px;
-   cursor: pointer;
- }
+.seller-image {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+}
 
- .ct_brand_bg_345 {
-   background-color: #e9021e1f;
-   border-radius: 10px;
-   padding: 10px
- }
-
- .ct_brand_icon img {
-   width: 100%;
-   height: 100%;
-   object-fit: cover;
- }
-
- .ct_brand_icon_active {
-   background-color: #ffccd1;
- }
-
- .scroll_bar_div {
-   max-height: 300px;
-   overflow-y: auto;
- }
-
- .ct_crosee_btn {
-   width: 20px;
-   height: 20px;
-   border-radius: 100px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   background-color: var(--red);
-   color: #fff;
-   font-size: 8px;
- }
-
- .ct_crosee_btn i {
-   color: #fff !important;
- }
-
- .custom_close_icon {
-   width: 25px;
-   height: 25px;
-   border-radius: 5px;
-   right: 4px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   background-color: #e9021e;
-   color: #fff;
-   cursor: pointer;
-   position: absolute;
-   top: 6px;
- }
+.pagination-ui {
+  position: absolute;
+  bottom: 10px;
+  left: 45%;
+  background-color: #111111ae;
+  color: #fff;
+  padding: 2px 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 12px;
+  z-index: 9;
+}

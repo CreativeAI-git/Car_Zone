@@ -32,9 +32,9 @@
       "PasswordError": "Please a enter valid password.",
       "LogInSuccessful": "You are now logged in.",
       "FindYourDreamCar": "Find your dream car!",
-      "Password": "Password",
-      "FullName": "Full name",
-      "PhoneNumber": "Phone number",
+      "Password": "password",
+      "FullName": "full name",
+      "PhoneNumber": "phone number",
       "Or": "Or",
       "SignUpWith": "Sign Up with",
       "UserError": "Please enter minimum 3 characters",
@@ -567,5 +567,6 @@
       "Brown": "Brown",
       "NoModelFound": "No model found",
       "UploadCarReelThumbnail": "Upload Car Reel Thumbnail",
-      "UploadYourThumbnailHere": "Upload your thumbnail here"
+      "UploadYourThumbnailHere": "Upload your thumbnail here",
+      "WhatsAppNumber": "WhatsApp number"
 }

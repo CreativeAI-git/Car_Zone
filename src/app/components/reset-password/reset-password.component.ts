@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonService } from '../../services/common.service';
@@ -9,6 +8,7 @@ import { SubmitButtonComponent } from '../shared/submit-button/submit-button.com
 import { passwordMismatchValidator, strongPasswordValidator } from '../../helper/validators';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -23,7 +23,7 @@ export class ResetPasswordComponent {
   isShowNewPassword: boolean = false;
   isShowConfPassword: boolean = false;
   email: string | undefined
-  constructor(private router: Router, private commonService: CommonService, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private translate: TranslateService) {
+  constructor(private commonService: CommonService, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private translate: TranslateService, private modal: ModalService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.email = sessionStorage.getItem('email') || ''
 
@@ -54,7 +54,7 @@ export class ResetPasswordComponent {
       next: (res: any) => {
         this.loading = false
         this.toastr.success(res.message)
-        this.router.navigate(['/login'])
+        this.modal.openSignInModal()
       },
       error: (error) => {
         this.loading = false

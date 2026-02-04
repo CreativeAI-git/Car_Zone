@@ -18,7 +18,7 @@ export class ValidationErrorService {
             }
 
             if (errors['validatePhoneNumber']) {
-                  return `Please enter valid mobile number.`;
+                  return `Please enter valid number.`;
             }
 
             if (errors['invalidVIN']) {

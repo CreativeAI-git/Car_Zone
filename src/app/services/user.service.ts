@@ -4,7 +4,7 @@ import { Firestore, doc, setDoc, serverTimestamp, getDoc, updateDoc } from '@ang
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
-    constructor(private firestore: Firestore) { }
+    // constructor(private firestore: Firestore) { }
 
     // handleAddUserInFirestore(userId: string, userName: string) {
     //     const userRef = doc(this.firestore, `users/${userId}`);
@@ -17,40 +17,40 @@ export class UserService {
     //     });
     // }
 
-    async handleAddOrUpdateUser(userId: string, userName: string, profileImage: string) {
-        try {
-            const userRef = doc(this.firestore, `users/${userId}`);
-            const userSnap = await getDoc(userRef);
+    // async handleAddOrUpdateUser(userId: string, userName: string, profileImage: string) {
+    //     try {
+    //         const userRef = doc(this.firestore, `users/${userId}`);
+    //         const userSnap = await getDoc(userRef);
 
-            const payload: any = {
-                name: userName,
-                updatedAt: serverTimestamp(),
-            };
+    //         const payload: any = {
+    //             name: userName,
+    //             updatedAt: serverTimestamp(),
+    //         };
 
-            if (profileImage !== '') {
-                payload.avatar = profileImage;
-            }
+    //         if (profileImage !== '') {
+    //             payload.avatar = profileImage;
+    //         }
 
-            if (userSnap.exists()) {
-                // 🔹 Update existing user
-                await updateDoc(userRef, payload);
-                console.log("User updated");
-            } else {
-                // 🔹 Create new user
-                await setDoc(userRef, {
-                    id: userId,
-                    name: userName,
-                    status: 'Online',
-                    usersList: [],
-                    avatar: profileImage || '',
-                    createdAt: serverTimestamp(),
-                });
+    //         if (userSnap.exists()) {
+    //             // 🔹 Update existing user
+    //             await updateDoc(userRef, payload);
+    //             console.log("User updated");
+    //         } else {
+    //             // 🔹 Create new user
+    //             await setDoc(userRef, {
+    //                 id: userId,
+    //                 name: userName,
+    //                 status: 'Online',
+    //                 usersList: [],
+    //                 avatar: profileImage || '',
+    //                 createdAt: serverTimestamp(),
+    //             });
 
-                console.log("New user created");
-            }
+    //             console.log("New user created");
+    //         }
 
-        } catch (error) {
-            console.error("Error in Firestore operation:", error);
-        }
-    }
+    //     } catch (error) {
+    //         console.error("Error in Firestore operation:", error);
+    //     }
+    // }
 }

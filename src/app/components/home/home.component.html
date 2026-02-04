@@ -1,592 +1,480 @@
-<section>
-      <div class="container-fluid">
-            <div class="row">
-                  <!-- <div class="carSwiper swiper">
-                        <div class="swiper-wrapper">
-                              <div class="swiper-slide">
-                                    <div class="ct_slider_item">
-                                          <div class="ct_card_item_animated">
-                                                <h1 class="ct_fs_44 ct_fw_800 text-white">Electric Class
-                                                </h1>
-                                                <img src="img/car_slide_1.png" alt="">
-                                          </div>
-                                    </div>
-                              </div>
-                              <div class="swiper-slide">
-                                    <div class="ct_slider_item">
-                                          <div class="ct_card_item_animated">
-                                                <h1 class="ct_fs_64 ct_fw_800 text-white">Business SUV</h1>
-                                                <img src="img/car_slide_2.png" alt="">
-                                          </div>
-                                    </div>
-                              </div>
-                              <div class="swiper-slide">
-                                    <div class="ct_slider_item">
-                                          <div class="ct_card_item_animated">
-                                                <h1 class="ct_fs_64 ct_fw_800 text-white">Luxury Sedan</h1>
-                                                <img src="img/car_slide_3.png" alt="">
-                                          </div>
-                                    </div>
-                              </div>
-                              <div class="swiper-slide">
-                                    <div class="ct_slider_item">
-                                          <div class="ct_card_item_animated">
-                                                <h1 class="ct_fs_64 ct_fw_800 text-white">SUV</h1>
-                                                <img src="img/car_slide_4.png" alt="">
-                                          </div>
-                                    </div>
-                              </div>
-                        </div>
-                  </div> -->
-                  <div class="col-md-12">
-                        <div class="ct_home_banner">
-                              <ng-container *appRole="'buyer'">
-                                    <h1 class="ct_ff_Epilogue ct_fs_74 ct_fw_700 text-white text-center  mb-0">
-                                          {{'ListBuyEasily' | translate}} <br> {{'With' | translate}} CarZone</h1>
-                              </ng-container>
-                              <ng-container *appRole="'seller'">
-                                    <h1 class="ct_ff_Epilogue ct_fs_74 ct_fw_700 text-white text-center  mb-0">
-                                          {{'ListYourCar' | translate}} <span class="ct_text_red">{{'Today' |
-                                                translate}}</span></h1>
-                                    <div class="mt-4 text-center">
-                                          <button (click)="listCar()" class="ct_red_btn">{{'ListYourCar' |
-                                                translate}}</button>
-                                    </div>
-                              </ng-container>
-                              <div class="carSwiper swiper ct_login_slider ">
-                                    <div class="swiper-wrapper">
-                                          <div class="swiper-slide">
-                                                <div class="ct_slider_item">
-                                                      <div class="ct_card_item_animated">
-                                                            <h1 class="ct_fs_44 ct_fw_800 text-white">Electric Class
-                                                            </h1>
-                                                            <img src="img/car_slide_1.png" alt="">
-                                                      </div>
-                                                </div>
-                                          </div>
-                                          <div class="swiper-slide">
-                                                <div class="ct_slider_item">
-                                                      <div class="ct_card_item_animated">
-                                                            <h1 class="ct_fs_64 ct_fw_800 text-white">Business SUV</h1>
-                                                            <img src="img/car_slide_2.png" alt="">
-                                                      </div>
-                                                </div>
-                                          </div>
-                                          <div class="swiper-slide">
-                                                <div class="ct_slider_item">
-                                                      <div class="ct_card_item_animated">
-                                                            <h1 class="ct_fs_64 ct_fw_800 text-white">Luxury Sedan</h1>
-                                                            <img src="img/car_slide_3.png" alt="">
-                                                      </div>
-                                                </div>
-                                          </div>
-                                          <div class="swiper-slide">
-                                                <div class="ct_slider_item">
-                                                      <div class="ct_card_item_animated">
-                                                            <h1 class="ct_fs_64 ct_fw_800 text-white">SUV</h1>
-                                                            <img src="img/car_slide_4.png" alt="">
-                                                      </div>
-                                                </div>
-                                          </div>
-                                    </div>
-                              </div>
-                        </div>
-                  </div>
-            </div>
-      </div>
-</section>
-
-
-<!-- about section S -->
-<section class="ct_py_70">
+<!-- Hero Section -->
+<section class="hero-section" id="home">
       <div class="container">
-            <div class="row align-items-center">
-                  <div class="col-md-5 mb-4 mb-md-0">
-                        <div class="ct_about_img animate__animated animate__fadeInLeft animate__delay-1s">
-                              <img src="img/about_us.png" alt="">
+            <div class="row">
+                  <div class="col-lg-7">
+                        <div class="hero-content">
+                              <h1 class="text-white mb-2">Discover, Compare & Drive<br />Home Your Perfect Car</h1>
+                              <p>
+                                    At CarZone, browse thousands of cars and connect directly with
+                                    trusted sellers. No middlemen, no extra fees — just simple,
+                                    secure, and transparent deals.
+                              </p>
+                              <button (click)="modal.openBuyerSignUpModal()" class="btn-create-account">Create
+                                    Account</button>
                         </div>
-                  </div>
-                  <div
-                        class="col-md-6 offset-md-1 mb-4 mb-md-0 animate__animated animate__fadeInRight animate__delay-1s">
-                        <h5 class="ct_text_red ct_fw_700">{{ 'AboutUs' | translate }}</h5>
-                        <h2 class="ct_fs_44 ct_fw_700">{{ 'ConnectingCarBuyersAndSellersHassleFree' | translate }}</h2>
-                        <p class="mb-0">{{ 'AboutUsDescription' | translate }}</p>
                   </div>
             </div>
       </div>
 </section>
-<!-- about section E -->
 
-<!-- counter section S Buyer -->
-<ng-container *appRole="'buyer'">
-      <section class="ct_counter_bg animate__animated animate__fadeInUp animate__delay-1s">
-            <div class="container">
-                  <div class="row " id="counter">
-                        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-                              <div class="ct_counter_box">
-                                    <div class="ct_counter_icon">
-                                          <img src="img/car_listed_icon.svg" alt="">
+<!-- Search Box -->
+<section class="">
+      <div class="container">
+            <div class="row justify-content-center">
+                  <div class="col-lg-10">
+                        <div class="search-box">
+                              <h5 class="mb-30">321764 Cars Available</h5>
+                              <div class="row g-3">
+                                    <div class="col-md-3 col-sm-6">
+                                          <select class="form-select">
+                                                <option>Make & Model</option>
+                                                <option>Toyota</option>
+                                                <option>Honda</option>
+                                                <option>BMW</option>
+                                          </select>
                                     </div>
-                                    <div>
-                                          <h4 class="ct_fs_35 ct_fw_700 ct_ff_Epilogue mb-0 text-white counter-value"
-                                                data-count="500">0</h4>
-                                          <p class="mb-0 text-white">{{'CarsListed' | translate}}</p>
+                                    <div class="col-md-3 col-sm-6">
+                                          <select class="form-select">
+                                                <option>Body Type</option>
+                                                <option>Sedan</option>
+                                                <option>SUV</option>
+                                                <option>Truck</option>
+                                          </select>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                          <select class="form-select">
+                                                <option>Price Range</option>
+                                                <option>$0 - $20,000</option>
+                                                <option>$20,000 - $40,000</option>
+                                                <option>$40,000+</option>
+                                          </select>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                          <select class="form-select">
+                                                <option>Year Range</option>
+                                                <option>2020-2024</option>
+                                                <option>2015-2019</option>
+                                                <option>2010-2014</option>
+                                          </select>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                          <select class="form-select">
+                                                <option>Kilometers</option>
+                                                <option>0-50,000</option>
+                                                <option>50,000-100,000</option>
+                                          </select>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                          <select class="form-select">
+                                                <option>Transmission</option>
+                                                <option>Automatic</option>
+                                                <option>Manual</option>
+                                          </select>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                          <select class="form-select">
+                                                <option>Power Output</option>
+                                                <option>100-200 HP</option>
+                                                <option>200-300 HP</option>
+                                          </select>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                          <select class="form-select">
+                                                <option>Fuel Type</option>
+                                                <option>Gasoline</option>
+                                                <option>Diesel</option>
+                                                <option>Electric</option>
+                                          </select>
                                     </div>
                               </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-                              <div class="ct_counter_box">
-                                    <div class="ct_counter_icon">
-                                          <img src="img/active_buyer_icon.svg" alt="">
-                                    </div>
-                                    <div>
-                                          <h4 class="ct_fs_35 ct_fw_700 ct_ff_Epilogue mb-0 text-white counter-value"
-                                                data-count="23160">0</h4>
-                                          <p class="mb-0 text-white">{{'ActiveBuyers' | translate}}</p>
-                                    </div>
-                              </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-                              <div class="ct_counter_box">
-                                    <div class="ct_counter_icon">
-                                          <img src="img/seller_icon.svg" alt="">
-                                    </div>
-                                    <div>
-                                          <h4 class="ct_fs_35 ct_fw_700 ct_ff_Epilogue mb-0 text-white counter-value"
-                                                data-count="1500">0</h4>
-                                          <p class="mb-0 text-white">{{'VerifiedSellers' | translate}}</p>
-                                    </div>
-                              </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-                              <div class="ct_counter_box">
-                                    <div class="ct_counter_icon">
-                                          <img src="img/categories_icon.svg" alt="">
-                                    </div>
-                                    <div>
-                                          <h4 class="ct_fs_35 ct_fw_700 ct_ff_Epilogue mb-0 text-white counter-value"
-                                                data-count="20">0</h4>
-                                          <p class="mb-0 text-white">{{'CategoriesAvailable' | translate}}</p>
-                                    </div>
+                              <div class="d-flex justify-content-between align-items-center mt-30">
+                                    <a href="car-listing.html" class="clear-filters">
+                                          <img src="img/icons/filter.svg" alt="More Filters" />
+                                          <span> More Filters</span>
+                                    </a>
+                                    <button class="btn-red">Search</button>
                               </div>
                         </div>
                   </div>
             </div>
-      </section>
-</ng-container>
-<!-- counter section E -->
+      </div>
+</section>
 
-<!-- counter section S  Seller -->
-<ng-container *appRole="'seller'">
-      <section class="ct_counter_bg animate__animated animate__fadeInUp animate__delay-1s">
-            <div class="container">
-                  <div class="row " id="counter">
-                        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-                              <div class="ct_counter_box">
-                                    <div class="ct_counter_icon">
-                                          <img src="img/car_listed_icon.svg" alt="">
-                                    </div>
-                                    <div>
-                                          <h4 class="ct_fs_35 ct_fw_700 ct_ff_Epilogue mb-0 text-white counter-value"
-                                                data-count="500">0</h4>
-                                          <p class="mb-0 text-white">{{'AvailableCars' | translate}}</p>
-                                    </div>
-                              </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-                              <div class="ct_counter_box">
-                                    <div class="ct_counter_icon">
-                                          <img src="img/active_buyer_icon.svg" alt="">
-
-                                    </div>
-                                    <div>
-                                          <h4 class="ct_fs_35 ct_fw_700 ct_ff_Epilogue mb-0 text-white counter-value"
-                                                data-count="23160">0</h4>
-                                          <p class="mb-0 text-white">{{'VehiclesStock' | translate}}</p>
-                                    </div>
-                              </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-                              <div class="ct_counter_box">
-                                    <div class="ct_counter_icon">
-                                          <img src="img/seller_icon.svg" alt="">
-                                    </div>
-                                    <div>
-                                          <h4 class="ct_fs_35 ct_fw_700 ct_ff_Epilogue mb-0 text-white counter-value"
-                                                data-count="1500">0</h4>
-                                          <p class="mb-0 text-white">{{'DealersServed' | translate}}</p>
-                                    </div>
-                              </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-                              <div class="ct_counter_box">
-                                    <div class="ct_counter_icon">
-                                          <img src="img/categories_icon.svg" alt="">
-                                    </div>
-                                    <div>
-                                          <h4 class="ct_fs_35 ct_fw_700 ct_ff_Epilogue mb-0 text-white counter-value"
-                                                data-count="220">0</h4>
-                                          <p class="mb-0 text-white">{{'vehiclesOnSale' | translate}}
-                                          </p>
-                                    </div>
-                              </div>
-                        </div>
-                  </div>
-            </div>
-      </section>
-</ng-container>
-<!-- counter section E -->
-<ng-container *appRole="'seller'">
-      @if(activeCars.length > 0){
-      <section class="ct_py_70">
-            <div class="container">
-                  <div class="row animate__animated animate__fadeInUp animate__delay-1s">
-                        <div class="col-md-12">
-                              <div class="text-center">
-                                    <h2 class="ct_fs_44 ct_fw_700 mb-0">{{'Active' | translate}} <span
-                                                class="ct_text_red">{{'Listings' | translate}}</span>
-                                    </h2>
-                                    <span class="ct_line_animation"></span>
-                                    <p class="mt-2">{{'ActiveCarsDescription' | translate}}
-                                    </p>
-                              </div>
-                        </div>
-                  </div>
-
-                  <div class="row mt-5 animate__animated animate__fadeInUp animate__delay-1s">
-                        <div class="col-md-12">
-                              <div class="mySwiper swiper ct_listing_slider">
-                                    <div class="swiper-wrapper">
-                                          @for (item of activeCars; track $index) {
-                                          <div class="swiper-slide">
-                                                <div class="ct_listing_card">
-                                                      <figure class="mb-0" routerLink="/car-detail"
-                                                            [queryParams]="{id: item.id}">
-                                                            <div class="ct_listing_img">
-                                                                  <img [src]="item.carImages[0] || 'img/placeHolder.webp'"
-                                                                        alt="">
-                                                                  <!-- <i class="fa-regular fa-heart"></i> -->
-                                                            </div>
-                                                            <figcaption>
-                                                                  <h4 class="ct_fs_18 ct_fw_500 text-white mb-0">
-                                                                        {{item.totalPrice | chfFormat}}
-                                                                  </h4>
-                                                                  <a class="ct_fs_22 ct_fw_600">{{item.brandName}}
-                                                                        {{item.carModel}}</a>
-                                                            </figcaption>
-                                                      </figure>
-                                                </div>
+<!-- Brand Icons -->
+<section class="brand-icons">
+      <div class="container">
+            <div class="row justify-content-center">
+                  <div class="col-lg-10">
+                        <div class="mySwiper owl-carousel brand-icon-carousel">
+                              <div class="swiper-wrapper">
+                                    <div class="brand-icon-item swiper-slide">
+                                          <div class="brand-icon">
+                                                amag
+                                                <span class="badge">
+                                                      <img src="img/icons/autobrightness.svg" />
+                                                </span>
                                           </div>
-                                          }
                                     </div>
-                                    <div class="swiper-button-prev"></div>
-                                    <div class="swiper-button-next"></div>
-                              </div>
-                        </div>
-                  </div>
-            </div>
-      </section>
-      }
-      @if(expiredCars.length > 0){
-      <section class="ct_py_70 pt-0">
-            <div class="container">
-                  <div class="row animate__animated animate__fadeInUp animate__delay-1s">
-                        <div class="col-md-12">
-                              <div class="text-center">
-                                    <h2 class="ct_fs_44 ct_fw_700 mb-0">{{'Pending' | translate}} <span
-                                                class="ct_text_red">{{'Renewals' | translate}}</span>
-                                    </h2>
-                                    <span class="ct_line_animation"></span>
-                                    <p class="mt-2">{{'ActiveCarsDescription' | translate}}
-                                    </p>
-                              </div>
-                        </div>
-                  </div>
-                  <div class="row mt-5 animate__animated animate__fadeInUp animate__delay-1s">
-                        <div class="col-md-12">
-                              <div class="mySwiper swiper ct_listing_slider">
-                                    <div class="swiper-wrapper">
-                                          @for (item of expiredCars; track $index) {
-                                          <div class="swiper-slide">
-                                                <div class="ct_listing_card">
-                                                      <figure class="mb-0" routerLink="/car-detail"
-                                                            [queryParams]="{id: item.id}">
-                                                            <div class="ct_listing_img">
-                                                                  <img [src]="item.carImages[0] || 'img/placeHolder.webp'"
-                                                                        alt="">
-                                                                  <!-- <i class="fa-regular fa-heart"></i> -->
-                                                            </div>
-                                                            <figcaption>
-                                                                  <h4 class="ct_fs_18 ct_fw_500 text-white mb-0">
-                                                                        {{item.totalPrice | chfFormat}}
-                                                                  </h4>
-                                                                  <a class="ct_fs_22 ct_fw_600">{{item.brandName}}
-                                                                        {{item.carModel}}</a>
-                                                            </figcaption>
-                                                      </figure>
-                                                </div>
+
+                                    <div class="brand-icon-item swiper-slide">
+                                          <div class="brand-icon">
+                                                amag
+                                                <span class="badge">
+                                                      <img src="img/icons/autobrightness.svg" />
+                                                </span>
                                           </div>
-                                          }
                                     </div>
-                                    <div class="swiper-button-prev"></div>
-                                    <div class="swiper-button-next"></div>
+
+                                    <div class="brand-icon-item swiper-slide">
+                                          <div class="brand-icon">
+                                                amag
+                                                <span class="badge">
+                                                      <img src="img/icons/autobrightness.svg" />
+                                                </span>
+                                          </div>
+                                    </div>
+
+                                    <div class="brand-icon-item swiper-slide">
+                                          <div class="brand-icon">
+                                                amag
+                                                <span class="badge">
+                                                      <img src="img/icons/autobrightness.svg" />
+                                                </span>
+                                          </div>
+                                    </div>
+
+                                    <div class="brand-icon-item swiper-slide">
+                                          <div class="brand-icon">
+                                                amag
+                                                <span class="badge">
+                                                      <img src="img/icons/autobrightness.svg" />
+                                                </span>
+                                          </div>
+                                    </div>
+
+                                    <div class="brand-icon-item swiper-slide">
+                                          <div class="brand-icon">
+                                                amag
+                                                <span class="badge">
+                                                      <img src="img/icons/autobrightness.svg" />
+                                                </span>
+                                          </div>
+                                    </div>
+
+                                    <div class="brand-icon-item swiper-slide">
+                                          <div class="brand-icon">
+                                                amag
+                                                <span class="badge">
+                                                      <img src="img/icons/autobrightness.svg" />
+                                                </span>
+                                          </div>
+                                    </div>
+
+                                    <div class="brand-icon-item swiper-slide">
+                                          <div class="brand-icon">
+                                                amag
+                                                <span class="badge">
+                                                      <img src="img/icons/autobrightness.svg" />
+                                                </span>
+                                          </div>
+                                    </div>
                               </div>
                         </div>
                   </div>
             </div>
-      </section>
-      }
-</ng-container>
+      </div>
+</section>
 
-<ng-container *appRole="'buyer'">
-      <section class="ct_py_70">
-            <div class="container">
-                  <div class="row animate__animated animate__fadeInUp animate__delay-1s">
-                        <div class="col-md-12">
-                              <div class="text-center">
-                                    <h2 class="ct_fs_44 ct_fw_700 mb-0">{{'Top' | translate}} <span
-                                                class="ct_text_red">{{'Cars' | translate}}</span>
-                                    </h2>
-                                    <span class="ct_line_animation"></span>
-                                    <p class="mt-2">{{'ActiveCarsDescription' | translate}}</p>
-                              </div>
-                        </div>
+<!-- Collections Section -->
+<section class="collections-section" id="browse">
+      <div class="container-fluid px-0">
+            <div class="collections-header">
+                  <div class="section-subheading justify-content-center">
+                        <img src="img/subheading-img.png" />
+                        <p class="ct_fs_16">OUR COLLECTIONS</p>
                   </div>
 
-                  <div class="row mt-5 animate__animated animate__fadeInUp animate__delay-1s">
-                        <div class="col-md-12">
-                              <div class="mySwiper swiper ct_listing_slider">
-                                    <div class="swiper-wrapper">
-                                          @for (item of carsList; track $index) {
-                                          <div class="swiper-slide ct_browse_car_card">
-                                                <figure class="mb-0">
-                                                      <div class="ct_browse_card_img">
-                                                            <img [src]="item.carImages[0] || 'img/placeHolder.webp'"
-                                                                  alt="" routerLink="/car-detail"
-                                                                  [queryParams]="{id: item.id}"
-                                                                  style="cursor: pointer;">
-                                                            <!-- <i class="fa-heart ct_text_red" [ngClass]="item.isWishlist ? 'fa-solid' : 'fa-regular'"
-                                                                  (click)="item.isWishlist ? removeFromWishlist(item) : addToWishlist(item)"></i> -->
+                  <h2 class="section-heading ct_fs_35 text-center">
+                        Explore Our Top-Rated Cars
+                  </h2>
+            </div>
+
+            <div class="owl-carousel owl-theme CarSwiper">
+                  <div class="swiper-wrapper">
+                        @for (item of carsList; track $index) {
+                        <div class="item swiper-slide">
+                              <div class="car-card">
+                                    <div class="position-relative">
+                                          <div class="swiper mySwiperMain mySwiperMain-{{$index}}">
+                                                <div class="swiper-wrapper">
+                                                      <div class="swiper-slide" *ngFor="let img of item.carImages;">
+                                                            <img [src]="img || 'img/placeholder.png'" />
                                                       </div>
-                                                      <figcaption routerLink="/car-detail" [queryParams]="{id: item.id}"
-                                                            style="cursor: pointer;" class="mt-3">
-                                                            <div
-                                                                  class="d-flex align-items-center justify-content-between mb-2">
-                                                                  <span class="ct_fs_16 ct_fw_700 mb-0 ct_text_red">{{item.totalPrice
-                                                                        | chfFormat}}</span>
-                                                                  @if(item.isLeasing === 1){
-                                                                  <small class="ct_fs_14 ct_text_op_6">/ Leasing
-                                                                        ab {{ item.leasingPrice |
-                                                                        chfFormat}}</small>
-                                                                  }
-                                                            </div>
-                                                            <a routerLink="/car-detail" [queryParams]="{id: item.id}"
-                                                                  class="ct_fs_20 ct_fw_700 d-block">{{item.brandName}}
-                                                                  {{item.carModel}}</a>
-                                                            <ul>
+                                                </div>
+                                                <div class="swiper-pagination pagination-ui"></div>
+                                                <div class="swiper-button-prev"></div>
+                                                <div class="swiper-button-next"></div>
+                                          </div>
+
+                                          <div class="favorite-icon">
+                                                <i class="fa-heart ct_fs_25"
+                                                      [ngClass]="item.isWishlist ? 'fa-solid ct_text_red' : 'fa-regular'"
+                                                      (click)="item.isWishlist ? removeFromWishlist(item) : addToWishlist(item)"></i>
+                                          </div>
+
+                                          <div class="full-screen-ui" (click)="previewImage(item.carImages)">
+                                                <i class="fa-solid fa-maximize"></i>
+                                          </div>
+                                    </div>
+                                    <div class="price-wrapper d-flex align-items-center">
+                                          <div class="price-text">{{item.totalPrice | chfFormat}}</div>
+                                          <a routerLink="/car-detail" [queryParams]="{id: item.id}"
+                                                class="view-btn">View Details</a>
+                                    </div>
+                                    <div class="car-details" routerLink="/car-detail" [queryParams]="{id: item.id}">
+                                          <h5>{{item.brandName}}
+                                                {{item.carModel}}</h5>
+                                          <div class="car-features">
+                                                <div class="row">
+                                                      <div class="col-sm-6">
+                                                            <ul class="car-specs">
                                                                   <li>
-                                                                        <small class="ct_text_op_6 ct_fw_600">{{'Transmission'
-                                                                              | translate}}</small>
-                                                                        <p class="mb-0 ct_fs_16 ct_fw_600">
-                                                                              {{item.transmission}}
-                                                                        </p>
+                                                                        <img src="img/icons/petrol.svg" />
+                                                                        {{item.selectYear}}
                                                                   </li>
                                                                   <li>
-                                                                        <small class="ct_text_op_6 ct_fw_600">{{'FuelType'
-                                                                              | translate}}</small>
-                                                                        <p class="mb-0 ct_fs_16 ct_fw_600">
-                                                                              {{item.fuelType}}
-                                                                        </p>
-                                                                  </li>
-                                                                  <li>
-                                                                        <small class="ct_text_op_6 ct_fw_600">{{'Passenger'
-                                                                              | translate}}</small>
-                                                                        <p class="mb-0 ct_fs_16 ct_fw_600">
-                                                                              {{item.sittingCapacity}}
-                                                                              {{'Person' | translate}}
-                                                                        </p>
+                                                                        <img src="img/icons/automatic.svg" />
+                                                                        {{item.transmission}}
                                                                   </li>
                                                             </ul>
-                                                            <div class="mt-4">
-                                                                  <a routerLink="/car-detail"
-                                                                        [queryParams]="{id: item.id}"
-                                                                        class="ct_red_btn w-100 text-center">{{'ViewMore'
-                                                                        | translate}}
-                                                                  </a>
-                                                            </div>
-                                                      </figcaption>
-                                                </figure>
-                                          </div>
-                                          }
-                                    </div>
-                                    <div class="swiper-button-prev"></div>
-                                    <div class="swiper-button-next"></div>
-                              </div>
-                        </div>
-                  </div>
-            </div>
-      </section>
-</ng-container>
-
-<!-- why Choose us section S -->
-<section class="ct_why_choose_bg">
-      <div class="container">
-            <div class="row">
-                  <div class="col-lg-6 mb-4">
-                        <div class="">
-                              <h2 class="ct_fs_44 ct_fw_700 text-white">{{'WhyChoose' | translate}} <span
-                                          class="ct_text_red">CarZone?</span></h2>
-                              <p class="mb-0 text-white">{{'WhyChooseDescription' | translate}}</p>
-
-                              <div class="ct_why_choose_img">
-                                    <img src="img/why_choose_car.png" alt="">
-                              </div>
-                        </div>
-                  </div>
-                  <div class="col-lg-6 mb-4">
-                        <div class="row">
-                              <div class="col-md-6 col-sm-6  mt-lg-5">
-                                    <div class="ct_why_choose_card mb-4">
-                                          <figure>
-                                                <div class="ct_why_choose_icon">
-                                                      <img src="img/wide_selection_car_of_icon.svg" alt="">
-
-                                                </div>
-                                                <figcaption>
-                                                      <h4 class="ct_fs_20 ct_fw_700">{{'WideSelectionofCars' |
-                                                            translate}}</h4>
-                                                      <p class="mb-0 ct_fs_14">{{'WideSelectionofCarsDescription' |
-                                                            translate}}</p>
-                                                </figcaption>
-                                          </figure>
-                                    </div>
-                                    <div class="ct_why_choose_card mb-4">
-                                          <figure>
-                                                <div class="ct_why_choose_icon">
-                                                      <img src="img/verified_seller_icon.svg" alt="">
-                                                </div>
-                                                <figcaption>
-                                                      <h4 class="ct_fs_20 ct_fw_700">{{'VerifiedSellers' | translate}}
-                                                      </h4>
-                                                      <p class="mb-0 ct_fs_14">{{'verifiedSellersDescription' |
-                                                            translate}}</p>
-                                                </figcaption>
-                                          </figure>
-                                    </div>
-                              </div>
-                              <div class="col-md-6 col-sm-6 ">
-                                    <div class="ct_why_choose_card mb-4">
-                                          <figure>
-                                                <div class="ct_why_choose_icon">
-                                                      <img src="img/easy_chat_and_negotiation_icon.svg" alt="">
-                                                </div>
-                                                <figcaption>
-                                                      <h4 class="ct_fs_20 ct_fw_700">{{'EasyChatNegotiation' |
-                                                            translate}}</h4>
-                                                      <p class="mb-0 ct_fs_14">{{'EasyChatNegotiationDescription' |
-                                                            translate}}</p>
-                                                </figcaption>
-                                          </figure>
-                                    </div>
-                                    <div class="ct_why_choose_card mb-4">
-                                          <figure>
-                                                <div class="ct_why_choose_icon">
-                                                      <img src="img/zero_commission_listing_icon.svg" alt="">
-                                                </div>
-                                                <figcaption>
-                                                      <h4 class="ct_fs_20 ct_fw_700">{{'ZeroCommissionListings' |
-                                                            translate}}</h4>
-                                                      <p class="mb-0 ct_fs_14">{{'ZeroCommissionListingsDescription' |
-                                                            translate}}</p>
-                                                </figcaption>
-                                          </figure>
-                                    </div>
-                              </div>
-                        </div>
-                  </div>
-            </div>
-      </div>
-</section>
-<!-- why Choose us section E -->
-
-
-<section class="ct_py_70">
-      <div class="container">
-            <div class="row animate__animated animate__fadeInUp animate__delay-1s">
-                  <div class="col-md-12">
-                        <div class="text-center">
-                              <h2 class="ct_fs_44 ct_fw_700 mb-0">CarZone <span class="ct_text_red">{{'Reels' |
-                                          translate}}</span> </h2>
-                              <span class="ct_line_animation"></span>
-                        </div>
-                  </div>
-            </div>
-
-            <div class="row mt-5 animate__animated animate__fadeInUp animate__delay-1s">
-                  <div class="col-md-12">
-                        <div class="reelSwiper swiper ct_listing_slider">
-                              <div class="swiper-wrapper">
-                                    @for (item of carReels; track $index) {
-                                    <div class="swiper-slide">
-                                          <div class="ct_reels_card">
-                                                <div class="mt-3 py-2" (click)="openReel(item)">
-                                                      <div class="mobile-frame">
-                                                            <video [src]="item.carReel" [poster]="item.reelThumbnails"
-                                                                  class="videoPreview"></video>
                                                       </div>
-                                                </div>
-                                                <div
-                                                      class="d-flex align-items-start justify-content-between gap-3 mt-1">
-                                                      <div>
-                                                            <p class="mb-0 ct_fw_600">{{item.fullModel}}
-                                                            </p>
 
-                                                            <p class="mb-0 ct_fw_500">{{item.carReelInfo}}
-                                                            </p>
+                                                      <div class="col-sm-6">
+                                                            <ul class="car-specs">
+                                                                  <li>
+                                                                        <img src="img/icons/calendar.svg" />
+
+                                                                        {{item.fuelType}}
+                                                                  </li>
+                                                                  <li><img src="img/icons/road.svg" />
+                                                                        {{item.carMileage}} km</li>
+                                                            </ul>
                                                       </div>
-                                                      <i class="fa-bookmark"
-                                                            [ngClass]="item.isSavedReel ? 'fa-solid' : 'fa-regular'"
-                                                            (click)="item.isSavedReel ? removeFromSaved(item) : saveReel(item)"></i>
                                                 </div>
                                           </div>
                                     </div>
-                                    }
                               </div>
-                              <div class="swiper-button-prev"></div>
-                              <div class="swiper-button-next"></div>
+                        </div>
+                        }
+                  </div>
+            </div>
+      </div>
+</section>
+
+<!-- About Section -->
+<section class="about-section" id="about">
+      <div class="container">
+            <div class="row align-items-center">
+                  <div class="col-lg-6">
+                        <div class="about-image">
+                              <img src="img/about-us-img.png" alt="About" />
+                              <!-- <div class="since-badge">
+                                <div class="year">2025</div>
+                                <div>Since</div>
+                            </div> -->
+                        </div>
+                  </div>
+                  <div class="col-lg-6">
+                        <div class="about-content">
+                              <div class="section-subheading">
+                                    <img src="img/subheading-img.png" />
+                                    <p class="ct_fs_16">About Carzone</p>
+                              </div>
+
+                              <h2 class="section-heading cr_fs_30 text-start">
+                                    The Most Trusted Car Buying & Selling Platform
+                              </h2>
+                              <p class="mb-4">
+                                    At CarZone, we make buying and selling cars simple, secure, and
+                                    hassle-free. From verified sellers to direct chat, our platform
+                                    connects genuine car buyers and sellers for a smooth experience.
+                                    Whether you're looking for your next ride or want to sell at the
+                                    best value, CarZone is here to help you every step of the way.
+                              </p>
+                              <ul>
+                                    <li>
+                                          <i class="fas fa-check-circle"></i> Wide selection of cars for
+                                          every budget
+                                    </li>
+                                    <li>
+                                          <i class="fas fa-check-circle"></i> Verified sellers for safe
+                                          deals
+                                    </li>
+                                    <li>
+                                          <i class="fas fa-check-circle"></i> Instant chat & zero
+                                          commission listings
+                                    </li>
+                              </ul>
                         </div>
                   </div>
             </div>
       </div>
 </section>
 
-<!-- get app Section S -->
-<section class="ct_get_app_bg">
+<!-- CTA Section -->
+<section class="cta-section">
+      <div class="cta-content d-md-flex align-items-center">
+            <div class="cta-left-col px-0 w-lg-50 w-sm-100">
+                  <div class="cta-buy">
+                        <p class="ct_fs_18 ct_fw_600">Are You Looking</p>
+                        <h3 class="ct_fs_33 ct_fw_800">TO BUY A CAR?</h3>
+                        <p class="ct_fs_14 ct_fw_400">
+                              Browse our wide selection of verified cars at competitive prices
+                              and connect directly with trusted sellers.
+                        </p>
+                        <a class="btn-transparent mt-3">Search Your Car</a>
+                  </div>
+            </div>
+            <div class="cta-right-col px-0 w-lg-50 w-sm-100">
+                  <div class="cta-sell">
+                        <p class="ct_fs_18 ct_fw_600">Do You Want To</p>
+                        <h3 class="ct_fs_33 ct_fw_800">SELL YOUR CAR?</h3>
+                        <p class="ct_fs_14 ct_fw_400">
+                              Easily create your car listing with photos, details, and reach
+                              thousands of genuine buyers quickly.
+                        </p>
+                        <a class="btn-transparent mt-3">Add Listing</a>
+                  </div>
+            </div>
+      </div>
+</section>
+
+<!-- Steps Section -->
+<section class="steps-section">
       <div class="container">
-            <div class="row">
-                  <div class="col-lg-6 mb-4 mb-lg-0">
-                        <div class="ct_get_app_title">
-                              <h5 class="ct_text_red ct_fw_700">{{'GetOurApp' | translate}}</h5>
-                              <h2 class="ct_fs_44 ct_fw_700">{{'Download' | translate}} <span
-                                          class="ct_text_red">CarZone</span> <br>
-                                    {{'AppForFree' | translate}}</h2>
-                              <p class="mb-0">{{'downLoadTitle' | translate}}</p>
-                              <div class="d-flex align-items-center gap-3 mt-4">
-                                    <a href="#">
-                                          <img src="img/app_store.png" alt="" class="ct_img_download">
-                                    </a>
-                                    <a href="#">
-                                          <img src="img/Google_Play.png" alt="" class="ct_img_download">
-                                    </a>
+            <div class="row align-items-center">
+                  <div class="col-lg-6">
+                        <div class="section-subheading">
+                              <img src="img/subheading-img.png" />
+                              <p class="ct_fs_16">How It Works</p>
+                        </div>
+                        <h2 class="section-heading ct_fs_35 text-start">
+                              3 Simple Steps to Get Started
+                        </h2>
+
+                        <p class="mb-4">
+                              Whether you want to buy or sell, getting started is quick and
+                              secure. List your car in minutes or explore verified cars, connect
+                              instantly and close deals with confidence.
+                        </p>
+
+                        <div class="carzone-accordian">
+                              <div class="accordion" id="accordionExample">
+                                    <div class="accordion-item">
+                                          <h2 class="accordion-header">
+                                                <button class="accordion-button ct_fw_500 ct_fs_17" type="button"
+                                                      data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                                      aria-expanded="true" aria-controls="collapseOne">
+                                                      01. List or Explore Cars
+                                                </button>
+                                          </h2>
+                                          <div id="collapseOne" class="accordion-collapse collapse show"
+                                                data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                      <p class="mb-0 ct_fs_15 ct_fw_400">
+                                                            Add your car details with photos, or browse verified
+                                                            listings to find your match.
+                                                      </p>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                          <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed ct_fw_500 ct_fs_17"
+                                                      type="button" data-bs-toggle="collapse"
+                                                      data-bs-target="#collapseTwo" aria-expanded="false"
+                                                      aria-controls="collapseTwo">
+                                                      02. Connect with Users
+                                                </button>
+                                          </h2>
+                                          <div id="collapseTwo" class="accordion-collapse collapse"
+                                                data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                      <p class="mb-0 ct_fs_15 ct_fw_400">
+                                                            Add your car details with photos, or browse verified
+                                                            listings to find your match.
+                                                      </p>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                          <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed ct_fw_500 ct_fs_17"
+                                                      type="button" data-bs-toggle="collapse"
+                                                      data-bs-target="#collapseThree" aria-expanded="false"
+                                                      aria-controls="collapseThree">
+                                                      03. Seal the Deal
+                                                </button>
+                                          </h2>
+                                          <div id="collapseThree" class="accordion-collapse collapse"
+                                                data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                      <p class="mb-0 ct_fs_15 ct_fw_400">
+                                                            Add your car details with photos, or browse verified
+                                                            listings to find your match.
+                                                      </p>
+                                                </div>
+                                          </div>
+                                    </div>
                               </div>
                         </div>
                   </div>
-                  <div class="col-lg-6 mb-4 mb-lg-0">
-                        <div class="ct_app_mock">
-                              <img src="img/car_zone_mock.png" alt="">
+                  <div class="col-lg-6">
+                        <div class="d-flex justify-content-end">
+                              <div class="step-image mt-lg-0 mt-3">
+                                    <img src="img/accordian-img.png" alt="Steps" class="accordian-right-img" />
+                                    <div class="step-badge">
+                                          <img src="img/icons/verified-user.png" />
+                                          <p class="mt-3 mb-2 ct_fs_12 ct_fw_400">Verified Users</p>
+                                          <p class="mb-0 ct_fs_12 ct_fw_400">Safe & Trusted Deals</p>
+                                    </div>
+                              </div>
                         </div>
                   </div>
             </div>
       </div>
 </section>
-<!-- get app Section E -->
+
+<!-- App Section -->
+
+<section class="">
+      <div class="container">
+            <div class="app-section">
+                  <div class="row">
+                        <div class="col-lg-5">
+                              <div class="app-img d-lg-block d-none">
+                                    <img src="img/mobile.png" />
+                              </div>
+                        </div>
+                        <div class="col-lg-7">
+                              <div class="app-content">
+                                    <h2 class="ct_fs_35 ct_fw_400 text-white mb-2">Download the CarZone App</h2>
+                                    <p class="ct_fs_18 ct_fw_400 text-white">
+                                          Buy, sell, and explore cars on the go. Browse search, inspect
+                                          cars, and real-time updates—all in one app.
+                                    </p>
+                                    <div class="app-buttons">
+                                          <a class="btn-white">
+                                                <i class="fab fa-apple"></i> App Store
+                                          </a>
+                                          <a class="btn-white">
+                                                <i class="fab fa-google-play"></i> Google Play
+                                          </a>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+      </div>
+</section>

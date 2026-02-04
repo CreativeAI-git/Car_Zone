@@ -1,105 +1,95 @@
-<header>
-      <div class="container">
-            <div class="row">
-                  <div class="col-md-12">
-                        <nav class="ct_navbar">
-                              <div class="ct_logo" routerLink="/">
-                                    <img src="img/carzone_logo.png" alt="" />
-                              </div>
-                              <div class="ct_navlist">
-                                    <ul>
-                                          <div class="ct_close_bar">
-                                                <i class="fa-solid fa-xmark"></i>
+<header class="main-header-section">
+      <nav #navbar class="navbar navbar-expand-lg fixed-top navbar-dark">
+            <div class="container">
+                  <a class="navbar-brand fw-bold main-logo" routerLink="/">
+                        <img src="img/black-logo.png" alt="" class="logo-default" />
+                        <img src="img/logo.png" class="logo-sticky" alt="Sticky Logo" />
+                  </a>
+                  <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex">
+                        <ul class="navbar-nav gap-4" id="mainMenu">
+                              <li class="nav-item">
+                                    <a class="nav-link ct_fs_16 ct_fw_600" routerLinkActive="active"
+                                          routerLink="/browse-cars">Browse
+                                          Cars</a>
+                              </li>
+                              <li class="nav-item">
+                                    <a class="nav-link ct_fs_16 ct_fw_600" routerLinkActive="active"
+                                          routerLink="/reels">Reels</a>
+                              </li>
+                              <li class="nav-item">
+                                    <a class="nav-link ct_fs_16 ct_fw_600" rou routerLink="/chats">Chats</a>
+                              </li>
+                        </ul>
+                  </div>
+                  <div class="d-flex gap-3">
+                        @if(authService.isLogedIn()){
+                        <div class="">
+                              <div class="d-flex align-items-center gap-3">
+                                    <div class="dropdown">
+                                          <a class="position-relative" id="notificationDropdown"
+                                                data-bs-toggle="dropdown">
+                                                <img src="img/icons/notification.png" width="24" />
+                                                <!-- <span class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle p-1"> 4 </span> -->
+                                          </a>
+                                          <div class="dropdown-menu p-0 notification-dropdown">
+                                                <!-- Header -->
+                                                <div
+                                                      class="d-flex justify-content-between align-items-center px-3 py-2">
+                                                      <p class="ct_fs_20 ct_fw_700 text-black">
+                                                            Notifications (4)
+                                                      </p>
+                                                      <a class="ct_fs_14 ct_fs_600 ct_color_8f0c1f">Mark as
+                                                            read</a>
+                                                </div>
+                                                <!-- Notification Item -->
+                                                <a class="dropdown-item notification-item">
+                                                      <div>
+                                                            <strong>New Buyer Message:</strong>
+                                                            <div class="text-muted small">
+                                                                  You've received a new message from a potential buyer.
+                                                            </div>
+                                                      </div>
+                                                      <div class="text-end">
+                                                            <span class="time">3m</span> <span class="dot"></span>
+                                                      </div>
+                                                </a>
+                                                <a class="dropdown-item notification-item">
+                                                      <div>
+                                                            <strong>Listing Expiry Warning:</strong>
+                                                            <div class="text-muted small">
+                                                                  Your listing for VW Golf expires in 3 days. Renew now
+                                                                  to keep it active.
+                                                            </div>
+                                                      </div>
+                                                      <div class="text-end">
+                                                            <span class="time">12m</span> <span class="dot"></span>
+                                                      </div>
+                                                </a>
+                                                <a class="dropdown-item notification-item">
+                                                      <div>
+                                                            <strong>New Buyer Message:</strong>
+                                                            <div class="text-muted small">
+                                                                  You've received a new message from a potential buyer.
+                                                            </div>
+                                                      </div>
+                                                      <div class="text-end">
+                                                            <span class="time">3m</span> <span class="dot"></span>
+                                                      </div>
+                                                </a>
+                                                <a class="dropdown-item notification-item">
+                                                      <div>
+                                                            <strong>New Buyer Message:</strong>
+                                                            <div class="text-muted small">
+                                                                  You've received a new message from a potential buyer.
+                                                            </div>
+                                                      </div>
+                                                      <div class="text-end">
+                                                            <span class="time">3m</span> <span class="dot"></span>
+                                                      </div>
+                                                </a>
                                           </div>
-                                          <li>
-                                                <a routerLink="/home" routerLinkActive="active"
-                                                      [routerLinkActiveOptions]="{ exact: true }">{{ 'Home' | translate
-                                                      }}</a>
-                                          </li>
-                                          <ng-container *appRole="'buyer'">
-                                                <li>
-                                                      <a routerLink="/" routerLinkActive="active"
-                                                            [routerLinkActiveOptions]="{ exact: true }">{{ 'BrowseCars'
-                                                            | translate }}</a>
-                                                </li>
-                                                <li>
-                                                      <a routerLink="/reels" routerLinkActive="active"
-                                                            [routerLinkActiveOptions]="{ exact: true }">{{'Reels' |
-                                                            translate}}</a>
-                                                </li>
-                                                @if(authService.isLogedIn()) {
-                                                <li>
-                                                      <a routerLink="/chats" routerLinkActive="active"
-                                                            [routerLinkActiveOptions]="{ exact: true }">{{'Chat' |
-                                                            translate}}</a>
-                                                </li>
-                                                }@else {
-                                                <li>
-                                                      <a (click)="openLogin()" routerLinkActive="active"
-                                                            [routerLinkActiveOptions]="{ exact: true }">{{'Chat' |
-                                                            translate}}</a>
-                                                </li>
-                                                }
-                                          </ng-container>
+                                    </div>
 
-                                          <!-- <ng-container *ngIf="!userRole">
-                                                <li>
-                                                      <a routerLink="/" routerLinkActive="active"
-                                                            [routerLinkActiveOptions]="{ exact: true }">{{ 'BrowseCars'
-                                                            | translate }}</a>
-                                                </li>
-                                                <li>
-                                                      <a routerLink="/reels" routerLinkActive="active"
-                                                            [routerLinkActiveOptions]="{ exact: true }">{{'Reels' |
-                                                            translate}}</a>
-                                                </li>
-                                                <li>
-                                                      <a (click)="openLogin()" routerLinkActive="active"
-                                                            [routerLinkActiveOptions]="{ exact: true }">{{'Chat' |
-                                                            translate}}</a>
-                                                </li>
-                                          </ng-container> -->
-
-                                          <ng-container *appRole="'seller'">
-                                                <li>
-                                                      <a routerLink="/my-listings" routerLinkActive="active"
-                                                            [routerLinkActiveOptions]="{ exact: true }">{{'MyListings' |
-                                                            translate}}</a>
-                                                </li>
-                                                @if(authService.isLogedIn()) {
-                                                <li>
-                                                      <a routerLink="/chats" routerLinkActive="active"
-                                                            [routerLinkActiveOptions]="{ exact: true }">{{'Chat' |
-                                                            translate}}</a>
-                                                </li>
-                                                }@else {
-                                                <li>
-                                                      <a (click)="openLogin()" routerLinkActive="active"
-                                                            [routerLinkActiveOptions]="{ exact: true }">{{'Chat' |
-                                                            translate}}</a>
-                                                </li>
-                                                }
-                                                <li>
-                                                      <a routerLink="/our-visitors" routerLinkActive="active"
-                                                            [routerLinkActiveOptions]="{ exact: true }">{{'OurVisitors'
-                                                            | translate}}</a>
-                                                </li>
-                                          </ng-container>
-                                    </ul>
-                              </div>
-                              <div class="ct_right_nav">
-                                    <a (click)="notifications()" class="text-dark ct_fs_20 ct_notification_icon">
-                                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 6.43994V9.76994" stroke="#fff" stroke-width="1.5"
-                                                      stroke-miterlimit="10" stroke-linecap="round"></path>
-                                                <path d="M12.0199 2C8.3399 2 5.3599 4.98 5.3599 8.66V10.76C5.3599 11.44 5.0799 12.46 4.7299 13.04L3.4599 15.16C2.6799 16.47 3.2199 17.93 4.6599 18.41C9.4399 20 14.6099 20 19.3899 18.41C20.7399 17.96 21.3199 16.38 20.5899 15.16L19.3199 13.04C18.9699 12.46 18.6899 11.43 18.6899 10.76V8.66C18.6799 5 15.6799 2 12.0199 2Z"
-                                                      stroke="#fff" stroke-width="1.5" stroke-miterlimit="10"
-                                                      stroke-linecap="round"></path>
-                                                <path d="M15.3299 18.8201C15.3299 20.6501 13.8299 22.1501 11.9999 22.1501C11.0899 22.1501 10.2499 21.7701 9.64992 21.1701C9.04992 20.5701 8.66992 19.7301 8.66992 18.8201"
-                                                      stroke="#fff" stroke-width="1.5" stroke-miterlimit="10"></path>
-                                          </svg>
-                                    </a>
                                     <div class="ct_language_select dropdown notranslate">
                                           <img [src]="getImage(selectedLang)" alt="" class="dropdown_img"
                                                 style="width: 20px; margin-right: 5px;">
@@ -138,168 +128,49 @@
                                           </ul>
                                     </div>
 
-                                    @if(authService.isLogedIn()) {
-                                    <div class="ct_right_dropdown dropdown">
-                                          <button id="dropdownMenuButton" id="dropdownMenuButton1"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <div class="d-flex align-items-center gap-2" style="line-height: 1;">
-                                                      <img [src]="userData()?.profileImage || 'img/np_pro.png'" alt=""
-                                                            class="ct_img_30">
-                                                      <div class="text-start">
-                                                            <p class="mb-0 ct_fw_500">{{userData()?.fullName}}</p>
-                                                            <small class="ct_text_939393">{{ role() === 'buyer' ?
-                                                                  ('Buyer' | translate) : ('Seller' | translate)
-                                                                  }}</small>
-                                                      </div>
+                                    <div class="">
+                                          <a routerLink="/my-profile/edit-profile"
+                                                class="d-flex text-black align-items-center">
+                                                <div class="user-profile-img me-2">
+                                                      <img [src]="userData?.profileImage" class="" />
                                                 </div>
-                                                <i class="fa-solid fa-angle-down ms-auto"></i>
-                                          </button>
-                                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li>
-                                                      <a (click)="switchRole(role() === 'buyer' ? 'seller' : 'buyer')"
-                                                            class="dropdown-item" href="javascript:void(0)">
-                                                            {{ role() === 'buyer' ? ('SwitchToSellerMode' | translate) :
-                                                            ('SwitchToBuyerMode' | translate) }}
-
-                                                      </a>
-                                                </li>
-                                                <ng-container *appRole="'buyer'">
-                                                      <li>
-                                                            <a class="dropdown-item" routerLink="/wishlist">
-                                                                  {{'Wishlist' | translate}}
-                                                            </a>
-                                                      </li>
-                                                      <li>
-                                                            <a class="dropdown-item" routerLink="/saved-reels">
-                                                                  {{'SavedCarReel' | translate}}
-                                                            </a>
-                                                      </li>
-                                                </ng-container>
-                                                <ng-container *appRole="'seller'">
-                                                      <li>
-                                                            <a class="dropdown-item" routerLink="/listing-slot-plan">
-                                                                  {{'ListingSlotsPlan' | translate}}
-                                                            </a>
-                                                      </li>
-                                                </ng-container>
-                                                <li>
-                                                      <a class="dropdown-item" routerLink="/edit-profile">
-                                                            {{'EditProfile' | translate}}
-                                                      </a>
-                                                </li>
-                                                <li>
-                                                      <a class="dropdown-item" routerLink="/change-password">
-                                                            {{'ChangePassword' | translate}}
-                                                      </a>
-                                                </li>
-                                                <li>
-                                                      <a class="dropdown-item" href="javascript:void(0)"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#ct_logout_modal_post">
-                                                            {{'Logout' | translate}}
-                                                      </a>
-                                                </li>
-                                          </ul>
-                                    </div>
-                                    }@else {
-                                    <!-- <a class="ct_red_btn" data-bs-toggle="modal"
-                                          data-bs-target="#ct_login_modal">{{'Login' | translate}}</a> -->
-                                    <a class="ct_red_btn" (click)="openLogin()">{{'Login' | translate}}</a>
-                                    }
-                                    <div class="ct_menu_bar">
-                                          <i class="fa-solid fa-bars-staggered"></i>
+                                                <div>
+                                                      <h5 class="ct_fs_15 ct_fw_400 mb-0">{{userData?.fullName}}</h5>
+                                                      <h5 class="ct_fs_12 ct_fw_400 mb-0 ct_color_grey">
+                                                            {{ role() === 'buyer' ?
+                                                            ('Buyer' | translate) : ('Seller' | translate)
+                                                            }}
+                                                      </h5>
+                                                </div>
+                                          </a>
                                     </div>
                               </div>
-                        </nav>
+                        </div>
+                        }@else {
+                        <div class="">
+                              <button class="btn btn-red px-4" (click)="modalService.openLoginModal()">
+                                    Login
+                              </button>
+                        </div>
+                        }
+                        <div class="d-flex align-items-center gap-2 d-lg-none">
+                              <button class="navbar-toggler p-0" type="button" data-bs-toggle="offcanvas"
+                                    data-bs-target="#mobileMenu">
+                                    <span class="navbar-toggler-icon">
+                                          <i class="fa-solid fa-bars"></i>
+                                    </span>
+                              </button>
+                        </div>
                   </div>
             </div>
-      </div>
+      </nav>
 </header>
-
-<!--Log out Modal -->
-<div class="modal fade" id="ct_logout_modal_post" tabindex="-1" aria-labelledby="ct_delete_postLabel"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                  <div class="modal-header pb-0 border-0">
-                        <button type="button" class="btn-close ct_close" data-bs-dismiss="modal" aria-label="Close">
-                        </button>
-                  </div>
-                  <div class="modal-body">
-                        <div class="ct_delete_post_modal">
-                              <figure>
-                                    <div class="ct_delete_post_icon text-center">
-                                          <svg width="48" height="48" viewBox="0 0 48 48" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <g clip-path="url(#clip0_36_4091)">
-                                                      <path d="M24 0C10.7452 0 0 10.7452 0 24V24.036C0 37.2908 10.7092 48 23.964 48H24C37.2548 48 48 37.2908 48 24.036V24C48 10.7452 37.2908 0 24.036 0H24Z"
-                                                            fill="#282828" fill-opacity="0.1" />
-                                                      <path d="M15.6775 33.29H32.321C32.5913 33.29 32.857 33.2198 33.0921 33.0864C33.3272 32.9529 33.5236 32.7608 33.6622 32.5287C33.8008 32.2966 33.8768 32.0325 33.8828 31.7623C33.8889 31.492 33.8246 31.2248 33.6965 30.9868L25.3752 15.5327C24.7849 14.437 23.2136 14.437 22.6233 15.5327L14.302 30.9868C14.1738 31.2248 14.1096 31.492 14.1156 31.7623C14.1216 32.0325 14.1976 32.2966 14.3362 32.5287C14.4748 32.7608 14.6713 32.9529 14.9064 33.0864C15.1415 33.2198 15.4071 33.29 15.6775 33.29Z"
-                                                            stroke="black" stroke-width="1.25" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                      <path d="M23.7189 21.0405L23.9992 26.9976L24.279 21.043C24.2807 21.0049 24.2747 20.9669 24.2612 20.9312C24.2477 20.8956 24.2272 20.8631 24.2007 20.8357C24.1742 20.8082 24.1425 20.7865 24.1073 20.7718C24.0722 20.757 24.0344 20.7496 23.9963 20.75C23.9588 20.7504 23.9219 20.7582 23.8875 20.7731C23.8532 20.788 23.8221 20.8097 23.7963 20.8367C23.7704 20.8638 23.7503 20.8958 23.737 20.9308C23.7237 20.9658 23.7176 21.0031 23.7189 21.0405Z"
-                                                            stroke="black" stroke-width="1.25" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                      <path d="M24 30.8984C23.8069 30.8984 23.618 30.8412 23.4575 30.7339C23.2969 30.6266 23.1717 30.474 23.0978 30.2956C23.0239 30.1171 23.0045 29.9208 23.0422 29.7314C23.0799 29.5419 23.1729 29.3679 23.3095 29.2313C23.446 29.0948 23.62 29.0018 23.8095 28.9641C23.9989 28.9264 24.1953 28.9457 24.3737 29.0196C24.5522 29.0936 24.7047 29.2187 24.812 29.3793C24.9193 29.5399 24.9766 29.7287 24.9766 29.9219C24.9766 30.1809 24.8737 30.4293 24.6905 30.6124C24.5074 30.7956 24.259 30.8984 24 30.8984Z"
-                                                            fill="black" />
-                                                </g>
-                                                <defs>
-                                                      <clipPath id="clip0_36_4091">
-                                                            <rect width="48" height="48" fill="white" />
-                                                      </clipPath>
-                                                </defs>
-                                          </svg>
-                                    </div>
-                                    <figcaption class="mt-4 text-center">
-                                          <h4 class="ct_fs_18 ct_fw_600">{{'Logout' | translate }}</h4>
-                                          <p class="mb-0">
-                                                {{'AreYouSureYouWantToLogout' | translate }}
-                                          </p>
-                                    </figcaption>
-                              </figure>
-                              <div class="d-flex justify-content-center border-0 gap-3 ct_modal_footer">
-                                    <button type="button" class="ct_red_btn ct_outline_btn ct_h_40 w-100 ct_fw_600"
-                                          data-bs-dismiss="modal" #close>{{'Cancel' | translate}}</button>
-                                    <a (click)="logout()"
-                                          class="ct_border_radius_10 ct_h_40 ct_red_btn  w-100 ct_fw_600 text-center">
-                                          {{'Logout' | translate}}
-                                    </a>
-                              </div>
-                        </div>
-                  </div>
-            </div>
+<div class="offcanvas offcanvas-end text-bg-dark" id="mobileMenu">
+      <div class="offcanvas-header justify-content-end">
+            <button class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body">
+            <div id="mobileMenuContainer"></div>
       </div>
 </div>
-<!-- Login modal Css S -->
-
-<!-- Modal -->
-<div class="modal fade modal-md ct_login_bg" id="ct_login_modal" tabindex="-1" aria-labelledby="ct_login_modalLabel"
-      aria-hidden="true" data-bs-target="#staticBackdr">
-      <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                  <div class="modal-body pb-4">
-
-                        <img src="img/carzone_logo_black.png" alt="" class="mb-4 mx-auto d-block logo_image">
-                        <h5 class="ct_fs_20 ct_fw_600 text-white text-center">{{'ChooseYourRole' | translate}}</h5>
-                        <div class="row mt-5">
-                              <div class="col-sm-6 mb-4 mb-sm-0">
-                                    <a (click)="switchRole('buyer')" class="ct_login_author_card"
-                                          data-bs-dismiss="modal">
-                                          <img src="img/buyer_icon.svg" alt="">
-                                          <h6 class="mb-0 ct_fs_20 ct_fw_600">{{'Buyer' | translate}}</h6>
-                                    </a>
-                              </div>
-                              <div class="col-sm-6 mb-4 mb-sm-0">
-                                    <a (click)="switchRole('seller')" class="ct_login_author_card"
-                                          data-bs-dismiss="modal">
-                                          <img src="img/seller_login_icon.svg" alt="">
-                                          <h6 class="mb-0 ct_fs_20 ct_fw_600">{{'Seller' | translate}}</h6>
-
-                                    </a>
-                              </div>
-                        </div>
-                  </div>
-            </div>
-      </div>
-</div>
-<!-- Login modal Css E -->
+<app-role-modal />

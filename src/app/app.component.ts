@@ -22,7 +22,7 @@ export class AppComponent {
 
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
-        this.notificationService.requestPermission()
+        // this.notificationService.requestPermission()
       }
     });
 

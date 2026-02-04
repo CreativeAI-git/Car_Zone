@@ -1,0 +1,109 @@
+.custom_border {
+      border: 1px solid #e6e6e6;
+      border-radius: 5px;
+      padding: 10px;
+      width: 100%;
+}
+
+.custom_border.active {
+      border: 1px solid var(--red);
+}
+
+.fs_10 {
+      font-size: 12px;
+}
+
+.cutom_radio_input {
+      height: 25px;
+      width: 25px;
+      accent-color: var(--red);
+}
+
+.profile-sidebar {
+      background: #fff;
+      border: 1px solid #eee;
+      height: fit-content;
+}
+
+/* Sidebar header (mobile only) */
+.profile-sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+}
+
+/* Menu */
+.profile-sidebar-menu {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+}
+
+.profile-sidebar-menu li a {
+      padding: 21px 14px;
+      cursor: pointer;
+      border-radius: 12px;
+      width: 100%;
+      display: inline-block;
+      color: #383e48;
+      font-weight: 500;
+}
+
+.profile-sidebar-menu li .active {
+      background-color: #8f0c1f0a;
+      color: #8f0c1f;
+}
+
+.profile-sidebar-menu li a:hover {
+      background: #8f0c1f0a;
+      color: #8f0c1f;
+}
+
+/* Overlay */
+.profile-overlay {
+      position: fixed;
+      top: 72px;
+      /* fixed navbar height */
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: none;
+      z-index: 1040;
+}
+
+/* Disable background scroll */
+body.profile-no-scroll {
+      overflow: hidden;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 991px) {
+      .profile-sidebar {
+            position: fixed;
+            top: 72px;
+            left: 0;
+            width: 260px;
+            height: calc(100vh - 72px);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1050;
+            display: flex;
+            flex-direction: column;
+      }
+
+      .profile-sidebar.active {
+            transform: translateX(0);
+      }
+
+      .profile-sidebar-menu {
+            overflow-y: auto;
+            flex: 1;
+      }
+
+      .profile-overlay.active {
+            display: block;
+      }
+}

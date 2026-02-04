@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonService } from '../../services/common.service';
 import { forkJoin, Subject, takeUntil } from 'rxjs';
@@ -6,18 +6,23 @@ import { CommonModule } from '@angular/common';
 import { carData } from '../../helper/carData';
 import { FormsModule } from '@angular/forms';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { LoaderService } from '../../services/loader.service';
 import { ChfFormatPipe } from '../../pipes/chf-format.pipe';
 import { AuthService } from '../../services/auth.service';
 import { ModalService } from '../../services/modal.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzImageModule } from 'ng-zorro-antd/image';
+
+declare var Swiper: any;
+
 @Component({
   selector: 'app-browse-cars',
-  imports: [RouterLink, CommonModule, NzSelectModule, FormsModule, NzSliderModule, ChfFormatPipe, TranslateModule, NzPopoverModule],
+  imports: [RouterLink, CommonModule, NzSelectModule, FormsModule, ChfFormatPipe, TranslateModule, NzPopoverModule, NzImageModule],
   templateUrl: './browse-cars.component.html',
-  styleUrl: './browse-cars.component.css'
+  styleUrl: './browse-cars.component.css',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+
 })
 export class BrowseCarsComponent {
   private destroy$ = new Subject<void>();
@@ -83,14 +88,50 @@ export class BrowseCarsComponent {
   }
 
   getCars() {
-    this.loader.show()
-    this.service.get(this.token ? 'user/fetchOtherSellerCarsList' : 'user/asGuestUserFetchSellerCarsList').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.carsList = res.data
-      this.loader.hide()
-    }, err => {
-      this.loader.hide()
-    })
+    this.loader.show();
+
+    this.service
+      .get(this.token
+        ? 'user/fetchOtherSellerCarsList'
+        : 'user/asGuestUserFetchSellerCarsList'
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        this.carsList = res.data;
+        this.loaded = true;
+        setTimeout(() => {
+          this.loadSwiper();
+        });
+
+        this.loader.hide();
+      }, () => {
+        this.loader.hide();
+      });
   }
+
+  loaded: boolean = false
+  loadSwiper(): void {
+    this.carsList.forEach((_, i) => {
+      const thumbs = new Swiper(`.mySwiperThumbs-${i}`, {
+        slidesPerView: 6,
+        spaceBetween: 10,
+        watchSlidesProgress: true,
+      });
+
+      new Swiper(`.mySwiperMain-${i}`, {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        pagination: {
+          el: ".swiper-pagination",
+          type: "fraction",
+        },
+        thumbs: {
+          swiper: thumbs
+        }
+      });
+    });
+  }
+
 
   // addToWishlist(item: any) {
   //   item.isWishlist = !item.isWishlist
@@ -109,9 +150,7 @@ export class BrowseCarsComponent {
         },
         error: (err) => {
           console.error('Wishlist API failed:', err);
-
           item.isWishlist = !item.isWishlist;
-
           this.modalService.openLoginModal();
         }
       });
@@ -372,6 +411,10 @@ export class BrowseCarsComponent {
     this.modalList = [];
     this.orgModalList = [];
     this.brandList = [...this.orgBrandList]
+  }
+
+  trackByImage(index: number, img: string) {
+    return img;
   }
 
   ngOnDestroy(): void {

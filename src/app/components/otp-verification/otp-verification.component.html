@@ -1,4 +1,4 @@
-<section class="ct_login_main_bg">
+<!-- <section class="ct_login_main_bg">
       <div class="container">
             <div class="row">
                   <div class="col-xxl-6 col-xl-7 col-lg-8 mx-auto">
@@ -43,4 +43,80 @@
                   </div>
             </div>
       </div>
-</section>
+</section> -->
+
+<div class="row g-0 popup-main">
+      <!-- LEFT -->
+      <div class="col-xl-5 login-popup__left ct_custom_scroll p-5">
+            <div>
+                  <div class="login-popup__brand mb-4">
+                        <img src="img/black-logo.png" class="main-logo" />
+                  </div>
+
+                  <h5 class="login-popup__title mb-2 ct_fs_32 text-center ct_font_cairo">
+                        Enter Verification Code
+                  </h5>
+                  <p class="ct_fs_16 text-center">
+                        We have send a code to : {{email}}
+                  </p>
+            </div>
+            <form (ngSubmit)="verifyOtp()">
+                  <div class="login-popup__roles">
+                        <div class="form-group d-flex justify-content-center">
+                              <nz-input-otp [nzLength]="4" [(ngModel)]="otp" [ngModelOptions]="{standalone: true}"
+                                    (keypress)="restrictToNumbers($event)" #otpInput="ngModel">
+                              </nz-input-otp>
+                              <div *ngIf="otpInput.touched && otpInput.invalid"
+                                    class="text-danger ct_fs_14 mt-1 d-block">
+                                    <div *ngIf="otpInput.errors?.['required']">
+                                          {{'OtpError' | translate}}.
+                                    </div>
+                              </div>
+                        </div>
+                        <!-- 
+                        <p class="text-end ct_fw_300 ct_fs_15 mt-2">
+                              Remaining Time :{{ countdown }}s
+                        </p> -->
+                  </div>
+                  <app-submit-button [isLoading]="loading" [text]="'VerifyNow' | translate"
+                        [class]="'btn login-popup__btn mt-4'"></app-submit-button>
+            </form>
+            <p class="ct_fs_16 ct_fw_500 mt-3 text-center">
+                  {{'DidReceiveTheOTP' | translate}}
+                  <a (click)="isResendDisabled ? null : resendOtp()" class="ct_fs_16 ct_fw_600 ct_color_8f0c1f"
+                        [class.disabled]="isResendDisabled">
+                        {{'Resend' | translate}}
+                  </a>
+                  <span *ngIf="isResendDisabled">({{ countdown }}s)</span>
+            </p>
+      </div>
+
+      <!-- RIGHT IMAGE -->
+      <div class="col-lg-7 d-none d-xl-block login-popup__right position-relative">
+            <img src="img/create-acc.jpg" />
+
+            <div class="login-img-text">
+                  <div>
+                        <p class="ct_fs_28 ct_fw_500">
+                              “Buying and managing cars on CarZone helped us connect with
+                              serious sellers faster.”
+                        </p>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                        <div>
+                              <p class="ct_fs_20 ct_fw_400 fst_italic">
+                                    AutoHaus Keller<br />Buyer · Basel
+                              </p>
+                        </div>
+
+                        <div>
+                              <i class="fa-solid fa-star"></i>
+                              <i class="fa-solid fa-star"></i>
+                              <i class="fa-solid fa-star"></i>
+                              <i class="fa-solid fa-star"></i>
+                              <i class="fa-solid fa-star"></i>
+                        </div>
+                  </div>
+            </div>
+      </div>
+</div>

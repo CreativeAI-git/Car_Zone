@@ -1,21 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { QuillModule } from 'ngx-quill';
 import { NoWhitespaceDirective, strongPasswordValidator, passwordMismatchValidator } from '../../helper/validators';
 import { ValidationErrorService } from '../../services/validation-error.service';
 import { CountryISO, NgxIntlTelInputModule, SearchCountryField } from 'ngx-intl-tel-input-gg';
-import { SubmitButtonComponent } from '../shared/submit-button/submit-button.component';
 import { CommonService } from '../../services/common.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-sign-up',
-  imports: [ReactiveFormsModule, CommonModule, NzSelectModule, QuillModule, FormsModule, RouterLink, NgxIntlTelInputModule, SubmitButtonComponent, TranslateModule],
+  imports: [ReactiveFormsModule, CommonModule, NzSelectModule, QuillModule, FormsModule, NgxIntlTelInputModule, TranslateModule],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css'
 })
@@ -32,7 +32,7 @@ export class SignUpComponent {
   isShowConfirmPassword: boolean = false
   lat: number | null = null;
   lng: number | null = null;
-  constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private router: Router, private translate: TranslateService) {
+  constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private router: Router, private translate: TranslateService, public modal: ModalService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.Form = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20), NoWhitespaceDirective.validate]],
@@ -95,7 +95,7 @@ export class SignUpComponent {
         sessionStorage.setItem('email', this.Form.value.email)
         sessionStorage.setItem('userName', this.Form.value.fullName)
         sessionStorage.setItem('isForgotPassword', '0')
-        this.router.navigate(['/otp-verification'])
+        this.modal.openOtpVerificationModal()
       },
       error: (error) => {
         this.loading = false

@@ -1,4 +1,4 @@
-import { Component, effect, HostListener } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { RoleDirective } from '../../directives/role.directive';
 import { CommonService } from '../../services/common.service';
@@ -9,22 +9,22 @@ import { LoaderService } from '../../services/loader.service';
 import { AuthService } from '../../services/auth.service';
 import { ChfFormatPipe } from '../../pipes/chf-format.pipe';
 import { RoleService } from '../../services/role.service';
+import { ModalService } from '../../services/modal.service';
+import { NzImage, NzImageService } from 'ng-zorro-antd/image';
 declare var Swiper: any;
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, RoleDirective, CommonModule, TranslateModule, ChfFormatPipe],
+  imports: [RouterLink, CommonModule, TranslateModule, ChfFormatPipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
-  providers: [],
+  providers: [NzImageService],
 })
 export class HomeComponent {
   userData: any
   private destroy$ = new Subject<void>();
-  carReels: any = [];
   carsList: any[] = []
-  myCarsList: any[] = []
   token: any;
-  constructor(private commonService: CommonService, private router: Router, private translate: TranslateService, private loader: LoaderService, private authService: AuthService, private roleService: RoleService) {
+  constructor(private commonService: CommonService, private router: Router, private translate: TranslateService, private loader: LoaderService, private authService: AuthService, private roleService: RoleService, public modal: ModalService, private nzImageService: NzImageService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     effect(() => {
       this.userData = this.commonService.userData
@@ -32,13 +32,9 @@ export class HomeComponent {
   }
 
   ngOnInit(): void {
+    this.loadSwipers()
     this.token = this.authService.getToken();
-    this.getReels();
-    if (this.roleService.currentRole() === 'seller') {
-      this.getMyCars();
-    } else {
-      this.getCars();
-    }
+    this.getCars();
   }
 
   listCar() {
@@ -50,26 +46,36 @@ export class HomeComponent {
   }
 
   loadSwipers(): void {
-    new Swiper('.carSwiper', {
+    new Swiper('.mySwiper', {
       direction: 'horizontal',
-      slidesPerView: 1,
-      animation: true,
-      animateIn: 'fadeIn',
-      animateOut: 'fadeOut',
-      MouseEvents: false,
+      slidesPerView: 6,
+      spaceBetween: 10,
       loop: true,
-      freeMode: true,
-      centeredSlides: true,
       autoplay: {
         delay: 2000,
         disableOnInteraction: false
       },
-      speed: 400
+      mousewheel: false,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 3,
+        },
+        768: {
+          slidesPerView: 5,
+        },
+        1024: {
+          slidesPerView: 6,
+        },
+      },
     });
 
-    new Swiper('.mySwiper', {
+    new Swiper('.CarSwiper', {
       direction: 'horizontal',
-      slidesPerView: 1,
+      slidesPerView: 3,
       spaceBetween: 10,
       loop: true,
       mousewheel: false,
@@ -85,79 +91,21 @@ export class HomeComponent {
           slidesPerView: 2,
         },
         1024: {
-          slidesPerView: 2,
+          slidesPerView: 3,
         },
       },
     });
 
-    new Swiper('.reelSwiper', {
-      direction: 'horizontal',
-      slidesPerView: 1,
-      spaceBetween: 15,
-      loop: true,
-      mousewheel: false,
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      breakpoints: {
-        640: {
-          slidesPerView: 2,
-        },
-        768: {
-          slidesPerView: 2,
-        },
-        1024: {
-          slidesPerView: 4,
-        },
-      },
-    });
-
-  }
-
-  getReels() {
-    this.isLoading = true;
-    this.commonService.get('user/asGuestUsersfetchAllCarReels?page=' + 1 + '').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.carReels = res.data.data;
-      this.isLoading = false;
-    })
-  }
-
-  openReel(item: any) {
-    this.router.navigate(['reel-player'], { queryParams: { id: item.id } });
   }
 
   isLoading = false;
-
-  saveReel(item: any) {
-    item.isSavedReel = !item.isSavedReel
-    this.commonService.post('user/saveCarReels', { carId: item.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-    })
-  }
-
-  removeFromSaved(item: any) {
-    item.isSavedReel = !item.isSavedReel
-    this.commonService.delete('user/removeSavedCarsReel', { carId: item.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-    })
-  }
-
   getCars() {
     this.loader.show()
     this.commonService.get(this.token ? 'user/fetchOtherSellerCarsList' : 'user/asGuestUserFetchSellerCarsList').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       this.carsList = res.data
       this.loadSwipers()
-      this.loader.hide()
-    }, err => {
-      this.loader.hide()
-    })
-  }
-
-  getMyCars() {
-    this.loader.show()
-    this.commonService.get('user/getMyCar').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.myCarsList = res.data
       setTimeout(() => {
-        this.loadSwipers()
+        this.loadSwiper()
       }, 100);
       this.loader.hide()
     }, err => {
@@ -165,12 +113,53 @@ export class HomeComponent {
     })
   }
 
-  get activeCars() {
-    return this.myCarsList.filter((c: { is_active: any; }) => c.is_active);
+  addToWishlist(item: any) {
+    item.isWishlist = !item.isWishlist;
+    this.commonService.post('user/addToWishlist', { carId: item.id })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          // success response
+        },
+        error: (err) => {
+          console.error('Wishlist API failed:', err);
+          item.isWishlist = !item.isWishlist;
+          this.modal.openLoginModal();
+        }
+      });
   }
 
-  get expiredCars() {
-    return this.myCarsList.filter((c: { is_active: any; }) => !c.is_active);
+
+  removeFromWishlist(item: any) {
+    item.isWishlist = !item.isWishlist
+    this.commonService.delete('user/removeCarFromWishlist', { carId: item.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+    })
+  }
+
+  loadSwiper(): void {
+    this.carsList.forEach((_, i) => {
+      new Swiper(`.mySwiperMain-${i}`, {
+        slidesPerView: 1,
+        pagination: {
+          el: ".swiper-pagination",
+          type: "fraction",
+        },
+        navigation: {
+          nextEl: `.swiper-button-next`,
+          prevEl: `.swiper-button-prev`,
+        },
+      });
+    });
+  }
+
+  previewImage(item: any) {
+    let images: NzImage[] = [];
+    item.forEach((_e: any) => {
+      images.push({
+        src: _e,
+      })
+    })
+    this.nzImageService.preview(images);
   }
 
   ngOnDestroy(): void {

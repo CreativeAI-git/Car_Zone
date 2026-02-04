@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { RoleDirective } from '../../directives/role.directive';
 import { CommonService } from '../../services/common.service';
 import { Subject, takeUntil } from 'rxjs';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { carData } from '../../helper/carData';
 import { LoaderService } from '../../services/loader.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -11,10 +11,11 @@ import { ChfFormatPipe } from '../../pipes/chf-format.pipe';
 import { ModalService } from '../../services/modal.service';
 import { AuthService } from '../../services/auth.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { NzImageModule } from 'ng-zorro-antd/image';
 declare var Swiper: any;
 @Component({
   selector: 'app-car-detail',
-  imports: [RouterLink, RoleDirective, CommonModule, ChfFormatPipe, TranslateModule],
+  imports: [CommonModule, ChfFormatPipe, TranslateModule, NzImageModule],
   templateUrl: './car-detail.component.html',
   styleUrl: './car-detail.component.css'
 })
@@ -25,7 +26,7 @@ export class CarDetailComponent {
   token: any
   conditions = carData.conditions
   ShoMore: boolean = false
-  constructor(private service: CommonService, private route: ActivatedRoute, private loader: LoaderService, private router: Router, private message: NzMessageService, private modalService: ModalService, private authService: AuthService, private translate: TranslateService) {
+  constructor(private service: CommonService, private route: ActivatedRoute, private loader: LoaderService, private router: Router, private message: NzMessageService, private modalService: ModalService, private authService: AuthService, private translate: TranslateService, public location: Location) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.route.queryParamMap.subscribe(params => {
       this.carId = params.get('id')
@@ -73,28 +74,30 @@ export class CarDetailComponent {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      const swiper = new Swiper('.mySwiper', {
-        direction: 'horizontal',
-        slidesPerView: 1,
-        loop: true,
-        mousewheel: false,
+      const thumbs = new Swiper(`.mySwiperThumbs`, {
+        slidesPerView: 6,
+        spaceBetween: 10,
+        watchSlidesProgress: true,
+      });
 
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
+      new Swiper(`.mySwiperMain`, {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        pagination: {
+          el: ".swiper-pagination",
+          type: "fraction",
+        },
+        thumbs: {
+          swiper: thumbs
         }
       });
 
-      new Swiper('.otherSwiper', {
+      new Swiper('.CarSwiper', {
         direction: 'horizontal',
-        slidesPerView: 1,
-        spaceBetween: 15,
+        slidesPerView: 2,
+        spaceBetween: 10,
         loop: true,
-        mousewheel: false,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
+        mousewheel: true,
         breakpoints: {
           640: {
             slidesPerView: 1,
@@ -103,7 +106,7 @@ export class CarDetailComponent {
             slidesPerView: 2,
           },
           1024: {
-            slidesPerView: 3,
+            slidesPerView: 2,
           },
         },
       });
@@ -190,4 +193,9 @@ export class CarDetailComponent {
     this.getCarDetail();
     this.router.navigate(['/car-detail'], { queryParams: { id: id } });
   }
+
+  trackByImage(index: number, img: string) {
+    return img;
+  }
+
 }
