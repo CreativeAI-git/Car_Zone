@@ -14,7 +14,7 @@ import { NzImage, NzImageService } from 'ng-zorro-antd/image';
 declare var Swiper: any;
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, CommonModule, TranslateModule, ChfFormatPipe],
+  imports: [RouterLink, CommonModule, RoleDirective, TranslateModule, ChfFormatPipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
   providers: [NzImageService],
@@ -28,13 +28,15 @@ export class HomeComponent {
     this.translate.use(localStorage.getItem('lang') || 'en');
     effect(() => {
       this.userData = this.commonService.userData
+      this.roleService.getLoggedInRole()
+      if (this.roleService.getLoggedInRole() === 'buyer') {
+        this.getCars();
+      }
     })
   }
 
   ngOnInit(): void {
-    this.loadSwipers()
     this.token = this.authService.getToken();
-    this.getCars();
   }
 
   listCar() {

@@ -28,7 +28,7 @@ export class LogInComponent {
   private destroy$ = new Subject<void>();
   private roleService = inject(RoleService);
   role = this.roleService.currentRole;
-  constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private authService: AuthService, private router: Router, private translate: TranslateService, private userService: UserService, public modal: ModalService) {
+  constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private authService: AuthService, private router: Router, private translate: TranslateService, public modal: ModalService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.Form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -58,6 +58,8 @@ export class LogInComponent {
         this.loading = false
         this.toastr.success(res.message)
         this.authService.setValues(res.data.jwt_token, res.data.userId)
+        this.roleService.setLoggedInRole(res.data.role)
+        localStorage.setItem('loggedInRole', res.data.role)
         this.modal.closeLoginModal()
         this.commonService.getProfile()
       },

@@ -2,82 +2,62 @@
   width: 100%;
 }
 
-.mobile-frame {
-  /* width: 280px; */
-  height: 500px;
-  border-radius: 10px;
-  position: relative;
-  overflow: hidden;
-  margin: 0 auto;
-}
 
-.videoPreview {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background-color: #e6e6e6;
-}
-
-
-::ng-deep .main-header-section .navbar {
+::ng-deep .main-header-section.transparent-header .navbar {
   background: transparent;
   padding: 1rem 0;
   transition: all 0.3s ease;
 }
 
-.navbar-nav .nav-link {
+::ng-deep .main-header-section.transparent-header .navbar-nav .nav-link {
   color: var(--subheading-color);
   font-family: DM Sans;
   font-weight: 400;
   font-size: 18px;
 }
 
-::ng-deep .navbar {
+::ng-deep .main-header-section.transparent-header .navbar {
   transition: all 0.3s ease;
 }
 
-::ng-deep .navbar-nav .nav-link {
+::ng-deep .main-header-section.transparent-header .navbar-nav .nav-link {
   color: var(--white) !important;
   font-family: DM Sans;
   font-weight: 400;
   font-size: 18px;
 }
 
-::ng-deep span.navbar-toggler-icon i {
+::ng-deep .main-header-section.transparent-header span.navbar-toggler-icon i {
   color: #fff;
   font-size: 20px;
   border-radius: 4px;
 }
 
-::ng-deep .main-header-section .navbar {
+::ng-deep .main-header-section.transparent-header .navbar {
   border-bottom: none !important;
 }
 
-::ng-deep .logo-sticky {
+::ng-deep .main-header-section.transparent-header .logo-sticky {
   display: block;
 }
 
-::ng-deep .logo-default {
+::ng-deep .main-header-section.transparent-header .logo-default {
   display: none;
 }
 
-::ng-deep .navbar h5,
-::ng-deep .navbar p {
+::ng-deep .main-header-section.transparent-header .navbar h5,
+::ng-deep .main-header-section.transparent-header .navbar p {
   color: #fff;
 }
 
-::ng-deep .main-header-section .navbar.scrolled {
+::ng-deep .main-header-section.transparent-header .navbar.scrolled {
   background: #111;
 }
 
-::ng-deep .main-header-section .navbar .ct_language_select {
+::ng-deep .main-header-section.transparent-header .navbar .ct_language_select {
   color: #fff !important;
 }
 
-
-
-
-/* NEW */
 .favorite-icon {
   position: absolute;
   top: 10px;
@@ -92,7 +72,6 @@
   border-radius: 100%;
   z-index: 9;
 }
-
 
 .pagination-ui {
   position: absolute;

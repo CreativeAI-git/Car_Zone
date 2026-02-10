@@ -1,9 +1,9 @@
-<header class="main-header-section">
+<header class="main-header-section" [class.transparent-header]="role() === 'buyer'">
       <nav #navbar class="navbar navbar-expand-lg fixed-top navbar-dark">
             <div class="container">
                   <a class="navbar-brand fw-bold main-logo" routerLink="/">
                         <img src="img/black-logo.png" alt="" class="logo-default" />
-                        <img src="img/logo.png" class="logo-sticky" alt="Sticky Logo" />
+                        <img src="img/logo.png" class="logo-sticky " alt="Sticky Logo" />
                   </a>
                   <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex">
                         <ul class="navbar-nav gap-4" id="mainMenu">
@@ -22,9 +22,9 @@
                         </ul>
                   </div>
                   <div class="d-flex gap-3">
-                        @if(authService.isLogedIn()){
                         <div class="">
                               <div class="d-flex align-items-center gap-3">
+                                    @if(authService.isLogedIn()){
                                     <div class="dropdown">
                                           <a class="position-relative" id="notificationDropdown"
                                                 data-bs-toggle="dropdown">
@@ -89,7 +89,7 @@
                                                 </a>
                                           </div>
                                     </div>
-
+                                    }
                                     <div class="ct_language_select dropdown notranslate">
                                           <img [src]="getImage(selectedLang)" alt="" class="dropdown_img"
                                                 style="width: 20px; margin-right: 5px;">
@@ -127,12 +127,13 @@
 
                                           </ul>
                                     </div>
-
+                                    @if(authService.isLogedIn()){
                                     <div class="">
                                           <a routerLink="/my-profile/edit-profile"
                                                 class="d-flex text-black align-items-center">
                                                 <div class="user-profile-img me-2">
-                                                      <img [src]="userData?.profileImage" class="" />
+                                                      <img [src]="userData?.profileImage || 'img/icons/user-circle-img.png'"
+                                                            class="" />
                                                 </div>
                                                 <div>
                                                       <h5 class="ct_fs_15 ct_fw_400 mb-0">{{userData?.fullName}}</h5>
@@ -144,9 +145,10 @@
                                                 </div>
                                           </a>
                                     </div>
+                                    }
                               </div>
                         </div>
-                        }@else {
+                        @if(!authService.isLogedIn()){
                         <div class="">
                               <button class="btn btn-red px-4" (click)="modalService.openLoginModal()">
                                     Login
@@ -173,4 +175,9 @@
             <div id="mobileMenuContainer"></div>
       </div>
 </div>
+
+<button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+      <img id="themeLightIcon" src="img/icons/light.png" alt="Light mode" />
+      <img id="themeDarkIcon" src="img/icons/dark.png" alt="Dark mode" />
+</button>
 <app-role-modal />

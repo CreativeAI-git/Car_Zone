@@ -3,6 +3,7 @@ import { Injectable, signal, } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { RoleService } from './role.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,8 +12,8 @@ export class CommonService {
   baseUrl = environment.apiUrl
   userData = signal<any>(null);
   sellerData = signal<any>(null);
-
-  constructor(private http: HttpClient, private router: Router) { }
+  currentUser = signal<any>(null);
+  constructor(private http: HttpClient, private router: Router, private roleService: RoleService) { }
 
   get<T>(url: string, params?: any): Observable<T> {
     return this.http.get<T>(this.baseUrl + url, { params });

@@ -1,0 +1,368 @@
+/* ==================================================
+   BASE
+================================================== */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ==================================================
+   LIGHT THEME
+================================================== */
+body.theme-light {
+  background-color: #ffffff;
+  color: #111827;
+}
+
+body.theme-light .card,
+body.theme-light .modal-content,
+body.theme-light .dropdown-menu {
+  background-color: #ffffff;
+  color: #111827;
+  border-color: #e5e7eb;
+}
+
+/* ==================================================
+   DARK THEME
+================================================== */
+body.theme-dark {
+  background-color: #222;
+  color: #e5e7eb;
+}
+
+body.theme-dark .card,
+body.theme-dark .modal-content {
+  background-color: #222;
+  color: #e5e7eb;
+  border-color: #334155;
+}
+
+body.theme-dark .form-control {
+  background-color: #222;
+  color: #e5e7eb;
+  border-color: #334155;
+}
+
+body.theme-dark .form-control::placeholder {
+  color: #94a3b8;
+}
+
+body.theme-dark .btn-light {
+  background-color: #334155;
+  color: #e5e7eb;
+  border-color: #475569;
+}
+
+/* ==================================================
+   FLOATING THEME TOGGLE BUTTON
+================================================== */
+.theme-toggle {
+  position: fixed;
+  top: 90px;
+  right: 24px;
+  width: 48px;
+  min-height: 48px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background-color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* icon size */
+.theme-toggle img {
+  width: 22px;
+  height: 22px;
+}
+
+/* default (light theme) */
+#themeDarkIcon {
+  display: none;
+}
+
+/* dark theme button */
+body.theme-dark .theme-toggle {
+  background-color: #334155;
+}
+
+body.theme-dark #themeLightIcon {
+  display: none;
+}
+
+body.theme-dark #themeDarkIcon {
+  display: block;
+}
+
+
+
+
+/* index page */
+
+body.theme-dark .search-box,
+body.theme-dark .profile-sidebar {
+  background-color: #222;
+}
+
+body.theme-dark .section-heading,
+body.theme-dark .section-subheading p,
+body.theme-dark .about-content ul li {
+  color: #fff;
+}
+
+
+body.theme-dark .accordion-button {
+  color: #fff;
+}
+
+body.theme-dark .carzone-accordian .accordion-body {
+  background-color: #555;
+  color: #fff;
+}
+
+body.theme-dark .filter-preview-box,
+body.theme-dark .car-content-right .box {
+  background-color: #555;
+  border-color: #555;
+}
+
+
+body.theme-dark .text-black,
+body.theme-dark .text-dark {
+  color: #fff !important;
+}
+
+body.theme-dark .select-car-tabs.nav-tabs .nav-link {
+  color: #fff;
+}
+
+body.theme-dark .car-card {
+  border: 1px solid #555;
+}
+
+body.theme-dark .filter-preview-box div img,
+body.theme-dark .car-content-detail-list li img,
+body.theme-dark .calculator-box p img,
+body.theme-dark .profile-sidebar li img,
+body.theme-dark .btn-close,
+body.theme-dark .body-type-img-o,
+body.theme-dark .body-type-img,
+body.theme-dark .breadcrumb-item a img,
+body.theme-dark .loc-img,
+body.theme-dark .select-car-tabs li img {
+  /* filter: invert(1); */
+  filter: brightness(0) invert(1);
+}
+
+body.theme-dark .car-content-right-list li img {
+  filter: brightness(0) invert(1);
+}
+
+body.theme-dark .calculator-box,
+body.theme-dark .car-detail-value-sec,
+body.theme-dark .msg-body ul .sender,
+
+body.theme-dark .bundle-card {
+  background-color: #555;
+}
+
+body.theme-dark h1,
+body.theme-dark h2,
+body.theme-dark h3,
+body.theme-dark h4,
+body.theme-dark h5,
+body.theme-dark h6,
+body.theme-dark span body.theme-dark p {
+  color: #fff;
+}
+
+body.theme-dark .bundle-icon i {
+  color: #fff;
+}
+
+body.theme-dark .profile-sidebar-menu li a,
+body.theme-dark .msg-head p,
+body.theme-dark .chat-list p,
+body.theme-dark .bundle-price {
+  color: #fff;
+}
+
+body.theme-dark .profile-sidebar-menu li a:hover,
+body.theme-dark .profile-sidebar-menu li .active,
+body.theme-dark .plan-box {
+  background-color: #555 !important;
+}
+
+body.theme-dark .notification-item div,
+body.theme-dark .text-muted {
+  color: #fff !important;
+}
+
+body.theme-dark .bg-white {
+  background-color: #222 !important;
+}
+
+body.theme-dark .ct_find_vehicle_tabs button.nav-link {
+  color: #fff;
+}
+
+body.theme-dark .search-vehicle-modal-box {
+  background-color: #555;
+}
+
+body.theme-dark .ct_seller_banner:before {
+  /* background-color: ; */
+  background: linear-gradient(89.69deg, #111 36.52%, rgba(255, 255, 255, 0) 92.22%);
+}
+
+body.theme-dark .ct_right_main_box {
+  border: 0.4px solid #555;
+}
+
+body.theme-dark select.form-select {
+  background: none;
+}
+
+body.theme-dark .match-box,
+body.theme-dark .year-card {
+  background-color: #333;
+}
+
+
+
+body.theme-dark .sellter-detail-tabs li button.active,
+body.theme-dark .sellter-detail-tabs li button:hover,
+body.theme-dark .sellter-detail-tabs li button {
+  color: #fff !important;
+}
+
+
+body.theme-dark .chat-date-box {
+  background: #555;
+}
+
+body.theme-dark .send-box {
+  background-color: #222;
+}
+
+
+body.theme-dark .filter-preview-box.active {
+  color: #fff;
+  background: #111;
+}
+
+
+body.theme-dark .filter-preview-box.active div img {
+  filter: brightness(0) invert(1);
+
+}
+
+
+body.theme-dark .quality-img img {
+  filter: brightness(0) invert(1);
+}
+
+
+
+body.theme-dark .wishlist-svg path {
+  stroke: #fff;
+}
+
+
+
+body.theme-dark .main-header-section .navbar {
+  background: #000;
+  border-color: #555;
+}
+
+
+
+body.theme-dark .main-logo svg path {
+  stroke: #fff;
+  fill: #fff;
+}
+
+body.theme-dark .navbar-nav .nav-link , body.theme-dark .eng-dropdown, body.theme-dark .prof-user-name, body.theme-dark .prof-buyer-name{
+  color: #fff !important;
+}
+
+
+body.theme-dark .navbar-nav .nav-link.active{
+  color: #EB261D;
+}
+
+body.theme-dark  .main-logo svg path:nth-child(3) {
+    fill: #EB261D;
+    stroke: #EB261D;
+}
+
+
+
+
+/* seller side */
+
+body.theme-dark .ct_car_listed_list:before{
+  border-color: #555;
+}
+
+body.theme-dark .ct_num{
+  background: #111;
+  border-color: #555;
+  color: #fff;
+}
+
+
+body.theme-dark .btn-grey-transparent{
+  border-color: #fff;
+  color: #fff;
+}
+body.theme-dark .btn-grey-transparent::before{
+  background: #fff;
+}
+body.theme-dark .btn-grey-transparent:hover{
+  color: #111;
+}
+
+
+body.theme-dark .btn-red-transparent{
+  background: #8f0c1f;
+  color: #fff;
+}
+body.theme-dark .btn-red-transparent::before{
+  background: none;
+}
+body.theme-dark .btn-red-transparent:hover {
+    color: #fff;
+    border-color: #8f0c1f;
+    background: none;
+}
+
+
+body.theme-dark .toggle-switch input[type="checkbox"]:checked+.toggle-switch-background {
+    background-color: #334155;
+}
+
+
+
+body.theme-dark .custom-close i{
+  color: #fff;
+}
+
+
+body.theme-dark .ct_stepper li.active h6 ,
+body.theme-dark .ct_stepper li.active p{
+  color: #fff;
+}
+body.theme-dark .ct_step_circle{
+  background-color: #333;
+  color: #fff;
+  border-color: #333;
+}
+
+body.theme-dark .ct_step_circle.active{
+  background-color: #111;
+}

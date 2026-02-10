@@ -23,7 +23,7 @@ import { ModalService } from '../../services/modal.service';
 export class SellerSignUpComponent {
   private destroy$ = new Subject<void>();
   Form: FormGroup;
-  formStep: number = 2;
+  formStep: number = 1;
   SearchCountryField = SearchCountryField
   CountryISO = CountryISO;
   selectedCountry = CountryISO.Sweden;
@@ -40,8 +40,10 @@ export class SellerSignUpComponent {
     value: 'business'
   }];
 
+  submitted: boolean = false;
+
   selectedSellerType: string = 'personal';
-  constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private router: Router, private translate: TranslateService, public modal: ModalService) {
+  constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private translate: TranslateService, public modal: ModalService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.Form = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20), NoWhitespaceDirective.validate]],
@@ -52,7 +54,7 @@ export class SellerSignUpComponent {
       typeOfSeller: ['personal', [Validators.required]],
       password: ['', [Validators.required, strongPasswordValidator]],
       confirmPassword: ['', [Validators.required]],
-      address: [''],
+      address: ['', [Validators.required, NoWhitespaceDirective.validate]],
       legalForm: ['Sole Proprietorship'],
       companyName: [''],
       companyAddress: [''],
@@ -60,6 +62,7 @@ export class SellerSignUpComponent {
       pincode: ['', [Validators.required, NoWhitespaceDirective.validate]],
       vat: [''],
       uid: [''],
+      termsAndConditions: [false, [Validators.required]],
     }, {
       validators: [
         passwordMatchValidator(),
@@ -72,15 +75,19 @@ export class SellerSignUpComponent {
   ngOnInit(): void {
     this.Form.get('typeOfSeller')?.valueChanges.subscribe((value) => {
       if (value === 'business') {
-        this.Form.get('companyName')?.setValidators([Validators.required]);
-        this.Form.get('companyAddress')?.setValidators([Validators.required]);
+        this.Form.get('companyName')?.setValidators([Validators.required, NoWhitespaceDirective.validate]);
+        this.Form.get('companyAddress')?.setValidators([Validators.required, NoWhitespaceDirective.validate]);
         this.Form.get('companyName')?.updateValueAndValidity();
         this.Form.get('companyAddress')?.updateValueAndValidity();
+        this.Form.get('address')?.clearValidators();
+        this.Form.get('address')?.updateValueAndValidity();
       } else {
         this.Form.get('companyName')?.clearValidators();
         this.Form.get('companyAddress')?.clearValidators();
         this.Form.get('companyName')?.updateValueAndValidity();
         this.Form.get('companyAddress')?.updateValueAndValidity();
+        this.Form.get('address')?.setValidators([Validators.required, NoWhitespaceDirective.validate]);
+        this.Form.get('address')?.updateValueAndValidity();
       }
     })
     this.Form.get('isWhatsappSameAsPhone')?.valueChanges.subscribe((value) => {
@@ -110,6 +117,11 @@ export class SellerSignUpComponent {
       this.Form.markAllAsTouched();
       return;
     }
+
+    if (!this.Form.get('termsAndConditions')?.value) {
+      this.submitted = true;
+      return;
+    }
     this.loading = true
 
     let formData = {
@@ -134,10 +146,13 @@ export class SellerSignUpComponent {
       next: (res: any) => {
         this.loading = false
         this.toastr.success(res.message)
-        sessionStorage.setItem('email', this.Form.value.email)
-        sessionStorage.setItem('userName', this.Form.value.fullName)
-        sessionStorage.setItem('isForgotPassword', '0')
-        this.router.navigate(['/otp-verification'])
+        let currentUser = {
+          email: this.Form.value.email,
+          isForgotPassword: '0'
+        }
+        sessionStorage.setItem('currentUser', JSON.stringify(currentUser))
+        this.commonService.currentUser.set(currentUser)
+        this.modal.openOtpVerificationModal()
       },
       error: (error) => {
         this.loading = false

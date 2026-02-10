@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, Validators, FormControl } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject, takeUntil } from 'rxjs';
@@ -25,7 +25,13 @@ export class ResetPasswordComponent {
   email: string | undefined
   constructor(private commonService: CommonService, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private translate: TranslateService, private modal: ModalService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
-    this.email = sessionStorage.getItem('email') || ''
+    effect(() => {
+      if (this.commonService.currentUser()) {
+        this.email = this.commonService.currentUser()?.email
+      } else {
+        this.email = JSON.parse(localStorage.getItem('currentUser') || '{}').email
+      }
+    })
 
     this.Form = new FormGroup({
       newPassword: new FormControl('', [Validators.required, strongPasswordValidator]),

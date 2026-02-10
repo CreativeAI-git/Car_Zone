@@ -41,8 +41,12 @@ export class ForgotPasswordComponent {
       next: (res: any) => {
         this.loading = false
         this.toastr.success(res.message)
-        sessionStorage.setItem('email', this.Form.value.email)
-        sessionStorage.setItem('isForgotPassword', '1')
+        let currentUser = {
+          email: this.Form.value.email,
+          isForgotPassword: '1'
+        }
+        sessionStorage.setItem('currentUser', JSON.stringify(currentUser))
+        this.commonService.currentUser.set(currentUser)
         this.modal.openOtpVerificationModal()
       },
       error: (error) => {

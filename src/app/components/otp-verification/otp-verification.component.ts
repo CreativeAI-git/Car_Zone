@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzInputOtpComponent } from 'ng-zorro-antd/input';
 import { SubmitButtonComponent } from '../shared/submit-button/submit-button.component';
@@ -25,12 +25,17 @@ export class OtpVerificationComponent {
   otp: string = '';
   loading: boolean = false
   isForgotPassword: string | undefined
-  userName: string
   constructor(private toster: NzMessageService, private commonService: CommonService, private translate: TranslateService, private userService: UserService, private modal: ModalService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
-    this.email = sessionStorage.getItem('email') || ''
-    this.userName = sessionStorage.getItem('userName') || ''
-    this.isForgotPassword = sessionStorage.getItem('isForgotPassword') || ''
+    effect(() => {
+      if (this.commonService.currentUser()) {
+        this.email = this.commonService.currentUser()?.email
+        this.isForgotPassword = this.commonService.currentUser()?.isForgotPassword
+      } else {
+        this.email = JSON.parse(localStorage.getItem('currentUser') || '{}').email
+        this.isForgotPassword = JSON.parse(localStorage.getItem('currentUser') || '{}').isForgotPassword
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -83,7 +88,6 @@ export class OtpVerificationComponent {
         if (this.isForgotPassword === '1') {
           this.modal.openResetPasswordModal()
         } else {
-          // this.userService.handleAddOrUpdateUser(res.data.userId, this.userName, '')
           this.modal.openSignInModal()
         }
       },

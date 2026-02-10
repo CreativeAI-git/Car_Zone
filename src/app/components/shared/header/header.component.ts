@@ -18,7 +18,7 @@ import { RoleModalComponent } from '../role-modal/role-modal.component';
 })
 export class HeaderComponent {
   private roleService = inject(RoleService);
-  role = this.roleService.currentRole;
+  role = this.roleService.currentLoggedInRole;
   @ViewChild('close') close: ElementRef | undefined;
   @ViewChild('navbar', { static: true }) navbar!: ElementRef;
   userData: any

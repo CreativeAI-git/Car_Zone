@@ -1,452 +1,681 @@
-<!-- Hero Section -->
-<section class="hero-section" id="home">
-      <div class="container">
-            <div class="row">
-                  <div class="col-lg-7">
-                        <div class="hero-content">
-                              <h1 class="text-white mb-2">Discover, Compare & Drive<br />Home Your Perfect Car</h1>
-                              <p>
-                                    At CarZone, browse thousands of cars and connect directly with
-                                    trusted sellers. No middlemen, no extra fees — just simple,
-                                    secure, and transparent deals.
-                              </p>
-                              <button (click)="modal.openBuyerSignUpModal()" class="btn-create-account">Create
-                                    Account</button>
-                        </div>
-                  </div>
-            </div>
-      </div>
-</section>
-
-<!-- Search Box -->
-<section class="">
-      <div class="container">
-            <div class="row justify-content-center">
-                  <div class="col-lg-10">
-                        <div class="search-box">
-                              <h5 class="mb-30">321764 Cars Available</h5>
-                              <div class="row g-3">
-                                    <div class="col-md-3 col-sm-6">
-                                          <select class="form-select">
-                                                <option>Make & Model</option>
-                                                <option>Toyota</option>
-                                                <option>Honda</option>
-                                                <option>BMW</option>
-                                          </select>
-                                    </div>
-                                    <div class="col-md-3 col-sm-6">
-                                          <select class="form-select">
-                                                <option>Body Type</option>
-                                                <option>Sedan</option>
-                                                <option>SUV</option>
-                                                <option>Truck</option>
-                                          </select>
-                                    </div>
-                                    <div class="col-md-3 col-sm-6">
-                                          <select class="form-select">
-                                                <option>Price Range</option>
-                                                <option>$0 - $20,000</option>
-                                                <option>$20,000 - $40,000</option>
-                                                <option>$40,000+</option>
-                                          </select>
-                                    </div>
-                                    <div class="col-md-3 col-sm-6">
-                                          <select class="form-select">
-                                                <option>Year Range</option>
-                                                <option>2020-2024</option>
-                                                <option>2015-2019</option>
-                                                <option>2010-2014</option>
-                                          </select>
-                                    </div>
-                                    <div class="col-md-3 col-sm-6">
-                                          <select class="form-select">
-                                                <option>Kilometers</option>
-                                                <option>0-50,000</option>
-                                                <option>50,000-100,000</option>
-                                          </select>
-                                    </div>
-                                    <div class="col-md-3 col-sm-6">
-                                          <select class="form-select">
-                                                <option>Transmission</option>
-                                                <option>Automatic</option>
-                                                <option>Manual</option>
-                                          </select>
-                                    </div>
-                                    <div class="col-md-3 col-sm-6">
-                                          <select class="form-select">
-                                                <option>Power Output</option>
-                                                <option>100-200 HP</option>
-                                                <option>200-300 HP</option>
-                                          </select>
-                                    </div>
-                                    <div class="col-md-3 col-sm-6">
-                                          <select class="form-select">
-                                                <option>Fuel Type</option>
-                                                <option>Gasoline</option>
-                                                <option>Diesel</option>
-                                                <option>Electric</option>
-                                          </select>
-                                    </div>
-                              </div>
-                              <div class="d-flex justify-content-between align-items-center mt-30">
-                                    <a href="car-listing.html" class="clear-filters">
-                                          <img src="img/icons/filter.svg" alt="More Filters" />
-                                          <span> More Filters</span>
-                                    </a>
-                                    <button class="btn-red">Search</button>
+<ng-container *appRole="'buyer'">
+      <!-- Hero Section -->
+      <section class="hero-section" id="home">
+            <div class="container">
+                  <div class="row">
+                        <div class="col-lg-7">
+                              <div class="hero-content">
+                                    <h1 class="text-white mb-2">Discover, Compare & Drive<br />Home Your Perfect Car
+                                    </h1>
+                                    <p>
+                                          At CarZone, browse thousands of cars and connect directly with
+                                          trusted sellers. No middlemen, no extra fees — just simple,
+                                          secure, and transparent deals.
+                                    </p>
+                                    <button (click)="modal.openBuyerSignUpModal()" class="btn-create-account">Create
+                                          Account</button>
                               </div>
                         </div>
                   </div>
             </div>
-      </div>
-</section>
+      </section>
 
-<!-- Brand Icons -->
-<section class="brand-icons">
-      <div class="container">
-            <div class="row justify-content-center">
-                  <div class="col-lg-10">
-                        <div class="mySwiper owl-carousel brand-icon-carousel">
-                              <div class="swiper-wrapper">
-                                    <div class="brand-icon-item swiper-slide">
-                                          <div class="brand-icon">
-                                                amag
-                                                <span class="badge">
-                                                      <img src="img/icons/autobrightness.svg" />
-                                                </span>
+      <!-- Search Box -->
+      <section class="">
+            <div class="container">
+                  <div class="row justify-content-center">
+                        <div class="col-lg-10">
+                              <div class="search-box">
+                                    <h5 class="mb-30">321764 Cars Available</h5>
+                                    <div class="row g-3">
+                                          <div class="col-md-3 col-sm-6">
+                                                <select class="form-select">
+                                                      <option>Make & Model</option>
+                                                      <option>Toyota</option>
+                                                      <option>Honda</option>
+                                                      <option>BMW</option>
+                                                </select>
+                                          </div>
+                                          <div class="col-md-3 col-sm-6">
+                                                <select class="form-select">
+                                                      <option>Body Type</option>
+                                                      <option>Sedan</option>
+                                                      <option>SUV</option>
+                                                      <option>Truck</option>
+                                                </select>
+                                          </div>
+                                          <div class="col-md-3 col-sm-6">
+                                                <select class="form-select">
+                                                      <option>Price Range</option>
+                                                      <option>$0 - $20,000</option>
+                                                      <option>$20,000 - $40,000</option>
+                                                      <option>$40,000+</option>
+                                                </select>
+                                          </div>
+                                          <div class="col-md-3 col-sm-6">
+                                                <select class="form-select">
+                                                      <option>Year Range</option>
+                                                      <option>2020-2024</option>
+                                                      <option>2015-2019</option>
+                                                      <option>2010-2014</option>
+                                                </select>
+                                          </div>
+                                          <div class="col-md-3 col-sm-6">
+                                                <select class="form-select">
+                                                      <option>Kilometers</option>
+                                                      <option>0-50,000</option>
+                                                      <option>50,000-100,000</option>
+                                                </select>
+                                          </div>
+                                          <div class="col-md-3 col-sm-6">
+                                                <select class="form-select">
+                                                      <option>Transmission</option>
+                                                      <option>Automatic</option>
+                                                      <option>Manual</option>
+                                                </select>
+                                          </div>
+                                          <div class="col-md-3 col-sm-6">
+                                                <select class="form-select">
+                                                      <option>Power Output</option>
+                                                      <option>100-200 HP</option>
+                                                      <option>200-300 HP</option>
+                                                </select>
+                                          </div>
+                                          <div class="col-md-3 col-sm-6">
+                                                <select class="form-select">
+                                                      <option>Fuel Type</option>
+                                                      <option>Gasoline</option>
+                                                      <option>Diesel</option>
+                                                      <option>Electric</option>
+                                                </select>
                                           </div>
                                     </div>
-
-                                    <div class="brand-icon-item swiper-slide">
-                                          <div class="brand-icon">
-                                                amag
-                                                <span class="badge">
-                                                      <img src="img/icons/autobrightness.svg" />
-                                                </span>
-                                          </div>
-                                    </div>
-
-                                    <div class="brand-icon-item swiper-slide">
-                                          <div class="brand-icon">
-                                                amag
-                                                <span class="badge">
-                                                      <img src="img/icons/autobrightness.svg" />
-                                                </span>
-                                          </div>
-                                    </div>
-
-                                    <div class="brand-icon-item swiper-slide">
-                                          <div class="brand-icon">
-                                                amag
-                                                <span class="badge">
-                                                      <img src="img/icons/autobrightness.svg" />
-                                                </span>
-                                          </div>
-                                    </div>
-
-                                    <div class="brand-icon-item swiper-slide">
-                                          <div class="brand-icon">
-                                                amag
-                                                <span class="badge">
-                                                      <img src="img/icons/autobrightness.svg" />
-                                                </span>
-                                          </div>
-                                    </div>
-
-                                    <div class="brand-icon-item swiper-slide">
-                                          <div class="brand-icon">
-                                                amag
-                                                <span class="badge">
-                                                      <img src="img/icons/autobrightness.svg" />
-                                                </span>
-                                          </div>
-                                    </div>
-
-                                    <div class="brand-icon-item swiper-slide">
-                                          <div class="brand-icon">
-                                                amag
-                                                <span class="badge">
-                                                      <img src="img/icons/autobrightness.svg" />
-                                                </span>
-                                          </div>
-                                    </div>
-
-                                    <div class="brand-icon-item swiper-slide">
-                                          <div class="brand-icon">
-                                                amag
-                                                <span class="badge">
-                                                      <img src="img/icons/autobrightness.svg" />
-                                                </span>
-                                          </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-30">
+                                          <a href="car-listing.html" class="clear-filters">
+                                                <img src="img/icons/filter.svg" alt="More Filters" />
+                                                <span> More Filters</span>
+                                          </a>
+                                          <button class="btn-red">Search</button>
                                     </div>
                               </div>
                         </div>
                   </div>
             </div>
-      </div>
-</section>
+      </section>
 
-<!-- Collections Section -->
-<section class="collections-section" id="browse">
-      <div class="container-fluid px-0">
-            <div class="collections-header">
-                  <div class="section-subheading justify-content-center">
-                        <img src="img/subheading-img.png" />
-                        <p class="ct_fs_16">OUR COLLECTIONS</p>
-                  </div>
-
-                  <h2 class="section-heading ct_fs_35 text-center">
-                        Explore Our Top-Rated Cars
-                  </h2>
-            </div>
-
-            <div class="owl-carousel owl-theme CarSwiper">
-                  <div class="swiper-wrapper">
-                        @for (item of carsList; track $index) {
-                        <div class="item swiper-slide">
-                              <div class="car-card">
-                                    <div class="position-relative">
-                                          <div class="swiper mySwiperMain mySwiperMain-{{$index}}">
-                                                <div class="swiper-wrapper">
-                                                      <div class="swiper-slide" *ngFor="let img of item.carImages;">
-                                                            <img [src]="img || 'img/placeholder.png'" />
-                                                      </div>
+      <!-- Brand Icons -->
+      <section class="brand-icons">
+            <div class="container">
+                  <div class="row justify-content-center">
+                        <div class="col-lg-10">
+                              <div class="mySwiper owl-carousel brand-icon-carousel">
+                                    <div class="swiper-wrapper">
+                                          <div class="brand-icon-item swiper-slide">
+                                                <div class="brand-icon">
+                                                      amag
+                                                      <span class="badge">
+                                                            <img src="img/icons/autobrightness.svg" />
+                                                      </span>
                                                 </div>
-                                                <div class="swiper-pagination pagination-ui"></div>
-                                                <div class="swiper-button-prev"></div>
-                                                <div class="swiper-button-next"></div>
                                           </div>
 
-                                          <div class="favorite-icon">
-                                                <i class="fa-heart ct_fs_25"
-                                                      [ngClass]="item.isWishlist ? 'fa-solid ct_text_red' : 'fa-regular'"
-                                                      (click)="item.isWishlist ? removeFromWishlist(item) : addToWishlist(item)"></i>
+                                          <div class="brand-icon-item swiper-slide">
+                                                <div class="brand-icon">
+                                                      amag
+                                                      <span class="badge">
+                                                            <img src="img/icons/autobrightness.svg" />
+                                                      </span>
+                                                </div>
                                           </div>
 
-                                          <div class="full-screen-ui" (click)="previewImage(item.carImages)">
-                                                <i class="fa-solid fa-maximize"></i>
+                                          <div class="brand-icon-item swiper-slide">
+                                                <div class="brand-icon">
+                                                      amag
+                                                      <span class="badge">
+                                                            <img src="img/icons/autobrightness.svg" />
+                                                      </span>
+                                                </div>
                                           </div>
-                                    </div>
-                                    <div class="price-wrapper d-flex align-items-center">
-                                          <div class="price-text">{{item.totalPrice | chfFormat}}</div>
-                                          <a routerLink="/car-detail" [queryParams]="{id: item.id}"
-                                                class="view-btn">View Details</a>
-                                    </div>
-                                    <div class="car-details" routerLink="/car-detail" [queryParams]="{id: item.id}">
-                                          <h5>{{item.brandName}}
-                                                {{item.carModel}}</h5>
-                                          <div class="car-features">
-                                                <div class="row">
-                                                      <div class="col-sm-6">
-                                                            <ul class="car-specs">
-                                                                  <li>
-                                                                        <img src="img/icons/petrol.svg" />
-                                                                        {{item.selectYear}}
-                                                                  </li>
-                                                                  <li>
-                                                                        <img src="img/icons/automatic.svg" />
-                                                                        {{item.transmission}}
-                                                                  </li>
-                                                            </ul>
-                                                      </div>
 
-                                                      <div class="col-sm-6">
-                                                            <ul class="car-specs">
-                                                                  <li>
-                                                                        <img src="img/icons/calendar.svg" />
+                                          <div class="brand-icon-item swiper-slide">
+                                                <div class="brand-icon">
+                                                      amag
+                                                      <span class="badge">
+                                                            <img src="img/icons/autobrightness.svg" />
+                                                      </span>
+                                                </div>
+                                          </div>
 
-                                                                        {{item.fuelType}}
-                                                                  </li>
-                                                                  <li><img src="img/icons/road.svg" />
-                                                                        {{item.carMileage}} km</li>
-                                                            </ul>
-                                                      </div>
+                                          <div class="brand-icon-item swiper-slide">
+                                                <div class="brand-icon">
+                                                      amag
+                                                      <span class="badge">
+                                                            <img src="img/icons/autobrightness.svg" />
+                                                      </span>
+                                                </div>
+                                          </div>
+
+                                          <div class="brand-icon-item swiper-slide">
+                                                <div class="brand-icon">
+                                                      amag
+                                                      <span class="badge">
+                                                            <img src="img/icons/autobrightness.svg" />
+                                                      </span>
+                                                </div>
+                                          </div>
+
+                                          <div class="brand-icon-item swiper-slide">
+                                                <div class="brand-icon">
+                                                      amag
+                                                      <span class="badge">
+                                                            <img src="img/icons/autobrightness.svg" />
+                                                      </span>
+                                                </div>
+                                          </div>
+
+                                          <div class="brand-icon-item swiper-slide">
+                                                <div class="brand-icon">
+                                                      amag
+                                                      <span class="badge">
+                                                            <img src="img/icons/autobrightness.svg" />
+                                                      </span>
                                                 </div>
                                           </div>
                                     </div>
                               </div>
                         </div>
-                        }
                   </div>
             </div>
-      </div>
-</section>
+      </section>
 
-<!-- About Section -->
-<section class="about-section" id="about">
-      <div class="container">
-            <div class="row align-items-center">
-                  <div class="col-lg-6">
-                        <div class="about-image">
-                              <img src="img/about-us-img.png" alt="About" />
-                              <!-- <div class="since-badge">
+      <!-- Collections Section -->
+      <section class="collections-section" id="browse">
+            <div class="container-fluid px-0">
+                  <div class="collections-header">
+                        <div class="section-subheading justify-content-center">
+                              <img src="img/subheading-img.png" />
+                              <p class="ct_fs_16">OUR COLLECTIONS</p>
+                        </div>
+
+                        <h2 class="section-heading ct_fs_35 text-center">
+                              Explore Our Top-Rated Cars
+                        </h2>
+                  </div>
+
+                  <div class="owl-carousel owl-theme CarSwiper">
+                        <div class="swiper-wrapper">
+                              @for (item of carsList; track $index) {
+                              <div class="item swiper-slide">
+                                    <div class="car-card">
+                                          <div class="position-relative">
+                                                <div class="swiper mySwiperMain mySwiperMain-{{$index}}">
+                                                      <div class="swiper-wrapper">
+                                                            <div class="swiper-slide"
+                                                                  *ngFor="let img of item.carImages;">
+                                                                  <img [src]="img || 'img/placeholder.png'" />
+                                                            </div>
+                                                      </div>
+                                                      <div class="swiper-pagination pagination-ui"></div>
+                                                      <div class="swiper-button-prev"></div>
+                                                      <div class="swiper-button-next"></div>
+                                                </div>
+
+                                                <div class="favorite-icon">
+                                                      <i class="fa-heart ct_fs_25"
+                                                            [ngClass]="item.isWishlist ? 'fa-solid ct_text_red' : 'fa-regular'"
+                                                            (click)="item.isWishlist ? removeFromWishlist(item) : addToWishlist(item)"></i>
+                                                </div>
+
+                                                <div class="full-screen-ui" (click)="previewImage(item.carImages)">
+                                                      <i class="fa-solid fa-maximize"></i>
+                                                </div>
+                                          </div>
+                                          <div class="price-wrapper d-flex align-items-center">
+                                                <div class="price-text">{{item.totalPrice | chfFormat}}</div>
+                                                <a routerLink="/car-detail" [queryParams]="{id: item.id}"
+                                                      class="view-btn">View Details</a>
+                                          </div>
+                                          <div class="car-details" routerLink="/car-detail"
+                                                [queryParams]="{id: item.id}">
+                                                <h5>{{item.brandName}}
+                                                      {{item.carModel}}</h5>
+                                                <div class="car-features">
+                                                      <div class="row">
+                                                            <div class="col-sm-6">
+                                                                  <ul class="car-specs">
+                                                                        <li>
+                                                                              <img src="img/icons/petrol.svg" />
+                                                                              {{item.selectYear}}
+                                                                        </li>
+                                                                        <li>
+                                                                              <img src="img/icons/automatic.svg" />
+                                                                              {{item.transmission}}
+                                                                        </li>
+                                                                  </ul>
+                                                            </div>
+
+                                                            <div class="col-sm-6">
+                                                                  <ul class="car-specs">
+                                                                        <li>
+                                                                              <img src="img/icons/calendar.svg" />
+
+                                                                              {{item.fuelType}}
+                                                                        </li>
+                                                                        <li><img src="img/icons/road.svg" />
+                                                                              {{item.carMileage}} km</li>
+                                                                  </ul>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+                              }
+                        </div>
+                  </div>
+            </div>
+      </section>
+
+      <!-- About Section -->
+      <section class="about-section" id="about">
+            <div class="container">
+                  <div class="row align-items-center">
+                        <div class="col-lg-6">
+                              <div class="about-image">
+                                    <img src="img/about-us-img.png" alt="About" />
+                                    <!-- <div class="since-badge">
                                 <div class="year">2025</div>
                                 <div>Since</div>
                             </div> -->
+                              </div>
+                        </div>
+                        <div class="col-lg-6">
+                              <div class="about-content">
+                                    <div class="section-subheading">
+                                          <img src="img/subheading-img.png" />
+                                          <p class="ct_fs_16">About Carzone</p>
+                                    </div>
+
+                                    <h2 class="section-heading cr_fs_30 text-start">
+                                          The Most Trusted Car Buying & Selling Platform
+                                    </h2>
+                                    <p class="mb-4">
+                                          At CarZone, we make buying and selling cars simple, secure, and
+                                          hassle-free. From verified sellers to direct chat, our platform
+                                          connects genuine car buyers and sellers for a smooth experience.
+                                          Whether you're looking for your next ride or want to sell at the
+                                          best value, CarZone is here to help you every step of the way.
+                                    </p>
+                                    <ul>
+                                          <li>
+                                                <i class="fas fa-check-circle"></i> Wide selection of cars for
+                                                every budget
+                                          </li>
+                                          <li>
+                                                <i class="fas fa-check-circle"></i> Verified sellers for safe
+                                                deals
+                                          </li>
+                                          <li>
+                                                <i class="fas fa-check-circle"></i> Instant chat & zero
+                                                commission listings
+                                          </li>
+                                    </ul>
+                              </div>
                         </div>
                   </div>
-                  <div class="col-lg-6">
-                        <div class="about-content">
+            </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="cta-section">
+            <div class="cta-content d-md-flex align-items-center">
+                  <div class="cta-left-col px-0 w-lg-50 w-sm-100">
+                        <div class="cta-buy">
+                              <p class="ct_fs_18 ct_fw_600">Are You Looking</p>
+                              <h3 class="ct_fs_33 ct_fw_800">TO BUY A CAR?</h3>
+                              <p class="ct_fs_14 ct_fw_400">
+                                    Browse our wide selection of verified cars at competitive prices
+                                    and connect directly with trusted sellers.
+                              </p>
+                              <a class="btn-transparent mt-3">Search Your Car</a>
+                        </div>
+                  </div>
+                  <div class="cta-right-col px-0 w-lg-50 w-sm-100">
+                        <div class="cta-sell">
+                              <p class="ct_fs_18 ct_fw_600">Do You Want To</p>
+                              <h3 class="ct_fs_33 ct_fw_800">SELL YOUR CAR?</h3>
+                              <p class="ct_fs_14 ct_fw_400">
+                                    Easily create your car listing with photos, details, and reach
+                                    thousands of genuine buyers quickly.
+                              </p>
+                              <a class="btn-transparent mt-3">Add Listing</a>
+                        </div>
+                  </div>
+            </div>
+      </section>
+
+      <!-- Steps Section -->
+      <section class="steps-section">
+            <div class="container">
+                  <div class="row align-items-center">
+                        <div class="col-lg-6">
                               <div class="section-subheading">
                                     <img src="img/subheading-img.png" />
-                                    <p class="ct_fs_16">About Carzone</p>
+                                    <p class="ct_fs_16">How It Works</p>
+                              </div>
+                              <h2 class="section-heading ct_fs_35 text-start">
+                                    3 Simple Steps to Get Started
+                              </h2>
+
+                              <p class="mb-4">
+                                    Whether you want to buy or sell, getting started is quick and
+                                    secure. List your car in minutes or explore verified cars, connect
+                                    instantly and close deals with confidence.
+                              </p>
+
+                              <div class="carzone-accordian">
+                                    <div class="accordion" id="accordionExample">
+                                          <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                      <button class="accordion-button ct_fw_500 ct_fs_17" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                                            aria-expanded="true" aria-controls="collapseOne">
+                                                            01. List or Explore Cars
+                                                      </button>
+                                                </h2>
+                                                <div id="collapseOne" class="accordion-collapse collapse show"
+                                                      data-bs-parent="#accordionExample">
+                                                      <div class="accordion-body">
+                                                            <p class="mb-0 ct_fs_15 ct_fw_400">
+                                                                  Add your car details with photos, or browse verified
+                                                                  listings to find your match.
+                                                            </p>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                      <button class="accordion-button collapsed ct_fw_500 ct_fs_17"
+                                                            type="button" data-bs-toggle="collapse"
+                                                            data-bs-target="#collapseTwo" aria-expanded="false"
+                                                            aria-controls="collapseTwo">
+                                                            02. Connect with Users
+                                                      </button>
+                                                </h2>
+                                                <div id="collapseTwo" class="accordion-collapse collapse"
+                                                      data-bs-parent="#accordionExample">
+                                                      <div class="accordion-body">
+                                                            <p class="mb-0 ct_fs_15 ct_fw_400">
+                                                                  Add your car details with photos, or browse verified
+                                                                  listings to find your match.
+                                                            </p>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                      <button class="accordion-button collapsed ct_fw_500 ct_fs_17"
+                                                            type="button" data-bs-toggle="collapse"
+                                                            data-bs-target="#collapseThree" aria-expanded="false"
+                                                            aria-controls="collapseThree">
+                                                            03. Seal the Deal
+                                                      </button>
+                                                </h2>
+                                                <div id="collapseThree" class="accordion-collapse collapse"
+                                                      data-bs-parent="#accordionExample">
+                                                      <div class="accordion-body">
+                                                            <p class="mb-0 ct_fs_15 ct_fw_400">
+                                                                  Add your car details with photos, or browse verified
+                                                                  listings to find your match.
+                                                            </p>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                        <div class="col-lg-6">
+                              <div class="d-flex justify-content-end">
+                                    <div class="step-image mt-lg-0 mt-3">
+                                          <img src="img/accordian-img.png" alt="Steps" class="accordian-right-img" />
+                                          <div class="step-badge">
+                                                <img src="img/icons/verified-user.png" />
+                                                <p class="mt-3 mb-2 ct_fs_12 ct_fw_400">Verified Users</p>
+                                                <p class="mb-0 ct_fs_12 ct_fw_400">Safe & Trusted Deals</p>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+      </section>
+</ng-container>
+
+<ng-container *appRole="'seller'">
+      <section class="">
+            <div class="ct_seller_banner">
+                  <div class="container-fluid">
+                        <div class="row">
+                              <div class="col-xxl-6 col-xl-7 col-md-8 col-sm-12">
+                                    <div class="ct_seller_bnr_cnt">
+                                          <h1>show new <br> car</h1>
+                                          <div class="ct_seller_bnr_title">
+                                                <div class="section-subheading ct_mb_28">
+                                                      <img src="img/subheading-img.png" />
+                                                      <p class="ct_fs_16">INSERT YOUR CAR</p>
+                                                </div>
+
+                                                <h2 class="ct_fs_45 ct_fw_700">
+                                                      Ready to Sell Your Car? Add your listing and start getting
+                                                      buyer interest.
+                                                </h2>
+                                                <p>
+                                                      Create your car listing in minutes and connect with verified
+                                                      buyers looking to purchase today.
+                                                </p>
+
+                                                <a href="choose-listing-plan.html" class="btn-red mt-4">List Your Car
+                                                      Now</a>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+      </section>
+
+      <section class="ct_mt_100 ct_mb_100">
+            <div class="container">
+                  <div class="row">
+                        <div class="col-md-12">
+                              <h6 class="ct_fs_16 ct_texy_clr_35383C text-center mb-3">
+                                    Why List With Us
+                              </h6>
+                              <h2 class="ct_fs_45 ct_fw_700 text-center mx-auto" style="max-width: 538px">
+                                    List Your Car Seamlessly with Carzone
+                              </h2>
+                        </div>
+                  </div>
+
+                  <div class="row ct_mt_38">
+                        <div class="col-md-4 mb-4 mb-md-0">
+                              <figure class="ct_list_card">
+                                    <div class="ct_list_icon">
+                                          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M3.33398 33.3333V31.6667C3.33398 28.5725 4.56315 25.605 6.75107 23.4171C8.939 21.2292 11.9065 20 15.0007 20"
+                                                      stroke="#8F0C1F" stroke-width="2.5" stroke-linecap="round"
+                                                      stroke-linejoin="round" />
+                                                <path d="M26.3398 20.5234C26.5927 20.2465 26.9006 20.0253 27.2438 19.874C27.587 19.7227 27.958 19.6445 28.3331 19.6445C28.7082 19.6445 29.0791 19.7227 29.4223 19.874C29.7655 20.0253 30.0734 20.2465 30.3264 20.5234C30.8681 21.1167 31.6431 21.4384 32.4464 21.4C32.8213 21.383 33.1956 21.4442 33.5455 21.5799C33.8953 21.7156 34.2131 21.9227 34.4784 22.1881C34.7437 22.4534 34.9509 22.7711 35.0865 23.121C35.2222 23.4709 35.2835 23.8452 35.2664 24.22C35.2281 25.0217 35.5498 25.7984 36.1431 26.34C37.3181 27.41 37.3181 29.2567 36.1431 30.3267C35.5498 30.8684 35.2281 31.6434 35.2664 32.4467C35.2835 32.8216 35.2222 33.1959 35.0865 33.5457C34.9509 33.8956 34.7437 34.2133 34.4784 34.4787C34.2131 34.744 33.8953 34.9511 33.5455 35.0868C33.1956 35.2225 32.8213 35.2838 32.4464 35.2667C32.0504 35.2482 31.6551 35.3172 31.2887 35.4687C30.9223 35.6202 30.5937 35.8506 30.3264 36.1434C30.0734 36.4203 29.7655 36.6414 29.4223 36.7928C29.0791 36.9441 28.7082 37.0222 28.3331 37.0222C27.958 37.0222 27.587 36.9441 27.2438 36.7928C26.9006 36.6414 26.5927 36.4203 26.3398 36.1434C26.0724 35.8506 25.7439 35.6202 25.3775 35.4687C25.0111 35.3172 24.6158 35.2482 24.2198 35.2667C23.8449 35.2838 23.4706 35.2225 23.1207 35.0868C22.7709 34.9511 22.4531 34.744 22.1878 34.4787C21.9224 34.2133 21.7153 33.8956 21.5796 33.5457C21.4439 33.1959 21.3827 32.8216 21.3998 32.4467C21.418 32.0505 21.3488 31.6552 21.197 31.2888C21.0452 30.9223 20.8145 30.5939 20.5214 30.3267C20.2445 30.0737 20.0234 29.7658 19.872 29.4226C19.7207 29.0794 19.6426 28.7084 19.6426 28.3334C19.6426 27.9583 19.7207 27.5873 19.872 27.2441C20.0234 26.9009 20.2445 26.593 20.5214 26.34C21.1164 25.7984 21.4381 25.0234 21.3998 24.22C21.3827 23.8452 21.4439 23.4709 21.5796 23.121C21.7153 22.7711 21.9224 22.4534 22.1878 22.1881C22.4531 21.9227 22.7709 21.7156 23.1207 21.5799C23.4706 21.4442 23.8449 21.383 24.2198 21.4C25.0214 21.4384 25.7981 21.1167 26.3398 20.5217V20.5234Z"
+                                                      stroke="#8F0C1F" stroke-width="2.5" />
+                                                <path d="M25.6073 28.3327L27.424 30.1493L31.0606 26.516M15.0007 19.9993C16.7688 19.9993 18.4645 19.297 19.7147 18.0467C20.9649 16.7965 21.6673 15.1008 21.6673 13.3327C21.6673 11.5646 20.9649 9.86888 19.7147 8.61864C18.4645 7.36839 16.7688 6.66602 15.0007 6.66602C13.2325 6.66602 11.5368 7.36839 10.2866 8.61864C9.03636 9.86888 8.33398 11.5646 8.33398 13.3327C8.33398 15.1008 9.03636 16.7965 10.2866 18.0467C11.5368 19.297 13.2325 19.9993 15.0007 19.9993Z"
+                                                      stroke="#8F0C1F" stroke-width="2.5" stroke-linecap="round"
+                                                      stroke-linejoin="round" />
+                                          </svg>
+                                    </div>
+                                    <figcaption>
+                                          <h4>Verified & Trusted Buyers</h4>
+                                          <p class="ct_para_scroll ct_custom_scroll">
+                                                Every buyer and seller goes through verification, ensuring
+                                                genuine inquiries and a secure selling experience.
+                                          </p>
+                                    </figcaption>
+                              </figure>
+                        </div>
+                        <div class="col-md-4 mb-4 mb-md-0">
+                              <figure class="ct_list_card">
+                                    <div class="ct_list_icon">
+                                          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M28.7544 33.195C31.8447 31.1477 34.1187 28.081 35.1802 24.5292C36.2416 20.9775 36.0233 17.1659 34.5631 13.7586C33.1029 10.3514 30.4934 7.56444 27.1895 5.88351C23.8855 4.20258 20.0965 3.7342 16.4827 4.55999M28.756 28.3333V33.1933L34.166 33.195M11.2027 6.83333C8.1213 8.88767 5.85751 11.9572 4.8051 15.5079C3.75269 19.0587 3.97826 22.866 5.44256 26.2677C6.90687 29.6693 9.51726 32.4501 12.8197 34.1262C16.1221 35.8023 19.9076 36.2678 23.5177 35.4417M11.2027 6.83333V11.6667M11.2027 6.83333H5.83271"
+                                                      stroke="#8F0C1F" stroke-width="2.5" stroke-linecap="round"
+                                                      stroke-linejoin="round" />
+                                                <path d="M20.8333 11.666L15 19.9993H25L19.1667 28.3327" stroke="#8F0C1F"
+                                                      stroke-width="2.5" stroke-linecap="round"
+                                                      stroke-linejoin="round" />
+                                          </svg>
+                                    </div>
+                                    <figcaption>
+                                          <h4>Better Deals, Full Control</h4>
+                                          <p class="ct_para_scroll ct_custom_scroll">
+                                                Set your own price, negotiate directly, and adjust offers
+                                                without middlemen or hidden fees.
+                                          </p>
+                                    </figcaption>
+                              </figure>
+                        </div>
+                        <div class="col-md-4 mb-4 mb-md-0">
+                              <figure class="ct_list_card">
+                                    <div class="ct_list_icon">
+                                          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M28.7544 33.195C31.8447 31.1477 34.1187 28.081 35.1802 24.5292C36.2416 20.9775 36.0233 17.1659 34.5631 13.7586C33.1029 10.3514 30.4934 7.56444 27.1895 5.88351C23.8855 4.20258 20.0965 3.7342 16.4827 4.55999M28.756 28.3333V33.1933L34.166 33.195M11.2027 6.83333C8.1213 8.88767 5.85751 11.9572 4.8051 15.5079C3.75269 19.0587 3.97826 22.866 5.44256 26.2677C6.90687 29.6693 9.51726 32.4501 12.8197 34.1262C16.1221 35.8023 19.9076 36.2678 23.5177 35.4417M11.2027 6.83333V11.6667M11.2027 6.83333H5.83271"
+                                                      stroke="#8F0C1F" stroke-width="2.5" stroke-linecap="round"
+                                                      stroke-linejoin="round" />
+                                                <path d="M20.8333 11.666L15 19.9993H25L19.1667 28.3327" stroke="#8F0C1F"
+                                                      stroke-width="2.5" stroke-linecap="round"
+                                                      stroke-linejoin="round" />
+                                          </svg>
+                                    </div>
+                                    <figcaption>
+                                          <h4>Faster Selling Process</h4>
+                                          <p class="ct_para_scroll ct_custom_scroll">
+                                                From listing to inquiry to purchase contract — everything is
+                                                streamlined to close deals quicker.
+                                          </p>
+                                    </figcaption>
+                              </figure>
+                        </div>
+                  </div>
+            </div>
+      </section>
+
+      <section class="ct_mb_100">
+            <div class="container">
+                  <div class="row">
+                        <div class="col-md-6 mb-4 mb-md-0">
+                              <div>
+                                    <h6 class="ct_fs_16 ct_texy_clr_35383C mb-3">Why List With Us</h6>
+                                    <h2 class="ct_fs_45 ct_fw_700" style="max-width: 499px">
+                                          Get Your Car Listed in 5 Easy Steps
+                                    </h2>
+                                    <p class="mb-0 ct_text_op_07">
+                                          A guided process that helps you select a plan, add verified
+                                          vehicle details, manage pricing, and complete billing securely.
+                                    </p>
+                              </div>
+                              <ul class="ct_car_listed_list ps-0">
+                                    <li>
+                                          <div class="ct_num">
+                                                <p class="mb-0">1</p>
+                                          </div>
+                                          <div>
+                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">Select a Slot Plan</h5>
+                                                <p class="mb-0">
+                                                      Choose a listing plan that fits your selling needs.
+                                                </p>
+                                          </div>
+                                    </li>
+                                    <li>
+                                          <div class="ct_num">
+                                                <p class="mb-0">2</p>
+                                          </div>
+                                          <div>
+                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">Enter Car Details</h5>
+                                                <p class="mb-0">
+                                                      Add vehicle information via VIN or manual entry.
+                                                </p>
+                                          </div>
+                                    </li>
+                                    <li>
+                                          <div class="ct_num">
+                                                <p class="mb-0">3</p>
+                                          </div>
+                                          <div>
+                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">
+                                                      Add Pricing & Warranty
+                                                </h5>
+                                                <p class="mb-0">
+                                                      Set the price, warranty details, and disclosures.
+                                                </p>
+                                          </div>
+                                    </li>
+                              </ul>
+                        </div>
+                        <div class="col-md-6 mb-4 mb-md-0">
+                              <div class="ct_list_type_img12">
+                                    <img src="img/seller_img/easy_step_img.png" alt="" />
                               </div>
 
-                              <h2 class="section-heading cr_fs_30 text-start">
-                                    The Most Trusted Car Buying & Selling Platform
-                              </h2>
-                              <p class="mb-4">
-                                    At CarZone, we make buying and selling cars simple, secure, and
-                                    hassle-free. From verified sellers to direct chat, our platform
-                                    connects genuine car buyers and sellers for a smooth experience.
-                                    Whether you're looking for your next ride or want to sell at the
-                                    best value, CarZone is here to help you every step of the way.
-                              </p>
-                              <ul>
+                              <ul class="ct_car_listed_list ps-0">
                                     <li>
-                                          <i class="fas fa-check-circle"></i> Wide selection of cars for
-                                          every budget
+                                          <div class="ct_num">
+                                                <p class="mb-0">4</p>
+                                          </div>
+                                          <div>
+                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">Billing Information</h5>
+                                                <p class="mb-0">
+                                                      Provide billing and contact details for invoicing.
+                                                </p>
+                                          </div>
                                     </li>
                                     <li>
-                                          <i class="fas fa-check-circle"></i> Verified sellers for safe
-                                          deals
-                                    </li>
-                                    <li>
-                                          <i class="fas fa-check-circle"></i> Instant chat & zero
-                                          commission listings
+                                          <div class="ct_num">
+                                                <p class="mb-0">5</p>
+                                          </div>
+                                          <div>
+                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">Review & Pay</h5>
+                                                <p class="mb-0">
+                                                      Confirm details, complete payment, and publish your listing.
+                                                </p>
+                                          </div>
                                     </li>
                               </ul>
                         </div>
                   </div>
             </div>
-      </div>
-</section>
+      </section>
 
-<!-- CTA Section -->
-<section class="cta-section">
-      <div class="cta-content d-md-flex align-items-center">
-            <div class="cta-left-col px-0 w-lg-50 w-sm-100">
-                  <div class="cta-buy">
-                        <p class="ct_fs_18 ct_fw_600">Are You Looking</p>
-                        <h3 class="ct_fs_33 ct_fw_800">TO BUY A CAR?</h3>
-                        <p class="ct_fs_14 ct_fw_400">
-                              Browse our wide selection of verified cars at competitive prices
-                              and connect directly with trusted sellers.
-                        </p>
-                        <a class="btn-transparent mt-3">Search Your Car</a>
-                  </div>
-            </div>
-            <div class="cta-right-col px-0 w-lg-50 w-sm-100">
-                  <div class="cta-sell">
-                        <p class="ct_fs_18 ct_fw_600">Do You Want To</p>
-                        <h3 class="ct_fs_33 ct_fw_800">SELL YOUR CAR?</h3>
-                        <p class="ct_fs_14 ct_fw_400">
-                              Easily create your car listing with photos, details, and reach
-                              thousands of genuine buyers quickly.
-                        </p>
-                        <a class="btn-transparent mt-3">Add Listing</a>
-                  </div>
-            </div>
-      </div>
-</section>
-
-<!-- Steps Section -->
-<section class="steps-section">
-      <div class="container">
-            <div class="row align-items-center">
-                  <div class="col-lg-6">
-                        <div class="section-subheading">
-                              <img src="img/subheading-img.png" />
-                              <p class="ct_fs_16">How It Works</p>
-                        </div>
-                        <h2 class="section-heading ct_fs_35 text-start">
-                              3 Simple Steps to Get Started
-                        </h2>
-
-                        <p class="mb-4">
-                              Whether you want to buy or sell, getting started is quick and
-                              secure. List your car in minutes or explore verified cars, connect
-                              instantly and close deals with confidence.
-                        </p>
-
-                        <div class="carzone-accordian">
-                              <div class="accordion" id="accordionExample">
-                                    <div class="accordion-item">
-                                          <h2 class="accordion-header">
-                                                <button class="accordion-button ct_fw_500 ct_fs_17" type="button"
-                                                      data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                                                      aria-expanded="true" aria-controls="collapseOne">
-                                                      01. List or Explore Cars
-                                                </button>
-                                          </h2>
-                                          <div id="collapseOne" class="accordion-collapse collapse show"
-                                                data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                      <p class="mb-0 ct_fs_15 ct_fw_400">
-                                                            Add your car details with photos, or browse verified
-                                                            listings to find your match.
-                                                      </p>
-                                                </div>
-                                          </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                          <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed ct_fw_500 ct_fs_17"
-                                                      type="button" data-bs-toggle="collapse"
-                                                      data-bs-target="#collapseTwo" aria-expanded="false"
-                                                      aria-controls="collapseTwo">
-                                                      02. Connect with Users
-                                                </button>
-                                          </h2>
-                                          <div id="collapseTwo" class="accordion-collapse collapse"
-                                                data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                      <p class="mb-0 ct_fs_15 ct_fw_400">
-                                                            Add your car details with photos, or browse verified
-                                                            listings to find your match.
-                                                      </p>
-                                                </div>
-                                          </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                          <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed ct_fw_500 ct_fs_17"
-                                                      type="button" data-bs-toggle="collapse"
-                                                      data-bs-target="#collapseThree" aria-expanded="false"
-                                                      aria-controls="collapseThree">
-                                                      03. Seal the Deal
-                                                </button>
-                                          </h2>
-                                          <div id="collapseThree" class="accordion-collapse collapse"
-                                                data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                      <p class="mb-0 ct_fs_15 ct_fw_400">
-                                                            Add your car details with photos, or browse verified
-                                                            listings to find your match.
-                                                      </p>
-                                                </div>
-                                          </div>
-                                    </div>
-                              </div>
-                        </div>
-                  </div>
-                  <div class="col-lg-6">
-                        <div class="d-flex justify-content-end">
-                              <div class="step-image mt-lg-0 mt-3">
-                                    <img src="img/accordian-img.png" alt="Steps" class="accordian-right-img" />
-                                    <div class="step-badge">
-                                          <img src="img/icons/verified-user.png" />
-                                          <p class="mt-3 mb-2 ct_fs_12 ct_fw_400">Verified Users</p>
-                                          <p class="mb-0 ct_fs_12 ct_fw_400">Safe & Trusted Deals</p>
-                                    </div>
+      <section class="ct_turn_your_car_bg">
+            <div class="container">
+                  <div class="row">
+                        <div class="col-md-12">
+                              <div>
+                                    <h2 class="ct_fs_45 mb-3 text-white">Turn Your Car into a Head-Turner</h2>
+                                    <hr class="bg-white opacity-100 mx-auto" style="height: 5px; max-width: 250px" />
+                                    <p class="mb-0 mt-5 mx-auto" style="max-width: 634px">
+                                          List your car on CarZone and give it the attention it deserves.
+                                          From stunning visuals and smart filters to instant chats,
+                                          leasing options, and verified buyers — everything is designed to
+                                          help your car stand out, attract serious interest, and sell
+                                          faster with confidence.
+                                    </p>
                               </div>
                         </div>
                   </div>
             </div>
-      </div>
-</section>
-
-<!-- App Section -->
+      </section>
+</ng-container>
 
 <section class="">
       <div class="container">

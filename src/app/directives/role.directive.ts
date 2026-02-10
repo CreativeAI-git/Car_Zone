@@ -14,7 +14,7 @@ export class RoleDirective {
 
       private showHide = effect(() => {
             this.viewContainer.clear();
-            if (this.requiredRole && this.roleService.currentRole() === this.requiredRole) {
+            if (this.requiredRole && this.roleService.getLoggedInRole() === this.requiredRole) {
                   this.viewContainer.createEmbeddedView(this.templateRef);
             }
       });

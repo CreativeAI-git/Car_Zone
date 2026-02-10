@@ -359,13 +359,13 @@
   opacity: 0.9;
 }
 
-.ct_edit_pill_btn{
-   display: inline-flex;
+.ct_edit_pill_btn {
+  display: inline-flex;
   align-items: center;
   gap: 14px;
   padding: 10px 26px 10px 10px;
-  background:none;
-  border:1px solid var(--primary-color);
+  background: none;
+  border: 1px solid var(--primary-color);
   border-radius: 50px;
   color: var(--primary-color);
   font-family: var(--font-body);
@@ -410,8 +410,6 @@
   z-index: -1;
 }
 
-
-
 .ct_stepper h6 {
   margin-bottom: 4px;
   font-size: 18px;
@@ -442,19 +440,22 @@
   background: var(--primary-color);
   color: #fff;
 }
+
 span.ct_step_circle.completed {
-    background: #0acc0a33;
-    color: #fff;
-    border: none;
-    font-size: 20px;
+  background: #0acc0a33;
+  color: #fff;
+  border: none;
+  font-size: 20px;
 }
 
 .ct_stepper li.active h6 {
-    color: var(--primary-color);
+  color: var(--primary-color);
 }
+
 .ct_stepper li.active p {
-    color: #8F0C1F80;
+  color: #8F0C1F80;
 }
+
 .ct_form_step {
   display: none;
 }
@@ -546,7 +547,7 @@ span.ct_step_circle.completed {
   color: #15803D;
   width: fit-content;
   border-radius: 29px;
-  padding:8px 17px;
+  padding: 8px 17px;
 }
 
 
@@ -723,7 +724,7 @@ span.ct_step_circle.completed {
   border: none;
   color: rgba(220, 38, 38, 1);
   background: none;
-    width: 350px;
+  width: 350px;
 }
 
 .success-btn-transparent {
@@ -853,49 +854,48 @@ span.ct_step_circle.completed {
 
 
 .ct_find_vehicle_tabs button.nav-link.active {
-    border-bottom: 3px solid var(--primary-color);
-    border-radius: 6px;
-    color: var(--primary-color);
-    font-weight: 500;
+  border-bottom: 3px solid var(--primary-color);
+  border-radius: 6px;
+  color: var(--primary-color);
+  font-weight: 500;
 }
 
 
 .ct_find_vehicle_tabs button.nav-link {
 
-    color: #111;
-    font-size: 18px;
-    font-weight: 300;
-    width: 100%;
+  color: #111;
+  font-size: 18px;
+  font-weight: 300;
+  width: 100%;
 }
 
 
-.ct_preview-btn{
-padding: 8px 20px;
-color: var(--primary-color);
-background-color: #8F0C1F05;
-border:1px solid #E0E0E0;
-border-radius: 10px;
-border: none;
-outline: none;
+.ct_preview-btn {
+  padding: 8px 20px;
+  color: var(--primary-color);
+  background-color: #8F0C1F05;
+  border: 1px solid #E0E0E0;
+  border-radius: 10px;
+  border: none;
+  outline: none;
 }
-.ct_redeem_btn{
+
+.ct_redeem_btn {
   padding: 8px 16px;
   background-color: #448AFF4D;
   color: #448AFF;
   border-radius: 10px;
   border-radius: 7px;
-border: none;
-outline: none;
+  border: none;
+  outline: none;
 }
 
 
 .my-listing-img {
-    width: 100%;
-    height: 234px;
-    border-radius: 10px;
-    object-fit: cover;
+  width: 100%;
+  height: 234px;
+  border-radius: 10px;
+  object-fit: cover;
 }
 
-.schedule-car-img{
-
-}
+.schedule-car-img {}
