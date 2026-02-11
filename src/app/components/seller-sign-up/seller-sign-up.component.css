@@ -18,3 +18,7 @@
       width: 25px;
       accent-color: #9b0c1f;
 }
+
+app-submit-button {
+      width: 100%;
+}

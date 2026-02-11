@@ -61,7 +61,6 @@ export class SellerSignUpComponent {
       city: ['', [Validators.required, NoWhitespaceDirective.validate]],
       pincode: ['', [Validators.required, NoWhitespaceDirective.validate]],
       vat: [''],
-      uid: [''],
       termsAndConditions: [false, [Validators.required]],
     }, {
       validators: [
@@ -129,6 +128,8 @@ export class SellerSignUpComponent {
       email: this.Form.value.email,
       phoneNumber: this.Form.value.phoneNumber.number,
       typeOfSeller: this.Form.value.typeOfSeller,
+      whatsappNumber: this.Form.value.whatsappNumber.number,
+      isWhatsappSameAsPhone: this.Form.value.isWhatsappSameAsPhone,
       password: this.Form.value.password,
       address: this.Form.value.address,
       legalForm: this.Form.value.legalForm,

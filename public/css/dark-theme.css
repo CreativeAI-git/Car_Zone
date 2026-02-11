@@ -33,7 +33,7 @@ body.theme-dark {
 
 body.theme-dark .card,
 body.theme-dark .modal-content {
-  background-color: #222;
+  background: #222;
   color: #e5e7eb;
   border-color: #334155;
 }
@@ -365,4 +365,12 @@ body.theme-dark .ct_step_circle{
 
 body.theme-dark .ct_step_circle.active{
   background-color: #111;
+}
+
+body.theme-dark .login-popup__left{
+    background-color: #111;
+}
+body.theme-dark .login-popup__role:has(input:checked) {
+  border-color: #555;
+  background: #555;
 }

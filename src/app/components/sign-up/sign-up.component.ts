@@ -12,34 +12,39 @@ import { CommonService } from '../../services/common.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ModalService } from '../../services/modal.service';
+import { SubmitButtonComponent } from '../shared/submit-button/submit-button.component';
 
 @Component({
   selector: 'app-sign-up',
-  imports: [ReactiveFormsModule, CommonModule, NzSelectModule, QuillModule, FormsModule, NgxIntlTelInputModule, TranslateModule],
+  imports: [ReactiveFormsModule, CommonModule, NzSelectModule, QuillModule, FormsModule, NgxIntlTelInputModule, TranslateModule, SubmitButtonComponent],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css'
 })
 export class SignUpComponent {
   destroy$ = new Subject<void>();
+  formStep: number = 2;
   Form: FormGroup;
-  atValues: any;
-  htmlText: string = '';
   SearchCountryField = SearchCountryField
   CountryISO = CountryISO;
   selectedCountry = CountryISO.Sweden;
   loading: boolean = false
   isShowPassword: boolean = false
   isShowConfirmPassword: boolean = false
-  lat: number | null = null;
-  lng: number | null = null;
+  submitted: boolean = false
   constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private router: Router, private translate: TranslateService, public modal: ModalService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.Form = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20), NoWhitespaceDirective.validate]],
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.required]],
+      isWhatsappSameAsPhone: [false],
+      whatsappNumber: ['', [Validators.required]],
       password: ['', [Validators.required, strongPasswordValidator]],
       confirmPassword: ['', [Validators.required]],
+      address: ['', [Validators.required, NoWhitespaceDirective.validate]],
+      city: ['', [Validators.required, NoWhitespaceDirective.validate]],
+      pincode: ['', [Validators.required, NoWhitespaceDirective.validate]],
+      termsAndConditions: [false, [Validators.required]],
     }, {
       validators: [
         passwordMismatchValidator()
@@ -48,23 +53,26 @@ export class SignUpComponent {
   }
 
   ngOnInit(): void {
-    this.getLocation()
+    this.Form.get('isWhatsappSameAsPhone')?.valueChanges.subscribe((value) => {
+      if (value) {
+        this.Form.get('phoneNumber')?.setValue(this.Form.get('whatsappNumber')?.value);
+      } else {
+        this.Form.get('phoneNumber')?.setValue('');
+      }
+    })
   }
 
-  getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          this.lat = position.coords.latitude;
-          this.lng = position.coords.longitude;
-        },
-        (error) => {
-          // this.toastr.warning("Unable to retrieve location. Please enable GPS or location permissions.");
-        }
-      );
-    } else {
-      // this.toastr.warning("Geolocation is not supported by this browser.");
+  nextStep() {
+    if (this.Form.get('fullName')?.invalid || this.Form.get('email')?.invalid || this.Form.get('phoneNumber')?.invalid || this.Form.get('whatsappNumber')?.invalid || this.Form.get('password')?.invalid || this.Form.get('confirmPassword')?.invalid) {
+      this.Form.get('fullName')?.markAsTouched();
+      this.Form.get('email')?.markAsTouched();
+      this.Form.get('whatsappNumber')?.markAsTouched();
+      this.Form.get('phoneNumber')?.markAsTouched();
+      this.Form.get('password')?.markAsTouched();
+      this.Form.get('confirmPassword')?.markAsTouched();
+      return
     }
+    this.formStep = this.formStep + 1
   }
 
   onSubmit() {
@@ -81,8 +89,8 @@ export class SignUpComponent {
       phoneNumber: this.Form.value.phoneNumber.number,
       password: this.Form.value.password,
       address: this.Form.value.address,
-      latitude: this.lat,
-      longitude: this.lng,
+      city: this.Form.value.city,
+      pincode: this.Form.value.pincode,
       countryCode: this.Form.value.phoneNumber.dialCode,
       language: 'en',
       isSeller: 0
@@ -92,9 +100,12 @@ export class SignUpComponent {
       next: (res: any) => {
         this.loading = false
         this.toastr.success(res.message)
-        sessionStorage.setItem('email', this.Form.value.email)
-        sessionStorage.setItem('userName', this.Form.value.fullName)
-        sessionStorage.setItem('isForgotPassword', '0')
+        let currentUser = {
+          email: this.Form.value.email,
+          isForgotPassword: '0'
+        }
+        sessionStorage.setItem('currentUser', JSON.stringify(currentUser))
+        this.commonService.currentUser.set(currentUser)
         this.modal.openOtpVerificationModal()
       },
       error: (error) => {

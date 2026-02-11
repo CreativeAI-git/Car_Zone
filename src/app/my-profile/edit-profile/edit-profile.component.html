@@ -1,77 +1,532 @@
-<div class="d-flex align-items-center gap-5 profile-edit-box">
+<div class="d-flex align-items-center gap-3 profile-edit-box">
       <div class="ct_profile_img m-0">
-            <img src="img/profile.png" alt="" />
+            <img [src]="userData.profileImage || imagePreview || 'img/icons/user-circle-img.png'" alt="" />
             <label for="ct_profile_update">
-                  <input type="file" class="d-none" id="ct_profile_update" />
+                  <input type="file" class="d-none" id="ct_profile_update" accept="image/*"
+                        (change)="onProfileImage($event)" />
                   <div class="ct_upload_icon">
                         <img src="img/Camera.png" alt="" />
                   </div>
             </label>
       </div>
       <div>
-            <h5 class="ct_fs_25 ct_fw_600">John Wilson</h5>
-            <p class="ct_fs_14">alma.lawson&#64;example.com</p>
+            <h5 class="ct_fs_25 ct_fw_600 mb-1">{{userData.fullName}}</h5>
+            <p class="ct_fs_14 mb-0">{{userData.email}}</p>
       </div>
 </div>
-<div class="ct_edit_profile_bg profile-edit-box mt-4">
-      <form action="">
+<form [formGroup]="Form" (ngSubmit)="onSubmit()">
+      <div class="ct_edit_profile_bg profile-edit-box mt-4">
             <div class="row">
                   <div class="col-12">
                         <div class="form-group mb-4">
-                              <label for="" class="mb-2 ct_fw_500 ct_fs_18">Full
-                                    Name</label>
-                              <input type="text" class="form-control ct_input" placeholder="Enter Full Name"
-                                    value="Elizabeth Anderson" />
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    {{'FullName' | translate | titlecase}}
+                              </label>
+                              <input type="text" class="form-control"
+                                    placeholder="{{'Enter' | translate}} {{'FullName' | translate}}"
+                                    aria-label="Username" aria-describedby="basic-addon1" formControlName="fullName" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('FullName'
+                                    | translate), Form.get("fullName"))}}</small>
                         </div>
                   </div>
                   <div class="col-lg-6">
                         <div class="form-group mb-4">
-                              <label for="" class="mb-2 ct_fw_500 ct_fs_18">Email
-                                    Address</label>
-                              <input type="email" class="form-control ct_input" placeholder="Enter Email Address"
-                                    value="Elizabeth Anderson" />
+                              <div class="d-flex justify-content-between align-items-center">
+                                    <label class="ct_fs_16 ct_fw_500 mb-2">
+                                          {{'WhatsAppNumber' | translate | titlecase}}
+                                    </label>
+                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                          <input class="form-check-input" type="checkbox"
+                                                formControlName="isWhatsappSameAsPhone" id="flexCheckDefault" />
+                                          <label for="flexCheckDefault">Also phone number </label>
+                                    </div>
+                              </div>
+                              <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
+                                    [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
+                                    [searchCountryFlag]="true"
+                                    [customPlaceholder]="('Enter' | translate) + ' ' + ('WhatsAppNumber' | translate)"
+                                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                    [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
+                                    [phoneValidation]="true" formControlName="whatsappNumber">
+                              </ngx-intl-tel-input>
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('WhatsAppNumber'
+                                    | translate), Form.get("whatsappNumber"))}}</small>
                         </div>
                   </div>
                   <div class="col-lg-6">
                         <div class="form-group mb-4">
-                              <label for="" class="mb-2 ct_fw_500 ct_fs_18">Phone
-                                    Number</label>
-                              <input type="text" class="form-control ct_input" placeholder="Enter Phone Number"
-                                    value="+1 (415) 555-0123" />
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    {{'PhoneNumber' | translate | titlecase}}
+                              </label>
+                              <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
+                                    [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
+                                    [searchCountryFlag]="true"
+                                    [customPlaceholder]="('Enter' | translate) + ' ' + ('PhoneNumber' | translate)"
+                                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                    [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
+                                    [phoneValidation]="true" formControlName="phoneNumber">
+                              </ngx-intl-tel-input>
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('PhoneNumber'
+                                    | translate | titlecase), Form.get("phoneNumber"))}}</small>
                         </div>
                   </div>
                   <div class="col-lg-12">
                         <div class="form-group mb-4">
-                              <label for="" class="mb-2 ct_fw_500 ct_fs_18">
-                                    Address</label>
-                              <input type="text" class="form-control ct_input" placeholder="Enter Phone Number"
-                                    value="+1 (415) 555-0123" />
-                        </div>
-                  </div>
-                  <div class="col-lg-6">
-                        <div class="form-group mb-4">
-                              <label for="" class="mb-2 ct_fw_500 ct_fs_18">Postal Code
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    Select Entity
                               </label>
-                              <input type="text" class="form-control ct_input" placeholder="Enter Phone Number"
-                                    value="+1 (415) 555-0123" />
+                              <nz-select class="form-control" nzPlaceHolder="Select Entity" [nzShowSearch]="true"
+                                    formControlName="typeOfSeller">
+                                    @for (item of sellerTypes; track $index) {
+                                    <nz-option nzCustomContent [nzLabel]="item.label | translate" [nzValue]="item.value"
+                                          class="ct_custom_select">
+                                          <div class="d-flex align-items-center justify-content-between">
+                                                <div>
+                                                      <p class="m-0">
+                                                            {{item.label | translate}}
+                                                      </p>
+                                                      <span>{{item.label2 | translate}}</span>
+                                                </div>
+                                                <input type="radio" class="cutom_radio_input"
+                                                      [checked]="Form.get('typeOfSeller')?.value?.includes(item.value)" />
+                                          </div>
+                                    </nz-option>
+                                    }
+                              </nz-select>
                         </div>
                   </div>
+                  @if(Form.get('typeOfSeller')?.value === 'business') {
                   <div class="col-lg-6">
                         <div class="form-group mb-4">
-                              <label for="" class="mb-2 ct_fw_500 ct_fs_18">
-                                    City</label>
-                              <input type="text" class="form-control ct_input" placeholder="Enter Phone Number"
-                                    value="+1 (415) 555-0123" />
+                              <label for="" class="ct_fs_16 ct_fw_500 mb-2">{{'LegalEntity' |
+                                    translate}} <span class="ct_color_8f0c1f">*</span></label>
+                              <nz-select class="form-control" nzPlaceHolder="Select Legal Entity" [nzShowSearch]="true"
+                                    formControlName="legalForm">
+                                    <nz-option nzCustomContent [nzLabel]="'SoleProprietorship' | translate"
+                                          [nzValue]="'Sole Proprietorship'" class="ct_custom_select">
+                                          <div class="d-flex align-items-center justify-content-between">
+                                                <div>
+                                                      <p class="m-0">
+                                                            {{'SoleProprietorship' | translate}}
+                                                      </p>
+                                                </div>
+                                                <input type="radio" class="cutom_radio_input"
+                                                      [checked]="Form.get('legalForm')?.value?.includes('Sole Proprietorship')" />
+                                          </div>
+                                    </nz-option>
+                                    <nz-option nzCustomContent [nzLabel]="'LimitedLiabilityCompany' | translate"
+                                          [nzValue]="'Limited Liability Company (GmbH)'" class="ct_custom_select">
+                                          <div class="d-flex align-items-center justify-content-between">
+                                                <div>
+                                                      <p class="m-0">
+                                                            {{'LimitedLiabilityCompany' | translate}}
+                                                      </p>
+                                                </div>
+                                                <input type="radio" class="cutom_radio_input"
+                                                      [checked]="Form.get('legalForm')?.value?.includes('Limited Liability Company (GmbH)')" />
+                                          </div>
+                                    </nz-option>
+                                    <nz-option nzCustomContent [nzLabel]="'Corporation' | translate"
+                                          [nzValue]="'Corporation (AG)'" class="ct_custom_select">
+                                          <div class="d-flex align-items-center justify-content-between">
+                                                <div>
+                                                      <p class="m-0">
+                                                            {{'Corporation' | translate}}
+                                                      </p>
+                                                </div>
+                                                <input type="radio" class="cutom_radio_input"
+                                                      [checked]="Form.get('legalForm')?.value?.includes('Corporation (AG)')" />
+                                          </div>
+                                    </nz-option>
+                              </nz-select>
                         </div>
                   </div>
 
-                  <div class="text-end mt-4">
-                        <button class="btn-grey-transparent px-4 me-2">
-                              Cancel
-                        </button>
-                        <button class="btn-red-transparent">Save Changes</button>
+                  <div class="col-lg-6">
+                        <div class="form-group mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    Company Name <span class="ct_color_8f0c1f">*</span>
+                              </label>
+                              <input type="text" class="form-control" placeholder="Enter Company Name"
+                                    aria-label="Username" aria-describedby="basic-addon1"
+                                    formControlName="companyName" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('Company name'
+                                    | translate), Form.get("companyName"))}}</small>
+                        </div>
+                  </div>
+                  <div class="col-lg-6">
+                        <div class="form-group mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    Website URL
+                              </label>
+                              <input type="text" class="form-control" placeholder="Enter Website URL"
+                                    aria-label="Username" aria-describedby="basic-addon1"
+                                    formControlName="websiteUrl" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('Website URL'
+                                    | translate), Form.get("websiteUrl"))}}</small>
+                        </div>
+                  </div>
+                  <div class="col-lg-6">
+                        <div class="form-group mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    VAT/Business Registration Number
+                              </label>
+                              <input type="text" class="form-control" placeholder="Enter Business Registration Number"
+                                    aria-label="Username" formControlName="vat" aria-describedby="basic-addon1" />
+                        </div>
+                  </div>
+                  <div class="col-lg-12">
+                        <div class="form-group mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    Company Address
+                                    <span class="ct_color_8f0c1f">*</span>
+                              </label>
+                              <input type="text" class="form-control" placeholder="Enter Company Address  "
+                                    aria-label="Username" aria-describedby="basic-addon1"
+                                    formControlName="companyAddress" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                    'Company address'
+                                    | translate), Form.get("companyAddress"))}}</small>
+                        </div>
+                  </div>
+                  }@else {
+                  <div class="col-lg-12">
+                        <div class="form-group mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    Address
+                                    <span class="ct_color_8f0c1f">*</span>
+                              </label>
+                              <input type="text" class="form-control" placeholder="Enter Address  "
+                                    aria-label="Username" aria-describedby="basic-addon1" formControlName="address" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('Address'
+                                    | translate), Form.get("address"))}}</small>
+                        </div>
+                  </div>
+                  }
+                  <div class="col-lg-6">
+                        <div class="form-group mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2"> City </label>
+                              <input type="text" class="form-control" placeholder="Enter  Your City  "
+                                    aria-label="Username" aria-describedby="basic-addon1" formControlName="city" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('City'
+                                    | translate), Form.get("city"))}}</small>
+                        </div>
+                  </div>
+                  <div class="col-lg-6">
+                        <div class="form-group mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">Postal Code
+                              </label>
+                              <input type="text" class="form-control" placeholder="Enter Postal Code  "
+                                    aria-label="Username" aria-describedby="basic-addon1" formControlName="pincode" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('Postal code'
+                                    | translate), Form.get("pincode"))}}</small>
+                        </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                        <div class="mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">Showroom Cover Image</label>
+                              <div class="upload-box text-center">
+                                    <img src="img/icons/camera.png" alt="camera" />
+
+                                    <!-- Label triggers file input -->
+                                    <div>
+                                          <label for="fileInput" class="text-muted upload-label">
+                                                Tap to upload cover
+                                          </label>
+                                    </div>
+
+                                    <!-- Hidden file input -->
+                                    <input type="file" id="fileInput" accept="image/png, image/jpeg, video/mp4"
+                                          hidden />
+                              </div>
+
+                              <!-- <div class="upload-imgs ct_custom_scroll d-none">
+                                    <div class="img-item">
+                                          <img src="img/car-img.png" alt="" />
+                                          <button class="img-remove">
+                                                <i class="fa-solid fa-trash"></i>
+                                          </button>
+                                    </div>
+
+                                    <div class="img-item">
+                                          <img src="img/car-img2.png" alt="" />
+                                          <button class="img-remove">
+                                                <i class="fa-solid fa-trash"></i>
+                                          </button>
+                                    </div>
+
+                                    <div class="img-item">
+                                          <img src="img/car-img3.png" alt="" />
+                                          <button class="img-remove">
+                                                <i class="fa-solid fa-trash"></i>
+                                          </button>
+                                    </div>
+
+                                    <div class="img-item">
+                                          <img src="img/car-img4.png" alt="" />
+                                          <button class="img-remove">
+                                                <i class="fa-solid fa-trash"></i>
+                                          </button>
+                                    </div>
+                              </div> -->
+                        </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                        <div class="d-flex justify-content-between align-items-center">
+                              <div>
+                                    <h5 class="ct_fs_16 ct_fw_500 mb-2">Opening Timing</h5>
+                              </div>
+                        </div>
+
+                        <div class="mt-2 border-123" formArrayName="openingTimes">
+                              <div *ngFor="let t of openingTimes.controls; let i=index" [formGroupName]="i"
+                                    class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="ct_fs_18 ct_fw_400">{{NoOfDays[i]}}</div>
+                                    <div class="d-flex gap-2 align-items-center">
+                                          <input type="time" class="form-control" formControlName="open" />
+                                          <span> -</span>
+                                          <input type="time" class="form-control" formControlName="close" />
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-lg-12">
+                        <div class="form-group mb-4">
+                              <label for="" class="ct_fs_16 ct_fw_500 mb-2">
+                                    Tagline
+                              </label>
+                              <input type="text" class="form-control ct_input" placeholder="Enter Tagline"
+                                    formControlName="tagline" />
+                        </div>
+                  </div>
+
+                  <div class="col-12">
+                        <label class="ct_fs_16 ct_fw_500 mb-2">Description</label>
+                        <textarea class="form-control mt-0" id="exampleFormControlTextarea1" rows="3"
+                              placeholder="Description" formControlName="description"></textarea>
+                  </div>
+
+                  <div class="col-lg-12">
+                        <div class="mt-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    Upload Images
+                              </label>
+                              <div class="upload-box text-center py-5">
+                                    <img src="img/icons/camera.png" alt="camera" />
+
+                                    <!-- Label triggers file input -->
+                                    <div>
+                                          <label for="fileInput" class="text-muted upload-label">
+                                                Tap to upload images
+                                          </label>
+                                    </div>
+
+                                    <!-- Hidden file input -->
+                                    <input type="file" id="fileInput" accept="image/png, image/jpeg, video/mp4"
+                                          hidden />
+                              </div>
+
+                              <div class="upload-imgs ct_custom_scroll">
+                                    <div class="img-item">
+                                          <img src="img/car-img.png" alt="" />
+                                          <button class="img-remove">
+                                                <i class="fa-solid fa-trash"></i>
+                                          </button>
+                                    </div>
+
+                                    <div class="img-item">
+                                          <img src="img/car-img2.png" alt="" />
+                                          <button class="img-remove">
+                                                <i class="fa-solid fa-trash"></i>
+                                          </button>
+                                    </div>
+
+                                    <div class="img-item">
+                                          <img src="img/car-img3.png" alt="" />
+                                          <button class="img-remove">
+                                                <i class="fa-solid fa-trash"></i>
+                                          </button>
+                                    </div>
+
+                                    <div class="img-item">
+                                          <img src="img/car-img4.png" alt="" />
+                                          <button class="img-remove">
+                                                <i class="fa-solid fa-trash"></i>
+                                          </button>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                        <div class="mt-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    Advantages & Highlights
+                              </label>
+
+                              <div class="border-123" formArrayName="advantages">
+                                    <div *ngFor="let a of advantages.controls; let i=index" [formGroupName]="i"
+                                          class="d-flex align-items-center gap-3 mb-3">
+                                          <div class="w-100 ct_grey_input">
+                                                <input type="text" class="form-control ct_input"
+                                                      placeholder="Enter Advantages & Highlights"
+                                                      formControlName="advantage" />
+                                          </div>
+                                          <a (click)="removeAdvantage(i)">
+                                                <img src="img/icons/cross.png" />
+                                          </a>
+                                    </div>
+                              </div>
+
+                              <div class="mt-3">
+                                    <button type="button" class="btn-red-transparent w-100 text-center ct_fs_16"
+                                          (click)="addAdvantage()">
+                                          Add {{advantages.controls.length > 0 ? 'More' : ''}} Advantage</button>
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                        <div class="mt-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    Our Services
+                              </label>
+                              <div class="border-123" formArrayName="services">
+                                    <div *ngFor="let s of services.controls; let i = index" [formGroupName]="i"
+                                          class="d-flex align-items-center gap-3 mb-3">
+                                          <div class="w-100 ct_grey_input">
+                                                <input type="text" class="form-control ct_input"
+                                                      placeholder="Enter Services" formControlName="service" />
+                                          </div>
+                                          <a (click)="removeService(i)">
+                                                <img src="img/icons/cross.png" />
+                                          </a>
+                                    </div>
+                              </div>
+                              <div class="mt-3">
+                                    <button type="button" class="btn-red-transparent w-100 text-center ct_fs_16"
+                                          (click)="addService()">
+                                          Add {{services.controls.length > 0 ? 'More' : ''}} Service</button>
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-lg-12 mt-4">
+                        <label class="ct_fs_16 ct_fw_500 mb-2">
+                              Team Members
+                        </label>
+
+                        <div class="row" formArrayName="teamMembers">
+                              <div *ngFor="let m of teamMembers.controls; let i = index" [formGroupName]="i"
+                                    class="col-lg-6  border-123">
+                                    <div class="d-flex align-items-center gap-3 mb-3">
+                                          <div>
+                                                <img src="img/icons/user-circle-img.png" />
+                                          </div>
+                                          <div class="w-100 ct_grey_input">
+                                                <input type="text" class="form-control ct_input mb-2"
+                                                      placeholder="Full name" value="Full name" />
+                                                <input type="text" class="form-control ct_input"
+                                                      placeholder="Role (e.g., Sales Manager)"
+                                                      value="Role (e.g., Sales Manager)" />
+                                          </div>
+                                    </div>
+
+                                    <div class="w-100 ct_grey_input mb-2">
+                                          <input type="number" class="form-control ct_input" placeholder="Phone number"
+                                                value="Phone number" />
+                                    </div>
+
+                                    <div class="w-100 ct_grey_input mb-2">
+                                          <input type="text" class="form-control ct_input" placeholder="Email address"
+                                                value="Email address" />
+                                    </div>
+                                    <div class="w-100 ct_grey_input">
+                                          <input type="text" class="form-control ct_input"
+                                                placeholder="Languages (e.g., English, Arabic)"
+                                                value="Languages (e.g., English, Arabic)" />
+                                    </div>
+
+                                    <a (click)="removeTeamMember(i)"
+                                          class="text-danger d-flex align-items-center justify-content-center mt-3 cursor-pointer">
+                                          <i class="fa-solid fa-trash me-2"></i>
+                                          Remove member
+                                    </a>
+                              </div>
+                        </div>
+
+                        <div class="mt-4 col-lg-6">
+                              <button type="button" class="btn-red-transparent w-100 text-center ct_fs_16"
+                                    (click)="addTeamMember()">
+                                    Add Team Member</button>
+                        </div>
+                  </div>
+
+
+                  <div class="col-lg-12">
+                        <div class="mt-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    Showroom Video
+                              </label>
+
+                              <div class="upload-box text-center py-5" id="videoUploadBox">
+                                    <img src="img/icons/video-grey.png" alt="video" />
+
+                                    <div>
+                                          <label for="videoInput" class="text-muted upload-label mt-2">
+                                                Upload showroom tour video
+                                          </label>
+                                          <small class="ct_fs_12 d-block">
+                                                MP4, MOV up to 50MB
+                                          </small>
+                                    </div>
+
+                                    <!-- Hidden video input -->
+                                    <input type="file" id="videoInput" accept="video/mp4,video/quicktime" hidden />
+                              </div>
+
+                              <!-- Video preview -->
+                              <div class="upload-videos d-none mt-3">
+                                    <div class="video-item position-relative">
+                                          <video controls>
+                                                <source src="" />
+                                          </video>
+
+                                          <button
+                                                class="video-remove btn btn-danger btn-sm position-absolute top-0 end-0">
+                                                <i class="fa-solid fa-trash"></i>
+                                          </button>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="d-flex justify-content-end mt-5">
+                        <button class="btn-red">Save Changes</button>
                   </div>
                   <div class="col-lg-6"></div>
             </div>
-      </form>
+      </div>
+</form>
+<div class="modal fade modal-lg" id="ct_feedback_detail_modal" tabindex="-1"
+      aria-labelledby="ct_feedback_detail_modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                  <div class="modal-body">
+                        <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                              [aspectRatio]="38 / 27" [resizeToWidth]="190" [resizeToHeight]="135" format="png"
+                              (imageCropped)="imageCropped($event)">
+                        </image-cropper>
+                  </div>
+                  <div class="modal-footer">
+                        <button type="button" class="btn-grey-transparent" data-bs-dismiss="modal" #closeBtn>{{'Cancel'
+                              |
+                              translate}}</button>
+                        <button type="button" class="btn-red" (click)="onDone()">{{'Done' | translate}}</button>
+                  </div>
+            </div>
+      </div>
 </div>
