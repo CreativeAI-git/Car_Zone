@@ -1,6 +1,6 @@
 <div class="d-flex align-items-center gap-3 profile-edit-box">
       <div class="ct_profile_img m-0">
-            <img [src]="userData.profileImage || imagePreview || 'img/icons/user-circle-img.png'" alt="" />
+            <img [src]="userData?.profileImage || imagePreview || 'img/icons/user-circle-img.png'" alt="" />
             <label for="ct_profile_update">
                   <input type="file" class="d-none" id="ct_profile_update" accept="image/*"
                         (change)="onProfileImage($event)" />
@@ -10,8 +10,8 @@
             </label>
       </div>
       <div>
-            <h5 class="ct_fs_25 ct_fw_600 mb-1">{{userData.fullName}}</h5>
-            <p class="ct_fs_14 mb-0">{{userData.email}}</p>
+            <h5 class="ct_fs_25 ct_fw_600 mb-1">{{userData?.fullName}}</h5>
+            <p class="ct_fs_14 mb-0">{{userData?.email}}</p>
       </div>
 </div>
 <form [formGroup]="Form" (ngSubmit)="onSubmit()">
@@ -226,50 +226,28 @@
                   <div class="col-lg-6">
                         <div class="mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2">Showroom Cover Image</label>
-                              <div class="upload-box text-center">
-                                    <img src="img/icons/camera.png" alt="camera" />
-
-                                    <!-- Label triggers file input -->
-                                    <div>
-                                          <label for="fileInput" class="text-muted upload-label">
+                              @if(!coverPreview){
+                              <div (click)="coverImageInput.click()">
+                                    <div class="upload-box text-center">
+                                          <img src="img/icons/camera.png" alt="camera" />
+                                          <div>
                                                 Tap to upload cover
-                                          </label>
+                                          </div>
+                                          <input #coverImageInput type="file" id="fileInput" accept="image/*" hidden
+                                                (change)="onCoverImageChange($event)" />
                                     </div>
-
-                                    <!-- Hidden file input -->
-                                    <input type="file" id="fileInput" accept="image/png, image/jpeg, video/mp4"
-                                          hidden />
                               </div>
-
-                              <!-- <div class="upload-imgs ct_custom_scroll d-none">
-                                    <div class="img-item">
-                                          <img src="img/car-img.png" alt="" />
-                                          <button class="img-remove">
+                              }@else{
+                              <div class="upload-imgs cover-img-box ct_custom_scroll mt-0">
+                                    <div class="cover-img position-relative">
+                                          <img [src]="coverPreview" alt="" />
+                                          <button type="button" title="Remove cover image" class="img-remove"
+                                                (click)="removeCoverImage()">
                                                 <i class="fa-solid fa-trash"></i>
                                           </button>
                                     </div>
-
-                                    <div class="img-item">
-                                          <img src="img/car-img2.png" alt="" />
-                                          <button class="img-remove">
-                                                <i class="fa-solid fa-trash"></i>
-                                          </button>
-                                    </div>
-
-                                    <div class="img-item">
-                                          <img src="img/car-img3.png" alt="" />
-                                          <button class="img-remove">
-                                                <i class="fa-solid fa-trash"></i>
-                                          </button>
-                                    </div>
-
-                                    <div class="img-item">
-                                          <img src="img/car-img4.png" alt="" />
-                                          <button class="img-remove">
-                                                <i class="fa-solid fa-trash"></i>
-                                          </button>
-                                    </div>
-                              </div> -->
+                              </div>
+                              }
                         </div>
                   </div>
 
@@ -314,46 +292,19 @@
                               <label class="ct_fs_16 ct_fw_500 mb-2">
                                     Upload Images
                               </label>
-                              <div class="upload-box text-center py-5">
+                              <div class="upload-box text-center py-5" (click)="showroomImagesInput.click()">
                                     <img src="img/icons/camera.png" alt="camera" />
-
-                                    <!-- Label triggers file input -->
                                     <div>
-                                          <label for="fileInput" class="text-muted upload-label">
-                                                Tap to upload images
-                                          </label>
+                                          Tap to upload images
                                     </div>
-
-                                    <!-- Hidden file input -->
-                                    <input type="file" id="fileInput" accept="image/png, image/jpeg, video/mp4"
-                                          hidden />
+                                    <input #showroomImagesInput type="file" id="fileInput" accept="image/*" multiple
+                                          hidden (change)="onShowroomImagesChange($event)" />
                               </div>
 
                               <div class="upload-imgs ct_custom_scroll">
-                                    <div class="img-item">
-                                          <img src="img/car-img.png" alt="" />
-                                          <button class="img-remove">
-                                                <i class="fa-solid fa-trash"></i>
-                                          </button>
-                                    </div>
-
-                                    <div class="img-item">
-                                          <img src="img/car-img2.png" alt="" />
-                                          <button class="img-remove">
-                                                <i class="fa-solid fa-trash"></i>
-                                          </button>
-                                    </div>
-
-                                    <div class="img-item">
-                                          <img src="img/car-img3.png" alt="" />
-                                          <button class="img-remove">
-                                                <i class="fa-solid fa-trash"></i>
-                                          </button>
-                                    </div>
-
-                                    <div class="img-item">
-                                          <img src="img/car-img4.png" alt="" />
-                                          <button class="img-remove">
+                                    <div class="img-item" *ngFor="let img of showroomPreviews; let i=index">
+                                          <img [src]="img" alt="" />
+                                          <button type="button" (click)="removeShowroomImage(i)" class="img-remove">
                                                 <i class="fa-solid fa-trash"></i>
                                           </button>
                                     </div>
@@ -421,44 +372,55 @@
 
                         <div class="row" formArrayName="teamMembers">
                               <div *ngFor="let m of teamMembers.controls; let i = index" [formGroupName]="i"
-                                    class="col-lg-6  border-123">
-                                    <div class="d-flex align-items-center gap-3 mb-3">
-                                          <div>
-                                                <img src="img/icons/user-circle-img.png" />
+                                    class="col-lg-6 mb-3">
+                                    <div class="border-123">
+                                          <div class="d-flex align-items-center gap-3 mb-3">
+                                                <div class="member-profile">
+                                                      <img [src]="memberPreviews[m.value.tempKey] || 'img/icons/user-circle-img.png'"
+                                                            alt="" class="main" />
+                                                      <label for="member_profile_update_{{i}}">
+                                                            <input type="file" class="d-none"
+                                                                  id="member_profile_update_{{i}}" accept="image/*"
+                                                                  (change)="onMemberProfileChange($event, i)" />
+                                                            <div class="ct_upload_icon">
+                                                                  <img src="img/Camera.png" alt="" />
+                                                            </div>
+                                                      </label>
+                                                </div>
+                                                <div class="w-100 ct_grey_input">
+                                                      <input type="text" class="form-control ct_input mb-2"
+                                                            placeholder="Full name" formControlName="fullName" />
+                                                      <input type="text" class="form-control ct_input"
+                                                            placeholder="Role (e.g., Sales Manager)"
+                                                            formControlName="role" />
+                                                </div>
+                                          </div>
+
+                                          <div class="w-100 ct_grey_input mb-2">
+                                                <input type="number" class="form-control ct_input"
+                                                      placeholder="Phone number" formControlName="phoneNumber" />
+                                          </div>
+
+                                          <div class="w-100 ct_grey_input mb-2">
+                                                <input type="text" class="form-control ct_input"
+                                                      placeholder="Email address" formControlName="email" />
                                           </div>
                                           <div class="w-100 ct_grey_input">
-                                                <input type="text" class="form-control ct_input mb-2"
-                                                      placeholder="Full name" value="Full name" />
                                                 <input type="text" class="form-control ct_input"
-                                                      placeholder="Role (e.g., Sales Manager)"
-                                                      value="Role (e.g., Sales Manager)" />
+                                                      placeholder="Languages (e.g., English, Swedish)"
+                                                      formControlName="languages" />
                                           </div>
-                                    </div>
 
-                                    <div class="w-100 ct_grey_input mb-2">
-                                          <input type="number" class="form-control ct_input" placeholder="Phone number"
-                                                value="Phone number" />
+                                          <a (click)="removeTeamMember(i)"
+                                                class="text-danger d-flex align-items-center justify-content-center mt-3 cursor-pointer">
+                                                <i class="fa-solid fa-trash me-2"></i>
+                                                Remove member
+                                          </a>
                                     </div>
-
-                                    <div class="w-100 ct_grey_input mb-2">
-                                          <input type="text" class="form-control ct_input" placeholder="Email address"
-                                                value="Email address" />
-                                    </div>
-                                    <div class="w-100 ct_grey_input">
-                                          <input type="text" class="form-control ct_input"
-                                                placeholder="Languages (e.g., English, Arabic)"
-                                                value="Languages (e.g., English, Arabic)" />
-                                    </div>
-
-                                    <a (click)="removeTeamMember(i)"
-                                          class="text-danger d-flex align-items-center justify-content-center mt-3 cursor-pointer">
-                                          <i class="fa-solid fa-trash me-2"></i>
-                                          Remove member
-                                    </a>
                               </div>
                         </div>
 
-                        <div class="mt-4 col-lg-6">
+                        <div class="col-lg-6">
                               <button type="button" class="btn-red-transparent w-100 text-center ct_fs_16"
                                     (click)="addTeamMember()">
                                     Add Team Member</button>
@@ -471,41 +433,37 @@
                               <label class="ct_fs_16 ct_fw_500 mb-2">
                                     Showroom Video
                               </label>
-
-                              <div class="upload-box text-center py-5" id="videoUploadBox">
+                              @if(!videoPreview){
+                              <div class="upload-box text-center py-5" id="videoUploadBox" (click)="videoInput.click()">
                                     <img src="img/icons/video-grey.png" alt="video" />
-
                                     <div>
-                                          <label for="videoInput" class="text-muted upload-label mt-2">
-                                                Upload showroom tour video
-                                          </label>
+                                          Upload showroom tour video
                                           <small class="ct_fs_12 d-block">
                                                 MP4, MOV up to 50MB
                                           </small>
                                     </div>
-
-                                    <!-- Hidden video input -->
-                                    <input type="file" id="videoInput" accept="video/mp4,video/quicktime" hidden />
+                                    <input #videoInput type="file" id="videoInput" accept="video/mp4,video/quicktime"
+                                          hidden (change)="onFileSelected($event)" />
                               </div>
-
-                              <!-- Video preview -->
-                              <div class="upload-videos d-none mt-3">
-                                    <div class="video-item position-relative">
-                                          <video controls>
-                                                <source src="" />
-                                          </video>
-
-                                          <button
-                                                class="video-remove btn btn-danger btn-sm position-absolute top-0 end-0">
-                                                <i class="fa-solid fa-trash"></i>
-                                          </button>
+                              }@else{
+                              <div class="upload-videos mt-3">
+                                    <div class="ct_single_uploaded_img mt-2 py-2">
+                                          <div class="mobile-frame">
+                                                <video [src]="videoPreview" autoplay controls playsinline
+                                                      class="videoPreview"></video>
+                                                <button type="button" title="Remove" (click)="removeFile()"
+                                                      class="video-remove btn text-danger btn-sm position-absolute top-0 end-0">
+                                                      <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                          </div>
                                     </div>
                               </div>
+                              }
                         </div>
                   </div>
 
                   <div class="d-flex justify-content-end mt-5">
-                        <button class="btn-red">Save Changes</button>
+                        <button type="submit" class="btn-red">Save Changes</button>
                   </div>
                   <div class="col-lg-6"></div>
             </div>

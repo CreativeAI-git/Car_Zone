@@ -44,11 +44,23 @@ export class EditProfileComponent {
     label2: 'ForBusinesses',
     value: 'business'
   }];
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+  croppedImageBlob: any = '';
+  memberImages: { [key: string]: File } = {};
+  memberPreviews: { [key: string]: string } = {};
+  showroomImages: any[] = [];
+  showroomPreviews: any[] = [];
+  selectedVideo: File | null = null;
+  videoPreview: string | null = null;
+  coverImage: any;
+  coverPreview: any;
+  currentImageType!: 'profile' | 'cover' | 'member';
+  currentMemberIndex!: number | null;
   constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private router: Router, private roleService: RoleService, private translate: TranslateService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.Form = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20), NoWhitespaceDirective.validate]],
-      email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.required]],
       isWhatsappSameAsPhone: [false],
       whatsappNumber: ['', [Validators.required]],
@@ -74,8 +86,28 @@ export class EditProfileComponent {
     effect(() => {
       this.userData = this.commonService.userData()
       this.role = this.roleService.currentLoggedInRole()
-      if (this.userData()) {
+      if (this.userData) {
 
+        this.Form.patchValue({
+          fullName: this.userData.fullName,
+          phoneNumber: this.userData.countryCode + this.userData.phoneNumber,
+          whatsappNumber: this.userData.countryCode + this.userData.whatsappNumber,
+          isWhatsappSameAsPhone: this.userData.isWhatsappSameAsPhone,
+          address: this.userData.address,
+          city: this.userData.city,
+          pincode: this.userData.pincode,
+          websiteUrl: this.userData.websiteUrl,
+          tagline: this.userData.tagline,
+          description: this.userData.description,
+          openingTimes: this.userData.openingTimes,
+          advantages: this.userData.advantages,
+          services: this.userData.services,
+          teamMembers: this.userData.teamMembers,
+          companyName: this.userData.companyName,
+          companyAddress: this.userData.companyAddress,
+          vat: this.userData.vat,
+          typeOfSeller: this.userData.roleData.filter((role: any) => role.role === 'seller')[0]?.seller_type || 'personal',
+        })
       }
     })
   }
@@ -107,13 +139,12 @@ export class EditProfileComponent {
     })
   }
 
-  imageChangedEvent: any = '';
-  croppedImage: any = '';
-  croppedImageBlob: any = '';
   onProfileImage(event: any): void {
-    this.imageChangedEvent = event
     if (event.target.files && event.target.files[0]) {
-      this.openModal()
+      this.currentImageType = 'profile';
+      this.currentMemberIndex = null;
+      this.imageChangedEvent = event;
+      this.openModal();
     }
   }
 
@@ -123,12 +154,39 @@ export class EditProfileComponent {
   }
 
   onDone() {
-    this.imagePreview = this.croppedImage
-    this.profileImage = new File([this.croppedImageBlob], 'profile.jpg', {
-      type: 'image/jpg'
-    })
-    this.closeBtn.nativeElement.click()
+    const croppedFile = new File(
+      [this.croppedImageBlob],
+      'cropped.jpg',
+      { type: 'image/jpeg' }
+    );
+
+    const previewUrl = URL.createObjectURL(croppedFile);
+
+    switch (this.currentImageType) {
+
+      case 'profile':
+        this.profileImage = croppedFile;
+        this.imagePreview = previewUrl;
+        break;
+
+      case 'cover':
+        this.coverImage = croppedFile;
+        this.coverPreview = previewUrl;
+        break;
+
+      case 'member':
+        if (this.currentMemberIndex !== null) {
+          const tempKey = this.teamMembers.at(this.currentMemberIndex).get('tempKey')?.value;
+          if (tempKey) {
+            this.memberImages[tempKey] = croppedFile;
+            this.memberPreviews[tempKey] = previewUrl;
+          }
+        }
+        break;
+    }
+    this.closeBtn.nativeElement.click();
   }
+
 
   openModal() {
     const modalElement = document.getElementById('ct_feedback_detail_modal');
@@ -147,18 +205,55 @@ export class EditProfileComponent {
 
     let formData = new FormData();
     formData.append('fullName', this.Form.value.fullName);
-    formData.append('email', this.Form.value.email);
     formData.append('phoneNumber', this.Form.value.phoneNumber.e164Number.slice(this.Form.value.phoneNumber.dialCode.length));
+    if (this.profileImage) {
+      formData.append('profileImage', this.profileImage);
+    }
     formData.append('legalForm', this.Form.value.legalForm);
     formData.append('companyName', this.Form.value.companyName);
     formData.append('companyAddress', this.Form.value.companyAddress);
     formData.append('city', this.Form.value.city);
     formData.append('pincode', this.Form.value.pincode);
     formData.append('vat', this.Form.value.vat);
-    formData.append('typeOfSeller', this.Form.value.typeOfSeller);
-    formData.append('profileImage', this.profileImage);
+    formData.append('sellerType', this.Form.value.typeOfSeller);
     formData.append('countryCode', this.Form.value.phoneNumber.dialCode);
     formData.append('isSeller', this.role === 'seller' ? '1' : '0');
+    formData.append('tagline', this.Form.value.tagline);
+    formData.append('websiteUrl', this.Form.value.websiteUrl);
+    formData.append('description', this.Form.value.description);
+    formData.append('openingTimes', JSON.stringify(this.Form.value.openingTimes));
+    formData.append('advantages', JSON.stringify(this.Form.value.advantages));
+    formData.append('services', JSON.stringify(this.Form.value.services));
+    if (this.coverImage) {
+      formData.append('coverImage', this.coverImage);
+    }
+    if (this.selectedVideo) {
+      formData.append('showroomVideos', this.selectedVideo);
+    }
+    if (this.showroomImages.length > 0) {
+      this.showroomImages.forEach((image: any) => {
+        formData.append('showroomImages', image);
+      })
+    }
+    if (this.Form.value.teamMembers) {
+      let teamMembers: any[] = []
+      this.Form.value.teamMembers.forEach((member: any, index: number) => {
+        teamMembers.push({
+          tempKey: member.tempKey,
+          fullName: member.fullName,
+          role: member.role,
+          phoneNumber: member.phoneNumber,
+          email: member.email,
+          languages: member.languages
+        })
+        const file = this.memberImages[member.tempKey];
+
+        if (file) {
+          formData.append(`member_${member.tempKey}`, file);
+        }
+      })
+      formData.append('teamMembers', JSON.stringify(teamMembers));
+    }
 
     this.commonService.post('user/editProfile', formData).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
@@ -190,6 +285,7 @@ export class EditProfileComponent {
   }
 
   addDefaultRows() {
+    const tempKey = 'tmp_' + Math.random().toString(36).substring(2, 7);;
 
     this.NoOfDays.forEach((day) => {
       this.openingTimes.push(this.fb.group({
@@ -212,6 +308,7 @@ export class EditProfileComponent {
     this.teamMembers.push(
       this.fb.group({
         id: [''],
+        tempKey: [tempKey],
         fullName: [''],
         role: [''],
         phoneNumber: [''],
@@ -240,9 +337,11 @@ export class EditProfileComponent {
   }
 
   addTeamMember() {
+    const tempKey = 'tmp_' + Math.random().toString(36).substring(2, 7);
     this.teamMembers.push(
       this.fb.group({
         id: [''],
+        tempKey: [tempKey],
         fullName: [''],
         role: [''],
         phoneNumber: [''],
@@ -253,7 +352,81 @@ export class EditProfileComponent {
   }
 
   removeTeamMember(index: number) {
+    const tempKey = this.teamMembers.at(index).get('tempKey')?.value;
     this.teamMembers.removeAt(index);
+    if (tempKey && this.memberImages[tempKey]) {
+      delete this.memberImages[tempKey];
+      delete this.memberPreviews[tempKey];
+    }
+  }
+
+  onMemberProfileChange(event: any, index: number) {
+    if (event.target.files && event.target.files[0]) {
+      this.currentImageType = 'member';
+      this.currentMemberIndex = index;
+      this.imageChangedEvent = event;
+      this.openModal();
+    }
+  }
+
+  onCoverImageChange(event: any): void {
+    if (event.target.files && event.target.files[0]) {
+      this.currentImageType = 'cover';
+      this.currentMemberIndex = null;
+      this.imageChangedEvent = event;
+      this.openModal();
+    }
+  }
+
+  removeCoverImage() {
+    this.coverImage = null;
+    this.coverPreview = null;
+  }
+
+  onShowroomImagesChange(event: any) {
+    const files: FileList = event.target.files;
+
+    if (!files || files.length === 0) return;
+
+    Array.from(files).forEach((file: File) => {
+
+      this.showroomImages.push(file);
+
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        this.showroomPreviews.push(e.target.result);
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+
+  removeShowroomImage(index: number) {
+    this.showroomImages.splice(index, 1);
+    this.showroomPreviews.splice(index, 1);
+  }
+
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      if (file.type !== 'video/mp4') {
+        alert('Only MP4 videos are allowed');
+        return;
+      }
+      this.selectedVideo = file;
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.videoPreview = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeFile() {
+    this.selectedVideo = null;
+    this.videoPreview = null;
   }
 
   ngOnDestroy(): void {

@@ -3,21 +3,18 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
-                    <!-- Mobile Sidebar Toggle Button -->
                     <button class="btn d-lg-none mb-3" id="profileMenuBtn" (click)="openSidebar()">
                         <i class="fa fa-bars"></i> Menu
                     </button>
-
-                    <!-- Sidebar -->
                     <aside class="profile-sidebar ct_right_main_box" id="profileSidebar" #profileSidebar>
-                        <!-- Sidebar Profile Info -->
                         <div class="d-flex align-items-center gap-3 p-3 border-bottom">
                             <div class="m-0">
-                                <img src="img/profile.png" alt="" class="ct_profile_img_56" />
+                                <img [src]="userData?.profileImage || 'img/icons/user-circle-img.png'" alt=""
+                                    class="ct_profile_img_56" />
                             </div>
                             <div>
-                                <h5 class="ct_fs_20 ct_fw_600 mb-0">John Wilson</h5>
-                                <p class="ct_fs_12 mb-0">alma.lawson&#64;example.com</p>
+                                <h5 class="ct_fs_20 ct_fw_600 mb-0">{{userData?.fullName}}</h5>
+                                <p class="ct_fs_12 mb-0">{{userData?.email}}</p>
                             </div>
                         </div>
 
@@ -55,7 +52,6 @@
                                     Feedback
                                 </a>
                             </li>
-
                             <hr />
                             <li>
                                 <a routerLink="switch-mode">

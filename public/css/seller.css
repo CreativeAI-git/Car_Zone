@@ -322,9 +322,9 @@
   white-space: nowrap;
 }
 
-.ct_grey_input {
+/* .ct_grey_input {
   background-color: #F9F9F9;
-}
+} */
 
 .ct_submit_pill_btn {
   display: inline-flex;

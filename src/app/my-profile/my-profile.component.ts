@@ -1,6 +1,8 @@
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { RouterLink, RouterOutlet, RouterLinkActive, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { CommonService } from '../services/common.service';
+import { RoleService } from '../services/role.service';
 
 @Component({
   selector: 'app-my-profile',
@@ -12,8 +14,14 @@ export class MyProfileComponent {
   @ViewChild('profileSidebar') profileSidebar!: ElementRef;
   @ViewChild('profileOverlay') profileOverlay!: ElementRef;
   @ViewChild('close') close: ElementRef | undefined;
-
-  constructor(private renderer: Renderer2, private authService: AuthService, private router: Router) { }
+  userData: any
+  role: any
+  constructor(private renderer: Renderer2, private authService: AuthService, private router: Router, private commonService: CommonService, private roleService: RoleService) {
+    effect(() => {
+      this.userData = this.commonService.userData()
+      this.role = this.roleService.currentLoggedInRole()
+    })
+  }
 
   openSidebar() {
     this.renderer.addClass(this.profileSidebar.nativeElement, 'active');
