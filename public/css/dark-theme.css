@@ -286,18 +286,21 @@ body.theme-dark .main-logo svg path {
   fill: #fff;
 }
 
-body.theme-dark .navbar-nav .nav-link , body.theme-dark .eng-dropdown, body.theme-dark .prof-user-name, body.theme-dark .prof-buyer-name{
+body.theme-dark .navbar-nav .nav-link,
+body.theme-dark .eng-dropdown,
+body.theme-dark .prof-user-name,
+body.theme-dark .prof-buyer-name {
   color: #fff !important;
 }
 
 
-body.theme-dark .navbar-nav .nav-link.active{
+body.theme-dark .navbar-nav .nav-link.active {
   color: #EB261D;
 }
 
-body.theme-dark  .main-logo svg path:nth-child(3) {
-    fill: #EB261D;
-    stroke: #EB261D;
+body.theme-dark .main-logo svg path:nth-child(3) {
+  fill: #EB261D;
+  stroke: #EB261D;
 }
 
 
@@ -305,72 +308,82 @@ body.theme-dark  .main-logo svg path:nth-child(3) {
 
 /* seller side */
 
-body.theme-dark .ct_car_listed_list:before{
+body.theme-dark .ct_car_listed_list:before {
   border-color: #555;
 }
 
-body.theme-dark .ct_num{
+body.theme-dark .ct_num {
   background: #111;
   border-color: #555;
   color: #fff;
 }
 
 
-body.theme-dark .btn-grey-transparent{
+body.theme-dark .btn-grey-transparent {
   border-color: #fff;
   color: #fff;
 }
-body.theme-dark .btn-grey-transparent::before{
+
+body.theme-dark .btn-grey-transparent::before {
   background: #fff;
 }
-body.theme-dark .btn-grey-transparent:hover{
+
+body.theme-dark .btn-grey-transparent:hover {
   color: #111;
 }
 
 
-body.theme-dark .btn-red-transparent{
+body.theme-dark .btn-red-transparent {
   background: #8f0c1f;
   color: #fff;
 }
-body.theme-dark .btn-red-transparent::before{
+
+body.theme-dark .btn-red-transparent::before {
   background: none;
 }
+
 body.theme-dark .btn-red-transparent:hover {
-    color: #fff;
-    border-color: #8f0c1f;
-    background: none;
+  color: #fff;
+  border-color: #8f0c1f;
+  background: none;
 }
 
 
 body.theme-dark .toggle-switch input[type="checkbox"]:checked+.toggle-switch-background {
-    background-color: #334155;
+  background-color: #334155;
 }
 
 
 
-body.theme-dark .custom-close i{
+body.theme-dark .custom-close i {
   color: #fff;
 }
 
 
-body.theme-dark .ct_stepper li.active h6 ,
-body.theme-dark .ct_stepper li.active p{
+body.theme-dark .ct_stepper li.active h6,
+body.theme-dark .ct_stepper li.active p {
   color: #fff;
 }
-body.theme-dark .ct_step_circle{
+
+body.theme-dark .ct_step_circle {
   background-color: #333;
   color: #fff;
   border-color: #333;
 }
 
-body.theme-dark .ct_step_circle.active{
+body.theme-dark .ct_step_circle.active {
   background-color: #111;
 }
 
-body.theme-dark .login-popup__left{
-    background-color: #111;
+body.theme-dark .login-popup__left {
+  background-color: #111;
 }
+
 body.theme-dark .login-popup__role:has(input:checked) {
   border-color: #555;
   background: #555;
+}
+
+body.theme-dark .upload-box {
+  background-color: transparent;
 }

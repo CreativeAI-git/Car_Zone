@@ -1,6 +1,6 @@
 <div class="d-flex align-items-center gap-3 profile-edit-box">
       <div class="ct_profile_img m-0">
-            <img [src]="userData?.profileImage || imagePreview || 'img/icons/user-circle-img.png'" alt="" />
+            <img [src]="imagePreview || 'img/icons/user-circle-img.png'" alt="" />
             <label for="ct_profile_update">
                   <input type="file" class="d-none" id="ct_profile_update" accept="image/*"
                         (change)="onProfileImage($event)" />
@@ -261,7 +261,8 @@
                         <div class="mt-2 border-123" formArrayName="openingTimes">
                               <div *ngFor="let t of openingTimes.controls; let i=index" [formGroupName]="i"
                                     class="d-flex justify-content-between align-items-center mb-2">
-                                    <div class="ct_fs_18 ct_fw_400">{{NoOfDays[i]}}</div>
+                                    <div class="ct_fs_18 ct_fw_400">{{NoOfDays[i]}}.</div>
+                                    <!-- <input type="text" class="form-control" formControlName="day" /> -->
                                     <div class="d-flex gap-2 align-items-center">
                                           <input type="time" class="form-control" formControlName="open" />
                                           <span> -</span>
@@ -350,7 +351,7 @@
                                           class="d-flex align-items-center gap-3 mb-3">
                                           <div class="w-100 ct_grey_input">
                                                 <input type="text" class="form-control ct_input"
-                                                      placeholder="Enter Services" formControlName="service" />
+                                                      placeholder="Enter Services" formControlName="service_name" />
                                           </div>
                                           <a (click)="removeService(i)">
                                                 <img src="img/icons/cross.png" />
@@ -463,7 +464,8 @@
                   </div>
 
                   <div class="d-flex justify-content-end mt-5">
-                        <button type="submit" class="btn-red">Save Changes</button>
+                        <app-submit-button [text]="'Save Changes'" [class]="'btn-red'"
+                              [isLoading]="loading"></app-submit-button>
                   </div>
                   <div class="col-lg-6"></div>
             </div>

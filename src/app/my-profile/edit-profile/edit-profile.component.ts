@@ -13,10 +13,11 @@ import { RoleService } from '../../services/role.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { SubmitButtonComponent } from "../../components/shared/submit-button/submit-button.component";
 declare var bootstrap: any;
 @Component({
   selector: 'app-edit-profile',
-  imports: [FormsModule, ReactiveFormsModule, NgxIntlTelInputModule, CommonModule, NzSelectModule, TranslateModule, ImageCropperComponent],
+  imports: [FormsModule, ReactiveFormsModule, NgxIntlTelInputModule, CommonModule, NzSelectModule, TranslateModule, ImageCropperComponent, SubmitButtonComponent],
   templateUrl: './edit-profile.component.html',
   styleUrl: './edit-profile.component.css'
 })
@@ -32,7 +33,7 @@ export class EditProfileComponent {
   profileImage: any
   imagePreview: any
   role: any
-  NoOfDays: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+  NoOfDays: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   defaultServices: string[] = ['Leasing & Financing', 'Fair trade-in prices', 'Warranty & service packages']
   defaultAdvantages: string[] = ['Flexible financing options', 'Certified vehicles', 'Warranty & service packages']
   sellerTypes: any[] = [{
@@ -87,11 +88,10 @@ export class EditProfileComponent {
       this.userData = this.commonService.userData()
       this.role = this.roleService.currentLoggedInRole()
       if (this.userData) {
-
         this.Form.patchValue({
           fullName: this.userData.fullName,
           phoneNumber: this.userData.countryCode + this.userData.phoneNumber,
-          whatsappNumber: this.userData.countryCode + this.userData.whatsappNumber,
+          whatsappNumber: this.userData.whatsappCountryCode + this.userData.whatsappNumber,
           isWhatsappSameAsPhone: this.userData.isWhatsappSameAsPhone,
           address: this.userData.address,
           city: this.userData.city,
@@ -99,17 +99,77 @@ export class EditProfileComponent {
           websiteUrl: this.userData.websiteUrl,
           tagline: this.userData.tagline,
           description: this.userData.description,
-          openingTimes: this.userData.openingTimes,
           advantages: this.userData.advantages,
           services: this.userData.services,
-          teamMembers: this.userData.teamMembers,
           companyName: this.userData.companyName,
           companyAddress: this.userData.companyAddress,
           vat: this.userData.vat,
+          legalForm: this.userData.legalForm,
           typeOfSeller: this.userData.roleData.filter((role: any) => role.role === 'seller')[0]?.seller_type || 'personal',
         })
+        this.patchServices(this.userData.services);
+        this.patchAdvantages(this.userData.advantages);
+        this.patchTeamMembers(this.userData.teamMembers);
+        this.patchOpeningTimes(this.userData.openingTimes);
+        this.coverPreview = this.userData.coverImage
+        this.imagePreview = this.userData.profileImage
+        this.showroomPreviews = this.userData.showroomImages
+        this.videoPreview = this.userData.showroomVideos[0]
       }
     })
+  }
+
+  patchAdvantages(data: any[]) {
+    this.advantages.clear();
+    data.forEach(adv => {
+      this.advantages.push(
+        this.fb.group({
+          advantage: [adv]
+        })
+      );
+    });
+  }
+
+  patchServices(data: any[]) {
+    this.services.clear();
+    data.forEach(service => {
+      this.services.push(
+        this.fb.group({
+          service_name: [service.service_name]
+        })
+      );
+    });
+  }
+
+  patchTeamMembers(data: any[]) {
+    this.teamMembers.clear();
+    data.forEach((member) => {
+      this.teamMembers.push(
+        this.fb.group({
+          id: [member.id],
+          tempKey: [`tmp_${member.id}`],
+          fullName: [member.fullName],
+          role: [member.role],
+          phoneNumber: [member.phoneNumber],
+          email: [member.email],
+          languages: [member.languages]
+        })
+      );
+      this.memberPreviews[`tmp_${member.id}`] = member.profilePhoto;
+    });
+  }
+
+  patchOpeningTimes(data: any[]) {
+    this.openingTimes.clear();
+    data.forEach((time: any) => {
+      this.openingTimes.push(
+        this.fb.group({
+          day: [time.day],
+          open: [time.open_time],
+          close: [time.close_time]
+        })
+      );
+    });
   }
 
   ngOnInit(): void {
@@ -237,21 +297,23 @@ export class EditProfileComponent {
     }
     if (this.Form.value.teamMembers) {
       let teamMembers: any[] = []
-      this.Form.value.teamMembers.forEach((member: any, index: number) => {
-        teamMembers.push({
-          tempKey: member.tempKey,
+      this.Form.value.teamMembers.forEach((member: any) => {
+        const file = this.memberImages[member.tempKey];
+        const memberPayload: any = {
+          id: member.id,
           fullName: member.fullName,
           role: member.role,
           phoneNumber: member.phoneNumber,
           email: member.email,
           languages: member.languages
-        })
-        const file = this.memberImages[member.tempKey];
-
+        };
         if (file) {
+          memberPayload.tempKey = member.tempKey;
           formData.append(`member_${member.tempKey}`, file);
         }
-      })
+        teamMembers.push(memberPayload);
+      });
+
       formData.append('teamMembers', JSON.stringify(teamMembers));
     }
 
@@ -287,9 +349,9 @@ export class EditProfileComponent {
   addDefaultRows() {
     const tempKey = 'tmp_' + Math.random().toString(36).substring(2, 7);;
 
-    this.NoOfDays.forEach((day) => {
+    this.NoOfDays.forEach((_day) => {
       this.openingTimes.push(this.fb.group({
-        day: [day],
+        day: [_day],
         open: [''],
         close: ['']
       }));
@@ -302,7 +364,7 @@ export class EditProfileComponent {
     });
 
     this.defaultServices.forEach((service) => {
-      this.services.push(this.fb.group({ service: [service], isActive: [1] }));
+      this.services.push(this.fb.group({ service_name: [service], isActive: [1] }));
     });
 
     this.teamMembers.push(
@@ -329,7 +391,7 @@ export class EditProfileComponent {
   }
 
   addService() {
-    this.services.push(this.fb.group({ service: [''], isActive: [1] }));
+    this.services.push(this.fb.group({ service_name: [''], isActive: [1] }));
   }
 
   removeService(index: number) {

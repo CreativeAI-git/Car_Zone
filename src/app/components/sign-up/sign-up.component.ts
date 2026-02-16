@@ -87,11 +87,14 @@ export class SignUpComponent {
       fullName: this.Form.value.fullName,
       email: this.Form.value.email,
       phoneNumber: this.Form.value.phoneNumber.number,
+      whatsappNumber: this.Form.value.whatsappNumber.number,
+      isWhatsappSameAsPhone: this.Form.value.isWhatsappSameAsPhone,
       password: this.Form.value.password,
       address: this.Form.value.address,
       city: this.Form.value.city,
       pincode: this.Form.value.pincode,
       countryCode: this.Form.value.phoneNumber.dialCode,
+      whatsappCountryCode: this.Form.value.whatsappNumber.dialCode,
       language: 'en',
       isSeller: 0
     }

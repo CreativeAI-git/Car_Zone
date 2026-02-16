@@ -139,6 +139,7 @@ export class SellerSignUpComponent {
       pincode: this.Form.value.pincode,
       vat: this.Form.value.vat,
       countryCode: this.Form.value.phoneNumber.dialCode,
+      whatsappCountryCode: this.Form.value.whatsappNumber.dialCode,
       language: 'en',
       isSeller: 1
     }
