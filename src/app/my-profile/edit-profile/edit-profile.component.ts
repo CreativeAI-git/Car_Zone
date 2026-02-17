@@ -17,7 +17,7 @@ import { SubmitButtonComponent } from "../../components/shared/submit-button/sub
 declare var bootstrap: any;
 @Component({
   selector: 'app-edit-profile',
-  imports: [FormsModule, ReactiveFormsModule, NgxIntlTelInputModule, CommonModule, NzSelectModule, TranslateModule, ImageCropperComponent, SubmitButtonComponent],
+  imports: [FormsModule, ReactiveFormsModule, NgxIntlTelInputModule, CommonModule, NzSelectModule, TranslateModule, ImageCropperComponent, SubmitButtonComponent, RoleDirective],
   templateUrl: './edit-profile.component.html',
   styleUrl: './edit-profile.component.css'
 })
@@ -107,12 +107,12 @@ export class EditProfileComponent {
           legalForm: this.userData.legalForm,
           typeOfSeller: this.userData.roleData.filter((role: any) => role.role === 'seller')[0]?.seller_type || 'personal',
         })
+        this.imagePreview = this.userData.profileImage
         this.patchServices(this.userData.services);
         this.patchAdvantages(this.userData.advantages);
         this.patchTeamMembers(this.userData.teamMembers);
         this.patchOpeningTimes(this.userData.openingTimes);
         this.coverPreview = this.userData.coverImage
-        this.imagePreview = this.userData.profileImage
         this.showroomPreviews = this.userData.showroomImages
         this.videoPreview = this.userData.showroomVideos[0]
       }
@@ -121,7 +121,7 @@ export class EditProfileComponent {
 
   patchAdvantages(data: any[]) {
     this.advantages.clear();
-    data.forEach(adv => {
+    data?.forEach(adv => {
       this.advantages.push(
         this.fb.group({
           advantage: [adv]
@@ -132,7 +132,7 @@ export class EditProfileComponent {
 
   patchServices(data: any[]) {
     this.services.clear();
-    data.forEach(service => {
+    data?.forEach(service => {
       this.services.push(
         this.fb.group({
           service_name: [service.service_name]
@@ -143,7 +143,7 @@ export class EditProfileComponent {
 
   patchTeamMembers(data: any[]) {
     this.teamMembers.clear();
-    data.forEach((member) => {
+    data?.forEach((member) => {
       this.teamMembers.push(
         this.fb.group({
           id: [member.id],
@@ -161,7 +161,7 @@ export class EditProfileComponent {
 
   patchOpeningTimes(data: any[]) {
     this.openingTimes.clear();
-    data.forEach((time: any) => {
+    data?.forEach((time: any) => {
       this.openingTimes.push(
         this.fb.group({
           day: [time.day],
@@ -193,8 +193,6 @@ export class EditProfileComponent {
     this.Form.get('isWhatsappSameAsPhone')?.valueChanges.subscribe((value) => {
       if (value) {
         this.Form.get('phoneNumber')?.setValue(this.Form.get('whatsappNumber')?.value);
-      } else {
-        this.Form.get('phoneNumber')?.setValue('');
       }
     })
   }

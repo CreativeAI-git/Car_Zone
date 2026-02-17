@@ -1,9 +1,9 @@
-.ct_pricing_plan_card.selected {
-      border: 2px solid #f0151e;
+.price-card.selected {
+      border: 2px solid #8f0c1f;
 }
 
-.ct_pricing_plan_card {
-      border: 2px solid transparent;
+.price-card {
+      border: 2px solid #f0f0f0;
 }
 
 .ct_red_btn:disabled {

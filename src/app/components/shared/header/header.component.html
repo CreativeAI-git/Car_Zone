@@ -5,22 +5,51 @@
                         <img src="img/black-logo.png" alt="" class="logo-default" />
                         <img src="img/logo.png" class="logo-sticky " alt="Sticky Logo" />
                   </a>
-                  <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex">
-                        <ul class="navbar-nav gap-4" id="mainMenu">
-                              <li class="nav-item">
-                                    <a class="nav-link ct_fs_16 ct_fw_600" routerLinkActive="active"
-                                          routerLink="/browse-cars">Browse
-                                          Cars</a>
-                              </li>
-                              <li class="nav-item">
-                                    <a class="nav-link ct_fs_16 ct_fw_600" routerLinkActive="active"
-                                          routerLink="/reels">Reels</a>
-                              </li>
-                              <li class="nav-item">
-                                    <a class="nav-link ct_fs_16 ct_fw_600" rou routerLink="/chats">Chats</a>
-                              </li>
-                        </ul>
-                  </div>
+                  <ng-container *appRole="'buyer'">
+                        <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex">
+                              <ul class="navbar-nav gap-4" id="mainMenu">
+                                    <li class="nav-item">
+                                          <a class="nav-link ct_fs_16 ct_fw_600" routerLinkActive="active"
+                                                routerLink="/browse-cars">Browse
+                                                Cars</a>
+                                    </li>
+                                    <li class="nav-item">
+                                          <a class="nav-link ct_fs_16 ct_fw_600" routerLinkActive="active"
+                                                routerLink="/reels">Reels</a>
+                                    </li>
+                                    <li class="nav-item">
+                                          <a class="nav-link ct_fs_16 ct_fw_600" rou routerLink="/chats">Chats</a>
+                                    </li>
+                              </ul>
+                        </div>
+                  </ng-container>
+                  <ng-container *appRole="'seller'">
+                        <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex">
+                              <ul class="navbar-nav gap-4">
+                                    <!-- <li class="nav-item">
+                                          <a class="nav-link nav-link ct_fs_18 ct_fw_400"
+                                                routerLink="choose-listing-plan" routerLinkActive="active">List your
+                                                car</a>
+                                    </li> -->
+                                    <li class="nav-item">
+                                          <a class="nav-link nav-link ct_fs_18 ct_fw_400" routerLinkActive="active"
+                                                routerLink="/my-listings">My Listings</a>
+                                    </li>
+                                    <li class="nav-item">
+                                          <a class="nav-link nav-link ct_fs_18 ct_fw_400" routerLinkActive="active"
+                                                routerLink="/chats">Chats</a>
+                                    </li>
+                                    <li class="nav-item">
+                                          <a class="nav-link nav-link ct_fs_18 ct_fw_400" routerLinkActive="active"
+                                                routerLink="/calendar">Calendar</a>
+                                    </li>
+                                    <li class="nav-item">
+                                          <a class="nav-link nav-link ct_fs_18 ct_fw_400" routerLinkActive="active"
+                                                routerLink="/schedule-request">Schedule request</a>
+                                    </li>
+                              </ul>
+                        </div>
+                  </ng-container>
                   <div class="d-flex gap-3">
                         <div class="">
                               <div class="d-flex align-items-center gap-3">

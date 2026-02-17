@@ -30,16 +30,32 @@
                                 <a routerLink="edit-profile" routerLinkActive="active">
                                     <img src="img/menu-icons/edit-profile.png" alt="" class="me-2" />Edit Profile</a>
                             </li>
-                            <li>
-                                <a routerLink="saved-reels" routerLinkActive="active">
-                                    <img src="img/menu-icons/saved.png" alt="" class="me-2" />
-                                    Saved Car Reels</a>
-                            </li>
-                            <li>
-                                <a routerLink="wishlist" routerLinkActive="active">
-                                    <img src="img/menu-icons/wishlist.png" alt="" class="me-2" />
-                                    Favorites</a>
-                            </li>
+                            <ng-container *appRole="'buyer'">
+                                <li>
+                                    <a routerLink="saved-reels" routerLinkActive="active">
+                                        <img src="img/menu-icons/saved.png" alt="" class="me-2" />
+                                        Saved Car Reels</a>
+                                </li>
+                                <li>
+                                    <a routerLink="wishlist" routerLinkActive="active">
+                                        <img src="img/menu-icons/wishlist.png" alt="" class="me-2" />
+                                        Favorites</a>
+                                </li>
+                            </ng-container>
+                            <ng-container *appRole="'seller'">
+                                <li>
+                                    <a routerLink="slot-request" routerLinkActive="active">
+                                        <img src="img/menu-icons/slot-req.png" alt="" class="me-2" />
+                                        Slot Request
+                                    </a>
+                                </li>
+                                <li>
+                                    <a routerLink="my-listing-slot" routerLinkActive="active">
+                                        <img src="img/menu-icons/listing-slot.png" alt="" class="me-2" />
+                                        My Listing Slot
+                                    </a>
+                                </li>
+                            </ng-container>
                             <li>
                                 <a routerLink="change-password" routerLinkActive="active">
                                     <img src="img/menu-icons/change-password.png" alt="" class="me-2" />
@@ -71,7 +87,7 @@
                             </li>
                             <li>
                                 <a href="download-data.html">
-                                    <img src="img/menu-icons/download.png" alt="" />
+                                    <img src="img/menu-icons/download.png" alt="" class="me-2" />
                                     Download your data</a>
                             </li>
                             <li>

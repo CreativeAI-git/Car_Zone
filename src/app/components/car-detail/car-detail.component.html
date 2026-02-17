@@ -6,17 +6,17 @@
                               <li class="breadcrumb-item">
                                     <a class="ct_color_8f0c1f ct_fs_17 ct_fw_500" (click)="location.back()">
                                           <img src="img/icons/chevron-right.png" class="me-2" />
-                                          Back | {{carData?.brandName}}</a>
+                                          Back | {{carData?.vehicle.brand}}</a>
                               </li>
                               <li class="breadcrumb-item">
                                     <a class="ct_color_8f0c1f ct_fs_17 ct_fw_500">
                                           <img src="img/icons/chevron-left.png" class="me-2" />
-                                          {{carData?.carModel}}
+                                          {{carData?.vehicle.model}}
                                     </a>
                               </li>
                               <li class="breadcrumb-item active ct_fs_17 ct_fw_300" aria-current="page">
                                     <img src="img/icons/chevron-left.png" class="me-2" />
-                                    {{carData?.brandName}} {{carData?.carModel}}
+                                    {{carData?.vehicle.brand}} {{carData?.vehicle.model}}
                               </li>
                         </ol>
                   </nav>
@@ -49,13 +49,13 @@
             <div class="mb-4">
                   <div class="row">
                         <div class="col-lg-7">
-                              @if(carData?.carImages.length > 0){
+                              @if(carData?.images.length > 0){
                               <div class="">
                                     <nz-image-group>
                                           <div class="swiper mySwiperMain">
                                                 <div class="swiper-wrapper">
                                                       <div class="swiper-slide"
-                                                            *ngFor="let img of carData.carImages; trackBy: trackByImage">
+                                                            *ngFor="let img of carData.images; trackBy: trackByImage">
                                                             <img [nzSrc]="img || 'img/placeholder.png'" nz-image
                                                                   nzPreview>
                                                       </div>
@@ -67,7 +67,7 @@
                                     <div class="swiper mySwiperThumbs mySwiperThumbs mt-2">
                                           <div class="swiper-wrapper">
                                                 <div class="swiper-slide"
-                                                      *ngFor="let img of carData.carImages; trackBy: trackByImage">
+                                                      *ngFor="let img of carData.images; trackBy: trackByImage">
                                                       <img [src]="img">
                                                 </div>
                                           </div>
@@ -79,15 +79,15 @@
                                     <ul class="p-0 car-content-detail-list">
                                           <li class="d-flex gap-3 align-items-start">
                                                 <img src="img/icons/calendar-brown.png" />
-                                                <span> {{carData?.selectYear}} </span>
+                                                <span> {{carData?.vehicle.year}} </span>
                                           </li>
                                           <li class="d-flex gap-3 align-items-start">
                                                 <img src="img/icons/km-brown.png" />
-                                                <span> {{carData?.carMileage}} km </span>
+                                                <span> {{carData?.vehicle.mileage}} km </span>
                                           </li>
                                           <li class="d-flex gap-3 align-items-start">
                                                 <img src="img/icons/transmission-brown.png" />
-                                                <span> {{carData?.transmission}} </span>
+                                                <span> {{carData?.vehicle.transmission}} </span>
                                           </li>
 
                                           <li class="d-flex gap-3 align-items-start">
@@ -98,20 +98,20 @@
                                     <ul class="p-0 car-content-detail-list">
                                           <li class="d-flex gap-3 align-items-start">
                                                 <img src="img/icons/carn.png" />
-                                                <span> {{carData?.body_type}} </span>
+                                                <span> {{carData?.vehicle.bodyType}} </span>
                                           </li>
                                           <li class="d-flex gap-3 align-items-start">
                                                 <img src="img/icons/fuel-brown.png" />
-                                                <span> {{carData?.fuelType}} </span>
+                                                <span> {{carData?.vehicle.fuel}} </span>
                                           </li>
                                           <li class="d-flex gap-3 align-items-start">
                                                 <img src="img/icons/power-brown.png" />
-                                                <span> {{carData?.powerOutput}} ps </span>
+                                                <span> {{carData?.vehicle.power}} ps </span>
                                           </li>
 
                                           <li class="d-flex gap-3 align-items-start">
                                                 <img src="img/icons/km-blackn.png" />
-                                                <span> {{carData?.consumption}} L / 100 Km </span>
+                                                <span> {{carData?.vehicle.consumption}} L / 100 Km </span>
                                           </li>
                                     </ul>
                               </div>
@@ -177,14 +177,7 @@
 
                                     <h4 class="ct_fs_20 ct_fw_600 mb-3">Description</h4>
                                     <p>
-                                          Exceptional BMW X5 M Sport in pristine condition. This premium
-                                          SUV combines luxury, performance, and practicality. Full
-                                          service history, single owner, garage kept. All maintenance
-                                          done at official BMW service center. Powered by a refined and
-                                          powerful engine, the X5 M Sport delivers a smooth yet sporty
-                                          driving experience. The M Sport package enhances both exterior
-                                          and interior with aggressive styling, premium finishes, and
-                                          advanced technology.
+                                          {{carData?.vehicle.description}}
                                     </p>
                                     <div class="mt-3">
                                           <a class="ct_color_3e1cff ct_fs_16"> Show More </a>
@@ -287,14 +280,14 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                           <div>
                                                 <h3 class="ct_fs_25 ct_fw_600 mb-2">
-                                                      {{carData?.brandName}} {{carData?.carModel}}
+                                                      {{carData?.vehicle.brand}} {{carData?.vehicle.model}}
                                                 </h3>
                                           </div>
                                     </div>
 
                                     <div class="mt-2">
                                           <h3 class="ct_fs_25 ct_fw_700 mb-0 ct_color_8f0c1f">
-                                                CHF {{carData?.totalPrice | chfFormat}} /
+                                                CHF {{carData?.vehicle.price | chfFormat}} /
                                                 <span class="mb-0 ct_fs_18 ct_fw_400 ct_color_3e1cff fst-italic">
                                                       CHF 550.- per month
                                                 </span>
@@ -304,8 +297,9 @@
 
                               <div class="row mt-4">
                                     <div class="">
-                                          <img [src]="carData?.sellerDetails?.profileImage " class="seller-image" />
-                                          <h4 class="ct_fs_20 ct_fw_500 mt-2">{{carData?.sellerDetails?.fullName}}</h4>
+                                          <img [src]="carData?.seller.profileImage || 'img/icons/user-circle-img.png'"
+                                                class="seller-image" />
+                                          <h4 class="ct_fs_20 ct_fw_500 mt-2">{{carData?.seller.name}}</h4>
                                           <div class="d-flex align-items-center mt-3">
                                                 <img src="img/icons/ep_location.png" class="me-2" />
                                                 <p class="ct_fs_16 ct_fw_300 mb-0">
@@ -323,12 +317,6 @@
                                                 <img src="img/icons/rating.png" />
                                                 <img src="img/icons/rating.png" />
                                           </div>
-
-
-
-
-
-
                                           <div class="d-flex align-items-center gap-3 my-3">
                                                 <div class="w-50">
                                                       <a class="btn-red w-100 text-center ct_fw_500">Physical
@@ -441,19 +429,20 @@
 
                               <div class="seller-carousel CarSwiper">
                                     <div class="swiper-wrapper">
+                                          @for (item of carData?.suggestedCars; track $index) {
                                           <div class="vehicle-box swiper-slide">
                                                 <div class="d-flex gap-4 vehicle-carousel-contetn">
-                                                      <div class="">
-                                                            <img src="img/seller-car.png" />
+                                                      <div class="w-50">
+                                                            <img [src]="item.car_images[0]" class="w-100" />
                                                       </div>
-
                                                       <div class="">
                                                             <div class="car-content-right">
                                                                   <div
                                                                         class="d-flex justify-content-between align-items-center">
                                                                         <div>
                                                                               <h3 class="ct_fs_22 ct_fw_600 mb-2">
-                                                                                    Lamborghini Huracan
+                                                                                    {{ item.brandName }}
+                                                                                    {{item.carModel}}
                                                                               </h3>
                                                                         </div>
                                                                   </div>
@@ -461,7 +450,7 @@
                                                                   <div class="mt-2">
                                                                         <h3
                                                                               class="ct_fs_18 ct_fw_400 mb-0 ct_color_8f0c1f">
-                                                                              CHF 45’900.-
+                                                                              {{item.totalPrice | chfFormat}}
                                                                         </h3>
                                                                         <p class="mb-0 ct_fs_14 ct_fw_300">
                                                                               CHF 550.- per month
@@ -474,160 +463,37 @@
                                                                   <ul class="p-0 car-content-right-list">
                                                                         <li class="d-flex align-items-center">
                                                                               <img src=" img/icons/sppedmeter.png" />
-                                                                              <span>07.2018 </span>
+                                                                              <span>{{item.selectYear}} </span>
                                                                         </li>
                                                                         <li class="d-flex align-items-center">
                                                                               <img src="img/icons/km.png" />
-                                                                              <span> 50’000 km </span>
+                                                                              <span> {{item.carMileage}} km </span>
                                                                         </li>
                                                                         <li class="d-flex align-items-center">
                                                                               <img src="img/icons/fuel-type.png" />
-                                                                              <span> Benzin </span>
+                                                                              <span> {{item.fuelType}} </span>
                                                                         </li>
                                                                   </ul>
 
                                                                   <ul class="p-0 car-content-right-list">
                                                                         <li class="d-flex align-items-center">
                                                                               <img src="img/icons/power-output.png" />
-                                                                              <span> 510 ps </span>
+                                                                              <span> {{item.powerOutput}} </span>
                                                                         </li>
                                                                         <li class="d-flex align-items-center">
                                                                               <img src="img/icons/transmision.png" />
-                                                                              <span> Automatic </span>
+                                                                              <span> {{item.transmission}} </span>
                                                                         </li>
                                                                         <li class="d-flex align-items-center">
                                                                               <img src="img/icons/year.png" />
-                                                                              <span> 7.0 L / 100 Km </span>
+                                                                              <span> {{item.consumption}} </span>
                                                                         </li>
                                                                   </ul>
                                                             </div>
                                                       </div>
                                                 </div>
                                           </div>
-                                          <div class="vehicle-box swiper-slide ">
-                                                <div class="d-flex gap-4 vehicle-carousel-contetn">
-                                                      <div class="">
-                                                            <img src="img/seller-car.png" />
-                                                      </div>
-
-                                                      <div class="">
-                                                            <div class="car-content-right">
-                                                                  <div class="d-flex justify-content-between">
-                                                                        <div>
-                                                                              <h3 class="ct_fs_22 ct_fw_600 mb-2">
-                                                                                    Lamborghini Huracan
-                                                                              </h3>
-                                                                        </div>
-                                                                  </div>
-
-                                                                  <div class="mt-2">
-                                                                        <h3
-                                                                              class="ct_fs_18 ct_fw_400 mb-0 ct_color_8f0c1f">
-                                                                              CHF 45’900.-
-                                                                        </h3>
-                                                                        <p class="mb-0 ct_fs_14 ct_fw_300">
-                                                                              CHF 550.- per month
-                                                                        </p>
-                                                                  </div>
-                                                            </div>
-
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center mt-2">
-                                                                  <ul class="p-0 car-content-right-list">
-                                                                        <li class="d-flex gap-2 align-items-center">
-                                                                              <img src=" img/icons/sppedmeter.png" />
-                                                                              <span>07.2018 </span>
-                                                                        </li>
-                                                                        <li class="d-flex gap-2 align-items-center">
-                                                                              <img src="img/icons/km.png" />
-                                                                              <span> 50’000 km </span>
-                                                                        </li>
-                                                                        <li class="d-flex gap-2 align-items-center">
-                                                                              <img src="img/icons/fuel-type.png" />
-                                                                              <span> Benzin </span>
-                                                                        </li>
-                                                                  </ul>
-
-                                                                  <ul class="p-0 car-content-right-list">
-                                                                        <li class="d-flex gap-2 align-items-center">
-                                                                              <img src="img/icons/power-output.png" />
-                                                                              <span> 510 ps </span>
-                                                                        </li>
-                                                                        <li class="d-flex gap-2 align-items-center">
-                                                                              <img src="img/icons/transmision.png" />
-                                                                              <span> Automatic </span>
-                                                                        </li>
-                                                                        <li class="d-flex gap-2 align-items-center">
-                                                                              <img src="img/icons/year.png" />
-                                                                              <span> 7.0 L / 100 Km </span>
-                                                                        </li>
-                                                                  </ul>
-                                                            </div>
-                                                      </div>
-                                                </div>
-                                          </div>
-                                          <div class="vehicle-box swiper-slide ">
-                                                <div class="d-flex gap-4 vehicle-carousel-contetn">
-                                                      <div class="">
-                                                            <img src="img/seller-car.png" />
-                                                      </div>
-
-                                                      <div class="">
-                                                            <div class="car-content-right">
-                                                                  <div class="d-flex justify-content-between">
-                                                                        <div>
-                                                                              <h3 class="ct_fs_22 ct_fw_600 mb-2">
-                                                                                    Lamborghini Huracan
-                                                                              </h3>
-                                                                        </div>
-                                                                  </div>
-
-                                                                  <div class="mt-2">
-                                                                        <h3
-                                                                              class="ct_fs_18 ct_fw_400 mb-0 ct_color_8f0c1f">
-                                                                              CHF 45’900.-
-                                                                        </h3>
-                                                                        <p class="mb-0 ct_fs_14 ct_fw_300">
-                                                                              CHF 550.- per month
-                                                                        </p>
-                                                                  </div>
-                                                            </div>
-
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center mt-2">
-                                                                  <ul class="p-0 car-content-right-list">
-                                                                        <li class="d-flex gap-2 align-items-center">
-                                                                              <img src=" img/icons/sppedmeter.png" />
-                                                                              <span>07.2018 </span>
-                                                                        </li>
-                                                                        <li class="d-flex gap-2 align-items-center">
-                                                                              <img src="img/icons/km.png" />
-                                                                              <span> 50’000 km </span>
-                                                                        </li>
-                                                                        <li class="d-flex gap-2 align-items-center">
-                                                                              <img src="img/icons/fuel-type.png" />
-                                                                              <span> Benzin </span>
-                                                                        </li>
-                                                                  </ul>
-
-                                                                  <ul class="p-0 car-content-right-list">
-                                                                        <li class="d-flex gap-2 align-items-center">
-                                                                              <img src="img/icons/power-output.png" />
-                                                                              <span> 510 ps </span>
-                                                                        </li>
-                                                                        <li class="d-flex gap-2 align-items-center">
-                                                                              <img src="img/icons/transmision.png" />
-                                                                              <span> Automatic </span>
-                                                                        </li>
-                                                                        <li class="d-flex gap-2 align-items-center">
-                                                                              <img src="img/icons/year.png" />
-                                                                              <span> 7.0 L / 100 Km </span>
-                                                                        </li>
-                                                                  </ul>
-                                                            </div>
-                                                      </div>
-                                                </div>
-                                          </div>
+                                          }
                                     </div>
                               </div>
                         </div>

@@ -3,10 +3,12 @@ import { RouterLink, RouterOutlet, RouterLinkActive, Router } from '@angular/rou
 import { AuthService } from '../services/auth.service';
 import { CommonService } from '../services/common.service';
 import { RoleService } from '../services/role.service';
+import { RoleDirective } from '../directives/role.directive';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-my-profile',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, RoleDirective, CommonModule],
   templateUrl: './my-profile.component.html',
   styleUrl: './my-profile.component.css'
 })

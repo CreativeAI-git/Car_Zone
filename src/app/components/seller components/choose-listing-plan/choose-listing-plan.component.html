@@ -1,84 +1,147 @@
-<section class="ct_py_70">
+<section class="ct_mt_100">
       <div class="container">
             <div class="row">
                   <div class="col-md-12">
-                        <div class="ct_edit_profile_bg">
-                              <div class="row">
-                                    <div class="row">
-                                          @for (item of planList.slice(0, 2); track $index) {
-                                          <div class="col-md-6 mb-4 mb-md-0">
-                                                <div class="ct_pricing_plan_card"
-                                                      [ngClass]="{'selected': selectedPlan === item}"
-                                                      (click)="selectPlan(item)">
-                                                      <div
-                                                            class="d-flex align-items-center justify-content-between gap-2 mb-2">
-                                                            <h4 class="ct_fs_20 ct_fw_600 mb-0">{{item.name}}</h4>
-                                                            @if (item.name == 'Basic Plan') {
-                                                            <span class="ct_custom_badge">{{isUsed ? 'Used' :
-                                                                  'Starter'}}</span>
-                                                            }
-                                                      </div>
-                                                      <h3 class="ct_fs_24 ct_fw_700 mb-0 ct_text_red mb-1">
-                                                            {{item.price }}
-                                                      </h3>
-                                                      @if (item.name == 'Basic Plan') {
-                                                      <p class="mb-0">{{'FirstCar' | translate}}</p>
-                                                      }@else {
-                                                      <p class="mb-0">{{'PricePerAdditionalCar' | translate}}</p>
-                                                      }
-                                                </div>
-                                          </div>
-                                          }
-                                    </div>
-
+                        <div class="collections-header">
+                              <div class="section-subheading justify-content-center">
+                                    <img src="img/subheading-img.png" />
+                                    <p class="ct_fs_16 text-uppercase">Choose Your Listing Plan</p>
                               </div>
 
-                              <div class="mt-4">
-                                    <h4 class="ct_fs_20 ct_fw_600 mb-4">{{'BulkSlotOptions' | translate}}</h4>
-                                    <div class="row">
-                                          @for (item of planList.slice(2); track $index) {
-                                          <div class="col-md-6 mb-4">
-                                                <ul class="ct_slot_list">
-                                                      <li>
-                                                            <div class="form-check ct_custom_radio">
-                                                                  <input class="form-check-input" type="radio"
-                                                                        name="flexRadioDefault"
-                                                                        [id]="item.slot_count + '_' + item.name"
-                                                                        (change)="selectPlan(item)" />
-                                                                  <label class="form-check-label ct_fw_500 ms-1"
-                                                                        [for]="item.slot_count + '_' + item.name">
-                                                                        {{item.slot_count}} {{'Slots' | translate}}
+                              <h2 class="section-heading ct_fs_35 text-center ct_fw_700">
+                                    Select the Right Plan to Sell Smarter
+                              </h2>
+                              <p class="mb-0 text-center mx-auto" style="max-width: 533px">
+                                    Choose a plan that fits your selling needs and get better
+                                    visibility, control, and faster results.
+                              </p>
+                        </div>
+                  </div>
+            </div>
+
+            <div class="pricing-section pb-5">
+                  <div class="row g-4 align-items-start">
+                        <!-- LEFT CARDS -->
+                        <div class="col-lg-6">
+                              <div class="row gy-3">
+                                    <!-- Basic Plan -->
+                                    @for (item of planList.slice(0, 2); track $index) {
+                                    <div class="col-12">
+                                          <div class="price-card position-relative"
+                                                [ngClass]="{'selected': selectedPlan === item}"
+                                                (click)="selectPlan(item)">
+                                                @if (item.name == 'Basic Plan') {
+                                                <span class="starter-ribbon">{{isUsed ? 'USED' :
+                                                      'STARTER'}}</span>
+                                                }
+                                                <div class="d-flex align-items-center gap-3 justify-content-between">
+                                                      <div>
+                                                            <span class="badge badge-basic">{{item.name}}</span>
+                                                            @if (item.name == 'Basic Plan') {
+                                                            <h5 class="mt-3 ct_fs_24 ct_fw_600 mb-0">
+                                                                  {{'FirstCar' | translate}}
+                                                            </h5>
+                                                            }@else {
+                                                            <h5 class="mt-3 ct_fs_24 ct_fw_600 mb-0">
+                                                                  {{'PricePerAdditionalCar' |
+                                                                  translate}}
+                                                            </h5>
+                                                            }
+                                                      </div>
+                                                      <h3 class="price ct_font_cairo ct_white_nowrap">
+                                                            {{item.price }}
+                                                      </h3>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    }
+                                    <!-- Additional Car -->
+                                    <!-- <div class="col-12">
+                                          <div
+                                                class="price-card red-card d-flex align-items-center justify-content-between gap-3">
+                                                <div>
+                                                      <span class="badge badge-additional">Additional Car</span>
+                                                      <h5 class="text-white mt-3 mb-0">
+                                                            {{'PricePerAdditionalCar' | translate}}
+                                                      </h5>
+                                                </div>
+                                                <h3 class="price text-white ct_font_cairo mb-0 ct_white_nowrap">
+
+                                                </h3>
+                                          </div>
+                                    </div> -->
+                              </div>
+                        </div>
+
+                        <!-- RIGHT PLANS -->
+                        <div class="col-lg-6">
+                              <div class="plan-box">
+                                    <ul class="nav nav-pills mb-3 ct_custom_tabs" id="pills-tab" role="tablist">
+                                          <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="pills-Monthly-tab"
+                                                      data-bs-toggle="pill" data-bs-target="#pills-Monthly"
+                                                      type="button" role="tab" aria-controls="pills-Monthly"
+                                                      aria-selected="true">
+                                                      Monthly
+                                                </button>
+                                          </li>
+                                          <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="pills-Yearly-tab" data-bs-toggle="pill"
+                                                      data-bs-target="#pills-Yearly" type="button" role="tab"
+                                                      aria-controls="pills-Yearly" aria-selected="false" tabindex="-1">
+                                                      Yearly
+                                                </button>
+                                          </li>
+                                    </ul>
+
+                                    <div class="tab-content" id="pills-tabContent">
+                                          <div class="tab-pane fade active show" id="pills-Monthly" role="tabpanel"
+                                                aria-labelledby="pills-Monthly-tab">
+                                                <ul class="ct_mt_40">
+                                                      @for (item of planList.slice(2); track $index) {
+                                                      <li class="slot-item">
+                                                            <div>
+                                                                  <label class="ct_radio-button ct_fw_400 text-black">
+                                                                        <input id="option1" name="ct_radio-group"
+                                                                              type="radio"
+                                                                              (change)="selectPlan(item)" />
+                                                                        <span class="ct_radio-checkmark"></span>
+                                                                        <p class="mb-0 ct_fs_18">{{item.slot_count}}
+                                                                              {{'Slots' | translate}}</p>
                                                                   </label>
                                                             </div>
-                                                            <h6 class="mb-0">
-                                                                  <span
-                                                                        class="ct_fw_700">{{item.price}}</span>/{{'Month'
-                                                                  | translate}}
-                                                            </h6>
+                                                            <div class="slot-text">
+                                                                  <p class="mb-0 ct_fs_18">
+                                                                        <span
+                                                                              class="slot-price">{{item.price}}</span><span
+                                                                              class="">/{{'Month'
+                                                                              | translate}}</span>
+                                                                  </p>
+                                                            </div>
                                                       </li>
+                                                      }
                                                 </ul>
                                           </div>
-                                          }
-                                    </div>
-
-                                    <a routerLink="/request-additional-slots"
-                                          class="ct_text_red ct_fw_600">{{'RequestSlot' | translate}}
-                                          <i class="fa-solid fa-arrow-right ms-1"></i></a>
-
-                                    <div class="ct_info_box mt-3">
-                                          <p class="mb-0"><i
-                                                      class="fa-solid fa-circle-info"></i>{{'YouCanFreelySwapCarsAnytime'
-                                                | translate}}</p>
-                                    </div>
-
-                                    <div class="mt-5 text-center">
-                                          <button [disabled]="!selectedPlan" class="ct_red_btn"
-                                                (click)="purchasePlan()">
-                                                {{'ContinueToAdd' | translate}}</button>
+                                          <div class="tab-pane fade" id="pills-Yearly" role="tabpanel"
+                                                aria-labelledby="pills-Yearly-tab">
+                                                Demo 2
+                                          </div>
                                     </div>
                               </div>
                         </div>
                   </div>
+
+                  <div class="d-flex align-items-center gap-4 justify-content-center mt-5">
+                        <button class="btn-red-transparent px-5">Cancel</button>
+                        <button [disabled]="!selectedPlan" (click)="purchasePlan()" class="btn-red px-5">Continue
+                        </button>
+                  </div>
+                  <p class="mb-0 ct_mt_30 text-center">
+                        Need additional listing slots? Submit a request to expand your
+                        capacity.
+                        <a routerLink="/request-additional-slots" class="ct_color_8f0c1f ct_fw_600">Request Slot <i
+                                    class="fa-solid fa-arrow-right ms-1"></i></a>
+                  </p>
             </div>
       </div>
 </section>

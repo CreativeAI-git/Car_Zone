@@ -36,6 +36,14 @@ export class CarDetailComponent {
   ngOnInit(): void {
     this.token = this.authService.getToken();
     this.getCarDetail()
+    if (this.authService.isLogedIn()) {
+      this.addToRecentlyViewed()
+    }
+  }
+
+  addToRecentlyViewed() {
+    this.service.post('user/addRecentlyViewed', { carId: this.carId }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+    })
   }
 
   getCarDetail() {
@@ -48,7 +56,7 @@ export class CarDetailComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
-          this.carData = res.data;
+          this.carData = res;
           this.loader.hide();
         },
         error: (err) => {

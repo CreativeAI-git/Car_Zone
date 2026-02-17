@@ -32,7 +32,7 @@ export class CommonService {
   };
 
   getProfile() {
-    this.get('user/getUserProfile').subscribe((res: any) => {
+    this.get('user/web/getUserProfile').subscribe((res: any) => {
       this.userData.set(res.data)
     })
   }

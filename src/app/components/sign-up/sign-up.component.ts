@@ -22,7 +22,7 @@ import { SubmitButtonComponent } from '../shared/submit-button/submit-button.com
 })
 export class SignUpComponent {
   destroy$ = new Subject<void>();
-  formStep: number = 2;
+  formStep: number = 1;
   Form: FormGroup;
   SearchCountryField = SearchCountryField
   CountryISO = CountryISO;

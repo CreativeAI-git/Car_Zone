@@ -9,10 +9,11 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../services/modal.service';
 import { RoleModalComponent } from '../role-modal/role-modal.component';
+import { RoleDirective } from '../../../directives/role.directive';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, TranslateModule, CommonModule, RoleModalComponent],
+  imports: [RouterLink, RouterLinkActive, TranslateModule, CommonModule, RoleModalComponent, RoleDirective],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
