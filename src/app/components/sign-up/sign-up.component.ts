@@ -80,6 +80,10 @@ export class SignUpComponent {
       this.Form.markAllAsTouched();
       return;
     }
+    if (!this.Form.get('termsAndConditions')?.value) {
+      this.submitted = true;
+      return;
+    }
 
     this.loading = true
 
@@ -90,7 +94,7 @@ export class SignUpComponent {
       whatsappNumber: this.Form.value.whatsappNumber.number,
       isWhatsappSameAsPhone: this.Form.value.isWhatsappSameAsPhone,
       password: this.Form.value.password,
-      address: this.Form.value.address,
+      fullAddress: this.Form.value.address,
       city: this.Form.value.city,
       pincode: this.Form.value.pincode,
       countryCode: this.Form.value.phoneNumber.dialCode,

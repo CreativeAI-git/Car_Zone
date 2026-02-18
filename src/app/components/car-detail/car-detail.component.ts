@@ -173,13 +173,13 @@ export class CarDetailComponent {
   contactSeller(item: any) {
     if (this.token) {
       let sellerData = {
-        id: item.sellerDetails.id,
-        name: item.sellerDetails.fullName,
-        email: item.sellerDetails.email,
-        profileImage: item.sellerDetails.profileImage,
-        carId: item.id,
-        carImage: item.carImages[0],
-        carName: item.brandName + ' ' + item.carModel
+        id: item.seller.id,
+        name: item.seller.name,
+        email: item.seller.email,
+        profileImage: item.seller.profileImage,
+        carId: item.vehicle.id,
+        carImage: item.images[0],
+        carName: item.vehicle.brand + ' ' + item.vehicle.model
       }
 
       this.service.sellerData.set(sellerData)

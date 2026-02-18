@@ -93,7 +93,7 @@ export class EditProfileComponent {
           phoneNumber: this.userData.countryCode + this.userData.phoneNumber,
           whatsappNumber: this.userData.whatsappCountryCode + this.userData.whatsappNumber,
           isWhatsappSameAsPhone: this.userData.isWhatsappSameAsPhone,
-          address: this.userData.address,
+          address: this.userData.fullAddress,
           city: this.userData.city,
           pincode: this.userData.pincode,
           websiteUrl: this.userData.websiteUrl,
@@ -135,7 +135,8 @@ export class EditProfileComponent {
     data?.forEach(service => {
       this.services.push(
         this.fb.group({
-          service_name: [service.service_name]
+          service_name: [service.service_name],
+          isActive: [service.isActive]
         })
       );
     });
@@ -147,7 +148,7 @@ export class EditProfileComponent {
       this.teamMembers.push(
         this.fb.group({
           id: [member.id],
-          tempKey: [`tmp_${member.id}`],
+          tempKey: [member.id],
           fullName: [member.fullName],
           role: [member.role],
           phoneNumber: [member.phoneNumber],
@@ -155,7 +156,7 @@ export class EditProfileComponent {
           languages: [member.languages]
         })
       );
-      this.memberPreviews[`tmp_${member.id}`] = member.profilePhoto;
+      this.memberPreviews[member.id] = member.profilePhoto;
     });
   }
 
@@ -165,8 +166,8 @@ export class EditProfileComponent {
       this.openingTimes.push(
         this.fb.group({
           day: [time.day],
-          open: [time.open_time],
-          close: [time.close_time]
+          open_time: [time.open_time],
+          close_time: [time.close_time]
         })
       );
     });
@@ -270,6 +271,7 @@ export class EditProfileComponent {
     formData.append('legalForm', this.Form.value.legalForm);
     formData.append('companyName', this.Form.value.companyName);
     formData.append('companyAddress', this.Form.value.companyAddress);
+    formData.append('fullAddress', this.Form.value.address);
     formData.append('city', this.Form.value.city);
     formData.append('pincode', this.Form.value.pincode);
     formData.append('vat', this.Form.value.vat);
@@ -305,11 +307,13 @@ export class EditProfileComponent {
           email: member.email,
           languages: member.languages
         };
-        if (file) {
+        if (file && memberPayload.fullName) {
           memberPayload.tempKey = member.tempKey;
           formData.append(`member_${member.tempKey}`, file);
         }
-        teamMembers.push(memberPayload);
+        if (memberPayload.fullName) {
+          teamMembers.push(memberPayload);
+        }
       });
 
       formData.append('teamMembers', JSON.stringify(teamMembers));
@@ -345,13 +349,13 @@ export class EditProfileComponent {
   }
 
   addDefaultRows() {
-    const tempKey = 'tmp_' + Math.random().toString(36).substring(2, 7);;
+    const tempKey = Math.random().toString(36).substring(2, 7);;
 
     this.NoOfDays.forEach((_day) => {
       this.openingTimes.push(this.fb.group({
         day: [_day],
-        open: [''],
-        close: ['']
+        open_time: [''],
+        close_time: ['']
       }));
     });
 
@@ -397,7 +401,7 @@ export class EditProfileComponent {
   }
 
   addTeamMember() {
-    const tempKey = 'tmp_' + Math.random().toString(36).substring(2, 7);
+    const tempKey = Math.random().toString(36).substring(2, 7);
     this.teamMembers.push(
       this.fb.group({
         id: [''],

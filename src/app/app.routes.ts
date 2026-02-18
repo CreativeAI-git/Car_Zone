@@ -59,6 +59,10 @@ export const routes: Routes = [
                               {
                                     path: 'notifications',
                                     loadComponent: () => import('./my-profile/notifications/notifications.component').then(m => m.NotificationsComponent)
+                              },
+                              {
+                                    path: 'listing-slot-plan',
+                                    loadComponent: () => import('./components/seller components/listing-slot-plan/listing-slot-plan.component').then(m => m.ListingSlotPlanComponent)
                               }
                         ]
                   },
@@ -97,10 +101,6 @@ export const routes: Routes = [
                   {
                         path: 'list-your-car',
                         loadComponent: () => import('./components/seller components/list-your-car/list-your-car.component').then(m => m.ListYourCarComponent)
-                  },
-                  {
-                        path: 'listing-slot-plan',
-                        loadComponent: () => import('./components/seller components/listing-slot-plan/listing-slot-plan.component').then(m => m.ListingSlotPlanComponent)
                   },
                   {
                         path: 'my-listings',

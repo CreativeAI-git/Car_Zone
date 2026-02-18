@@ -131,7 +131,7 @@ export class SellerSignUpComponent {
       whatsappNumber: this.Form.value.whatsappNumber.number,
       isWhatsappSameAsPhone: this.Form.value.isWhatsappSameAsPhone,
       password: this.Form.value.password,
-      address: this.Form.value.address,
+      fullAddress: this.Form.value.address,
       legalForm: this.Form.value.legalForm,
       companyName: this.Form.value.companyName,
       companyAddress: this.Form.value.companyAddress,

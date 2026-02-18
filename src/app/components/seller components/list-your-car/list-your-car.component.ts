@@ -17,7 +17,7 @@ declare var bootstrap: any;
 
 @Component({
   selector: 'app-list-your-car',
-  imports: [FormsModule, NzSelectModule, ReactiveFormsModule, CommonModule, SubmitButtonComponent, TranslateModule, ImageCropperComponent],
+  imports: [FormsModule, NzSelectModule, ReactiveFormsModule, CommonModule, TranslateModule],
   templateUrl: './list-your-car.component.html',
   styleUrl: './list-your-car.component.css'
 })
@@ -92,8 +92,9 @@ export class ListYourCarComponent {
   }
 
   ngAfterViewInit(): void {
-    this.snap(this.wholeWheel.nativeElement, 0);
-    this.snap(this.decimalWheel.nativeElement, 0);
+    // this.snap(this.wholeWheel.nativeElement, 0);
+    // this.snap(this.decimalWheel.nativeElement, 0);
+    this.loadScript()
   }
 
   initForm() {
@@ -396,5 +397,17 @@ export class ListYourCarComponent {
 
   onDoneModalCloseBtnClick() {
     this.carFormOne.get('consuption')?.setValue(this.resultValue);
+  }
+
+
+  loadScript() {
+    const existingScript = document.querySelector('script[src="js/multistep-form.js"]');
+    if (existingScript) {
+      existingScript.remove();
+    }
+    const scriptElement = document.createElement('script');
+    scriptElement.src = 'js/multistep-form.js';
+    scriptElement.async = true;
+    document.body.appendChild(scriptElement);
   }
 }

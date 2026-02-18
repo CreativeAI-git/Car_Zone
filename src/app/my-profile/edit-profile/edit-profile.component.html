@@ -198,7 +198,7 @@
                                           Address
                                           <span class="ct_color_8f0c1f">*</span>
                                     </label>
-                                    <input type="text" class="form-control" placeholder="Enter Address  "
+                                    <input type="text" class="form-control" placeholder="Enter Address"
                                           aria-label="Username" aria-describedby="basic-addon1"
                                           formControlName="address" />
                                     <small class="text-danger">{{validationErrorService.getErrorMessage(('Address'
@@ -207,18 +207,22 @@
                         </div>
                         }
                   </ng-container>
-                  <div class="col-lg-12">
-                        <div class="form-group mb-4">
-                              <label class="ct_fs_16 ct_fw_500 mb-2">
-                                    Address
-                                    <span class="ct_color_8f0c1f">*</span>
-                              </label>
-                              <input type="text" class="form-control" placeholder="Enter Address" aria-label="Username"
-                                    aria-describedby="basic-addon1" formControlName="address" />
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('Address'
-                                    | translate), Form.get("address"))}}</small>
+
+                  <ng-container *appRole="'buyer'">
+                        <div class="col-lg-12">
+                              <div class="form-group mb-4">
+                                    <label class="ct_fs_16 ct_fw_500 mb-2">
+                                          Address
+                                          <span class="ct_color_8f0c1f">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" placeholder="Enter Address"
+                                          aria-label="Username" aria-describedby="basic-addon1"
+                                          formControlName="address" />
+                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('Address'
+                                          | translate), Form.get("address"))}}</small>
+                              </div>
                         </div>
-                  </div>
+                  </ng-container>
                   <div class="col-lg-6">
                         <div class="form-group mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2"> City </label>
@@ -239,7 +243,9 @@
                         </div>
                   </div>
 
+
                   <ng-container *appRole="'seller'">
+                        @if(Form.get('typeOfSeller')?.value === 'business') {
                         <div class="col-lg-6">
                               <div class="mb-4">
                                     <label class="ct_fs_16 ct_fw_500 mb-2">Showroom Cover Image</label>
@@ -281,9 +287,9 @@
                                           <div class="ct_fs_18 ct_fw_400">{{NoOfDays[i]}}.</div>
                                           <!-- <input type="text" class="form-control" formControlName="day" /> -->
                                           <div class="d-flex gap-2 align-items-center">
-                                                <input type="time" class="form-control" formControlName="open" />
+                                                <input type="time" class="form-control" formControlName="open_time" />
                                                 <span> -</span>
-                                                <input type="time" class="form-control" formControlName="close" />
+                                                <input type="time" class="form-control" formControlName="close_time" />
                                           </div>
                                     </div>
                               </div>
@@ -366,12 +372,14 @@
                                     </label>
                                     <div class="border-123" formArrayName="services">
                                           <div *ngFor="let s of services.controls; let i = index" [formGroupName]="i"
-                                                class="d-flex align-items-center gap-3 mb-3">
-                                                <div class="w-100 ct_grey_input">
+                                                class="d-flex align-items-center gap-3 mb-3 ct_custom_check">
+                                                <input class="form-check-input" type="checkbox"
+                                                      formControlName="isActive" id="serviceCheck{{i}}" />
+                                                <label for="serviceCheck{{i}}" class="w-100 ct_grey_input">
                                                       <input type="text" class="form-control ct_input"
                                                             placeholder="Enter Services"
                                                             formControlName="service_name" />
-                                                </div>
+                                                </label>
                                                 <a (click)="removeService(i)">
                                                       <img src="img/icons/cross.png" />
                                                 </a>
@@ -448,7 +456,6 @@
                               </div>
                         </div>
 
-
                         <div class="col-lg-12">
                               <div class="mt-4">
                                     <label class="ct_fs_16 ct_fw_500 mb-2">
@@ -484,6 +491,7 @@
                                     }
                               </div>
                         </div>
+                        }
                   </ng-container>
                   <div class="d-flex justify-content-end mt-5">
                         <app-submit-button [text]="'Save Changes'" [class]="'btn-red'"
