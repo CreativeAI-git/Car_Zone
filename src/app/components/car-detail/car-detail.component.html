@@ -23,7 +23,9 @@
 
                   <div class="d-flex gap-4 align-items-center mt-xl-0 mt-3">
                         <div class="d-flex align-items-center gap-2">
-                              <img src="img/icons/wishlisht.png" />
+                              <i class="fa-heart ct_fs_18"
+                                    [ngClass]="carData?.is_in_wishlist ? 'fa-solid ct_text_red' : 'fa-regular'"
+                                    (click)="carData?.is_in_wishlist ? removeFromWishlist(carData) : addToWishlist(carData)"></i>
                               <span class="ct_fs_17 ct_fw_400">Shortlist</span>
                         </div>
                         <div class="d-flex align-items-center gap-2 ct_cursor_pointer" data-bs-toggle="modal"
@@ -303,8 +305,8 @@
                                           <div class="d-flex align-items-center mt-3">
                                                 <img src="img/icons/ep_location.png" class="me-2" />
                                                 <p class="ct_fs_16 ct_fw_300 mb-0">
-                                                      {{carData?.sellerDetails?.pincode}}
-                                                      {{carData?.sellerDetails?.city}}
+                                                      {{carData?.seller?.pincode}}
+                                                      {{carData?.seller?.city}}
                                                 </p>
                                           </div>
 
@@ -331,7 +333,8 @@
                                           </div>
                                           <div class="d-flex gap-3">
                                                 <div class="w-100">
-                                                      <a class="btn-primary-transparent w-100 text-center ct_fw_400">
+                                                      <a (click)="callSeller(carData?.seller.phone)"
+                                                            class="btn-primary-transparent w-100 text-center ct_fw_400">
                                                             <i class="fa-solid fa-phone me-2"></i>
                                                             Call
                                                       </a>
@@ -344,9 +347,6 @@
                                                       </button>
                                                 </div>
                                                 <div class="w-100">
-
-
-
                                                       <a class="btn-purple-transparent w-100 text-center  ct_fw_400"
                                                             data-bs-toggle="modal" data-bs-target="#EmailModal">
                                                             <i class="fa-solid fa-envelope me-2"></i>

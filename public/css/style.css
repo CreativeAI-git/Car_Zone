@@ -1611,7 +1611,7 @@ span.navbar-toggler-icon i {
   border: 1px solid #e5e5e5;
   border-radius: 10px;
   background: #ebebeb;
-  height: 72px;
+  height: 55px;
   position: relative;
 
 }
@@ -1630,13 +1630,13 @@ span.navbar-toggler-icon i {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   /* 4 boxes per row */
-  gap: 20px;
+  gap: 10px;
 }
 
 
 .filter-preview-box p {
   margin-bottom: 0;
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 300;
 }
 
@@ -2240,6 +2240,7 @@ a.add img {
   height: 56px;
   width: 56px;
   border-radius: 100%;
+  object-fit: cover;
 }
 
 .ct_profile_img {

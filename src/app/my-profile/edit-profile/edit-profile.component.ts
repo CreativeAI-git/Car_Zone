@@ -275,8 +275,10 @@ export class EditProfileComponent {
     formData.append('city', this.Form.value.city);
     formData.append('pincode', this.Form.value.pincode);
     formData.append('vat', this.Form.value.vat);
-    formData.append('sellerType', this.Form.value.typeOfSeller);
+    formData.append('seller_type', this.Form.value.typeOfSeller);
     formData.append('countryCode', this.Form.value.phoneNumber.dialCode);
+    formData.append('whatsappCountryCode', this.Form.value.whatsappNumber.dialCode);
+    formData.append('whatsappNumber', this.Form.value.whatsappNumber.e164Number.slice(this.Form.value.whatsappNumber.dialCode.length));
     formData.append('isSeller', this.role === 'seller' ? '1' : '0');
     formData.append('tagline', this.Form.value.tagline);
     formData.append('websiteUrl', this.Form.value.websiteUrl);

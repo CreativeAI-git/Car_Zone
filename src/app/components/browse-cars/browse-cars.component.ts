@@ -67,6 +67,7 @@ export class BrowseCarsComponent {
   FuelFilterApplied: boolean = false
   TransmissionFilterApplied: boolean = false
   PowerFilterApplied: boolean = false
+  recentlyViewedlist: any[] = []
   constructor(private service: CommonService, private loader: LoaderService, private authService: AuthService, private modalService: ModalService, private translate: TranslateService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
   }
@@ -78,6 +79,10 @@ export class BrowseCarsComponent {
     const currentYear = new Date().getFullYear();
     for (let i = 0; i <= 30; i++) {
       this.years.push(currentYear - i);
+    }
+
+    if (this.authService.isLogedIn()) {
+      this.getRecentlyViewedlist()
     }
   }
 
@@ -133,11 +138,11 @@ export class BrowseCarsComponent {
   }
 
 
-  // addToWishlist(item: any) {
-  //   item.isWishlist = !item.isWishlist
-  //   this.service.post('user/addToWishlist', { carId: item.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-  //   })
-  // }
+  getRecentlyViewedlist() {
+    this.service.get('user/getRecentlyViewedlist').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      this.recentlyViewedlist = res.data
+    })
+  }
 
   addToWishlist(item: any) {
     item.isWishlist = !item.isWishlist;

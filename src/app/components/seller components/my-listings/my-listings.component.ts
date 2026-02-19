@@ -6,6 +6,7 @@ import { CommonService } from '../../../services/common.service';
 import { CommonModule } from '@angular/common';
 import { ChfFormatPipe } from '../../../pipes/chf-format.pipe';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { LoaderService } from '../../../services/loader.service';
 
 @Component({
   selector: 'app-my-listings',
@@ -17,26 +18,22 @@ export class MyListingsComponent {
   private destroy$ = new Subject<void>();
   carList: any[] = []
 
-  constructor(private service: CommonService, private message: NzMessageService, private translate: TranslateService) {
+  constructor(private service: CommonService, private loder: LoaderService, private translate: TranslateService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
   }
 
   ngOnInit(): void {
+    this.loder.show()
     this.getMyCars()
   }
 
   getMyCars() {
     this.service.get('user/getMyCar').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       this.carList = res.data
+      this.loder.hide()
+    }, (error) => {
+      this.loder.hide()
     })
-  }
-
-  get activeCars() {
-    return this.carList.filter(c => c.is_active);
-  }
-
-  get expiredCars() {
-    return this.carList.filter(c => !c.is_active);
   }
 
 

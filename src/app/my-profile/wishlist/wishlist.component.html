@@ -42,7 +42,7 @@
                                                             <div class="swiper mySwiperMain mySwiperMain-{{$index}}">
                                                                   <div class="swiper-wrapper">
                                                                         <div class="swiper-slide"
-                                                                              *ngFor="let img of item.car_images; trackBy: trackByImage">
+                                                                              *ngFor="let img of item.carImages; trackBy: trackByImage">
                                                                               <img [nzSrc]="img || 'img/placeholder.png'"
                                                                                     nz-image />
                                                                         </div>
@@ -54,7 +54,7 @@
                                                       <div class="swiper mySwiperThumbs mySwiperThumbs-{{$index}} mt-2">
                                                             <div class="swiper-wrapper">
                                                                   <div class="swiper-slide"
-                                                                        *ngFor="let img of item.car_images; trackBy: trackByImage">
+                                                                        *ngFor="let img of item.carImages; trackBy: trackByImage">
                                                                         <img [src]="img" />
                                                                   </div>
                                                             </div>
@@ -129,7 +129,7 @@
                                                       </div>
                                                       <div class="col-sm-7">
                                                             <div class="mt-md-0 mt-3">
-                                                                  <!-- <img [src]="item.sellerDetails.profileImage"
+                                                                  <img [src]="item.sellerDetails.profileImage"
                                                                         class="seller-image" />
                                                                   <h4 class="ct_fs_20 ct_fw_500 mt-2">
                                                                         {{item.sellerDetails.fullName}}</h4>
@@ -139,7 +139,7 @@
                                                                               {{item.sellerDetails.pincode}}
                                                                               {{item.sellerDetails.city}}
                                                                         </p>
-                                                                  </div> -->
+                                                                  </div>
 
                                                                   <div class="mt-2">
                                                                         <img src="img/icons/google.png" />

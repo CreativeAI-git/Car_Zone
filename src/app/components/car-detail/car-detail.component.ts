@@ -152,14 +152,14 @@ export class CarDetailComponent {
   }
 
   addToWishlist(item: any) {
-    item.isWishlist = !item.isWishlist
-    this.service.post('user/addToWishlist', { carId: item.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+    item.is_in_wishlist = !item.is_in_wishlist
+    this.service.post('user/addToWishlist', { carId: item.vehicle.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
     })
   }
 
   removeFromWishlist(item: any) {
-    item.isWishlist = !item.isWishlist
-    this.service.delete('user/removeCarFromWishlist', { carId: item.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+    item.is_in_wishlist = !item.is_in_wishlist
+    this.service.delete('user/removeCarFromWishlist', { carId: item.vehicle.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
     })
   }
 
@@ -193,7 +193,11 @@ export class CarDetailComponent {
   shareOnWhatsapp(item: any) {
     let whatsappUrl = `https://wa.me/?text=${encodeURIComponent(item.title)} ${encodeURIComponent(item.description)} ${encodeURIComponent(item.price)}`;
     window.open(whatsappUrl, '_blank');
-    this.message.success('Whatsapp message sent successfully')
+    // this.message.success('Whatsapp message sent successfully')
+  }
+
+  callSeller(phone: string) {
+    window.location.href = `tel:${phone}`;
   }
 
   viewCarDetail(id: any) {
