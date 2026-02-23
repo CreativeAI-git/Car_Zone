@@ -296,10 +296,10 @@ swiper-slide img {
       border-radius: 10px;
 }
 
-.modal,
+/* .modal,
 .modal-open {
       padding-right: 0px !important;
-}
+} */
 
 .cdk-overlay-container {
       z-index: 99999 !important;

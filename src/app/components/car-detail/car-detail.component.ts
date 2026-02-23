@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { RoleDirective } from '../../directives/role.directive';
 import { CommonService } from '../../services/common.service';
@@ -12,20 +12,27 @@ import { ModalService } from '../../services/modal.service';
 import { AuthService } from '../../services/auth.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzImageModule } from 'ng-zorro-antd/image';
+import { FormsModule } from '@angular/forms';
+import { SubmitButtonComponent } from '../shared/submit-button/submit-button.component';
 declare var Swiper: any;
 @Component({
   selector: 'app-car-detail',
-  imports: [CommonModule, ChfFormatPipe, TranslateModule, NzImageModule],
+  imports: [CommonModule, ChfFormatPipe, TranslateModule, NzImageModule, FormsModule, SubmitButtonComponent, RouterLink],
   templateUrl: './car-detail.component.html',
   styleUrl: './car-detail.component.css'
 })
 export class CarDetailComponent {
+  @ViewChild('closeReportModal') closeReportModal!: ElementRef;
   private destroy$ = new Subject<void>();
   carData: any
   carId: any
   token: any
   conditions = carData.conditions
   ShoMore: boolean = false
+  reportReasons: any[] = []
+  selectedReportReasons: number[] = [];
+  customReportReason: string = '';
+  loading: boolean = false
   constructor(private service: CommonService, private route: ActivatedRoute, private loader: LoaderService, private router: Router, private message: NzMessageService, private modalService: ModalService, private authService: AuthService, private translate: TranslateService, public location: Location) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.route.queryParamMap.subscribe(params => {
@@ -37,6 +44,7 @@ export class CarDetailComponent {
     this.token = this.authService.getToken();
     this.getCarDetail()
     if (this.authService.isLogedIn()) {
+      this.getReportReasons()
       this.addToRecentlyViewed()
     }
   }
@@ -64,15 +72,6 @@ export class CarDetailComponent {
           this.loader.hide();
         }
       });
-  }
-
-
-  mainImage(imags: any[]): string {
-    return imags[0];
-  }
-
-  sideImages(imags: any[]): string[] {
-    return imags.slice(1, 5);
   }
 
   ngOnDestroy(): void {
@@ -121,36 +120,6 @@ export class CarDetailComponent {
     }, 1000);
   }
 
-  timeAgo(dateString: string): string {
-    const now = new Date();
-    const past = new Date(dateString);
-    const diffMs = now.getTime() - past.getTime();
-
-    const seconds = Math.floor(diffMs / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const weeks = Math.floor(days / 7);
-    const months = Math.floor(days / 30);
-    const years = Math.floor(days / 365);
-
-    if (years > 0) return `${years} year${years > 1 ? 's' : ''} ago`;
-    if (months > 0) return `${months} month${months > 1 ? 's' : ''} ago`;
-    if (weeks > 0) return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
-    if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
-    if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-    return 'just now';
-  }
-
-  getFeaturesArray(features: any) {
-    return features?.split(',')
-  }
-
-  getCarCondition(condition: any) {
-    return this.conditions.find((c: any) => c.key === condition)?.title
-  }
-
   addToWishlist(item: any) {
     item.is_in_wishlist = !item.is_in_wishlist
     this.service.post('user/addToWishlist', { carId: item.vehicle.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
@@ -167,6 +136,12 @@ export class CarDetailComponent {
     this.service.delete('user/deleteCar/' + item.id + '?user_id=' + item.user_id + '').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       this.router.navigate(['my-listings'])
       this.message.success('Car deleted successfully')
+    })
+  }
+
+  getReportReasons() {
+    this.service.get('user/report-reasons').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      this.reportReasons = res.data
     })
   }
 
@@ -208,6 +183,44 @@ export class CarDetailComponent {
 
   trackByImage(index: number, img: string) {
     return img;
+  }
+
+  onReportReasonChange(event: any) {
+    const checkedValue = Number(event.target.value);
+    const isChecked = event.target.checked;
+
+    if (isChecked) {
+      this.selectedReportReasons.push(checkedValue);
+    } else {
+      this.selectedReportReasons = this.selectedReportReasons.filter(
+        (id: number) => id !== checkedValue
+      );
+    }
+  }
+
+  reportCar() {
+    if (this.selectedReportReasons.length === 0) {
+      this.message.error('Please select at least one reason');
+      return;
+    }
+    if (this.selectedReportReasons.includes(8) && !this.customReportReason) {
+      this.message.error('Please enter a custom report reason');
+      return;
+    }
+    this.loading = true
+    this.service.post(`user/report-cars/${this.carId}`, {
+      reasons: this.selectedReportReasons,
+      // customReportReason: this.customReportReason
+    }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      this.message.success(res.message);
+      this.selectedReportReasons = [];
+      this.customReportReason = '';
+      this.loading = false
+      this.closeReportModal.nativeElement.click();
+    }, (err: any) => {
+      this.message.error('Failed to report car');
+      this.loading = false
+    })
   }
 
 }

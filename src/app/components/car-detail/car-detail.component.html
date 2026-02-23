@@ -372,35 +372,16 @@
                                                 data-bs-parent="#filterAccordion">
                                                 <table class="table opening-timing-table mt-2">
                                                       <tbody>
-                                                            <tr>
-                                                                  <td>Mon</td>
-                                                                  <td>09:00 - 11:45</td>
-                                                                  <td>13:00 - 18:00</td>
-                                                            </tr>
-                                                            <tr>
-                                                                  <td>Tues</td>
-                                                                  <td>09:00 - 11:45</td>
-                                                                  <td>13:00 - 18:00</td>
-                                                            </tr>
-                                                            <tr>
-                                                                  <td>Wed</td>
-                                                                  <td>09:00 - 11:45</td>
-                                                                  <td>13:00 - 18:00</td>
-                                                            </tr>
-                                                            <tr>
-                                                                  <td>Thurs</td>
-                                                                  <td>09:00 - 11:45</td>
-                                                                  <td>13:00 - 18:00</td>
-                                                            </tr>
-                                                            <tr>
-                                                                  <td>Fri</td>
-                                                                  <td>09:00 - 11:45</td>
-                                                                  <td>13:00 - 18:00</td>
-                                                            </tr>
-                                                            <tr>
-                                                                  <td>Sat</td>
-                                                                  <td>09:00 - 11:45</td>
-                                                                  <td>13:00 - 18:00</td>
+                                                            <tr *ngFor="let time of carData?.open_timmings">
+                                                                  <td class="text-capitalize">{{time.day}}</td>
+                                                                  @if(time.open_time != '00:00:00' &&
+                                                                  time.close_time != '00:00:00'){
+                                                                  <td>{{time.open_time}}</td>
+                                                                  <td>{{time.close_time}}</td>
+                                                                  }
+                                                                  @else{
+                                                                  <td colspan="2">Closed</td>
+                                                                  }
                                                             </tr>
                                                       </tbody>
                                                 </table>
@@ -426,7 +407,7 @@
                                     <h5 class="ct_fs_20 ct_fw_600">
                                           More vehicles from this seller
                                     </h5>
-                                    <a href="view-seller-detail.html" class="ct_color_3e1cff ct_fs_18">Show all</a>
+                                    <a routerLink="/seller-detail" class="ct_color_3e1cff ct_fs_18">Show all</a>
                               </div>
 
                               <div class="seller-carousel CarSwiper">
@@ -525,107 +506,43 @@
             <div class="modal-content">
                   <div class="modal-header">
                         <h5 class="modal-title">Report Car</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" #closeReportModal></button>
                   </div>
 
                   <div class="modal-body pt-0">
                         <div class="mb-3">
                               <ul class="ps-0">
+                                    @for (item of reportReasons; track $index) {
                                     <li class="ps-0">
                                           <div
                                                 class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
-                                                <label for="flexCheckDefault">
-                                                      Spam or misleading content
+                                                <label for="flexCheck{{$index}}">
+                                                      {{item.label}}
                                                 </label>
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                      id="flexCheckDefault" />
+                                                <input class="form-check-input" type="checkbox" [value]="item.id"
+                                                      id="flexCheck{{$index}}"
+                                                      (change)="onReportReasonChange($event)" />
                                           </div>
                                     </li>
-                                    <li class="ps-0">
-                                          <div
-                                                class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
-                                                <label for="flexCheckDefault">
-                                                      Inappropriate or offensive language
-                                                </label>
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                      id="flexCheckDefault" />
-                                          </div>
-                                    </li>
-                                    <li class="ps-0">
-                                          <div
-                                                class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
-                                                <label for="flexCheckDefault">
-                                                      Suspicious Price
-                                                </label>
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                      id="flexCheckDefault" />
-                                          </div>
-                                    </li>
-                                    <li class="ps-0">
-                                          <div
-                                                class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
-                                                <label for="flexCheckDefault">
-                                                      Wrong Photos / Documents
-                                                </label>
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                      id="flexCheckDefault" />
-                                          </div>
-                                    </li>
-                                    <li class="ps-0">
-                                          <div
-                                                class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
-                                                <label for="flexCheckDefault">
-                                                      Misinformation
-                                                </label>
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                      id="flexCheckDefault" />
-                                          </div>
-                                    </li>
-
-                                    <li class="ps-0">
-                                          <div
-                                                class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
-                                                <label for="flexCheckDefault">
-                                                      Seller Misleading
-                                                </label>
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                      id="flexCheckDefault" />
-                                          </div>
-                                    </li>
-                                    <li class="ps-0">
-                                          <div
-                                                class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
-                                                <label for="flexCheckDefault">
-                                                      Copyright infringement
-                                                </label>
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                      id="flexCheckDefault" />
-                                          </div>
-                                    </li>
-                                    <li class="ps-0">
-                                          <div
-                                                class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center justify-content-between ps-0">
-                                                <label for="flexCheckDefault">
-                                                      Others
-                                                </label>
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                      id="flexCheckDefault" />
-                                          </div>
-                                    </li>
+                                    }
                               </ul>
                         </div>
 
                         <div class="mb-3">
                               <label class="form-label ct_fs_16 ct_fw_400">Custom message</label>
-                              <textarea class="form-control" rows="3" placeholder="Write reason..."></textarea>
+                              <textarea class="form-control" rows="3" placeholder="Write reason..." name="customMessage"
+                                    [(ngModel)]="customReportReason" #customMsg="ngModel"
+                                    [required]="selectedReportReasons.includes(8)">
+                                    </textarea>
+                              <small class="text-danger" *ngIf="customMsg.invalid && customMsg.touched">
+                                    Message is required.
+                              </small>
                         </div>
                   </div>
 
                   <div class="modal-footer border-0">
-
-                        <button type="button" class="btn-red w-100">
-                              Submit
-                        </button>
+                        <app-submit-button class="w-100" [text]="'Submit'" [class]="'btn-red w-100'"
+                              [isLoading]="loading" (click)="reportCar()"></app-submit-button>
                   </div>
             </div>
       </div>

@@ -37,6 +37,10 @@ export const routes: Routes = [
                         loadComponent: () => import('./components/car-detail/car-detail.component').then(m => m.CarDetailComponent)
                   },
                   {
+                        path: 'seller-detail',
+                        loadComponent: () => import('./components/seller-detail/seller-detail.component').then(m => m.SellerDetailComponent)
+                  },
+                  {
                         path: 'my-profile',
                         loadComponent: () => import('./my-profile/my-profile.component').then(m => m.MyProfileComponent),
                         children: [

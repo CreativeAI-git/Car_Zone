@@ -303,9 +303,6 @@ body.theme-dark .main-logo svg path:nth-child(3) {
   stroke: #EB261D;
 }
 
-
-
-
 /* seller side */
 
 body.theme-dark .ct_car_listed_list:before {
@@ -386,4 +383,12 @@ body.theme-dark .login-popup__role:has(input:checked) {
 
 body.theme-dark .upload-box {
   background-color: transparent;
+}
+
+body.theme-dark .main-header-section.transparent-header .logo-default {
+  display: none;
+}
+
+body.theme-dark .main-header-section.transparent-header .logo-sticky {
+  display: block;
 }

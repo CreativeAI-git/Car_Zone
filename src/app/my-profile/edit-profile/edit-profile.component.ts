@@ -162,12 +162,17 @@ export class EditProfileComponent {
 
   patchOpeningTimes(data: any[]) {
     this.openingTimes.clear();
-    data?.forEach((time: any) => {
+    this.NoOfDays.forEach((day: string) => {
+      const matchedDay = data?.find(
+        (d: any) => d.day.toLowerCase() === day.toLowerCase()
+      );
+
       this.openingTimes.push(
         this.fb.group({
-          day: [time.day],
-          open_time: [time.open_time],
-          close_time: [time.close_time]
+          day: [day],
+          open_time: [matchedDay ? matchedDay.open_time : ''],
+          close_time: [matchedDay ? matchedDay.close_time : ''],
+          is_closed: [matchedDay ? matchedDay.is_closed : 0]
         })
       );
     });
@@ -351,7 +356,7 @@ export class EditProfileComponent {
   }
 
   addDefaultRows() {
-    const tempKey = Math.random().toString(36).substring(2, 7);;
+    const tempKey = Math.random().toString(36).substring(2, 7);
 
     this.NoOfDays.forEach((_day) => {
       this.openingTimes.push(this.fb.group({

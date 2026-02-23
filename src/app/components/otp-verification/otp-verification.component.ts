@@ -85,6 +85,7 @@ export class OtpVerificationComponent {
       next: (res: any) => {
         this.loading = false
         this.toster.success(res.message)
+        this.otp = ''
         if (this.isForgotPassword === '1') {
           this.modal.openResetPasswordModal()
         } else {

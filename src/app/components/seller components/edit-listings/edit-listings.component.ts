@@ -121,9 +121,9 @@ export class EditListingsComponent {
 
   getCarDetail() {
     this.service.get('user/getCar/' + this.carId + '').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      const carData = res.data
-      carData.selectYear = Number(carData.selectYear)
-      this.carFormOne.patchValue(carData)
+      const carData = res
+      carData.selectYear = Number(carData.vehicle.year)
+      this.carFormOne.patchValue(carData.vehicle)
       const formattedDate = new Date(carData.first_registration_date).toISOString().split('T')[0];
 
       this.isCarColorOther = this.carColors.find((item: any) => item.key.toLowerCase() !== carData.carColor.toLowerCase());
