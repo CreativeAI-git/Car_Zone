@@ -88,3 +88,8 @@
   top: 15px;
   left: 15px;
 }
+
+.browse-car-pop {
+  height: 150px;
+  object-fit: cover;
+}

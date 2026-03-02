@@ -1,7 +1,7 @@
 export const environment = {
       production: false,
-      apiUrl: 'http://192.168.1.36:4005/api/',
-
+      // apiUrl: 'http://192.168.1.36:4005/api/',
+      apiUrl: 'http://13.51.226.81:4000/api/',
 
       firebaseConfig: {
             apiKey: "AIzaSyBrgUOgzD8t49fhu6DqJlROjmvtI-QxaGc",

@@ -33,16 +33,16 @@ export class CarDetailComponent {
   selectedReportReasons: number[] = [];
   customReportReason: string = '';
   loading: boolean = false
-  constructor(private service: CommonService, private route: ActivatedRoute, private loader: LoaderService, private router: Router, private message: NzMessageService, private modalService: ModalService, private authService: AuthService, private translate: TranslateService, public location: Location) {
+  constructor(private service: CommonService, private route: ActivatedRoute, private loader: LoaderService, private router: Router, private message: NzMessageService, private modalService: ModalService, public authService: AuthService, private translate: TranslateService, public location: Location) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.route.queryParamMap.subscribe(params => {
       this.carId = params.get('id')
+      this.getCarDetail()
     })
   }
 
   ngOnInit(): void {
     this.token = this.authService.getToken();
-    this.getCarDetail()
     if (this.authService.isLogedIn()) {
       this.getReportReasons()
       this.addToRecentlyViewed()
@@ -66,6 +66,7 @@ export class CarDetailComponent {
         next: (res: any) => {
           this.carData = res;
           this.loader.hide();
+          this.loadSweper()
         },
         error: (err) => {
           console.error('Failed to fetch car details:', err);
@@ -80,6 +81,10 @@ export class CarDetailComponent {
   }
 
   ngAfterViewInit(): void {
+    this.loadSweper()
+  }
+
+  loadSweper() {
     setTimeout(() => {
       const thumbs = new Swiper(`.mySwiperThumbs`, {
         slidesPerView: 6,
@@ -104,7 +109,6 @@ export class CarDetailComponent {
         slidesPerView: 2,
         spaceBetween: 10,
         loop: true,
-        mousewheel: true,
         breakpoints: {
           640: {
             slidesPerView: 1,
@@ -121,6 +125,10 @@ export class CarDetailComponent {
   }
 
   addToWishlist(item: any) {
+    if (!this.authService.isLogedIn()) {
+      this.modalService.openLoginModal();
+      return;
+    }
     item.is_in_wishlist = !item.is_in_wishlist
     this.service.post('user/addToWishlist', { carId: item.vehicle.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
     })

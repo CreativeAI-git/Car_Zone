@@ -28,13 +28,13 @@
                                     (click)="carData?.is_in_wishlist ? removeFromWishlist(carData) : addToWishlist(carData)"></i>
                               <span class="ct_fs_17 ct_fw_400">Shortlist</span>
                         </div>
+                        @if(authService.isLogedIn()){
                         <div class="d-flex align-items-center gap-2 ct_cursor_pointer" data-bs-toggle="modal"
                               data-bs-target="#reportModal">
                               <img src="img/icons/report.png" />
                               <span class="ct_fs_17 ct_fw_400">Report Listing</span>
                         </div>
-
-
+                        }
                         <div class="d-flex align-items-center gap-2">
                               <img src="img/icons/share.png" />
                               <span class="ct_fs_17 ct_fw_400">Share</span>
@@ -257,7 +257,7 @@
                                                 <h3 class="ct_fs_44 ct_fw_700">567</h3>
                                                 <p class="ct_fs_15 mb-0">
                                                       .05
-                                                      <br />
+                                                      <!-- <br /> -->
                                                       <span>/Mt.</span>
                                                 </p>
                                           </div>
@@ -407,16 +407,19 @@
                                     <h5 class="ct_fs_20 ct_fw_600">
                                           More vehicles from this seller
                                     </h5>
-                                    <a routerLink="/seller-detail" class="ct_color_3e1cff ct_fs_18">Show all</a>
+                                    <a class="ct_color_3e1cff ct_fs_18">Show all</a>
+                                    <!-- <a routerLink="/seller-detail" class="ct_color_3e1cff ct_fs_18">Show all</a> -->
                               </div>
 
                               <div class="seller-carousel CarSwiper">
                                     <div class="swiper-wrapper">
                                           @for (item of carData?.suggestedCars; track $index) {
-                                          <div class="vehicle-box swiper-slide">
+                                          <div class="vehicle-box swiper-slide" routerLink="/car-detail"
+                                                [queryParams]="{id: item.id}">
                                                 <div class="d-flex gap-4 vehicle-carousel-contetn">
                                                       <div class="w-50">
-                                                            <img [src]="item.car_images[0]" class="w-100" />
+                                                            <img [src]="item.car_images[0]"
+                                                                  class="w-100 h-100 object-fit-cover" />
                                                       </div>
                                                       <div class="">
                                                             <div class="car-content-right">

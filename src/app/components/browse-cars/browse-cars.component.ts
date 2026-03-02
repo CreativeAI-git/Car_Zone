@@ -145,6 +145,10 @@ export class BrowseCarsComponent {
   }
 
   addToWishlist(item: any) {
+    if (!this.authService.isLogedIn()) {
+      this.modalService.openLoginModal();
+      return;
+    }
     item.isWishlist = !item.isWishlist;
 
     this.service.post('user/addToWishlist', { carId: item.id })
@@ -163,6 +167,7 @@ export class BrowseCarsComponent {
 
 
   removeFromWishlist(item: any) {
+
     item.isWishlist = !item.isWishlist
     this.service.delete('user/removeCarFromWishlist', { carId: item.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
     })

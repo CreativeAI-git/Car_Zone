@@ -149,10 +149,10 @@
                   Recently viewed
             </h3>
             <div class="row">
-                  @for (item of recentlyViewedlist; track $index) {
+                  @for (item of recentlyViewedlist.slice(0, 6); track $index) {
                   <div class="col-lg-2">
                         <div class="card position-relative" routerLink="/car-detail" [queryParams]="{id: item.car_id}">
-                              <img [src]="item.car_image" class="card-img-top" alt="..." />
+                              <img [src]="item.car_image" class="card-img-top browse-car-pop" alt="..." />
                               <div class="seller-image-div">
                                     <img [src]="item.user_profile_image" class="seller-image-2">
                               </div>
