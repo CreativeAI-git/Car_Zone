@@ -93,3 +93,8 @@
   height: 150px;
   object-fit: cover;
 }
+
+.scroll_bar_div {
+  max-height: 300px;
+  overflow-y: auto;
+}

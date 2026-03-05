@@ -67,71 +67,1095 @@
             </div>
 
             <div class="filter-preview mt-4">
-                  <div class="filter-preview-box active">
-                        <div>
+                  <div class="ct_package_select_custom">
+                        <button nz-button nzType="primary" nz-popover [(nzPopoverVisible)]="visible"
+                              nzPopoverTrigger="click" [nzPopoverContent]="contentTemplate" nzPopoverPlacement="bottom"
+                              class="filter-preview-box w-100 ">
                               <img src="img/icons/make-model.png" />
-                        </div>
-                        <div>
-                              <p>Make & Model</p>
-                        </div>
+                              @if(selectedBrandsModal.length > 0){
+                              @for (item of selectedBrandsModal; track $index) {
+                              {{item.brand}}({{item.modals.join(', ')}})@if($index !==
+                              selectedBrandsModal.length - 1){, }
+                              }
+                              }@else{
+                              {{'MakeModel' | translate}}
+                              }
+                        </button>
+                        <ng-template #contentTemplate>
+                              <div class="d-flex align-items-center justify-content-between p-3 pb-0">
+                                    @if(modalList.length > 0 || searchModalValue.length >
+                                    0){
+                                    <i class="fa-solid fa-arrow-left" (click)="backToBrand()"
+                                          style="cursor: pointer;"></i>
+                                    }
+                                    <p class="mb-0 ct_fw_600">
+                                          @if(modalList.length === 0 &&
+                                          searchModalValue.length === 0){
+                                          {{'MakeModel' | translate}}
+                                          }@else{
+                                          {{selectedBrand[selectedBrand.length - 1]}}
+                                          }
+                                    </p>
+                                    <div class="">
+                                          <i class="fa-solid fa-xmark ct_text_red" (click)="visible = false"
+                                                style="cursor: pointer;"></i>
+                                    </div>
+                              </div>
+                              <div #modalScrollDiv class="scroll_bar_div ct_custom_scroll p-3">
+                                    <div class="d-block mb-3">
+                                          @for (item of selectedBrandsModal; track $index)
+                                          {
+                                          <div class="ct_brand_bg_345 mb-2">
+                                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                                      <div class="">
+                                                            <span class="mb-0 ct_fw_600 ct_custom_badge ct_fs_12 d-inline-block text-white"
+                                                                  style="background-color: var(--red);">{{item.brand}}</span>
+                                                      </div>
+                                                      <div class="ct_crosee_btn">
+                                                            <i class="fa-solid fa-xmark ct_text_red"
+                                                                  style="cursor: pointer;"
+                                                                  (click)="removeBrandModal(item)"></i>
+                                                      </div>
+                                                </div>
+                                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                      @for (model of item.modals; track
+                                                      $index) {
+                                                      <small
+                                                            class="text-dark  m-0 ct_custom_badge ct_fs_12 d-inline-block bg-white">
+                                                            {{model}}
+                                                      </small>
+                                                      }
+                                                </div>
+                                          </div>
+                                          }
+                                    </div>
+                                    @if(modalList.length === 0 && searchModalValue.length
+                                    === 0){
+                                    <div class="ct_search mb-3 position-relative">
+                                          <input type="search" (input)="searchBrand($event)"
+                                                class="form-control ct_input"
+                                                placeholder="{{'SearchBrand' | translate}}...">
+                                          <i class="fa-solid fa-search ct_show_eye"></i>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2 flex-wrap  mb-3">
+                                          <div class="ct_brand_icon_2"
+                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('BMW')}"
+                                                (click)="selectBrand('BMW')">
+                                                <img src="img/BrandIcons/ic_Bmw.svg" alt="">
+                                          </div>
+                                          <div class="ct_brand_icon_2"
+                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Mercedes-Benz')}"
+                                                (click)="selectBrand('Mercedes-Benz')">
+                                                <img src="img/BrandIcons/ic_Mercedes.svg" alt="">
+                                          </div>
+                                          <div class="ct_brand_icon_2"
+                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Audi')}"
+                                                (click)="selectBrand('Audi')">
+                                                <img src="img/BrandIcons/ic_Audi.svg" alt="">
+                                          </div>
+                                          <div class="ct_brand_icon_2"
+                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Volkswagen')}"
+                                                (click)="selectBrand('Volkswagen')">
+                                                <img src="img/BrandIcons/ic_volkswagen.svg" alt="">
+                                          </div>
+                                          <div class="ct_brand_icon_2"
+                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Porsche')}"
+                                                (click)="selectBrand('Porsche')">
+                                                <img src="img/BrandIcons/ic_Porsche.svg" alt="">
+                                          </div>
+                                          <div class="ct_brand_icon_2"
+                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Toyota')}"
+                                                (click)="selectBrand('Toyota')">
+                                                <img src="img/BrandIcons/ic_toyota.svg" alt="">
+                                          </div>
+                                          <div class="ct_brand_icon_2"
+                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Ford')}"
+                                                (click)="selectBrand('Ford')">
+                                                <img src="img/BrandIcons/ic_ford.svg" alt="">
+                                          </div>
+                                          <div class="ct_brand_icon_2"
+                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Skoda')}"
+                                                (click)="selectBrand('Skoda')">
+                                                <img src="img/BrandIcons/ic_skoda.svg" alt="">
+                                          </div>
+                                          <div class="ct_brand_icon_2"
+                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Volvo')}"
+                                                (click)="selectBrand('Volvo')">
+                                                <img src="img/BrandIcons/ic_volvo.svg" alt="">
+                                          </div>
+                                          <div class="ct_brand_icon_2"
+                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Tesla')}"
+                                                (click)="selectBrand('Tesla')">
+                                                <img src="img/BrandIcons/ic_tesla.svg" alt="">
+                                          </div>
+                                          <div class="ct_brand_icon_2"
+                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Fiat')}"
+                                                (click)="selectBrand('Fiat')">
+                                                <img src="img/BrandIcons/ic_fiat.svg" alt="">
+                                          </div>
+                                          <div class="ct_brand_icon_2"
+                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Seat')}"
+                                                (click)="selectBrand('Seat')">
+                                                <img src="img/BrandIcons/ic_Seat.svg" alt="">
+                                          </div>
+                                    </div>
+                                    <p class="mb-2 ct_fw_600">{{'All' | translate}}
+                                          {{'Brands' | translate}}
+                                    </p>
+                                    @for (item of brandList; track $index) {
+                                    <div class="ct_custom_select mt-1">
+                                          <div class="d-flex align-items-center
+                                                                                                justify-content-between cursor-pointer"
+                                                (click)="selectBrand(item.make_display)">
+                                                <div>
+                                                      <p class="m-0">
+                                                            {{item.make_display}}
+                                                      </p>
+                                                </div>
+                                                <i class="fa-solid fa fa-angle-right"></i>
+                                          </div>
+                                    </div>
+                                    }
+                                    }@else{
+                                    <div class="ct_search mb-3 position-relative">
+                                          <input type="search" (input)="searchModal($event)"
+                                                class="form-control ct_input"
+                                                placeholder="{{'SearchModel' | translate}}...">
+                                          <i class="fa-solid fa-search ct_show_eye"></i>
+                                    </div>
+                                    <ul>
+                                          @if(modalList.length > 0){
+                                          @for (item of modalList; track $index) {
+                                          <li>
+                                                <div class="form-check ct_custom_check2">
+                                                      <input class="form-check-input" type="checkbox"
+                                                            [value]="item.modelName" [id]="item.modelName"
+                                                            (change)="selectModal($event, selectedBrand[selectedBrand.length - 1])"
+                                                            style="margin-top:2px;"
+                                                            [checked]="selectedModal.includes(item.modelName)">
+                                                      <div
+                                                            class="d-flex align-items-center gap-1 justify-content-between">
+                                                            <label [for]="item.modelName"
+                                                                  class="ms-1 ct_fw_600">{{item.modelName}}</label>
+                                                      </div>
+                                                </div>
+                                          </li>
+                                          }
+                                          }@else {
+                                          <p class="mb-2 ct_fw_600">
+                                                {{'NoModelFound' | translate}}
+                                          </p>
+                                          }
+                                    </ul>
+                                    }
+                              </div>
+                              <button class="ct_red_btn w-100 ct_flex_1 mb-3"
+                                    (click)="filterBrandModel()">{{'ApplyFilters' |
+                                    translate}}</button>
+                        </ng-template>
                   </div>
-                  <div class="filter-preview-box">
-                        <div>
+
+                  <div class="ct_package_select_custom">
+                        <button nz-button nzType="primary" nz-popover [(nzPopoverVisible)]="bodyTypeVisible"
+                              nzPopoverTrigger="click" [nzPopoverContent]="bodyTypecontentTemplate"
+                              nzPopoverPlacement="bottom" class="filter-preview-box w-100 ">
                               <img src="img/icons/body-type.png" />
-                        </div>
-                        <div>
-                              <p class="">Body Type</p>
-                        </div>
+                              @if(selectedBrandsModal.length > 0){
+                              @for (item of selectedBrandsModal; track $index) {
+                              {{item.brand}}({{item.modals.join(', ')}})@if($index !==
+                              selectedBrandsModal.length - 1){, }
+                              }
+                              }@else{
+                              {{'bodyType' | translate}}
+                              }
+                        </button>
+                        <ng-template #bodyTypecontentTemplate>
+                              <div class="search-vehicle-modal-box ct_custom_scroll">
+                                    <!-- Wagon -->
+
+                                    <div class="vehicle-modal-header d-flex my-3 justify-content-between">
+                                          <div class="">
+                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">Body Type</h3>
+                                          </div>
+                                          <div>
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">Reset</span>
+                                          </div>
+                                    </div>
+
+                                    <div>
+                                          <div class="">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                      <div
+                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                  id="wagon" />
+                                                            <img src="img/icons/car1.png" class="body-type-img-o" />
+                                                            <label for="wagon">Wagon</label>
+                                                      </div>
+                                                      <span class="ct_fs_12 ct_fw_300">356</span>
+                                                </div>
+                                          </div>
+
+                                          <!-- Convertible -->
+                                          <div class="">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                      <div
+                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                  id="convertible" />
+                                                            <img src="img/icons/car2.png" class="body-type-img" />
+                                                            <label for="convertible">Convertible</label>
+                                                      </div>
+                                                      <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                </div>
+                                          </div>
+
+                                          <!-- Sedan -->
+                                          <div class="">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                      <div
+                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                            <input class="form-check-input" type="checkbox" id="sedan"
+                                                                  checked />
+                                                            <img src="img/icons/car3.png" class="body-type-img" />
+                                                            <label for="sedan">Sedan</label>
+                                                      </div>
+                                                      <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                </div>
+                                          </div>
+
+                                          <!-- SUV / Off-road -->
+                                          <div class="">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                      <div
+                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                            <input class="form-check-input" type="checkbox" id="suv" />
+                                                            <img src="img/icons/car4.png" class="body-type-img" />
+                                                            <label for="suv">SUV / Off-road</label>
+                                                      </div>
+                                                      <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                </div>
+                                          </div>
+
+                                          <!-- Coupé -->
+                                          <div class="">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                      <div
+                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                  id="coupe" />
+                                                            <img src="img/icons/car5.png" class="body-type-img" />
+                                                            <label for="coupe">Coupé</label>
+                                                      </div>
+                                                      <span class="ct_fs_12 ct_fw_300">356</span>
+                                                </div>
+                                          </div>
+
+                                          <!-- Pick-up -->
+                                          <div class="">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                      <div
+                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                            <input class="form-check-input" type="checkbox" id="pickup"
+                                                                  checked />
+                                                            <img src="img/icons/car6.png" class="body-type-img" />
+                                                            <label for="pickup">Pick-up</label>
+                                                      </div>
+                                                      <span class="ct_fs_12 ct_fw_300">356</span>
+                                                </div>
+                                          </div>
+
+                                          <!-- Compact car -->
+                                          <div class="">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                      <div
+                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                  id="compact" />
+                                                            <img src="img/icons/car7.png" class="body-type-img" />
+                                                            <label for="compact">Compact car</label>
+                                                      </div>
+                                                      <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                </div>
+                                          </div>
+
+                                          <!-- Minivan -->
+                                          <div class="">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                      <div
+                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                  id="minivan" />
+                                                            <img src="img/icons/car8.png" class="body-type-img" />
+                                                            <label for="minivan">Minivan</label>
+                                                      </div>
+                                                      <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                </div>
+                                          </div>
+
+                                          <!-- Van -->
+                                          <div class="">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                      <div
+                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                            <input class="form-check-input" type="checkbox" id="van" />
+                                                            <img src="img/icons/car9.png" class="body-type-img" />
+                                                            <label for="van">Van</label>
+                                                      </div>
+                                                      <span class="ct_fs_12 ct_fw_300">356</span>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <button class="ct_red_gradient_btn mt-4">
+                                          Total 23156 Cars found
+                                    </button>
+                              </div>
+                        </ng-template>
                   </div>
-                  <div class="filter-preview-box">
-                        <div>
+
+                  <div class="ct_package_select_custom">
+                        <button nz-button nzType="primary" nz-popover [(nzPopoverVisible)]="PriceVisible"
+                              nzPopoverTrigger="click" [nzPopoverContent]="priceContentTemplate"
+                              nzPopoverPlacement="bottom" class="filter-preview-box w-100 ">
                               <img src="img/icons/price-range.png" />
-                        </div>
-                        <div>
-                              <p>Price Range</p>
-                        </div>
+                              @if(selectedBrandsModal.length > 0){
+                              @for (item of selectedBrandsModal; track $index) {
+                              {{item.brand}}({{item.modals.join(', ')}})@if($index !==
+                              selectedBrandsModal.length - 1){, }
+                              }
+                              }@else{
+                              {{'PriceRange' | translate}}
+                              }
+                        </button>
+                        <ng-template #priceContentTemplate>
+                              <div class="search-vehicle-modal-box ct_custom_scroll">
+                                    <div class="vehicle-modal-header d-flex my-3 justify-content-between">
+                                          <div class="">
+                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">
+                                                      {{'PriceRange' | translate}}
+                                                </h3>
+                                          </div>
+                                          <div>
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">Reset</span>
+                                          </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                          <div class="ct_radio-container">
+                                                <div class="ct_radio-wrapper d-flex justify-content-between">
+                                                      <label class="ct_radio-button ct_fw_400">
+                                                            <input id="option1" name="ct_radio-group" type="radio" />
+                                                            <span class="ct_radio-checkmark"></span>
+                                                            Purchase Price
+                                                      </label>
+
+                                                      <label class="ct_radio-button ct_fw_400">
+                                                            <input id="option1" name="ct_radio-group" type="radio" />
+                                                            <span class="ct_radio-checkmark"></span>
+                                                            Leasing Rate
+                                                      </label>
+                                                </div>
+                                          </div>
+                                    </div>
+
+                                    <!-- PRICE OF CAR -->
+                                    <div class="mb-4">
+                                          <label class="ct_fs_12 ct_fw_400 mb-2">Price of car</label>
+
+                                          <div class="d-flex gap-3 mb-2">
+                                                <input class="form-control price-input" value="CHF 10" />
+                                                <input class="form-control price-input" value="CHF 230+" />
+                                          </div>
+
+                                          <input type="range" min="10" max="230" value="230" class="range-slider" />
+                                    </div>
+
+                                    <!-- PRICE OF LEASING RATE -->
+                                    <div class="mb-4">
+                                          <label class="ct_fs_12 ct_fw_400 mb-2">Price of leasing rate</label>
+
+                                          <div class="d-flex gap-3 mb-2">
+                                                <input class="form-control price-input" value="CHF 10" />
+                                                <input class="form-control price-input" value="CHF 230+" />
+                                          </div>
+
+                                          <input type="range" min="10" max="230" value="230" class="range-slider" />
+                                    </div>
+
+                                    <!-- MATCHING VEHICLES -->
+                                    <div class="match-box mb-4">
+                                          <div class="d-flex justify-content-between mb-2">
+                                                <span class="ct_fs_14 ct_fw_400">Matching vehicles</span>
+                                                <span class="ct_fs_14 ct_fw_400">22,331</span>
+                                          </div>
+
+                                          <div class="progress custom-progress">
+                                                <div class="progress-bar bg-danger" style="width: 70%"></div>
+                                          </div>
+                                    </div>
+
+                                    <!-- DOWN PAYMENT -->
+                                    <div class="mb-4">
+                                          <label class="ct_fs_14 ct_fw_400">Down Payment(%)</label>
+                                          <select class="form-select custom-select">
+                                                <option>10% of Total Price</option>
+                                                <option>20% of Total Price</option>
+                                                <option>30% of Total Price</option>
+                                          </select>
+                                    </div>
+
+                                    <!-- DONE BUTTON -->
+                                    <button class="ct_red_gradient_btn w-100">Done</button>
+                              </div>
+                        </ng-template>
                   </div>
-                  <div class="filter-preview-box">
-                        <div>
+
+                  <div class="ct_package_select_custom">
+                        <button nz-button nzType="primary" nz-popover [(nzPopoverVisible)]="YearVisible"
+                              nzPopoverTrigger="click" [nzPopoverContent]="yearContentTemplate"
+                              nzPopoverPlacement="bottom" class="filter-preview-box w-100 ">
                               <img src="img/icons/year.png" />
-                        </div>
-                        <div>
-                              <p>Year Range</p>
-                        </div>
+                              @if(selectedBrandsModal.length > 0){
+                              @for (item of selectedBrandsModal; track $index) {
+                              {{item.brand}}({{item.modals.join(', ')}})@if($index !==
+                              selectedBrandsModal.length - 1){, }
+                              }
+                              }@else{
+                              {{'YearRange' | translate}}
+                              }
+                        </button>
+                        <ng-template #yearContentTemplate>
+                              <div class="search-vehicle-modal-box ct_custom_scroll">
+                                    <div class="vehicle-modal-header d-flex my-3 justify-content-between">
+                                          <div class="">
+                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">{{'YearRange' | translate}}
+                                                </h3>
+                                          </div>
+                                          <div>
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">Reset</span>
+                                          </div>
+                                    </div>
+
+                                    <div>
+                                          <div class="">
+                                                <div class="row">
+                                                      <div class="col-6">
+                                                            <label class="ct_fs_15 ct_fw_400 mb-2">From </label>
+                                                            <select class="form-select"
+                                                                  aria-label="Default select example">
+                                                                  <option selected="">Select Year</option>
+                                                                  <option value="1">One</option>
+                                                                  <option value="2">Two</option>
+                                                                  <option value="3">Three</option>
+                                                            </select>
+                                                      </div>
+                                                      <div class="col-6">
+                                                            <label class="ct_fs_15 ct_fw_400 mb-2"> To </label>
+                                                            <select class="form-select"
+                                                                  aria-label="Default select example">
+                                                                  <option selected="">Select Year</option>
+                                                                  <option value="1">One</option>
+                                                                  <option value="2">Two</option>
+                                                                  <option value="3">Three</option>
+                                                            </select>
+                                                      </div>
+                                                </div>
+                                                <div class="text-center my-4">
+                                                      <h4 class="ct_fs_20 ct_fw_600 mb-0">6,894</h4>
+                                                      <p class="ct_fs_18 ct_fw_400">Cars found</p>
+                                                </div>
+
+                                                <!-- SELECTED MODEL YEARS -->
+                                                <div class="year-card">
+                                                      <div class="d-flex justify-content-between mb-2">
+                                                            <span class="ct_fs_14 ct_fw_400">Selected model years</span>
+                                                            <span class="ct_fs_14 ct_fw_400">22,331</span>
+                                                      </div>
+                                                      <div class="progress custom-progress">
+                                                            <div class="progress-bar bg-danger" style="width: 75%">
+                                                            </div>
+                                                      </div>
+                                                </div>
+
+                                                <!-- OLDER MODEL YEARS -->
+                                                <div class="year-card">
+                                                      <div class="d-flex justify-content-between">
+                                                            <span class="ct_fs_14 ct_fw_400">Older model years</span>
+                                                            <span class="ct_fs_14 ct_fw_400">22,331</span>
+                                                      </div>
+                                                </div>
+
+                                                <!-- NEWLY MODEL YEARS -->
+                                                <div class="year-card">
+                                                      <div class="d-flex justify-content-between">
+                                                            <span class="ct_fs_14 ct_fw_400">Newly model years</span>
+                                                            <span class="ct_fs_14 ct_fw_400">22,331</span>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <button class="ct_red_gradient_btn mt-4">Done</button>
+                              </div>
+                        </ng-template>
                   </div>
 
-                  <div class="filter-preview-box">
-                        <div>
+
+                  <div class="ct_package_select_custom">
+                        <button nz-button nzType="primary" nz-popover [(nzPopoverVisible)]="MilageVisible"
+                              nzPopoverTrigger="click" [nzPopoverContent]="KMContentTemplate"
+                              nzPopoverPlacement="bottom" class="filter-preview-box w-100 ">
                               <img src="img/icons/km.png" />
-                        </div>
-                        <div>
-                              <p>Kilometers</p>
-                        </div>
+                              @if(selectedBrandsModal.length > 0){
+                              @for (item of selectedBrandsModal; track $index) {
+                              {{item.brand}}({{item.modals.join(', ')}})@if($index !==
+                              selectedBrandsModal.length - 1){, }
+                              }
+                              }@else{
+                              {{'Kilometers' | translate}} (km)
+                              }
+                        </button>
+                        <ng-template #KMContentTemplate>
+                              <div class="search-vehicle-modal-box ct_custom_scroll">
+                                    <div class="vehicle-modal-header d-flex my-3 justify-content-between">
+                                          <div class="">
+                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">{{'Kilometers' |
+                                                      translate}} (km)</h3>
+                                          </div>
+                                          <div>
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">Reset</span>
+                                          </div>
+                                    </div>
+
+                                    <div>
+                                          <div class="">
+                                                <div class="row">
+                                                      <div class="col-6">
+                                                            <label class="ct_fs_15 ct_fw_400 mb-2">From </label>
+                                                            <select class="form-select"
+                                                                  aria-label="Default select example">
+                                                                  <option selected="">km</option>
+                                                                  <option value="1">One</option>
+                                                                  <option value="2">Two</option>
+                                                                  <option value="3">Three</option>
+                                                            </select>
+                                                      </div>
+                                                      <div class="col-6">
+                                                            <label class="ct_fs_15 ct_fw_400 mb-2"> To </label>
+                                                            <select class="form-select"
+                                                                  aria-label="Default select example">
+                                                                  <option selected="">km</option>
+                                                                  <option value="1">One</option>
+                                                                  <option value="2">Two</option>
+                                                                  <option value="3">Three</option>
+                                                            </select>
+                                                      </div>
+                                                </div>
+                                                <div class="text-center my-4">
+                                                      <h4 class="ct_fs_20 ct_fw_600 mb-0">6,894</h4>
+                                                      <p class="ct_fs_18 ct_fw_400">Cars found</p>
+                                                </div>
+
+                                                <!-- SELECTED MODEL YEARS -->
+                                                <div class="year-card">
+                                                      <div class="d-flex justify-content-between mb-2">
+                                                            <span class="ct_fs_14 ct_fw_400">Selected model years</span>
+                                                            <span class="ct_fs_14 ct_fw_400">22,331</span>
+                                                      </div>
+                                                      <div class="progress custom-progress">
+                                                            <div class="progress-bar bg-danger" style="width: 75%">
+                                                            </div>
+                                                      </div>
+                                                </div>
+
+                                                <!-- OLDER MODEL YEARS -->
+                                                <div class="year-card">
+                                                      <div class="d-flex justify-content-between">
+                                                            <span class="ct_fs_14 ct_fw_400">Older model years</span>
+                                                            <span class="ct_fs_14 ct_fw_400">22,331</span>
+                                                      </div>
+                                                </div>
+
+                                                <!-- NEWLY MODEL YEARS -->
+                                                <div class="year-card">
+                                                      <div class="d-flex justify-content-between">
+                                                            <span class="ct_fs_14 ct_fw_400">Newly model years</span>
+                                                            <span class="ct_fs_14 ct_fw_400">22,331</span>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <button class="ct_red_gradient_btn mt-4">Done</button>
+                              </div>
+                        </ng-template>
                   </div>
 
-                  <div class="filter-preview-box">
-                        <div>
+                  <div class="ct_package_select_custom">
+                        <button nz-button nzType="primary" nz-popover [(nzPopoverVisible)]="TransmissionVisible"
+                              nzPopoverTrigger="click" [nzPopoverContent]="transmissionContentTemplate"
+                              nzPopoverPlacement="bottom" class="filter-preview-box w-100 ">
                               <img src="img/icons/transmision.png" />
-                        </div>
-                        <div>
-                              <p>Transmission</p>
-                        </div>
+                              @if(selectedBrandsModal.length > 0){
+                              @for (item of selectedBrandsModal; track $index) {
+                              {{item.brand}}({{item.modals.join(', ')}})@if($index !==
+                              selectedBrandsModal.length - 1){, }
+                              }
+                              }@else{
+                              {{'Transmission' | translate}}
+                              }
+                        </button>
+                        <ng-template #transmissionContentTemplate>
+                              <div class="search-vehicle-modal-box ct_custom_scroll">
+                                    <!-- Wagon -->
+
+                                    <div class="vehicle-modal-header d-flex my-3 justify-content-between">
+                                          <div class="">
+                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">
+                                                      {{'Transmission' | translate}}
+                                                </h3>
+                                          </div>
+                                          <div>
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">Reset</span>
+                                          </div>
+                                    </div>
+
+                                    <div class="collapse-cont-wrapper">
+                                          <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <div>
+                                                      <h5 class="ct_fs_16 ct_fw_400">Automatic Transmission</h5>
+                                                </div>
+                                                <div>
+                                                      <img src="img/icons/chevron-up-b.png" data-bs-toggle="collapse"
+                                                            data-bs-target="#collapseBasicData" aria-expanded="false"
+                                                            class="collapsed" />
+                                                </div>
+                                          </div>
+                                          <div class="collapse-content collapse show" id="collapseBasicData"
+                                                data-bs-parent="#filterAccordion">
+                                                <div>
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="wagon" />
+
+                                                                        <label for="wagon">Automatic</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">356</span>
+                                                            </div>
+                                                      </div>
+
+                                                      <!-- Convertible -->
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="convertible" />
+
+                                                                        <label for="convertible">Continuously variable
+                                                                              (AMT)</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                            </div>
+                                                      </div>
+
+                                                      <!-- Sedan -->
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="sedan" checked />
+
+                                                                        <label for="sedan">Automated (AMT)</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                            </div>
+                                                      </div>
+
+                                                      <!-- SUV / Off-road -->
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="suv" />
+
+                                                                        <label for="suv">Manual Transmission</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </div>
+
+                                    <button class="ct_red_gradient_btn mt-4">
+                                          Total 23156 Cars found
+                                    </button>
+                              </div>
+                        </ng-template>
                   </div>
-                  <div class="filter-preview-box">
-                        <div>
+
+                  <div class="ct_package_select_custom">
+                        <button nz-button nzType="primary" nz-popover [(nzPopoverVisible)]="PowerVisible"
+                              nzPopoverTrigger="click" [nzPopoverContent]="powerContentTemplate"
+                              nzPopoverPlacement="bottom" class="filter-preview-box w-100 ">
                               <img src="img/icons/power-output.png" />
-                        </div>
-                        <div>
-                              <p>Power Output</p>
-                        </div>
+                              @if(selectedBrandsModal.length > 0){
+                              @for (item of selectedBrandsModal; track $index) {
+                              {{item.brand}}({{item.modals.join(', ')}})@if($index !==
+                              selectedBrandsModal.length - 1){, }
+                              }
+                              }@else{
+                              {{'PowerOutput' | translate}}
+                              }
+                        </button>
+                        <ng-template #powerContentTemplate>
+                              <div class="search-vehicle-modal-box ct_custom_scroll">
+                                    <!-- Wagon -->
+
+                                    <div class="vehicle-modal-header d-flex my-3 justify-content-between">
+                                          <div class="">
+                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">
+                                                      {{'PowerOutput' | translate}}
+                                                </h3>
+                                          </div>
+                                          <div>
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">Reset</span>
+                                          </div>
+                                    </div>
+
+                                    <div class="ct_radio-container">
+                                          <div class="ct_radio-wrapper d-flex gap-3">
+                                                <label class="ct_radio-button ct_fw_400 text-black">
+                                                      <input id="option1" name="ct_radio-group" type="radio" />
+                                                      <span class="ct_radio-checkmark"></span>
+                                                      ps
+                                                </label>
+
+                                                <label class="ct_radio-button ct_fw_400 text-black">
+                                                      <input id="option1" name="ct_radio-group" type="radio" />
+                                                      <span class="ct_radio-checkmark"></span>
+                                                      kw
+                                                </label>
+                                          </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                          <div class="col-6">
+                                                <label class="ct_fs_15 ct_fw_400 mb-2">From </label>
+                                                <input type="text" class="form-control" placeholder="km"
+                                                      aria-label="Username" aria-describedby="basic-addon1" />
+                                          </div>
+                                          <div class="col-6">
+                                                <label class="ct_fs_15 ct_fw_400 mb-2"> To </label>
+                                                <input type="text" class="form-control" placeholder="km"
+                                                      aria-label="Username" aria-describedby="basic-addon1" />
+                                          </div>
+                                    </div>
+
+                                    <button class="ct_red_gradient_btn mt-5">
+                                          Total 23156 Cars found
+                                    </button>
+                              </div>
+                        </ng-template>
                   </div>
-                  <div class="filter-preview-box">
-                        <div>
+
+                  <div class="ct_package_select_custom">
+                        <button nz-button nzType="primary" nz-popover [(nzPopoverVisible)]="FuelVisible"
+                              nzPopoverTrigger="click" [nzPopoverContent]="fuelContentTemplate"
+                              nzPopoverPlacement="bottom" class="filter-preview-box w-100 ">
                               <img src="img/icons/fuel-type.png" />
-                        </div>
-                        <div>
-                              <p>Fuel Type</p>
-                        </div>
+                              @if(selectedBrandsModal.length > 0){
+                              @for (item of selectedBrandsModal; track $index) {
+                              {{item.brand}}({{item.modals.join(', ')}})@if($index !==
+                              selectedBrandsModal.length - 1){, }
+                              }
+                              }@else{
+                              {{'FuelType' | translate}}
+                              }
+                        </button>
+                        <ng-template #fuelContentTemplate>
+                              <div class="search-vehicle-modal-box ct_custom_scroll">
+                                    <!-- Wagon -->
+
+                                    <div class="vehicle-modal-header d-flex my-3 justify-content-between">
+                                          <div class="">
+                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">{{'FuelType' | translate}}
+                                                </h3>
+                                          </div>
+                                          <div>
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">Reset</span>
+                                          </div>
+                                    </div>
+
+                                    <div>
+                                          <div class="d-flex justify-content-between align-items-center">
+                                                <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                      <input class="form-check-input" type="checkbox" id="wagon" />
+
+                                                      <label for="wagon">Petrol</label>
+                                                </div>
+                                                <span class="ct_fs_12 ct_fw_300">356</span>
+                                          </div>
+                                          <div class="d-flex justify-content-between align-items-center">
+                                                <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                      <input class="form-check-input" type="checkbox" id="wagon" />
+
+                                                      <label for="wagon">Diesel</label>
+                                                </div>
+                                                <span class="ct_fs_12 ct_fw_300">356</span>
+                                          </div>
+                                          <div class="d-flex justify-content-between align-items-center">
+                                                <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                      <input class="form-check-input" type="checkbox" id="wagon" />
+
+                                                      <label for="wagon">Electric</label>
+                                                </div>
+                                                <span class="ct_fs_12 ct_fw_300">356</span>
+                                          </div>
+                                    </div>
+
+                                    <div class="collapse-cont-wrapper ps-3 mt-3">
+                                          <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                      <h5 class="ct_fs_16 ct_fw_400">Hybrid</h5>
+                                                </div>
+                                                <div>
+                                                      <img src="img/icons/chevron-up-b.png" data-bs-toggle="collapse"
+                                                            data-bs-target="#collapseBasicData" aria-expanded="false"
+                                                            class="collapsed" />
+                                                </div>
+                                          </div>
+                                          <div class="collapse-content collapse show" id="collapseBasicData"
+                                                data-bs-parent="#filterAccordion">
+                                                <div>
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="wagon" />
+
+                                                                        <label for="wagon">Automatic</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">356</span>
+                                                            </div>
+                                                      </div>
+
+                                                      <!-- Convertible -->
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="convertible" />
+
+                                                                        <label for="convertible">Continuously variable
+                                                                              (AMT)</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                            </div>
+                                                      </div>
+
+                                                      <!-- Sedan -->
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="sedan" checked />
+
+                                                                        <label for="sedan">Automated (AMT)</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                            </div>
+                                                      </div>
+
+                                                      <!-- SUV / Off-road -->
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="suv" />
+
+                                                                        <label for="suv">Manual Transmission</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </div>
+
+                                    <div class="collapse-cont-wrapper ps-3 mt-3">
+                                          <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                      <h5 class="ct_fs_16 ct_fw_400">Gas</h5>
+                                                </div>
+                                                <div>
+                                                      <img src="img/icons/chevron-up-b.png" data-bs-toggle="collapse"
+                                                            data-bs-target="#collapseBasicData2" aria-expanded="false"
+                                                            class="collapsed" />
+                                                </div>
+                                          </div>
+                                          <div class="collapse-content collapse show" id="collapseBasicData2"
+                                                data-bs-parent="#filterAccordion">
+                                                <div>
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="wagon" />
+
+                                                                        <label for="wagon">Automatic</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">356</span>
+                                                            </div>
+                                                      </div>
+
+                                                      <!-- Convertible -->
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="convertible" />
+
+                                                                        <label for="convertible">Continuously variable
+                                                                              (AMT)</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                            </div>
+                                                      </div>
+
+                                                      <!-- Sedan -->
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="sedan" checked />
+
+                                                                        <label for="sedan">Automated (AMT)</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                            </div>
+                                                      </div>
+
+                                                      <!-- SUV / Off-road -->
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="suv" />
+
+                                                                        <label for="suv">Manual Transmission</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <div class="collapse-cont-wrapper ps-3 mt-3">
+                                          <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <div>
+                                                      <h5 class="ct_fs_16 ct_fw_400">Gas</h5>
+                                                </div>
+                                                <div>
+                                                      <img src="img/icons/chevron-up-b.png" data-bs-toggle="collapse"
+                                                            data-bs-target="#collapseBasicData3" aria-expanded="false"
+                                                            class="collapsed" />
+                                                </div>
+                                          </div>
+                                          <div class="collapse-content collapse show" id="collapseBasicData3"
+                                                data-bs-parent="#filterAccordion">
+                                                <div>
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="wagon" />
+
+                                                                        <label for="wagon">Automatic</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">356</span>
+                                                            </div>
+                                                      </div>
+
+                                                      <!-- Convertible -->
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="convertible" />
+
+                                                                        <label for="convertible">Continuously variable
+                                                                              (AMT)</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                            </div>
+                                                      </div>
+
+                                                      <!-- Sedan -->
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="sedan" checked />
+
+                                                                        <label for="sedan">Automated (AMT)</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                            </div>
+                                                      </div>
+
+                                                      <!-- SUV / Off-road -->
+                                                      <div class="">
+                                                            <div
+                                                                  class="d-flex justify-content-between align-items-center">
+                                                                  <div
+                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              id="suv" />
+
+                                                                        <label for="suv">Manual Transmission</label>
+                                                                  </div>
+                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </div>
+
+                                    <button class="ct_red_gradient_btn mt-4">
+                                          Total 23156 Cars found
+                                    </button>
+                              </div>
+                        </ng-template>
                   </div>
             </div>
             <div class="mt-3">

@@ -268,39 +268,57 @@ export class EditProfileComponent {
     this.loading = true
 
     let formData = new FormData();
-    formData.append('fullName', this.Form.value.fullName);
-    formData.append('phoneNumber', this.Form.value.phoneNumber.e164Number.slice(this.Form.value.phoneNumber.dialCode.length));
+
+    this.appendIfExists(formData, 'fullName', this.Form.value.fullName);
+
+    if (this.Form.value.phoneNumber?.e164Number) {
+      const phone = this.Form.value.phoneNumber.e164Number
+        .slice(this.Form.value.phoneNumber.dialCode.length);
+
+      this.appendIfExists(formData, 'phoneNumber', phone);
+      this.appendIfExists(formData, 'countryCode', this.Form.value.phoneNumber.dialCode);
+    }
+
     if (this.profileImage) {
       formData.append('profileImage', this.profileImage);
     }
-    formData.append('legalForm', this.Form.value.legalForm);
-    formData.append('companyName', this.Form.value.companyName);
-    formData.append('companyAddress', this.Form.value.companyAddress);
-    formData.append('fullAddress', this.Form.value.address);
-    formData.append('city', this.Form.value.city);
-    formData.append('pincode', this.Form.value.pincode);
-    formData.append('vat', this.Form.value.vat);
-    formData.append('seller_type', this.Form.value.typeOfSeller);
-    formData.append('countryCode', this.Form.value.phoneNumber.dialCode);
-    formData.append('whatsappCountryCode', this.Form.value.whatsappNumber.dialCode);
-    formData.append('whatsappNumber', this.Form.value.whatsappNumber.e164Number.slice(this.Form.value.whatsappNumber.dialCode.length));
-    formData.append('isSeller', this.role === 'seller' ? '1' : '0');
-    formData.append('tagline', this.Form.value.tagline);
-    formData.append('websiteUrl', this.Form.value.websiteUrl);
-    formData.append('description', this.Form.value.description);
-    formData.append('openingTimes', JSON.stringify(this.Form.value.openingTimes));
-    formData.append('advantages', JSON.stringify(this.Form.value.advantages));
-    formData.append('services', JSON.stringify(this.Form.value.services));
+
+    this.appendIfExists(formData, 'legalForm', this.Form.value.legalForm);
+    this.appendIfExists(formData, 'companyName', this.Form.value.companyName);
+    this.appendIfExists(formData, 'companyAddress', this.Form.value.companyAddress);
+    this.appendIfExists(formData, 'fullAddress', this.Form.value.address);
+    this.appendIfExists(formData, 'city', this.Form.value.city);
+    this.appendIfExists(formData, 'pincode', this.Form.value.pincode);
+    this.appendIfExists(formData, 'vat', this.Form.value.vat);
+    this.appendIfExists(formData, 'seller_type', this.Form.value.typeOfSeller);
+    this.appendIfExists(formData, 'tagline', this.Form.value.tagline);
+    this.appendIfExists(formData, 'websiteUrl', this.Form.value.websiteUrl);
+    this.appendIfExists(formData, 'description', this.Form.value.description);
+
+    if (this.Form.value.openingTimes?.length) {
+      formData.append('openingTimes', JSON.stringify(this.Form.value.openingTimes));
+    }
+
+    if (this.Form.value.advantages?.length) {
+      formData.append('advantages', JSON.stringify(this.Form.value.advantages));
+    }
+
+    if (this.Form.value.services?.length) {
+      formData.append('services', JSON.stringify(this.Form.value.services));
+    }
+
     if (this.coverImage) {
       formData.append('coverImage', this.coverImage);
     }
+
     if (this.selectedVideo) {
       formData.append('showroomVideos', this.selectedVideo);
     }
-    if (this.showroomImages.length > 0) {
+
+    if (this.showroomImages?.length > 0) {
       this.showroomImages.forEach((image: any) => {
         formData.append('showroomImages', image);
-      })
+      });
     }
     if (this.Form.value.teamMembers) {
       let teamMembers: any[] = []
@@ -337,6 +355,17 @@ export class EditProfileComponent {
         this.toastr.error(error)
       }
     })
+  }
+
+  appendIfExists(formData: FormData, key: string, value: any) {
+    if (
+      value !== null &&
+      value !== undefined &&
+      value !== '' &&
+      !(typeof value === 'string' && value.trim() === '')
+    ) {
+      formData.append(key, value);
+    }
   }
 
   get openingTimes() {

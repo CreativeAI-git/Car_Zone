@@ -38,6 +38,7 @@ export class BrowseCarsComponent {
   sittingCapacity = [1, 2, 3, 4, 5, 6, 7]
   sellerTypes = carData.sellerTypes
   visible: boolean = false
+  bodyTypeVisible: boolean = false
   YearVisible: boolean = false
   PriceVisible: boolean = false
   MilageVisible: boolean = false

@@ -65,7 +65,7 @@ export class WishlistComponent {
 
   removeFromWishlist(item: any) {
     item.isWishlist = !item.isWishlist
-    this.service.delete('user/removeCarFromWishlist', { carId: item.carId }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+    this.service.delete('user/removeCarFromWishlist', { carId: item.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       this.wishList.splice(this.wishList.indexOf(item), 1)
     })
   }

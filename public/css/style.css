@@ -1613,7 +1613,7 @@ span.navbar-toggler-icon i {
   background: #ebebeb;
   height: 55px;
   position: relative;
-
+  justify-content: flex-start;
 }
 
 .body-type-img-o {
