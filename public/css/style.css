@@ -318,6 +318,9 @@ body {
 .ct_mt_100 {
   margin-top: 100px;
 }
+.ct_pt_100 {
+  padding-top: 100px;
+}
 
 .ct_mb_100 {
   margin-bottom: 100px;
@@ -2635,7 +2638,8 @@ body.profile-no-scroll {
 
 .price-range {
   max-width: 400px;
-  margin: 20px auto;
+  margin: 0px auto;
+
   font-family: Arial, sans-serif;
 }
 
@@ -2959,7 +2963,7 @@ button#profileSidebarClose {
 .popular-make-icon {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 6px;
 }
 
 .popular-make-all-box {

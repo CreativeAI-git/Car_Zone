@@ -71,7 +71,7 @@
                         <button nz-button nzType="primary" nz-popover [(nzPopoverVisible)]="visible"
                               nzPopoverTrigger="click" [nzPopoverContent]="contentTemplate" nzPopoverPlacement="bottom"
                               class="filter-preview-box w-100 ">
-                              <img src="img/icons/make-model.png" />
+                              <img src="img/icons/make-model.png" style="filter: invert(1); height: 50px;" />
                               @if(selectedBrandsModal.length > 0){
                               @for (item of selectedBrandsModal; track $index) {
                               {{item.brand}}({{item.modals.join(', ')}})@if($index !==
@@ -82,176 +82,194 @@
                               }
                         </button>
                         <ng-template #contentTemplate>
-                              <div class="d-flex align-items-center justify-content-between p-3 pb-0">
-                                    @if(modalList.length > 0 || searchModalValue.length >
-                                    0){
-                                    <i class="fa-solid fa-arrow-left" (click)="backToBrand()"
-                                          style="cursor: pointer;"></i>
-                                    }
-                                    <p class="mb-0 ct_fw_600">
-                                          @if(modalList.length === 0 &&
-                                          searchModalValue.length === 0){
-                                          {{'MakeModel' | translate}}
-                                          }@else{
-                                          {{selectedBrand[selectedBrand.length - 1]}}
-                                          }
-                                    </p>
-                                    <div class="">
-                                          <i class="fa-solid fa-xmark ct_text_red" (click)="visible = false"
-                                                style="cursor: pointer;"></i>
+                              <div class="search-vehicle-modal-box ct_custom_scroll">
+                                    <div class="vehicle-modal-header d-flex mt-4">
+                                          <div>
+                                                <a>
+                                                      <img src="img/icons/chevron-right.png" />
+                                                </a>
+                                          </div>
+                                          <div class="w-100">
+                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo text-center">
+                                                      Select Make
+                                                </h3>
+                                          </div>
+                                    </div>
+                                    <div class="pt-4">
+                                          <div class="position-relative">
+                                                <input type="text"
+                                                      class="form-control ct_input ct_input_ps_40 ct_input_h_40 ct_border_op_10"
+                                                      placeholder="Search" />
+                                                <i class="fa-solid fa-search ct_input_icon_left"></i>
+                                          </div>
+                                    </div>
+                                    <div class="vehicle-modal-detail-box">
+                                          <h4 class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f mt-4">
+                                                Popular Makes
+                                          </h4>
+                                          <div class="popular-make-icon">
+                                                <div class="popular-make-icon-box">
+                                                      <img src="img/sorting-icon/icon-1.png" />
+                                                </div>
+                                                <div class="popular-make-icon-box">
+                                                      <img src="img/sorting-icon/icon-2.png" />
+                                                </div>
+                                                <div class="popular-make-icon-box">
+                                                      <img src="img/sorting-icon/icon3.png" />
+                                                </div>
+                                                <div class="popular-make-icon-box">
+                                                      <img src="img/sorting-icon/icon4.png" />
+                                                </div>
+                                                <div class="popular-make-icon-box">
+                                                      <img src="img/sorting-icon/icon5.png" />
+                                                </div>
+                                                <div class="popular-make-icon-box">
+                                                      <img src="img/sorting-icon/icon6.png" />
+                                                </div>
+                                                <div class="popular-make-icon-box">
+                                                      <img src="img/sorting-icon/icon7.png" />
+                                                </div>
+                                                <div class="popular-make-icon-box">
+                                                      <img src="img/sorting-icon/icon8.png" />
+                                                </div>
+                                                <div class="popular-make-icon-box">
+                                                      <img src="img/sorting-icon/icon9.png" />
+                                                </div>
+                                                <div class="popular-make-icon-box">
+                                                      <img src="img/sorting-icon/icon10.png" />
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <div class="vehicle-modal-detail-box">
+                                          <h4 class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f my-4">
+                                                All Makes
+                                          </h4>
+                                          <div class="popular-make-all-box">
+                                                <div class="popular-make-all-box d-flex justify-content-between">
+                                                      <div>
+                                                            <p class="ct_fs_13 ct_fw_300 mb-0">BMW</p>
+                                                      </div>
+                                                      <div>
+                                                            <a href="#">
+                                                                  <img src="img/icons/chevron-left.png" /></a>
+                                                      </div>
+                                                </div>
+
+                                                <div class="popular-make-all">
+                                                      <div class="popular-make-all-box d-flex justify-content-between">
+                                                            <div>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Bugatti</p>
+                                                            </div>
+                                                            <div>
+                                                                  <a href="#">
+                                                                        <img src="img/icons/chevron-left.png" /></a>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                <div class="popular-make-all">
+                                                      <div class="popular-make-all-box d-flex justify-content-between">
+                                                            <div>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Aston Martin</p>
+                                                            </div>
+                                                            <div>
+                                                                  <a href="#">
+                                                                        <img src="img/icons/chevron-left.png" /></a>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                <div class="popular-make-all">
+                                                      <div class="popular-make-all-box d-flex justify-content-between">
+                                                            <div>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Lamborghini</p>
+                                                            </div>
+                                                            <div>
+                                                                  <a href="#">
+                                                                        <img src="img/icons/chevron-left.png" /></a>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                <div class="popular-make-all">
+                                                      <div class="popular-make-all-box d-flex justify-content-between">
+                                                            <div>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Mahindra</p>
+                                                            </div>
+                                                            <div>
+                                                                  <a href="#">
+                                                                        <img src="img/icons/chevron-left.png" /></a>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                <div class="popular-make-all">
+                                                      <div class="popular-make-all-box d-flex justify-content-between">
+                                                            <div>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Maserati</p>
+                                                            </div>
+                                                            <div>
+                                                                  <a href="#">
+                                                                        <img src="img/icons/chevron-left.png" /></a>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                <div class="popular-make-all">
+                                                      <div class="popular-make-all-box d-flex justify-content-between">
+                                                            <div>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Skoda</p>
+                                                            </div>
+                                                            <div>
+                                                                  <a href="#">
+                                                                        <img src="img/icons/chevron-left.png" /></a>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                <div class="popular-make-all">
+                                                      <div class="popular-make-all-box d-flex justify-content-between">
+                                                            <div>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Renault</p>
+                                                            </div>
+                                                            <div>
+                                                                  <a href="#">
+                                                                        <img src="img/icons/chevron-left.png" />
+                                                                  </a>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                <div class="popular-make-all">
+                                                      <div class="popular-make-all-box d-flex justify-content-between">
+                                                            <div>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Suzuki</p>
+                                                            </div>
+                                                            <div>
+                                                                  <a href="#">
+                                                                        <img src="img/icons/chevron-left.png" /></a>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                <div class="popular-make-all">
+                                                      <div class="popular-make-all-box d-flex justify-content-between">
+                                                            <div>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Fiat</p>
+                                                            </div>
+                                                            <div>
+                                                                  <a href="#">
+                                                                        <img src="img/icons/chevron-left.png" /></a>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                <div class="popular-make-all">
+                                                      <div class="popular-make-all-box d-flex justify-content-between">
+                                                            <div>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">BYD</p>
+                                                            </div>
+                                                            <div>
+                                                                  <a href="#">
+                                                                        <img src="img/icons/chevron-left.png" />
+                                                                  </a>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
                                     </div>
                               </div>
-                              <div #modalScrollDiv class="scroll_bar_div ct_custom_scroll p-3">
-                                    <div class="d-block mb-3">
-                                          @for (item of selectedBrandsModal; track $index)
-                                          {
-                                          <div class="ct_brand_bg_345 mb-2">
-                                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                                      <div class="">
-                                                            <span class="mb-0 ct_fw_600 ct_custom_badge ct_fs_12 d-inline-block text-white"
-                                                                  style="background-color: var(--red);">{{item.brand}}</span>
-                                                      </div>
-                                                      <div class="ct_crosee_btn">
-                                                            <i class="fa-solid fa-xmark ct_text_red"
-                                                                  style="cursor: pointer;"
-                                                                  (click)="removeBrandModal(item)"></i>
-                                                      </div>
-                                                </div>
-                                                <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                      @for (model of item.modals; track
-                                                      $index) {
-                                                      <small
-                                                            class="text-dark  m-0 ct_custom_badge ct_fs_12 d-inline-block bg-white">
-                                                            {{model}}
-                                                      </small>
-                                                      }
-                                                </div>
-                                          </div>
-                                          }
-                                    </div>
-                                    @if(modalList.length === 0 && searchModalValue.length
-                                    === 0){
-                                    <div class="ct_search mb-3 position-relative">
-                                          <input type="search" (input)="searchBrand($event)"
-                                                class="form-control ct_input"
-                                                placeholder="{{'SearchBrand' | translate}}...">
-                                          <i class="fa-solid fa-search ct_show_eye"></i>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2 flex-wrap  mb-3">
-                                          <div class="ct_brand_icon_2"
-                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('BMW')}"
-                                                (click)="selectBrand('BMW')">
-                                                <img src="img/BrandIcons/ic_Bmw.svg" alt="">
-                                          </div>
-                                          <div class="ct_brand_icon_2"
-                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Mercedes-Benz')}"
-                                                (click)="selectBrand('Mercedes-Benz')">
-                                                <img src="img/BrandIcons/ic_Mercedes.svg" alt="">
-                                          </div>
-                                          <div class="ct_brand_icon_2"
-                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Audi')}"
-                                                (click)="selectBrand('Audi')">
-                                                <img src="img/BrandIcons/ic_Audi.svg" alt="">
-                                          </div>
-                                          <div class="ct_brand_icon_2"
-                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Volkswagen')}"
-                                                (click)="selectBrand('Volkswagen')">
-                                                <img src="img/BrandIcons/ic_volkswagen.svg" alt="">
-                                          </div>
-                                          <div class="ct_brand_icon_2"
-                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Porsche')}"
-                                                (click)="selectBrand('Porsche')">
-                                                <img src="img/BrandIcons/ic_Porsche.svg" alt="">
-                                          </div>
-                                          <div class="ct_brand_icon_2"
-                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Toyota')}"
-                                                (click)="selectBrand('Toyota')">
-                                                <img src="img/BrandIcons/ic_toyota.svg" alt="">
-                                          </div>
-                                          <div class="ct_brand_icon_2"
-                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Ford')}"
-                                                (click)="selectBrand('Ford')">
-                                                <img src="img/BrandIcons/ic_ford.svg" alt="">
-                                          </div>
-                                          <div class="ct_brand_icon_2"
-                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Skoda')}"
-                                                (click)="selectBrand('Skoda')">
-                                                <img src="img/BrandIcons/ic_skoda.svg" alt="">
-                                          </div>
-                                          <div class="ct_brand_icon_2"
-                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Volvo')}"
-                                                (click)="selectBrand('Volvo')">
-                                                <img src="img/BrandIcons/ic_volvo.svg" alt="">
-                                          </div>
-                                          <div class="ct_brand_icon_2"
-                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Tesla')}"
-                                                (click)="selectBrand('Tesla')">
-                                                <img src="img/BrandIcons/ic_tesla.svg" alt="">
-                                          </div>
-                                          <div class="ct_brand_icon_2"
-                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Fiat')}"
-                                                (click)="selectBrand('Fiat')">
-                                                <img src="img/BrandIcons/ic_fiat.svg" alt="">
-                                          </div>
-                                          <div class="ct_brand_icon_2"
-                                                [ngClass]="{'ct_brand_icon_active': selectedBrand.includes('Seat')}"
-                                                (click)="selectBrand('Seat')">
-                                                <img src="img/BrandIcons/ic_Seat.svg" alt="">
-                                          </div>
-                                    </div>
-                                    <p class="mb-2 ct_fw_600">{{'All' | translate}}
-                                          {{'Brands' | translate}}
-                                    </p>
-                                    @for (item of brandList; track $index) {
-                                    <div class="ct_custom_select mt-1">
-                                          <div class="d-flex align-items-center
-                                                                                                justify-content-between cursor-pointer"
-                                                (click)="selectBrand(item.make_display)">
-                                                <div>
-                                                      <p class="m-0">
-                                                            {{item.make_display}}
-                                                      </p>
-                                                </div>
-                                                <i class="fa-solid fa fa-angle-right"></i>
-                                          </div>
-                                    </div>
-                                    }
-                                    }@else{
-                                    <div class="ct_search mb-3 position-relative">
-                                          <input type="search" (input)="searchModal($event)"
-                                                class="form-control ct_input"
-                                                placeholder="{{'SearchModel' | translate}}...">
-                                          <i class="fa-solid fa-search ct_show_eye"></i>
-                                    </div>
-                                    <ul>
-                                          @if(modalList.length > 0){
-                                          @for (item of modalList; track $index) {
-                                          <li>
-                                                <div class="form-check ct_custom_check2">
-                                                      <input class="form-check-input" type="checkbox"
-                                                            [value]="item.modelName" [id]="item.modelName"
-                                                            (change)="selectModal($event, selectedBrand[selectedBrand.length - 1])"
-                                                            style="margin-top:2px;"
-                                                            [checked]="selectedModal.includes(item.modelName)">
-                                                      <div
-                                                            class="d-flex align-items-center gap-1 justify-content-between">
-                                                            <label [for]="item.modelName"
-                                                                  class="ms-1 ct_fw_600">{{item.modelName}}</label>
-                                                      </div>
-                                                </div>
-                                          </li>
-                                          }
-                                          }@else {
-                                          <p class="mb-2 ct_fw_600">
-                                                {{'NoModelFound' | translate}}
-                                          </p>
-                                          }
-                                    </ul>
-                                    }
-                              </div>
-                              <button class="ct_red_btn w-100 ct_flex_1 mb-3"
-                                    (click)="filterBrandModel()">{{'ApplyFilters' |
-                                    translate}}</button>
                         </ng-template>
                   </div>
 
@@ -1159,7 +1177,7 @@
                   </div>
             </div>
             <div class="mt-3">
-                  <a class="clear-filters justify-content-end">
+                  <a routerLink="/filters" class="clear-filters justify-content-end">
                         <img src="img/icons/filter.svg" alt="More Filters" />
                         <span class="ct_color_1877F2"> More Filters</span>
                   </a>

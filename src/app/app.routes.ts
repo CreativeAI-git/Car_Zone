@@ -25,6 +25,10 @@ export const routes: Routes = [
                         loadComponent: () => import('./components/browse-cars/browse-cars.component').then(m => m.BrowseCarsComponent)
                   },
                   {
+                        path: 'filters',
+                        loadComponent: () => import('./components/all-filters/all-filters.component').then(m => m.AllFiltersComponent)
+                  },
+                  {
                         path: 'reels',
                         loadComponent: () => import('./components/reels/reels.component').then(m => m.ReelsComponent)
                   },
