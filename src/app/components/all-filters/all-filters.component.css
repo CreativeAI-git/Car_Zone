@@ -4,6 +4,13 @@
     border-radius: 4px;
     height: 100%;
 }
-.all-filter-main-wrapper{
+
+.all-filter-main-wrapper {
     background-color: #F8F8F8;
+}
+
+.radius_unit {
+    position: absolute;
+    top: 15px;
+    right: 10px;
 }

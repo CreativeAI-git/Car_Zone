@@ -54,7 +54,6 @@ quill-editor {
       position: relative;
       overflow: hidden;
       margin: 0 auto;
-
 }
 
 .videoPreview {
@@ -80,7 +79,6 @@ quill-editor {
       scroll-behavior: smooth;
       scroll-snap-align: center;
       overscroll-behavior: contain;
-
 }
 
 .ct-wheel-container::-webkit-scrollbar {
@@ -181,7 +179,6 @@ quill-editor {
       line-height: 44px;
       text-align: center;
       scroll-snap-align: center;
-
       font-size: 22px;
       font-weight: 500;
       opacity: 0.25;
@@ -194,9 +191,6 @@ quill-editor {
       font-weight: 700;
       opacity: 1;
       color: #000;
-
-      /* background: rgba(0, 0, 0, 0.06); */
-
 }
 
 /* THE CENTER HIGHLIGHT BOX */
