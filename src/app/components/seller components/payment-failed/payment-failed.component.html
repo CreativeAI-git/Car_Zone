@@ -1,16 +1,20 @@
-<section class="ct_py_70">
+<section class="ct_mt_100 mb-5">
       <div class="container">
             <div class="row">
-                  <div class="col-md-8 mx-auto">
+                  <div class="col-md-6 mx-auto">
                         <div class="ct_success_ful_bg">
-                              <img src="img/failed.png" alt="">
-                              <h4 class="ct_fs_28 ct_fw_700 mb-2 text-center">{{'PaymentFailed' | translate}}</h4>
-                              <p class="mb-0 text-center ct_text_op_6">{{'PaymentFailedDescription' | translate}}
+                              <div class="success-icon mx-auto mb-4">
+                                    <img src="img/failed.png" alt="" />
+                              </div>
+                              <h5 class="ct_fs_16 ct_fw_600 mb-2">Payment failed</h5>
+                              <p class="text-muted mb-4">
+                                    Your payment was not successful.<br />
+                                    Please try again.
                               </p>
-
                               <div class="d-flex justify-content-center gap-2 align-items-center mt-4">
-                                    <a href="index.html" class="ct_red_btn">{{'BackToHome' | translate}}</a>
-                                    <a href="index.html" class="ct_red_btn">{{'TryAgain' | translate}}</a>
+                                    <a routerLink="/" class="btn-red w-50">{{'BackToHome' | translate}}</a>
+                                    <a routerLink="/choose-listing-plan" class="btn-red w-50">{{'TryAgain' |
+                                          translate}}</a>
                               </div>
                         </div>
                   </div>

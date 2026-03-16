@@ -27,6 +27,10 @@ export class CommonService {
     return this.http.post<T>(this.baseUrl + url, data)
   };
 
+  listYourCar(data: FormData): Observable<any> {
+    return this.http.post<any>(this.baseUrl + 'user/listYourCar', data);
+  }
+
   delete<T>(url: string, data?: any): Observable<T> {
     return this.http.delete<T>(this.baseUrl + url, { body: data });
   };

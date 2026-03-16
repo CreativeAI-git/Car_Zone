@@ -133,8 +133,10 @@
 
                   <div class="d-flex align-items-center gap-4 justify-content-center mt-5">
                         <button class="btn-red-transparent px-5">Cancel</button>
-                        <button [disabled]="!selectedPlan" (click)="purchasePlan()" class="btn-red px-5">Continue
-                        </button>
+                        <!-- <button [disabled]="!selectedPlan" (click)="purchasePlan()" class="btn-red px-5">Continue
+                        </button> -->
+                        <app-submit-button [isLoading]="Loading" [class]="'btn-red px-5'" (click)="purchasePlan()"
+                              [disabled]="!selectedPlan" [text]="('Continue' | translate)"></app-submit-button>
                   </div>
                   <p class="mb-0 ct_mt_30 text-center">
                         Need additional listing slots? Submit a request to expand your

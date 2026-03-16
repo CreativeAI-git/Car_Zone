@@ -5,7 +5,7 @@ quill-editor {
 .cutom_radio_input {
       height: 25px;
       width: 25px;
-      accent-color: var(--red);
+      accent-color: var(--primary-color);
 }
 
 .ct_custom_select .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
