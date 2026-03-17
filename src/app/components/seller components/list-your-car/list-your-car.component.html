@@ -8,7 +8,7 @@
                                     <h5 class="ct_fw_600 mb-4">1. Find vehicle</h5>
 
                                     <ul class="ct_stepper">
-                                          <li class="active">
+                                          <li [class]="{ 'active': currentFormStep === 1 }">
                                                 <span class="ct_step_circle">1</span>
                                                 <div>
                                                       <h6>Find vehicle</h6>
@@ -16,7 +16,7 @@
                                                 </div>
                                           </li>
 
-                                          <li>
+                                          <li [class]="{ 'active': currentFormStep === 2 }">
                                                 <span class="ct_step_circle">2</span>
                                                 <div>
                                                       <h6>Add vehicle data</h6>
@@ -24,7 +24,7 @@
                                                 </div>
                                           </li>
 
-                                          <li>
+                                          <li [class]="{ 'active': currentFormStep === 3 }">
                                                 <span class="ct_step_circle">3</span>
                                                 <div>
                                                       <h6>Set Pricing & Leasing</h6>
@@ -32,7 +32,7 @@
                                                 </div>
                                           </li>
 
-                                          <li>
+                                          <li [class]="{ 'active': currentFormStep === 4 }">
                                                 <span class="ct_step_circle">4</span>
                                                 <div>
                                                       <h6>Billing & Contact Details</h6>
@@ -40,7 +40,7 @@
                                                 </div>
                                           </li>
 
-                                          <li>
+                                          <li [class]="{ 'active': currentFormStep === 5 }">
                                                 <span class="ct_step_circle">5</span>
                                                 <div>
                                                       <h6>Upload Media & Reels</h6>
@@ -48,7 +48,7 @@
                                                 </div>
                                           </li>
 
-                                          <li>
+                                          <li [class]="{ 'active': currentFormStep === 6 }">
                                                 <span class="ct_step_circle">6</span>
                                                 <div>
                                                       <h6>Preview & Pay</h6>
@@ -65,7 +65,8 @@
                         <div class="ct_right_main_box">
                               <form [formGroup]="carFormOne" (ngSubmit)="onSubmit()">
                                     <!-- STEP 1 -->
-                                    <div class="ct_form_step active" data-step="1">
+                                    <div class="ct_form_step" [class]="{ 'active': currentFormStep === 1 }"
+                                          data-step="1">
                                           <div>
                                                 <!-- Tabs -->
                                                 <ul class="nav ct_find_vehicle_tabs mb-4" role="tablist">
@@ -389,7 +390,8 @@
                                     </div>
 
                                     <!-- STEP 2 -->
-                                    <div class="ct_form_step" data-step="2">
+                                    <div class="ct_form_step" [class]="{ 'active': currentFormStep === 2 }"
+                                          data-step="2">
                                           <div id="filterAccordion" class="">
                                                 <div class="collapse-cont-wrapper">
                                                       <div
@@ -425,9 +427,11 @@
                                                                                     <input type="text"
                                                                                           class="form-control"
                                                                                           placeholder="Enter here"
-                                                                                          aria-label="Username"
-                                                                                          aria-describedby="basic-addon1" />
+                                                                                          formControlName="brandName" />
                                                                               </div>
+                                                                              <small class="text-danger">{{validationErrorService.getErrorMessage(('BrandName'
+                                                                                    | translate),
+                                                                                    carFormOne.get("brandName"))}}</small>
                                                                         </div>
                                                                   </div>
                                                                   <div class="col-md-4 mt-3">
@@ -446,9 +450,11 @@
                                                                                     <input type="text"
                                                                                           class="form-control"
                                                                                           placeholder="Enter here"
-                                                                                          aria-label="Username"
-                                                                                          aria-describedby="basic-addon1" />
+                                                                                          formControlName="version" />
                                                                               </div>
+                                                                              <small class="text-danger">{{validationErrorService.getErrorMessage(('Version'
+                                                                                    | translate),
+                                                                                    carFormOne.get("version"))}}</small>
                                                                         </div>
                                                                   </div>
                                                                   <div class="col-md-4 mt-3">
@@ -465,9 +471,11 @@
                                                                                     <input type="text"
                                                                                           class="form-control"
                                                                                           placeholder="Enter here"
-                                                                                          aria-label="Username"
-                                                                                          aria-describedby="basic-addon1" />
+                                                                                          formControlName="carModel" />
                                                                               </div>
+                                                                              <small class="text-danger">{{validationErrorService.getErrorMessage(('CarModel'
+                                                                                    | translate),
+                                                                                    carFormOne.get("carModel"))}}</small>
                                                                         </div>
                                                                   </div>
                                                             </div>
@@ -478,13 +486,35 @@
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">Fuel
                                                                               </h5>
                                                                         </div>
-                                                                        <select class="form-select"
-                                                                              aria-label="Default select example">
-                                                                              <option selected="">Select</option>
-                                                                              <option value="1">One</option>
-                                                                              <option value="2">Two</option>
-                                                                              <option value="3">Three</option>
-                                                                        </select>
+                                                                        <nz-select class="form-control ct_input"
+                                                                              nzPlaceHolder="{{ 'Select' | translate }}"
+                                                                              formControlName="fuel_type_id">
+                                                                              @for (group of fuelTypes; track $index) {
+                                                                              <nz-option-group [nzLabel]="group.label">
+                                                                                    @for (type of group.options; track
+                                                                                    $index) {
+                                                                                    <nz-option nzCustomContent
+                                                                                          [nzLabel]="type.label"
+                                                                                          [nzValue]="type.value"
+                                                                                          class="ct_custom_select">
+                                                                                          <div
+                                                                                                class="d-flex align-items-center justify-content-between">
+                                                                                                <p class="m-0">{{
+                                                                                                      type.label }}</p>
+
+                                                                                                <input type="radio"
+                                                                                                      class="cutom_radio_input"
+                                                                                                      [checked]="type.value === carFormOne.get('fuel_type_id')?.value" />
+                                                                                          </div>
+                                                                                    </nz-option>
+                                                                                    }
+                                                                              </nz-option-group>
+                                                                              }
+                                                                        </nz-select>
+                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                              'Fuel Type'
+                                                                              | translate),
+                                                                              carFormOne.get("fuel_type_id"))}}</small>
                                                                   </div>
                                                                   <div class="col-sm-6 mt-3">
                                                                         <div>
@@ -492,13 +522,34 @@
                                                                                     Transmission
                                                                               </h5>
                                                                         </div>
-                                                                        <select class="form-select"
-                                                                              aria-label="Default select example">
-                                                                              <option selected="">Select</option>
-                                                                              <option value="1">One</option>
-                                                                              <option value="2">Two</option>
-                                                                              <option value="3">Three</option>
-                                                                        </select>
+                                                                        <nz-select
+                                                                              class="form-control ct_input ct_custom_select"
+                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              formControlName="transmission_id">
+                                                                              @for (item of transmissions; track $index)
+                                                                              {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.label | translate"
+                                                                                    [nzValue]="item.id"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <div>
+                                                                                                <p class="m-0">
+                                                                                                      {{item.label |
+                                                                                                      translate}}
+                                                                                                </p>
+                                                                                          </div>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.id === carFormOne.get('transmission_id')?.value" />
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
+                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage(('Transmission'
+                                                                              | translate),
+                                                                              carFormOne.get("transmission_id"))}}</small>
                                                                   </div>
                                                             </div>
 
@@ -508,13 +559,35 @@
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">Drive
                                                                               </h5>
                                                                         </div>
-                                                                        <select class="form-select"
-                                                                              aria-label="Default select example">
-                                                                              <option selected="">Select</option>
-                                                                              <option value="1">One</option>
-                                                                              <option value="2">Two</option>
-                                                                              <option value="3">Three</option>
-                                                                        </select>
+                                                                        <nz-select
+                                                                              class="form-control ct_input ct_custom_select"
+                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              formControlName="drive_type_id">
+                                                                              @for (item of driveTypes; track $index)
+                                                                              {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.label | translate"
+                                                                                    [nzValue]="item.id"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <div>
+                                                                                                <p class="m-0">
+                                                                                                      {{item.label |
+                                                                                                      translate}}
+                                                                                                </p>
+                                                                                          </div>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.id === carFormOne.get('drive_type_id')?.value" />
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
+                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                              'Drive Type'
+                                                                              | translate),
+                                                                              carFormOne.get("drive_type_id"))}}</small>
                                                                   </div>
                                                                   <div class="col-sm-6 mt-3">
                                                                         <div>
@@ -524,13 +597,37 @@
                                                                                           class="ct_color_8f0c1f">*</span>
                                                                               </h5>
                                                                         </div>
-                                                                        <select class="form-select"
-                                                                              aria-label="Default select example">
-                                                                              <option selected="">Select</option>
-                                                                              <option value="1">One</option>
-                                                                              <option value="2">Two</option>
-                                                                              <option value="3">Three</option>
-                                                                        </select>
+                                                                        <nz-select class="form-control ct_input"
+                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              formControlName="body_type_id">
+                                                                              @for (item of bodyTypes; track
+                                                                              $index) {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.label | translate"
+                                                                                    [nzValue]="item.id"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <div
+                                                                                                class="d-flex align-items-center gap-2">
+                                                                                                <img [src]="item.image"
+                                                                                                      alt=""
+                                                                                                      class="body-image-icon" />
+                                                                                                <p class="m-0">
+                                                                                                      {{item.label |
+                                                                                                      translate}}
+                                                                                                </p>
+                                                                                          </div>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.id === carFormOne.get('body_type_id')?.value">
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
+                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                              'Body Style' | translate),
+                                                                              carFormOne.get("body_type_id"))}}</small>
                                                                   </div>
                                                             </div>
                                                       </div>
@@ -560,13 +657,33 @@
                                                                                           class="ct_color_8f0c1f">*</span>
                                                                               </h5>
                                                                         </div>
-                                                                        <select class="form-select"
-                                                                              aria-label="Default select example">
-                                                                              <option selected="">Select</option>
-                                                                              <option value="1">One</option>
-                                                                              <option value="2">Two</option>
-                                                                              <option value="3">Three</option>
-                                                                        </select>
+                                                                        <nz-select class="form-control ct_input"
+                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              formControlName="carCondition">
+                                                                              @for (item of conditions; track
+                                                                              $index) {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.name | translate"
+                                                                                    [nzValue]="item.id"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <div>
+                                                                                                <p class="m-0">
+                                                                                                      {{item.name |
+                                                                                                      translate}}
+                                                                                                </p>
+                                                                                          </div>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.id === carFormOne.get('carCondition')?.value">
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
+                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                              'Car Condition'| translate),
+                                                                              carFormOne.get("carCondition"))}}</small>
                                                                   </div>
 
                                                                   <div class="col-lg-6 col-md-6 mt-3">
@@ -588,13 +705,33 @@
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">State
                                                                               </h5>
                                                                         </div>
-                                                                        <select class="form-select"
-                                                                              aria-label="Default select example">
-                                                                              <option selected="">From Date</option>
-                                                                              <option value="1">One</option>
-                                                                              <option value="2">Two</option>
-                                                                              <option value="3">Three</option>
-                                                                        </select>
+                                                                        <nz-select class="form-control ct_input"
+                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              formControlName="state_id">
+                                                                              @for (item of carState; track
+                                                                              $index) {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.label | translate"
+                                                                                    [nzValue]="item.id"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <div>
+                                                                                                <p class="m-0">
+                                                                                                      {{item.label |
+                                                                                                      translate}}
+                                                                                                </p>
+                                                                                          </div>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.id === carFormOne.get('state_id')?.value">
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
+                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                              'State'| translate),
+                                                                              carFormOne.get("state_id"))}}</small>
                                                                   </div>
 
                                                                   <div class="col-12 mt-3">
@@ -603,13 +740,33 @@
                                                                                     Warranty
                                                                               </h5>
                                                                         </div>
-                                                                        <select class="form-select"
-                                                                              aria-label="Default select example">
-                                                                              <option selected="">Select</option>
-                                                                              <option value="1">One</option>
-                                                                              <option value="2">Two</option>
-                                                                              <option value="3">Three</option>
-                                                                        </select>
+                                                                        <nz-select class="form-control ct_input"
+                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              formControlName="mfk_warrenty_id">
+                                                                              @for (item of warrantyList; track
+                                                                              $index) {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.name | translate"
+                                                                                    [nzValue]="item.id"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <div>
+                                                                                                <p class="m-0">
+                                                                                                      {{item.name |
+                                                                                                      translate}}
+                                                                                                </p>
+                                                                                          </div>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.id === carFormOne.get('mfk_warrenty_id')?.value">
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
+                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                              'Warranty'| translate),
+                                                                              carFormOne.get("mfk_warrenty_id"))}}</small>
                                                                   </div>
 
                                                                   <div class="col-sm-6 mt-3">
@@ -637,13 +794,30 @@
                                                                                     Warranty type
                                                                               </h5>
                                                                         </div>
-                                                                        <select class="form-select"
-                                                                              aria-label="Default select example">
-                                                                              <option selected="">Select</option>
-                                                                              <option value="1">One</option>
-                                                                              <option value="2">Two</option>
-                                                                              <option value="3">Three</option>
-                                                                        </select>
+                                                                        <nz-select class="form-control ct_input"
+                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              formControlName="warranty_type_id">
+                                                                              @for (item of warrantyTypes; track
+                                                                              $index) {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.label | translate"
+                                                                                    [nzValue]="item.id"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <div>
+                                                                                                <p class="m-0">
+                                                                                                      {{item.label |
+                                                                                                      translate}}
+                                                                                                </p>
+                                                                                          </div>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.id === carFormOne.get('warranty_type_id')?.value">
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
                                                                   </div>
                                                                   <div class="col-12 mt-3">
                                                                         <div>
@@ -673,13 +847,36 @@
                                                                                           class="ct_color_8f0c1f">*</span>
                                                                               </h5>
                                                                         </div>
-                                                                        <select class="form-select"
-                                                                              aria-label="Default select example">
-                                                                              <option selected="">Select</option>
-                                                                              <option value="1">One</option>
-                                                                              <option value="2">Two</option>
-                                                                              <option value="3">Three</option>
-                                                                        </select>
+                                                                        <nz-select class="form-control ct_input"
+                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              formControlName="exterior_color_id">
+                                                                              @for (item of carColors; track
+                                                                              $index) {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.name | translate"
+                                                                                    [nzValue]="item.id"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <div
+                                                                                                class="d-flex align-items-center gap-2">
+                                                                                                <span class="color-box"
+                                                                                                      [style.background]="item.hex_code"></span>
+                                                                                                <p class="m-0">
+                                                                                                      {{item.name |
+                                                                                                      translate}}
+                                                                                                </p>
+                                                                                          </div>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.id === carFormOne.get('exterior_color_id')?.value">
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
+                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                              'Vhicle color'| translate),
+                                                                              carFormOne.get("exterior_color_id"))}}</small>
                                                                   </div>
                                                                   <div class="col-sm-6 mt-3">
                                                                         <div>
@@ -687,33 +884,59 @@
                                                                                     Interior color
                                                                               </h5>
                                                                         </div>
-                                                                        <select class="form-select"
-                                                                              aria-label="Default select example">
-                                                                              <option selected="">Select</option>
-                                                                              <option value="1">One</option>
-                                                                              <option value="2">Two</option>
-                                                                              <option value="3">Three</option>
-                                                                        </select>
+                                                                        <nz-select class="form-control ct_input"
+                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              formControlName="interior_color_id">
+                                                                              @for (item of carColors; track
+                                                                              $index) {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.name | translate"
+                                                                                    [nzValue]="item.id"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <div
+                                                                                                class="d-flex align-items-center gap-2">
+                                                                                                <span class="color-box"
+                                                                                                      [style.background]="item.hex_code"></span>
+                                                                                                <p class="m-0">
+                                                                                                      {{item.name |
+                                                                                                      translate}}
+                                                                                                </p>
+                                                                                          </div>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.id === carFormOne.get('interior_color_id')?.value">
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
+                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                              'Vhicle color'| translate),
+                                                                              carFormOne.get("interior_color_id"))}}</small>
                                                                   </div>
                                                                   <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center mt-3">
+                                                                        class="col-12 ct_custom_check d-flex gap-2 align-items-center mt-3">
                                                                         <input class="form-check-input" type="checkbox"
-                                                                              value="" id="flexCheckDefault" />
-                                                                        <label for="flexCheckDefault">Metallic </label>
-                                                                  </div>
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center justify-content-between mt-3">
-                                                                        <label for="flexCheckDefault">Swiss vehicle?
+                                                                              value="" id="flexCheckDefault12" />
+                                                                        <label for="flexCheckDefault12">Metallic
                                                                         </label>
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              value="" id="flexCheckDefault" />
                                                                   </div>
                                                                   <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center justify-content-between mt-3">
-                                                                        <label for="flexCheckDefault">Accident vehicle
-                                                                        </label>
+                                                                        class="col-12 ct_custom_check d-flex gap-2 align-items-center mt-3">
                                                                         <input class="form-check-input" type="checkbox"
-                                                                              value="" id="flexCheckDefault" />
+                                                                              value="" id="flexCheckDefault1" />
+                                                                        <label for="flexCheckDefault1">Swiss vehicle?
+                                                                        </label>
+
+                                                                  </div>
+                                                                  <div
+                                                                        class="col-12 ct_custom_check d-flex gap-2 align-items-center mt-3">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              value="" id="flexCheckDefault2" />
+                                                                        <label for="flexCheckDefault2">Accident vehicle
+                                                                        </label>
+
                                                                   </div>
                                                             </div>
                                                       </div>
@@ -1293,7 +1516,8 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                     </div>
 
                                     <!-- STEP 3 -->
-                                    <div class="ct_form_step" data-step="3">
+                                    <div class="ct_form_step" [class]="{ 'active': currentFormStep === 3 }"
+                                          data-step="3">
                                           <div class="">
                                                 <div class="col-lg-12 mt-3">
                                                       <div>
@@ -1396,7 +1620,8 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                     </div>
 
                                     <!-- STEP 4 -->
-                                    <div class="ct_form_step" data-step="4">
+                                    <div class="ct_form_step" [class]="{ 'active': currentFormStep === 4 }"
+                                          data-step="4">
                                           <div class="row">
                                                 <div class="col-lg-6 mt-3">
                                                       <div>
@@ -1491,7 +1716,8 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                     </div>
 
                                     <!-- STEP 5 -->
-                                    <div class="ct_form_step" data-step="5">
+                                    <div class="ct_form_step" [class]="{ 'active': currentFormStep === 5 }"
+                                          data-step="5">
                                           <div class="">
                                                 <div class="mt-4">
                                                       <label class="form-label ct_fw_600 ct_font_cairo ct_fs_18">
@@ -1588,7 +1814,8 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                     </div>
 
                                     <!-- STEP 6 -->
-                                    <div class="ct_form_step" data-step="6">
+                                    <div class="ct_form_step" [class]="{ 'active': currentFormStep === 6 }"
+                                          data-step="6">
                                           <div class="checkout-card mb-5">
                                                 <!-- Car Summary -->
                                                 <div class="d-flex align-items-center justify-content-between mb-4">

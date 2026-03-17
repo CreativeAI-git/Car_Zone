@@ -4,7 +4,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { finalize, first } from 'rxjs';
+import { finalize, first, Subject, takeUntil } from 'rxjs';
 import { carData } from '../../../helper/carData';
 import { CommonService } from '../../../services/common.service';
 import { NoWhitespaceDirective } from '../../../helper/validators';
@@ -17,29 +17,45 @@ import { ValidationErrorService } from '../../../services/validation-error.servi
   styleUrl: './list-your-car.component.css'
 })
 export class ListYourCarComponent {
+  private destroy$ = new Subject<void>();
   carFormOne!: FormGroup;
   carImages: File[] = [];
   selectedReel: File | null = null;
   reelThumbnail: File | null = null;
   loading: boolean = false;
   submitError: string | null = null;
-  fuelTypes = carData.fuelTypes;
-  transmissions = carData.transmissions;
-  conditions = carData.conditions;
-  sittingCapacity = carData.sittingCapacity;
-  bodyTypes: any = carData.bodyTypes;
-  carColors: any = carData.carColors;
+  fuelTypes: any[] = [];
+  transmissions: any[] = [];
+  conditions: any[] = [];
+  driveTypes: any[] = [];
+  bodyTypes: any[] = [];
+  carColors: any[] = [];
+  carState: any[] = [];
+  warrantyList: any[] = [];
+  warrantyTypes: any[] = [];
   months = carData.months;
   years = Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i)
   private nextBtnListener?: (event: Event) => void;
   private submitInProgress = false;
-  currentFormStep: number = 1;
+  currentFormStep: number = 2;
+  lastIntertedData: any = null;
   constructor(private service: CommonService, private message: NzMessageService, private fb: FormBuilder, public validationErrorService: ValidationErrorService) {
     this.initForm();
   }
 
   ngOnInit(): void {
     this.loadScript();
+    this.getFuelTypes();
+    this.getTransmissions();
+    this.getDriveTypes();
+    this.getBodyTypes();
+    this.getVhicleConditions();
+    this.getCarState();
+    this.getWarrantyList()
+    this.getWarrantyTypes();
+    this.getCarColors();
+    this.getLastInsertedData();
+
   }
 
   ngAfterViewInit(): void {
@@ -57,26 +73,45 @@ export class ListYourCarComponent {
     this.carFormOne = this.fb.group({
       carModel: ['', [Validators.required, NoWhitespaceDirective.validate]],
       brandName: ['', [Validators.required, NoWhitespaceDirective.validate]],
+      version: ['', [Validators.required, NoWhitespaceDirective.validate]],
       registration_month: ['', [Validators.required]],
       registration_year: ['', [Validators.required]],
       sittingCapacity: [null, [Validators.required]],
-      bodyTypes: ['', [Validators.required]],
+      body_type_id: ['', [Validators.required]],
+      drive_type_id: ['', [Validators.required]],
       selectYear: ['', [Validators.required]],
       carMileage: [null, [Validators.required, Validators.min(1)]],
-      fuelType: ['', Validators.required],
-      transmission: ['', Validators.required],
+      fuel_type_id: ['', Validators.required],
+      transmission_id: ['', Validators.required],
+      state_id: ['', Validators.required],
+      mfk_warrenty_id: ['', Validators.required],
+      warranty_type_id: [''],
+      warranty_from: [''],
+      warranty_to: [''],
+      last_mfk_date: [''],
       engineType: [''],
       co2Emission: [''],
       powerOutput: [''],
       carCondition: ['', Validators.required],
       consuption: ['', Validators.required],
-      carColor: ['', Validators.required],
+      exterior_color_id: ['', Validators.required],
+      interior_color_id: ['', Validators.required],
+      is_metallic: [false],
+      is_swiss_vehicle: [false],
+      is_accident_vehicle: [false],
+      height_mm: [''],
+      length_mm: [''],
+      width_mm: [''],
+      braked_towing_capacity_kg: [''],
+      energy_efficiency: [''],
+      type_approval: [''],
       carFeatures: [[], Validators.required],
       extras: [[]],
       description: ['', [Validators.required, Validators.maxLength(1000), NoWhitespaceDirective.validate]],
       totalPrice: ['', [Validators.required, Validators.min(1)]],
       location: ['', [Validators.required, NoWhitespaceDirective.validate, Validators.maxLength(100)]],
-      vrn: [''],
+      vin_number: [''],
+      registration_master_number: [''],
       isLeasing: [false],
       leasingPrice: [''],
     });
@@ -292,5 +327,151 @@ export class ListYourCarComponent {
     scriptElement.src = 'js/multistep-form.js';
     scriptElement.async = true;
     document.body.appendChild(scriptElement);
+  }
+
+  getLastInsertedData(): void {
+    this.service.get('user/latest-draft-car').pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.lastIntertedData = res?.data.data || null;
+        if (this.lastIntertedData) {
+          this.currentFormStep = this.lastIntertedData.page + 1;
+          this.carFormOne.patchValue(this.lastIntertedData);
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching last inserted data:', error);
+      }
+    });
+  }
+
+  getFuelTypes() {
+    this.service.get(`user/fuel?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        const data = res?.data || {};
+
+        this.fuelTypes = [
+          {
+            label: 'Standard',
+            options: (data.standard || []).map((x: any) => ({
+              label: x.label,
+              value: x.id
+            }))
+          },
+          {
+            label: 'Hybrid',
+            options: (data.hybrid || []).map((x: any) => ({
+              label: x.label,
+              value: x.id
+            }))
+          },
+          {
+            label: 'Gas',
+            options: (data.gas || []).map((x: any) => ({
+              label: x.label,
+              value: x.id
+            }))
+          },
+          {
+            label: 'Other',
+            options: (data.other || []).map((x: any) => ({
+              label: x.label,
+              value: x.id
+            }))
+          }
+        ];
+      },
+      error: (error) => {
+        console.error('Error fetching fuel types:', error);
+      }
+    });
+  }
+
+
+  getTransmissions() {
+    this.service.get(`user/transmission?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.transmissions = res?.data.types || [];
+      },
+      error: (error) => {
+        console.error('Error fetching transmissions:', error);
+      }
+    });
+  }
+
+  getDriveTypes() {
+    this.service.get(`user/drive?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.driveTypes = res?.data.types || [];
+      },
+      error: (error) => {
+        console.error('Error fetching drive types:', error);
+      }
+    });
+  }
+
+  getBodyTypes() {
+    this.service.get(`user/body-type?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.bodyTypes = res?.data.types || [];
+      },
+      error: (error) => {
+        console.error('Error fetching body types:', error);
+      }
+    });
+  }
+
+  getVhicleConditions() {
+    this.service.get(`user/vehicle-conditions?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.conditions = res?.data || [];
+      },
+      error: (error) => {
+        console.error('Error fetching vehicle conditions:', error);
+      }
+    });
+  }
+
+  getCarState() {
+    this.service.get(`user/vichel-state?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.carState = res?.data.types || [];
+      },
+      error: (error) => {
+        console.error('Error fetching car state:', error);
+      }
+    });
+  }
+
+  getWarrantyList() {
+    this.service.get(`user/warranty?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.warrantyList = (res?.data || []).sort((a: { id: number; }, b: { id: number; }) => a.id - b.id);
+      },
+      error: (error) => {
+        console.error('Error fetching warranty list:', error);
+      }
+    });
+  }
+
+  getWarrantyTypes() {
+    this.service.get(`user/warranty-quality?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.warrantyTypes = res?.data || [];
+      },
+      error: (error) => {
+        console.error('Error fetching warranty types:', error);
+      }
+    });
+  }
+
+  getCarColors() {
+    this.service.get(`user/colors?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.carColors = res?.data || [];
+      },
+      error: (error) => {
+        console.error('Error fetching car colors:', error);
+      }
+    });
   }
 }

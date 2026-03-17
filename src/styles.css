@@ -329,3 +329,9 @@ swiper-slide img {
       height: 50% !important;
       width: 50% !important;
 }
+
+.ant-select-item-group {
+      color: #8f0c1f !important;
+      font-weight: 600 !important;
+      font-size: 16px !important;
+}
