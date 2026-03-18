@@ -6,7 +6,6 @@
                         <div class="stepper-sticky-wrapper">
                               <div class="">
                                     <h5 class="ct_fw_600 mb-4">1. Find vehicle</h5>
-
                                     <ul class="ct_stepper">
                                           <li [class]="{ 'active': currentFormStep === 1 }">
                                                 <span class="ct_step_circle">1</span>
@@ -689,12 +688,12 @@
                                                                   <div class="col-lg-6 col-md-6 mt-3">
                                                                         <div>
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                    Kilometer (km)
+                                                                                    Mileage (km)
                                                                               </h5>
                                                                               <div class="position-relative">
-                                                                                    <input type="password"
-                                                                                          placeholder="00"
-                                                                                          class="form-control ct_input" />
+                                                                                    <input type="text" placeholder="00"
+                                                                                          class="form-control ct_input"
+                                                                                          formControlName="carMileage" />
                                                                                     <span class="ct_show_eye">km</span>
                                                                               </div>
                                                                         </div>
@@ -776,8 +775,7 @@
                                                                               </h5>
                                                                         </div>
                                                                         <input type="date" class="form-control"
-                                                                              aria-label="Username"
-                                                                              aria-describedby="basic-addon1" />
+                                                                              formControlName="warranty_from" />
                                                                   </div>
                                                                   <div class="col-sm-6 mt-3">
                                                                         <div>
@@ -785,8 +783,7 @@
                                                                                     Date</h5>
                                                                         </div>
                                                                         <input type="date" class="form-control"
-                                                                              aria-label="Username"
-                                                                              aria-describedby="basic-addon1" />
+                                                                              formControlName="warranty_to" />
                                                                   </div>
                                                                   <div class="col-12 mt-3">
                                                                         <div>
@@ -828,8 +825,7 @@
                                                                               </h5>
                                                                         </div>
                                                                         <input type="date" class="form-control"
-                                                                              aria-label="Username"
-                                                                              aria-describedby="basic-addon1" />
+                                                                              formControlName="last_mfk_date" />
                                                                         <div
                                                                               class="form-check ct_custom_check d-flex gap-2 align-items-center mt-3">
                                                                               <input class="form-check-input"
@@ -918,14 +914,16 @@
                                                                   <div
                                                                         class="col-12 ct_custom_check d-flex gap-2 align-items-center mt-3">
                                                                         <input class="form-check-input" type="checkbox"
-                                                                              value="" id="flexCheckDefault12" />
+                                                                              value="" id="flexCheckDefault12"
+                                                                              formControlName="is_metallic" />
                                                                         <label for="flexCheckDefault12">Metallic
                                                                         </label>
                                                                   </div>
                                                                   <div
                                                                         class="col-12 ct_custom_check d-flex gap-2 align-items-center mt-3">
                                                                         <input class="form-check-input" type="checkbox"
-                                                                              value="" id="flexCheckDefault1" />
+                                                                              value="" id="flexCheckDefault1"
+                                                                              formControlName="is_swiss_vehicle" />
                                                                         <label for="flexCheckDefault1">Swiss vehicle?
                                                                         </label>
 
@@ -933,7 +931,8 @@
                                                                   <div
                                                                         class="col-12 ct_custom_check d-flex gap-2 align-items-center mt-3">
                                                                         <input class="form-check-input" type="checkbox"
-                                                                              value="" id="flexCheckDefault2" />
+                                                                              value="" id="flexCheckDefault2"
+                                                                              formControlName="is_accident_vehicle" />
                                                                         <label for="flexCheckDefault2">Accident vehicle
                                                                         </label>
 
@@ -1230,8 +1229,7 @@
                                                                                     <input type="text"
                                                                                           class="form-control"
                                                                                           placeholder="Enter here"
-                                                                                          aria-label="Username"
-                                                                                          aria-describedby="basic-addon1" />
+                                                                                          formControlName="height_mm" />
                                                                               </div>
                                                                         </div>
                                                                   </div>
@@ -1249,8 +1247,7 @@
                                                                                     <input type="text"
                                                                                           class="form-control"
                                                                                           placeholder="Enter here"
-                                                                                          aria-label="Username"
-                                                                                          aria-describedby="basic-addon1" />
+                                                                                          formControlName="width_mm" />
                                                                               </div>
                                                                         </div>
                                                                   </div>
@@ -1268,8 +1265,7 @@
                                                                                     <input type="text"
                                                                                           class="form-control"
                                                                                           placeholder="Enter here"
-                                                                                          aria-label="Username"
-                                                                                          aria-describedby="basic-addon1" />
+                                                                                          formControlName="length_mm" />
                                                                               </div>
                                                                         </div>
                                                                   </div>
@@ -1290,8 +1286,7 @@
                                                                                     <input type="text"
                                                                                           class="form-control"
                                                                                           placeholder="Enter here"
-                                                                                          aria-label="Username"
-                                                                                          aria-describedby="basic-addon1" />
+                                                                                          formControlName="braked_towing_capacity_kg" />
                                                                               </div>
                                                                         </div>
                                                                   </div>
@@ -1301,14 +1296,32 @@
                                                                                     Energy Label
                                                                               </h5>
                                                                         </div>
-                                                                        <select class="form-select"
-                                                                              aria-label="Default select example">
-                                                                              <option selected="">Select Energy label
-                                                                              </option>
-                                                                              <option value="1">One</option>
-                                                                              <option value="2">Two</option>
-                                                                              <option value="3">Three</option>
-                                                                        </select>
+                                                                        <nz-select class="form-control ct_input"
+                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              formControlName="energy_efficiency">
+                                                                              @for (item of energyEfficiencyOptions;
+                                                                              track
+                                                                              $index) {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.label | translate"
+                                                                                    [nzValue]="item.label"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <div
+                                                                                                class="d-flex align-items-center gap-2">
+                                                                                                <p class="m-0">
+                                                                                                      {{item.label |
+                                                                                                      translate}}
+                                                                                                </p>
+                                                                                          </div>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.label === carFormOne.get('energy_efficiency')?.value">
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
                                                                   </div>
                                                                   <div class="col-12 mt-3">
                                                                         <div
@@ -1323,9 +1336,8 @@
                                                                               <div class="col-12">
                                                                                     <input type="text"
                                                                                           class="form-control"
-                                                                                          placeholder=" "
-                                                                                          aria-label="Username"
-                                                                                          aria-describedby="basic-addon1" />
+                                                                                          placeholder="Enter here"
+                                                                                          formControlName="type_approval" />
                                                                               </div>
                                                                         </div>
                                                                   </div>
@@ -1345,8 +1357,7 @@
                                                                                     <input type="text"
                                                                                           class="form-control"
                                                                                           placeholder="Enter here"
-                                                                                          aria-label="Username"
-                                                                                          aria-describedby="basic-addon1" />
+                                                                                          formControlName="vin_number" />
                                                                               </div>
                                                                         </div>
                                                                   </div>
@@ -1364,8 +1375,7 @@
                                                                                     <input type="text"
                                                                                           class="form-control"
                                                                                           placeholder="Enter here"
-                                                                                          aria-label="Username"
-                                                                                          aria-describedby="basic-addon1" />
+                                                                                          formControlName="registration_master_number" />
                                                                               </div>
                                                                         </div>
                                                                   </div>
@@ -1404,58 +1414,22 @@
 
                                                                               <div
                                                                                     class="d-grid ct_gap_8 ct_height_mx_200 ct_custom_scroll">
-                                                                                    <div class="">
+                                                                                    <div
+                                                                                          *ngFor="let feature of featuresList">
                                                                                           <div
                                                                                                 class="form-check ct_custom_check d-flex gap-2 align-items-center">
+
                                                                                                 <input class="form-check-input"
                                                                                                       type="checkbox"
-                                                                                                      value=""
-                                                                                                      id="flexCheckDefault" />
-                                                                                                <label for="flexCheckDefault"
+                                                                                                      [value]="feature"
+                                                                                                      (change)="onFeatureChange($event)"
+                                                                                                      [checked]="carFormOne.get('carFeatures')?.value?.includes(feature)" />
+
+                                                                                                <label
                                                                                                       class="ct_fs_14 ct_fw_400">
-                                                                                                      Wheelchair
-                                                                                                      accessible
+                                                                                                      {{ feature }}
                                                                                                 </label>
-                                                                                          </div>
-                                                                                    </div>
-                                                                                    <div class="">
-                                                                                          <div
-                                                                                                class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                                                <input class="form-check-input"
-                                                                                                      type="checkbox"
-                                                                                                      value=""
-                                                                                                      id="flexCheckDefault" />
-                                                                                                <label for="flexCheckDefault"
-                                                                                                      class="ct_fs_14 ct_fw_400">
-                                                                                                      Direct/Parallel
-                                                                                                      Import
-                                                                                                </label>
-                                                                                          </div>
-                                                                                    </div>
-                                                                                    <div class="">
-                                                                                          <div
-                                                                                                class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                                                <input class="form-check-input"
-                                                                                                      type="checkbox"
-                                                                                                      value=""
-                                                                                                      id="flexCheckDefault" />
-                                                                                                <label for="flexCheckDefault"
-                                                                                                      class="ct_fs_14 ct_fw_400">
-                                                                                                      Racing Car
-                                                                                                </label>
-                                                                                          </div>
-                                                                                    </div>
-                                                                                    <div class="">
-                                                                                          <div
-                                                                                                class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                                                <input class="form-check-input"
-                                                                                                      type="checkbox"
-                                                                                                      value=""
-                                                                                                      id="flexCheckDefault" />
-                                                                                                <label for="flexCheckDefault"
-                                                                                                      class="ct_fs_14 ct_fw_400">
-                                                                                                      Tuning
-                                                                                                </label>
+
                                                                                           </div>
                                                                                     </div>
                                                                               </div>
@@ -1475,7 +1449,10 @@
                                                                                           class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                                                           <input class="form-check-input"
                                                                                                 type="checkbox" value=""
-                                                                                                id="flexCheckDefault" />
+                                                                                                id="flexCheckDefault33"
+                                                                                                [value]="'8 Tires'"
+                                                                                                (change)="onExtraFeatureChange($event)"
+                                                                                                [checked]="carFormOne.get('extras')?.value?.includes('8 Tires')" />
                                                                                           <label for="flexCheckDefault"
                                                                                                 class="ct_fs_14 ct_fw_400">8
                                                                                                 Tires
@@ -1493,8 +1470,10 @@
 
                                                                   <div class="col-12">
                                                                         <textarea class="form-control mt-2 mb-2"
-                                                                              id="exampleFormControlTextarea1" rows="3">
-Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Climatronic/Heated Seats - Keyless Entry - 5-Year Warranty</textarea>
+                                                                              id="exampleFormControlTextarea1" rows="3"
+                                                                              placeholder="Enter here"
+                                                                              formControlName="additional_title_999">
+</textarea>
                                                                   </div>
 
                                                                   <div class="col-12 mt-3">
@@ -1504,13 +1483,14 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                                               </h5>
                                                                         </div>
                                                                         <textarea class="form-control mt-1 mb-5"
-                                                                              id="exampleFormControlTextarea1" rows="3">
+                                                                              id="exampleFormControlTextarea1" rows="3"
+                                                                              placeholder="Enter here"
+                                                                              formControlName="description">
                           </textarea>
                                                                   </div>
                                                             </div>
                                                       </div>
                                                 </div>
-
                                                 <!-- detailed data end -->
                                           </div>
                                     </div>
@@ -1523,10 +1503,15 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                       <div>
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">Selling Price</h5>
                                                             <div class="position-relative">
-                                                                  <input type="password" placeholder="Enter Amount"
-                                                                        class="form-control ct_input" />
+                                                                  <input type="text" placeholder="Enter Amount"
+                                                                        class="form-control ct_input"
+                                                                        formControlName="selling_price" />
                                                                   <span class="ct_show_eye">CHF</span>
                                                             </div>
+                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                  'Selling price'
+                                                                  | translate),
+                                                                  carFormOne.get("selling_price"))}}</small>
                                                       </div>
                                                 </div>
 
@@ -1534,10 +1519,15 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                       <div>
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">New Price</h5>
                                                             <div class="position-relative">
-                                                                  <input type="password" placeholder="Enter Amount"
-                                                                        class="form-control ct_input" />
+                                                                  <input type="text" placeholder="Enter Amount"
+                                                                        class="form-control ct_input"
+                                                                        formControlName="new_price" />
                                                                   <span class="ct_show_eye">CHF</span>
                                                             </div>
+                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                  'New price'
+                                                                  | translate),
+                                                                  carFormOne.get("new_price"))}}</small>
                                                       </div>
                                                 </div>
 
@@ -1545,24 +1535,23 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                       <label class="form-label ct_fw_400 ct_fs_18 mb-0">
                                                             Leasing:
                                                       </label>
-                                                      <div class="ct_radio-container">
-                                                            <div class="ct_radio-wrapper d-flex gap-3">
-                                                                  <label class="ct_radio-button ct_fw_400">
-                                                                        <input id="option1" name="ct_radio-group"
-                                                                              type="radio" />
-                                                                        <span class="ct_radio-checkmark"></span>
-                                                                        Yes
-                                                                  </label>
+                                                      <div class="ct_radio-wrapper d-flex gap-3">
+                                                            <label class="ct_radio-button ct_fw_400">
+                                                                  <input id="option1" type="radio" name="isLeasing"
+                                                                        formControlName="isLeasing" [value]="true" />
+                                                                  <span class="ct_radio-checkmark"></span>
+                                                                  Yes
+                                                            </label>
 
-                                                                  <label class="ct_radio-button ct_fw_400">
-                                                                        <input id="option1" name="ct_radio-group"
-                                                                              type="radio" />
-                                                                        <span class="ct_radio-checkmark"></span>
-                                                                        No
-                                                                  </label>
-                                                            </div>
+                                                            <label class="ct_radio-button ct_fw_400">
+                                                                  <input id="option2" type="radio" name="isLeasing"
+                                                                        formControlName="isLeasing" [value]="false" />
+                                                                  <span class="ct_radio-checkmark"></span>
+                                                                  No
+                                                            </label>
                                                       </div>
                                                 </div>
+
 
                                                 <div class="col-12 mt-3">
                                                       <div>
@@ -1570,12 +1559,13 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                                   Select banking partner
                                                             </h5>
                                                       </div>
-                                                      <select class="form-select" aria-label="Default select example">
-                                                            <option selected="">Select</option>
-                                                            <option value="1">One</option>
-                                                            <option value="2">Two</option>
-                                                            <option value="3">Three</option>
-                                                      </select>
+                                                      <input type="text" placeholder="Enter here"
+                                                            class="form-control ct_input"
+                                                            formControlName="banking_partner" />
+                                                      <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                            'Banking partner'
+                                                            | translate),
+                                                            carFormOne.get("banking_partner"))}}</small>
                                                 </div>
 
                                                 <div class="col-lg-12 mt-3">
@@ -1584,10 +1574,15 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                                   Annual Interest Rate
                                                             </h5>
                                                             <div class="position-relative">
-                                                                  <input type="password" placeholder="10"
-                                                                        class="form-control ct_input" />
+                                                                  <input type="text" placeholder="10"
+                                                                        class="form-control ct_input"
+                                                                        formControlName="annual_interest_rate" />
                                                                   <span class="ct_show_eye">(%)</span>
                                                             </div>
+                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                  'Annual interest rate'
+                                                                  | translate),
+                                                                  carFormOne.get("annual_interest_rate"))}}</small>
                                                       </div>
                                                 </div>
 
@@ -1595,10 +1590,15 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                       <div>
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">Residual value:</h5>
                                                             <div class="position-relative">
-                                                                  <input type="password" placeholder="60"
-                                                                        class="form-control ct_input" />
+                                                                  <input type="text" placeholder="60"
+                                                                        class="form-control ct_input"
+                                                                        formControlName="residual_value" />
                                                                   <span class="ct_show_eye">month</span>
                                                             </div>
+                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                  'Residual value'
+                                                                  | translate),
+                                                                  carFormOne.get("residual_value"))}}</small>
                                                       </div>
                                                 </div>
 
@@ -1610,13 +1610,19 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                                         (Auto-calculated-10% of total)</span>
                                                             </h5>
                                                             <div class="position-relative">
-                                                                  <input type="password" placeholder="4500"
-                                                                        class="form-control ct_input" />
-                                                                  <span class="ct_show_eye">(%)</span>
+                                                                  <input type="text" placeholder="4500"
+                                                                        class="form-control ct_input"
+                                                                        formControlName="leasing_value" />
+                                                                  <span class="ct_show_eye">month</span>
                                                             </div>
+                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                  'Leasing value'
+                                                                  | translate),
+                                                                  carFormOne.get("leasing_value"))}}</small>
                                                       </div>
                                                 </div>
                                           </div>
+
                                     </div>
 
                                     <!-- STEP 4 -->
@@ -1628,8 +1634,13 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">Full Name</h5>
                                                             <div class="position-relative">
                                                                   <input type="text" placeholder="Enter here"
-                                                                        class="form-control" />
+                                                                        class="form-control"
+                                                                        formControlName="first_name" />
                                                             </div>
+                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                  'First name'
+                                                                  | translate),
+                                                                  carFormOne.get("first_name"))}}</small>
                                                       </div>
                                                 </div>
                                                 <div class="col-lg-6 mt-3">
@@ -1637,8 +1648,13 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">Last Name</h5>
                                                             <div class="position-relative">
                                                                   <input type="text" placeholder="Enter here"
-                                                                        class="form-control" />
+                                                                        class="form-control"
+                                                                        formControlName="last_name" />
                                                             </div>
+                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                  'Last name'
+                                                                  | translate),
+                                                                  carFormOne.get("last_name"))}}</small>
                                                       </div>
                                                 </div>
 
@@ -1647,8 +1663,12 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">Street</h5>
                                                             <div class="position-relative">
                                                                   <input type="text" placeholder="Enter here"
-                                                                        class="form-control" />
+                                                                        class="form-control" formControlName="street" />
                                                             </div>
+                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                  'Street'
+                                                                  | translate),
+                                                                  carFormOne.get("street"))}}</small>
                                                       </div>
                                                 </div>
                                                 <div class="col-lg-4 mt-3">
@@ -1656,8 +1676,13 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">House Number</h5>
                                                             <div class="position-relative">
                                                                   <input type="text" placeholder="Enter here"
-                                                                        class="form-control" />
+                                                                        class="form-control"
+                                                                        formControlName="house_number" />
                                                             </div>
+                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                  'House Number'
+                                                                  | translate),
+                                                                  carFormOne.get("house_number"))}}</small>
                                                       </div>
                                                 </div>
                                                 <div class="col-lg-4 mt-3">
@@ -1665,8 +1690,13 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">Postal code</h5>
                                                             <div class="position-relative">
                                                                   <input type="text" placeholder="Enter here"
-                                                                        class="form-control" />
+                                                                        class="form-control"
+                                                                        formControlName="postal_code" />
                                                             </div>
+                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                  'Postal Code'
+                                                                  | translate),
+                                                                  carFormOne.get("postal_code"))}}</small>
                                                       </div>
                                                 </div>
 
@@ -1675,8 +1705,12 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">P.O. Box</h5>
                                                             <div class="position-relative">
                                                                   <input type="text" placeholder="Enter here"
-                                                                        class="form-control" />
+                                                                        class="form-control" formControlName="po_box" />
                                                             </div>
+                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                  'P.O. Box'
+                                                                  | translate),
+                                                                  carFormOne.get("po_box"))}}</small>
                                                       </div>
                                                 </div>
                                                 <div class="col-lg-4 mt-3">
@@ -1684,8 +1718,12 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">City</h5>
                                                             <div class="position-relative">
                                                                   <input type="text" placeholder="Enter here"
-                                                                        class="form-control" />
+                                                                        class="form-control" formControlName="city" />
                                                             </div>
+                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                  'City'
+                                                                  | translate),
+                                                                  carFormOne.get("city"))}}</small>
                                                       </div>
                                                 </div>
                                                 <div class="col-lg-4 mt-3">
@@ -1695,8 +1733,13 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                             </h5>
                                                             <div class="position-relative">
                                                                   <input type="text" placeholder="Enter here"
-                                                                        class="form-control" />
+                                                                        class="form-control"
+                                                                        formControlName="country" />
                                                             </div>
+                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                  'Country'
+                                                                  | translate),
+                                                                  carFormOne.get("country"))}}</small>
                                                       </div>
                                                 </div>
 
@@ -1708,8 +1751,13 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                             <div class="position-relative">
                                                                   <input type="number"
                                                                         placeholder="Enter your phone number"
-                                                                        class="form-control" />
+                                                                        class="form-control"
+                                                                        formControlName="phone_number" />
                                                             </div>
+                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                  'Phone number'
+                                                                  | translate),
+                                                                  carFormOne.get("phone_number"))}}</small>
                                                       </div>
                                                 </div>
                                           </div>
@@ -1741,7 +1789,7 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                                                   accept="image/png, image/jpeg, video/mp4" hidden="" />
                                                       </div>
 
-                                                      <div class="upload-imgs ct_custom_scroll d-none">
+                                                      <div class="upload-imgs ct_custom_scroll">
                                                             <div class="img-item">
                                                                   <img src="img/car-img.png" alt="" />
                                                                   <button class="img-remove">
@@ -2019,7 +2067,15 @@ Navigation/DAB - Towbar - Cruise Control Front/Rear Parking Sensors/Camera Clima
                                     </div>
 
                                     <!-- ACTION BUTTON -->
-                                    <div class="d-flex justify-content-end mt-4">
+                                    <div class="d-flex mt-4"
+                                          [ngClass]="currentFormStep === 1 ? 'justify-content-end' : 'justify-content-between'">
+                                          @if(currentFormStep > 1){
+                                          <button type="button" id="prevBtn" class="ct_edit_pill_btn"
+                                                (click)="prevStep()">
+                                                <span class="ct_btn_icon">←</span>
+                                                <span id="btnText">Previous</span>
+                                          </button>
+                                          }
                                           <button type="submit" id="nextBtn" class="ct_submit_pill_btn">
                                                 <span class="ct_btn_icon">→</span>
                                                 <span id="btnText">Next</span>

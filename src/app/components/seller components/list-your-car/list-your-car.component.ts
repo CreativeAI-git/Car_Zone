@@ -33,11 +33,18 @@ export class ListYourCarComponent {
   carState: any[] = [];
   warrantyList: any[] = [];
   warrantyTypes: any[] = [];
+  energyEfficiencyOptions: any[] = []
+  featuresList = [
+    'Wheelchair accessible',
+    'Direct/Parallel Import',
+    'Racing Car',
+    'Tuning'
+  ];
   months = carData.months;
   years = Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i)
   private nextBtnListener?: (event: Event) => void;
   private submitInProgress = false;
-  currentFormStep: number = 2;
+  currentFormStep: number = 1;
   lastIntertedData: any = null;
   constructor(private service: CommonService, private message: NzMessageService, private fb: FormBuilder, public validationErrorService: ValidationErrorService) {
     this.initForm();
@@ -54,8 +61,8 @@ export class ListYourCarComponent {
     this.getWarrantyList()
     this.getWarrantyTypes();
     this.getCarColors();
+    this.getEnergyEfficiency();
     this.getLastInsertedData();
-
   }
 
   ngAfterViewInit(): void {
@@ -71,6 +78,7 @@ export class ListYourCarComponent {
 
   private initForm(): void {
     this.carFormOne = this.fb.group({
+      car_id: [null],
       carModel: ['', [Validators.required, NoWhitespaceDirective.validate]],
       brandName: ['', [Validators.required, NoWhitespaceDirective.validate]],
       version: ['', [Validators.required, NoWhitespaceDirective.validate]],
@@ -105,15 +113,28 @@ export class ListYourCarComponent {
       braked_towing_capacity_kg: [''],
       energy_efficiency: [''],
       type_approval: [''],
-      carFeatures: [[], Validators.required],
+      carFeatures: [[]],
       extras: [[]],
-      description: ['', [Validators.required, Validators.maxLength(1000), NoWhitespaceDirective.validate]],
-      totalPrice: ['', [Validators.required, Validators.min(1)]],
-      location: ['', [Validators.required, NoWhitespaceDirective.validate, Validators.maxLength(100)]],
+      description: ['', [Validators.maxLength(1000), NoWhitespaceDirective.validate]],
+      additional_title_999: ['', [Validators.maxLength(1000), NoWhitespaceDirective.validate]],
       vin_number: [''],
       registration_master_number: [''],
+      selling_price: ['', [Validators.required, Validators.min(1)]],
+      new_price: ['', [Validators.min(1)]],
       isLeasing: [false],
-      leasingPrice: [''],
+      leasing_value: ['', Validators.min(0)],
+      banking_partner: [''],
+      annual_interest_rate: ['', Validators.min(0)],
+      residual_value: [''],
+      first_name: ['', [Validators.required, NoWhitespaceDirective.validate]],
+      last_name: [''],
+      street: [''],
+      house_number: [''],
+      postal_code: ['', Validators.pattern('[0-9]{4,6}')],
+      city: ['', [Validators.required, NoWhitespaceDirective.validate]],
+      po_box: ['', [Validators.pattern('[0-9]{4,6}')]],
+      country: ['', Validators.required],
+      phone_number: ['', [Validators.required, Validators.pattern('[0-9]{7,15}')]],
     });
   }
 
@@ -127,13 +148,6 @@ export class ListYourCarComponent {
 
       const currentStep = this.getCurrentStep();
       this.currentFormStep = currentStep;
-
-      if (currentStep === 1 && !this.isStepOneValid()) {
-        this.markStepOneTouched();
-        this.message.error('Please complete all required fields in Step 1 before continuing.');
-        return;
-      }
-
       this.submitCurrentStep();
     };
     nextBtn.addEventListener('click', this.nextBtnListener, true);
@@ -173,25 +187,33 @@ export class ListYourCarComponent {
     }
   }
 
-  private isStepOneValid(): boolean {
-    // const vrn = (this.carFormOne.get('vrn')?.value || '').toString().trim();
-    const brandName = (this.carFormOne.get('brandName')?.value || '').toString().trim();
-    const carModel = (this.carFormOne.get('carModel')?.value || '').toString().trim();
-    const registrationMonth = this.carFormOne.get('registration_month')?.value;
-    const registrationYear = this.carFormOne.get('registration_year')?.value;
-
-    // const hasVrn = !!vrn;
-    const hasMakeModel = !!brandName && !!carModel && !!registrationMonth && !!registrationYear;
-
-    return hasMakeModel;
+  private getStepControlNames(step: number): string[] {
+    const stepEl = document.querySelector(`.ct_form_step[data-step="${step}"]`);
+    if (!stepEl) return [];
+    const names = Array.from(stepEl.querySelectorAll('[formControlName]'))
+      .map((el) => el.getAttribute('formControlName'))
+      .filter((name): name is string => !!name);
+    return Array.from(new Set(names));
   }
 
-  private markStepOneTouched(): void {
-    // this.carFormOne.get('vrn')?.markAsTouched();
-    this.carFormOne.get('brandName')?.markAsTouched();
-    this.carFormOne.get('carModel')?.markAsTouched();
-    this.carFormOne.get('registration_month')?.markAsTouched();
-    this.carFormOne.get('registration_year')?.markAsTouched();
+  private isStepValid(step: number): boolean {
+    const controls = this.getStepControlNames(step);
+    if (controls.length === 0) return true;
+    return controls.every((name) => {
+      const control = this.carFormOne.get(name);
+      return control ? control.valid : true;
+    });
+  }
+
+  private markStepTouched(step: number): void {
+    const controls = this.getStepControlNames(step);
+    controls.forEach((name) => {
+      const control = this.carFormOne.get(name);
+      if (!control) return;
+      control.markAsTouched({ onlySelf: true });
+      control.markAsDirty({ onlySelf: true });
+      control.updateValueAndValidity({ onlySelf: true });
+    });
   }
 
   onCarImagesSelected(event: Event): void {
@@ -253,17 +275,6 @@ export class ListYourCarComponent {
 
     Object.keys(formValue).forEach((key) => {
       if (key === 'carImages' || key === 'carReel' || key === 'reelThumbnails') return;
-
-      // if (key === 'carFeatures' || key === 'extras') {
-      //   const arrayValue = formValue[key];
-      //   if (Array.isArray(arrayValue)) {
-      //     this.appendIfValue(formData, key, JSON.stringify(arrayValue));
-      //   } else {
-      //     this.appendIfValue(formData, key, arrayValue);
-      //   }
-      //   return;
-      // }
-
       const apiKey = fieldMap[key] || key;
       this.appendIfValue(formData, apiKey, formValue[key]);
     });
@@ -291,6 +302,12 @@ export class ListYourCarComponent {
   private submitCurrentStep(): void {
     if (this.submitInProgress) return;
 
+    this.currentFormStep = this.getCurrentStep();
+    this.markStepTouched(this.currentFormStep);
+    if (!this.isStepValid(this.currentFormStep)) {
+      return;
+    }
+
     this.submitError = null;
     this.loading = true;
     this.submitInProgress = true;
@@ -317,7 +334,45 @@ export class ListYourCarComponent {
     });
   }
 
+  onFeatureChange(event: any) {
+    const features = this.carFormOne.get('carFeatures')?.value || [];
 
+    if (event.target.checked) {
+      features.push(event.target.value);
+    } else {
+      const index = features.indexOf(event.target.value);
+      if (index > -1) {
+        features.splice(index, 1);
+      }
+    }
+
+    this.carFormOne.patchValue({
+      carFeatures: features
+    });
+  }
+
+  onExtraFeatureChange(event: any) {
+    const extras = this.carFormOne.get('extras')?.value || [];
+
+    if (event.target.checked) {
+      extras.push(event.target.value);
+    } else {
+      const index = extras.indexOf(event.target.value);
+      if (index > -1) {
+        extras.splice(index, 1);
+      }
+    }
+
+    this.carFormOne.patchValue({
+      extras: extras
+    });
+  }
+
+  prevStep(): void {
+    if (this.currentFormStep > 1) {
+      this.goToStep(this.currentFormStep - 1);
+    }
+  }
   loadScript() {
     const existingScript = document.querySelector('script[src="js/multistep-form.js"]');
     if (existingScript) {
@@ -336,12 +391,21 @@ export class ListYourCarComponent {
         if (this.lastIntertedData) {
           this.currentFormStep = this.lastIntertedData.page + 1;
           this.carFormOne.patchValue(this.lastIntertedData);
+          this.carFormOne.patchValue({
+            warranty_from: this.lastIntertedData.warranty_from ? this.formatDate(this.lastIntertedData.warranty_from) : '',
+            warranty_to: this.lastIntertedData.warranty_to ? this.formatDate(this.lastIntertedData.warranty_to) : ''
+          });
         }
       },
       error: (error) => {
         console.error('Error fetching last inserted data:', error);
       }
     });
+  }
+
+  formatDate(date: string) {
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
   }
 
   getFuelTypes() {
@@ -471,6 +535,17 @@ export class ListYourCarComponent {
       },
       error: (error) => {
         console.error('Error fetching car colors:', error);
+      }
+    });
+  }
+
+  getEnergyEfficiency() {
+    this.service.get(`user/energy-efficiency?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.energyEfficiencyOptions = res?.data.types || [];
+      },
+      error: (error) => {
+        console.error('Error fetching energy efficiency options:', error);
       }
     });
   }
