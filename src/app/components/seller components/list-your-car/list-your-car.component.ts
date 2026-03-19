@@ -20,8 +20,11 @@ export class ListYourCarComponent {
   private destroy$ = new Subject<void>();
   carFormOne!: FormGroup;
   carImages: File[] = [];
+  carImagePreviews: { file: File; url: string }[] = [];
   selectedReel: File | null = null;
+  reelPreviewUrl: string | null = null;
   reelThumbnail: File | null = null;
+  reelThumbnailPreviewUrl: string | null = null;
   loading: boolean = false;
   submitError: string | null = null;
   fuelTypes: any[] = [];
@@ -74,6 +77,7 @@ export class ListYourCarComponent {
       const nextBtn = document.getElementById('nextBtn');
       nextBtn?.removeEventListener('click', this.nextBtnListener, true);
     }
+    this.cleanupAllPreviews();
   }
 
   private initForm(): void {
@@ -219,7 +223,10 @@ export class ListYourCarComponent {
   onCarImagesSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
-    Array.from(input.files).forEach(file => this.carImages.push(file));
+    Array.from(input.files).forEach(file => {
+      this.carImages.push(file);
+      this.carImagePreviews.push({ file, url: URL.createObjectURL(file) });
+    });
     input.value = '';
   }
 
@@ -227,7 +234,11 @@ export class ListYourCarComponent {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (!file) return;
+    if (this.reelPreviewUrl) {
+      URL.revokeObjectURL(this.reelPreviewUrl);
+    }
     this.selectedReel = file;
+    this.reelPreviewUrl = URL.createObjectURL(file);
     input.value = '';
   }
 
@@ -235,20 +246,50 @@ export class ListYourCarComponent {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (!file) return;
+    if (this.reelThumbnailPreviewUrl) {
+      URL.revokeObjectURL(this.reelThumbnailPreviewUrl);
+    }
     this.reelThumbnail = file;
+    this.reelThumbnailPreviewUrl = URL.createObjectURL(file);
     input.value = '';
   }
 
   removeCarImage(index: number): void {
+    const preview = this.carImagePreviews[index];
+    if (preview?.url) {
+      URL.revokeObjectURL(preview.url);
+    }
     this.carImages.splice(index, 1);
+    this.carImagePreviews.splice(index, 1);
   }
 
   removeReel(): void {
     this.selectedReel = null;
+    if (this.reelPreviewUrl) {
+      URL.revokeObjectURL(this.reelPreviewUrl);
+      this.reelPreviewUrl = null;
+    }
   }
 
   removeReelThumbnail(): void {
     this.reelThumbnail = null;
+    if (this.reelThumbnailPreviewUrl) {
+      URL.revokeObjectURL(this.reelThumbnailPreviewUrl);
+      this.reelThumbnailPreviewUrl = null;
+    }
+  }
+
+  private cleanupAllPreviews(): void {
+    this.carImagePreviews.forEach((item) => URL.revokeObjectURL(item.url));
+    this.carImagePreviews = [];
+    if (this.reelPreviewUrl) {
+      URL.revokeObjectURL(this.reelPreviewUrl);
+      this.reelPreviewUrl = null;
+    }
+    if (this.reelThumbnailPreviewUrl) {
+      URL.revokeObjectURL(this.reelThumbnailPreviewUrl);
+      this.reelThumbnailPreviewUrl = null;
+    }
   }
 
   private appendIfValue(formData: FormData, key: string, value: any): void {
@@ -290,6 +331,10 @@ export class ListYourCarComponent {
       formData.append('reelThumbnails', this.reelThumbnail);
     }
 
+    if (this.currentFormStep === 6) {
+      formData.append('is_final_submit', '1');
+    }
+
     return formData;
   }
 
@@ -320,7 +365,17 @@ export class ListYourCarComponent {
       })
     ).subscribe({
       next: (res: any) => {
-        this.message.success(res?.message || 'Car listed successfully');
+        if (this.currentFormStep === this.getTotalSteps()) {
+          this.message.success(res?.message || 'Car listed successfully');
+          this.carFormOne.reset();
+          this.cleanupAllPreviews();
+          this.carImages = [];
+          this.selectedReel = null;
+          this.reelThumbnail = null;
+          this.currentFormStep = 1;
+          this.goToStep(1);
+          return;
+        }
         const totalSteps = this.getTotalSteps();
         if (this.currentFormStep < totalSteps) {
           this.goToStep(this.currentFormStep + 1);
@@ -393,7 +448,8 @@ export class ListYourCarComponent {
           this.carFormOne.patchValue(this.lastIntertedData);
           this.carFormOne.patchValue({
             warranty_from: this.lastIntertedData.warranty_from ? this.formatDate(this.lastIntertedData.warranty_from) : '',
-            warranty_to: this.lastIntertedData.warranty_to ? this.formatDate(this.lastIntertedData.warranty_to) : ''
+            warranty_to: this.lastIntertedData.warranty_to ? this.formatDate(this.lastIntertedData.warranty_to) : '',
+            last_mfk_date: this.lastIntertedData.last_mfk_date ? this.formatDate(this.lastIntertedData.last_mfk_date) : ''
           });
         }
       },

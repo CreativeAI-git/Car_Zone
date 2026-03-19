@@ -1771,7 +1771,8 @@
                                                       <label class="form-label ct_fw_600 ct_font_cairo ct_fs_18">
                                                             Upload Photos
                                                       </label>
-                                                      <div class="upload-box text-center py-5 ct_bg_none">
+                                                      <div class="upload-box text-center py-5 ct_bg_none"
+                                                            (click)="carImageInput.click()">
                                                             <img src="img/icons/camera.png" alt="camera" />
 
                                                             <!-- Label triggers file input -->
@@ -1785,35 +1786,18 @@
                                                             </div>
 
                                                             <!-- Hidden file input -->
-                                                            <input type="file" id="fileInput"
-                                                                  accept="image/png, image/jpeg, video/mp4" hidden="" />
+                                                            <input type="file" #carImageInput multiple
+                                                                  accept="image/png,image/jpeg,image/gif,image/webp"
+                                                                  hidden="" (change)="onCarImagesSelected($event)" />
                                                       </div>
 
-                                                      <div class="upload-imgs ct_custom_scroll">
-                                                            <div class="img-item">
-                                                                  <img src="img/car-img.png" alt="" />
-                                                                  <button class="img-remove">
-                                                                        <i class="fa-solid fa-trash"></i>
-                                                                  </button>
-                                                            </div>
-
-                                                            <div class="img-item">
-                                                                  <img src="img/car-img2.png" alt="" />
-                                                                  <button class="img-remove">
-                                                                        <i class="fa-solid fa-trash"></i>
-                                                                  </button>
-                                                            </div>
-
-                                                            <div class="img-item">
-                                                                  <img src="img/car-img3.png" alt="" />
-                                                                  <button class="img-remove">
-                                                                        <i class="fa-solid fa-trash"></i>
-                                                                  </button>
-                                                            </div>
-
-                                                            <div class="img-item">
-                                                                  <img src="img/car-img4.png" alt="" />
-                                                                  <button class="img-remove">
+                                                      <div class="upload-imgs ct_custom_scroll"
+                                                            *ngIf="carImagePreviews.length > 0">
+                                                            <div class="img-item"
+                                                                  *ngFor="let item of carImagePreviews; let i = index">
+                                                                  <img [src]="item.url" alt="Car image preview" />
+                                                                  <button type="button" class="img-remove"
+                                                                        (click)="removeCarImage(i)">
                                                                         <i class="fa-solid fa-trash"></i>
                                                                   </button>
                                                             </div>
@@ -1826,12 +1810,11 @@
                                                       </label>
 
                                                       <div class="upload-box text-center py-5 ct_bg_none"
-                                                            id="videoUploadBox">
+                                                            id="videoUploadBox" (click)="carReelInput.click()">
                                                             <img src="img/icons/video-grey.png" alt="video" />
 
                                                             <div>
-                                                                  <label for="videoInput"
-                                                                        class="upload-label mt-2 ct_fs_15 ct_fw_500">
+                                                                  <label class="upload-label mt-2 ct_fs_15 ct_fw_500">
                                                                         Drag and drop files here or
                                                                   </label>
                                                                   <small class="ct_fs_15 ct_fw_500 d-block">
@@ -1840,19 +1823,56 @@
                                                             </div>
 
                                                             <!-- Hidden video input -->
-                                                            <input type="file" id="videoInput"
-                                                                  accept="video/mp4,video/quicktime" hidden="" />
+                                                            <input type="file" #carReelInput
+                                                                  accept="video/mp4,video/quicktime" hidden=""
+                                                                  (change)="onCarReelSelected($event)" />
                                                       </div>
 
                                                       <!-- Video preview -->
-                                                      <div class="upload-videos d-none mt-3">
-                                                            <div class="video-item position-relative">
-                                                                  <video controls="" width="100%">
-                                                                        <source src="" />
-                                                                  </video>
+                                                      <div class="upload-videos  mt-3" *ngIf="reelPreviewUrl">
+                                                            <div class="ct_single_uploaded_img mt-2 py-2">
+                                                                  <div class="mobile-frame">
+                                                                        <video [src]="reelPreviewUrl" autoplay controls
+                                                                              playsinline class="videoPreview"></video>
+                                                                        <button class="btn-remove" type="button">
+                                                                              <i class="fa-solid fa-trash"
+                                                                                    (click)="removeReel()"></i>
+                                                                        </button>
+                                                                  </div>
+                                                            </div>
+                                                      </div>
+                                                </div>
 
-                                                                  <button
-                                                                        class="video-remove btn btn-danger btn-sm position-absolute top-0 end-0">
+                                                <div class="mt-4">
+                                                      <label class="form-label ct_fw_600 ct_font_cairo ct_fs_18">
+                                                            Upload Reel Thumbnail
+                                                      </label>
+
+                                                      <div class="upload-box text-center py-5 ct_bg_none"
+                                                            (click)="reelThumbnailInput.click()">
+                                                            <img src="img/icons/camera.png" alt="camera" />
+
+                                                            <div>
+                                                                  <label class="upload-label mt-2 ct_fs_15 ct_fw_500">
+                                                                        Drag and drop files here or
+                                                                  </label>
+                                                                  <small class="ct_fs_15 ct_fw_500 d-block">
+                                                                        JPEG, PNG, WebP up to 5MB
+                                                                  </small>
+                                                            </div>
+
+                                                            <input type="file" #reelThumbnailInput
+                                                                  accept="image/png,image/jpeg,image/webp" hidden=""
+                                                                  (change)="onReelThumbnailSelected($event)" />
+                                                      </div>
+
+                                                      <div class="upload-imgs ct_custom_scroll mt-3"
+                                                            *ngIf="reelThumbnailPreviewUrl">
+                                                            <div class="img-item position-relative">
+                                                                  <img [src]="reelThumbnailPreviewUrl"
+                                                                        alt="Reel thumbnail preview" />
+                                                                  <button type="button" class="img-remove"
+                                                                        (click)="removeReelThumbnail()">
                                                                         <i class="fa-solid fa-trash"></i>
                                                                   </button>
                                                             </div>
@@ -1865,7 +1885,6 @@
                                     <div class="ct_form_step" [class]="{ 'active': currentFormStep === 6 }"
                                           data-step="6">
                                           <div class="checkout-card mb-5">
-                                                <!-- Car Summary -->
                                                 <div class="d-flex align-items-center justify-content-between mb-4">
                                                       <div class="d-flex align-items-center gap-3">
                                                             <img src="img/car-img.png" class="ct_img_110" />
@@ -1881,26 +1900,21 @@
                                                                   </div>
                                                             </div>
                                                       </div>
-                                                      <button class="ct_preview-btn">Preview</button>
+                                                      <button type="button" class="ct_preview-btn">Preview</button>
                                                 </div>
-                                                <hr class="mb-4" />
-                                                <!-- Coupon -->
+                                                <!-- <hr class="mb-4" />
                                                 <div class="mb-4">
                                                       <label class="ct_fs_16">Coupon-Code</label>
                                                       <div class="d-flex gap-3">
                                                             <input type="text" class="form-control ct_h_40" />
                                                             <button class="ct_redeem_btn">Redeem</button>
                                                       </div>
-                                                </div>
-
-                                                <!-- Payment Method -->
-                                                <div class="ct_color_8f0c1f ct_fs_18 ct_fw_700 mb-3">
+                                                </div> -->
+                                                <!-- <div class="ct_color_8f0c1f ct_fs_18 ct_fw_700 mb-3">
                                                       <i class="fa-solid fa-lock"></i>
                                                       Select Payment Method
-                                                </div>
-
-                                                <!-- Credit Card -->
-                                                <div class="payment-option active">
+                                                </div> -->
+                                                <!-- <div class="payment-option active">
                                                       <div
                                                             class="d-flex justify-content-between align-items-center w-100">
                                                             <div class="form-check d-flex gap-3 align-items-center">
@@ -1929,9 +1943,6 @@
                                                             </div>
                                                       </div>
                                                 </div>
-
-                                                <!-- Card Form -->
-
                                                 <div class="ct_right_main_box mt-4">
                                                       <div class="mb-3">
                                                             <label class="form-label ct_fs_15">Card number</label>
@@ -1960,7 +1971,6 @@
                                                       </div>
                                                 </div>
 
-                                                <!-- Twint -->
                                                 <div class="payment-option mt-3">
                                                       <div>
                                                             <label class="ct_radio-button ct_fw_400 text-black">
@@ -1982,7 +1992,6 @@
                                                       </div>
                                                 </div>
 
-                                                <!-- Apple Pay -->
                                                 <div class="payment-option">
                                                       <div>
                                                             <label class="ct_radio-button ct_fw_400 text-black">
@@ -2007,7 +2016,6 @@
                                                       </div>
                                                 </div>
 
-                                                <!-- Samsung Pay -->
                                                 <div class="payment-option">
                                                       <div>
                                                             <label class="ct_radio-button ct_fw_400 text-black">
@@ -2029,10 +2037,9 @@
                                                                   <img src="img/icons/samsung.png" alt="" height="30" />
                                                             </div>
                                                       </div>
-                                                </div>
+                                                </div> -->
 
-                                                <!-- Google Pay -->
-                                                <div class="payment-option">
+                                                <!-- <div class="payment-option">
                                                       <div>
                                                             <label class="ct_radio-button ct_fw_400 text-black">
                                                                   <input id="option1" name="ct_radio-group"
@@ -2053,27 +2060,29 @@
                                                                   <img src="img/icons/gpay.png" alt="" height="30" />
                                                             </div>
                                                       </div>
-                                                </div>
+                                                </div> -->
                                           </div>
 
-                                          <!-- Pay Button -->
-                                          <div class="d-flex justify-content-end mt-4 d-none">
+                                          <!-- <div class="d-flex justify-content-end mt-4 d-none">
                                                 <button id="paybtn" class="ct_submit_pill_btn" data-bs-toggle="modal"
                                                       data-bs-target="#paymentSuccessModal">
                                                       <span class="ct_btn_icon">→</span>
                                                       <span id="btnText">Pay</span>
                                                 </button>
-                                          </div>
+                                          </div> -->
                                     </div>
 
-                                    <!-- ACTION BUTTON -->
-                                    <div class="d-flex mt-4"
-                                          [ngClass]="currentFormStep === 1 ? 'justify-content-end' : 'justify-content-between'">
+                                    <div class="d-flex mt-4 justify-content-between">
                                           @if(currentFormStep > 1){
                                           <button type="button" id="prevBtn" class="ct_edit_pill_btn"
                                                 (click)="prevStep()">
                                                 <span class="ct_btn_icon">←</span>
                                                 <span id="btnText">Previous</span>
+                                          </button>
+                                          }@else {
+                                          <button type="button" id="prevBtn" class="ct_edit_pill_btn"
+                                                (click)="currentFormStep = 2">
+                                                <span id="btnText">Enter Manually</span>
                                           </button>
                                           }
                                           <button type="submit" id="nextBtn" class="ct_submit_pill_btn">

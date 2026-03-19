@@ -301,3 +301,20 @@ quill-editor {
 .form-check {
       padding-left: 0 !important;
 }
+
+.btn-remove {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 26px;
+      min-height: 26px;
+      background: #dc2626;
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+}
