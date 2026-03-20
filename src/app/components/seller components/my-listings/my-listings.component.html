@@ -76,18 +76,18 @@
                                                                                     : ('Expired' | translate)}}</span>
                                                                         </p>
                                                                   </div>
-
+                                                                  <div
+                                                                        class="text-start ct_fs_28 ct_fw_600 ct_font_cairo ct_color_8f0c1f">
+                                                                        {{item?.selling_price | chfFormat}}
+                                                                  </div>
                                                                   <p class="text-start ct_fs_18 ct_fw_400 mb-1">
-                                                                        {{item.selectYear}} &nbsp;•&nbsp;
-                                                                        {{item.carMileage}} km &nbsp;•&nbsp;
-                                                                        {{item.fuelType}}
+                                                                        {{item.transmission_value}} &nbsp;•&nbsp;
+                                                                        {{item.body_type_value}} km &nbsp;•&nbsp;
+                                                                        {{item.fuel_type_value}}
                                                                   </p>
 
                                                                   <p class="text-start ct_fs_18 ct_fw_400 mb-3">
-                                                                        {{item.powerOutput}} &nbsp;•&nbsp;
-                                                                        {{item.transmission}} &nbsp;•&nbsp;
-                                                                        {{item.consumption}}
-                                                                        L / 100 Km
+                                                                        {{item.drive_type_value}}
                                                                   </p>
 
                                                                   <p class="text-start ct_fs_14 ct_fw_500">Listed on :

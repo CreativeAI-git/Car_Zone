@@ -40,11 +40,12 @@ export class HomeComponent {
   }
 
   listCar() {
-    if (this.userData().slotAvailable) {
-      this.router.navigate(['/list-your-car'])
-    } else {
-      this.router.navigate(['/choose-listing-plan'])
-    }
+    // if (this.userData().slotAvailable) {
+    //   this.router.navigate(['/list-your-car'])
+    // } else {
+    //   this.router.navigate(['/choose-listing-plan'])
+    // }
+    this.router.navigate(['/list-your-car'])
   }
 
   loadSwipers(): void {

@@ -1,0 +1,235 @@
+<section>
+    <div class="container p-0">
+        <div class="mb-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    @if(carData?.carImages?.length > 0){
+                    <div class="">
+                        <nz-image-group>
+                            <div class="swiper mySwiperMain">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide"
+                                        *ngFor="let img of carData.carImages; trackBy: trackByImage">
+                                        <img [nzSrc]="img?.url || 'img/placeholder.png'" nz-image nzPreview>
+                                    </div>
+                                </div>
+                                <div class="swiper-pagination pagination-ui"></div>
+                            </div>
+                        </nz-image-group>
+
+                        <div class="swiper mySwiperThumbs mySwiperThumbs mt-2">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide" *ngFor="let img of carData.carImages; trackBy: trackByImage">
+                                    <img [src]="img?.url || 'img/placeholder.png'">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    <div class="col-lg-12 mt-lg-0 mt-4">
+                        <div class="car-content-right">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class="ct_fs_25 ct_fw_600 mb-2">
+                                        {{carData?.brandName}} {{carData?.carModel}}
+                                    </h3>
+                                    <p class="ct_fs_14 mb-0" *ngIf="carData?.version">
+                                        {{carData?.version}}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="mt-2">
+                                <h3 class="ct_fs_25 ct_fw_700 mb-0 ct_color_8f0c1f">
+                                    {{carData?.new_price | chfFormat}} /
+                                    <span class="mb-0 ct_fs_18 ct_fw_400 ct_color_3e1cff fst-italic">
+                                        {{carData?.leasing_value | chfFormat}}
+                                    </span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="ct_fs_20 ct_fw_600 ct_mt_40 mb-3">Vehicle Details</h4>
+                    <div class="d-flex gap-5 align-items-center">
+                        <ul class="p-0 car-content-detail-list">
+                            <li class="d-flex gap-2 align-items-start">
+                                <img src="img/icons/calendar-brown.png" />
+                                <span> {{carData?.registration_year || 'N/A'}} </span>
+                            </li>
+                            <li class="d-flex gap-2 align-items-start">
+                                <img src="img/icons/km-brown.png" />
+                                <span> {{carData?.carMileage || '0'}} km </span>
+                            </li>
+                            <li class="d-flex gap-2 align-items-start">
+                                <img src="img/icons/transmission-brown.png" />
+                                <span>{{carData?.transmission_value || 'N/A'}} </span>
+                            </li>
+
+                            <li class="d-flex gap-2 align-items-start">
+                                <img src="img/icons/Hinterantrieb.png" />
+                                <span> {{carData?.drive_type_value || 'N/A'}} </span>
+                            </li>
+                        </ul>
+                        <ul class="p-0 car-content-detail-list">
+                            <li class="d-flex gap-2 align-items-start">
+                                <img src="img/icons/carn.png" />
+                                <span>{{carData?.body_type_value || 'N/A'}} </span>
+                            </li>
+                            <li class="d-flex gap-2 align-items-start">
+                                <img src="img/icons/fuel-brown.png" />
+                                <span>{{carData?.fuel_type_value || 'N/A'}} </span>
+                            </li>
+                            <li class="d-flex gap-2 align-items-start">
+                                <img src="img/icons/power-brown.png" />
+                                <span>{{carData?.condition_value || 'N/A'}} </span>
+                            </li>
+
+                            <li class="d-flex gap-2 align-items-start">
+                                <img src="img/icons/km-blackn.png" />
+                                <span>{{carData?.energy_efficiency || 'N/A'}} </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr class="my-4" />
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Basic Info</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-1">Brand: {{carData?.brandName || 'N/A'}}</p>
+                            <p class="mb-1">Model: {{carData?.carModel || 'N/A'}}</p>
+                            <p class="mb-1">Version: {{carData?.version || 'N/A'}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1">Car Condition: {{carData?.condition_value || 'N/A'}}</p>
+                            <p class="mb-1">Car Mileage: {{carData?.carMileage || '0'}} km</p>
+                            <p class="mb-1">Energy Efficiency: {{carData?.energy_efficiency || 'N/A'}}</p>
+                        </div>
+
+                    </div>
+
+                    <hr class="my-4" />
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Registration</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-1">Registration Month: {{carData?.registration_month || 'N/A'}}</p>
+                            <p class="mb-1">Registration Year: {{carData?.registration_year || 'N/A'}}</p>
+                            <p class="mb-1">First Registration Date:
+                                {{carData?.first_registration_date ? (carData?.first_registration_date |
+                                date:'dd.MM.yyyy') : 'N/A'}}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1">VIN: {{carData?.vin_number || 'N/A'}}</p>
+                            <p class="mb-1">Registration Master No: {{carData?.registration_master_number || 'N/A'}}</p>
+                            <p class="mb-1">Type Approval: {{carData?.type_approval || 'N/A'}}</p>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Specifications</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-1">Height (mm): {{carData?.height_mm || 'N/A'}}</p>
+                            <p class="mb-1">Width (mm): {{carData?.width_mm || 'N/A'}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1">Length (mm): {{carData?.length_mm || 'N/A'}}</p>
+                            <p class="mb-1">Braked Towing Capacity (kg): {{carData?.braked_towing_capacity_kg || 'N/A'}}
+                            </p>
+                        </div>
+                    </div>
+                    <hr class="my-4" />
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Colors & Flags</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-1">Exterior Color: {{carData?.exterior_color_value || 'N/A'}}</p>
+                            <p class="mb-1">Interior Color: {{carData?.interior_color_value || 'N/A'}}</p>
+                            <p class="mb-1">Metallic: {{carData?.is_metallic ? 'yes' : 'No'}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1">Swiss Vehicle: {{carData?.is_swiss_vehicle ? 'yes' : 'No'}}</p>
+                            <p class="mb-1">Accident Vehicle: {{carData?.is_accident_vehicle ? 'yes' : 'No'}}</p>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Equipment & Features</h4>
+                    <ul class="px-0 equipment-list"
+                        *ngIf="(carData?.carFeatures?.length || 0) + (carData?.extras?.length || 0) > 0; else noFeatures">
+                        <li *ngFor="let feat of carData?.carFeatures">
+                            <img src="img/icons/list-chk.png" />
+                            {{feat}}
+                        </li>
+                        <li *ngFor="let extra of carData?.extras">
+                            <img src="img/icons/list-chk.png" />
+                            {{extra}}
+                        </li>
+                    </ul>
+                    <ng-template #noFeatures>
+                        <p class="ct_fs_16 mb-0">No features listed.</p>
+                    </ng-template>
+
+                    <hr class="my-4" />
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Description</h4>
+                    <p>{{carData?.description || 'No description provided.'}}</p>
+                    <p class="ct_fs_14 ct_color_666666" *ngIf="carData?.additional_title_999">
+                        {{carData?.additional_title_999}}
+                    </p>
+
+                    <hr class="my-4" />
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Vehicle inspection (MFK)</h4>
+                    <p *ngIf="carData?.last_mfk_date; else noMfk">
+                        <img src="img/icons/right.png" class="me-2" />
+                        MFK done on {{carData?.last_mfk_date | date:'dd.MM.yyyy'}}.
+                    </p>
+                    <ng-template #noMfk>
+                        <p>No MFK date provided.</p>
+                    </ng-template>
+
+                    <hr class="my-4" />
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Warranty & Returns</h4>
+                    <p class="mb-1">Warranty: {{carData?.warranty_value || 'N/A'}}</p>
+                    <p class="mb-1">Warranty Type: {{carData?.warranty_type_value || 'N/A'}}</p>
+                    <p class="mb-1" *ngIf="carData?.warranty_from && carData?.warranty_to">
+                        Warranty Period: {{carData?.warranty_from | date:'dd.MM.yyyy'}} -
+                        {{carData?.warranty_to | date:'dd.MM.yyyy'}}
+                    </p>
+
+                    <hr class="my-4" />
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Leasing Summary</h4>
+                    @if(carData?.isLeasing){
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-1">Leasing Value: CHF {{carData?.leasing_value || '0'}}</p>
+                            <p class="mb-1">Annual Interest Rate: {{carData?.annual_interest_rate || '0'}}%</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1">Residual Value: {{carData?.residual_value || '0'}}%</p>
+                            <p class="mb-1">Banking Partner: {{carData?.banking_partner || 'N/A'}}</p>
+                        </div>
+                    </div>
+                    }@else{
+                    <p class="ct_fs_16 mb-0">Leasing not selected.</p>
+                    }
+
+                    <hr class="my-4" />
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Contact Details</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-1">First Name: {{carData?.first_name || 'N/A'}}</p>
+                            <p class="mb-1">Last Name: {{carData?.last_name || 'N/A'}}</p>
+                            <p class="mb-1">Phone: {{carData?.country_code || ''}}{{carData?.phone_number || 'N/A'}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1">Street: {{carData?.street || 'N/A'}}</p>
+                            <p class="mb-1">House No: {{carData?.house_number || 'N/A'}}</p>
+                            <p class="mb-1">Postal Code: {{carData?.postal_code || 'N/A'}}</p>
+                            <p class="mb-1">City: {{carData?.city || 'N/A'}}</p>
+                            <p class="mb-1">PO Box: {{carData?.po_box || 'N/A'}}</p>
+                            <p class="mb-1">Country: {{carData?.country || 'N/A'}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

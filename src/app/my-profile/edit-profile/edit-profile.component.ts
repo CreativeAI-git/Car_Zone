@@ -278,6 +278,13 @@ export class EditProfileComponent {
       this.appendIfExists(formData, 'phoneNumber', phone);
       this.appendIfExists(formData, 'countryCode', this.Form.value.phoneNumber.dialCode);
     }
+    if (this.Form.value.whatsappNumber?.e164Number) {
+      const phone = this.Form.value.whatsappNumber.e164Number
+        .slice(this.Form.value.whatsappNumber.dialCode.length);
+
+      this.appendIfExists(formData, 'whatsappNumber', phone);
+      this.appendIfExists(formData, 'whatsappCountryCode', this.Form.value.whatsappNumber.dialCode);
+    }
 
     if (this.profileImage) {
       formData.append('profileImage', this.profileImage);

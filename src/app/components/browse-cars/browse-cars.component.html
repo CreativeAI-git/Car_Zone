@@ -1259,12 +1259,14 @@
 
                                           <div class="mt-2">
                                                 <h3 class="ct_fs_25 ct_fw_600 mb-0 ct_color_8f0c1f">
-                                                      {{item.totalPrice | chfFormat}}
+                                                      {{item.selling_price | chfFormat}}
                                                 </h3>
+                                                @if(item.isLeasing){
                                                 <p
                                                       class="mb-0 ct_fs_18 ct_fw_400 ct_color_1877F2 text-decoration-underline">
                                                       CHF 550.- per month
                                                 </p>
+                                                }
                                           </div>
 
                                           <!-- <div class="d-flex justify-content-between mt-3 ct_mb_35 gap-2">
@@ -1277,29 +1279,30 @@
                                     <div class="row mt-4">
                                           <div class="col-sm-5">
                                                 <ul class="p-0 car-content-right-list">
-                                                      <li class="d-flex gap-3 align-items-start">
-                                                            <img src="img/icons/speedometer_red.png" />
-                                                            <span> {{item.consumption}} </span>
-                                                      </li>
-                                                      <li class="d-flex gap-3 align-items-start">
+                                                      <!-- <li class="d-flex gap-3 align-items-start">
+                                                                  <img src="img/icons/speedometer_red.png" />
+                                                                  <span> {{item.consumption }} </span>
+                                                            </li> -->
+                                                      <li class="d-flex gap-1 align-items-start">
                                                             <img src="img/icons/km-brown.png" />
                                                             <span> {{item.carMileage}} km </span>
                                                       </li>
-                                                      <li class="d-flex gap-3 align-items-start">
+                                                      <li class="d-flex gap-1 align-items-start">
                                                             <img src="img/icons/fuel-brown.png" />
-                                                            <span> {{item.fuelType}} </span>
+                                                            <span> {{item.fuel_type_value}} </span>
                                                       </li>
-                                                      <li class="d-flex gap-3 align-items-start">
+                                                      <li class="d-flex gap-1 align-items-start">
                                                             <img src="img/icons/power-brown.png" />
-                                                            <span> {{item.powerOutput}} </span>
+                                                            <span> {{item?.braked_towing_capacity_kg || 'N/A'}}
+                                                                  kg </span>
                                                       </li>
-                                                      <li class="d-flex gap-3 align-items-start">
+                                                      <li class="d-flex gap-1 align-items-start">
                                                             <img src="img/icons/transmission-brown.png" />
-                                                            <span> {{item.transmission}} </span>
+                                                            <span> {{item.transmission_value}} </span>
                                                       </li>
-                                                      <li class="d-flex gap-3 align-items-start">
+                                                      <li class="d-flex gap-1 align-items-start">
                                                             <img src="img/icons/calendar-brown.png" />
-                                                            <span> {{item.selectYear}} </span>
+                                                            <span> {{item.registration_year || 'N/A'}} </span>
                                                       </li>
                                                 </ul>
                                           </div>

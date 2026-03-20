@@ -50,8 +50,8 @@
                                           <li [class]="{ 'active': currentFormStep === 6 }">
                                                 <span class="ct_step_circle">6</span>
                                                 <div>
-                                                      <h6>Preview & Pay</h6>
-                                                      <p>Confirm your listing and proceed to payment</p>
+                                                      <h6>Preview & Submit</h6>
+                                                      <p>Confirm your listing and proceed</p>
                                                 </div>
                                           </li>
                                     </ul>
@@ -1552,7 +1552,7 @@
                                                       </div>
                                                 </div>
 
-
+                                                @if(carFormOne.get('isLeasing')?.value === true){
                                                 <div class="col-12 mt-3">
                                                       <div>
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">
@@ -1621,6 +1621,7 @@
                                                                   carFormOne.get("leasing_value"))}}</small>
                                                       </div>
                                                 </div>
+                                                }
                                           </div>
 
                                     </div>
@@ -1749,10 +1750,18 @@
                                                                   Phone Number <span class="ct_color_8f0c1f">*</span>
                                                             </h5>
                                                             <div class="position-relative">
-                                                                  <input type="number"
-                                                                        placeholder="Enter your phone number"
-                                                                        class="form-control"
-                                                                        formControlName="phone_number" />
+                                                                  <ngx-intl-tel-input name="phone"
+                                                                        [cssClass]="'form-control w-full ps-5 ct_pe_90'"
+                                                                        [enableAutoCountrySelect]="true"
+                                                                        [enablePlaceholder]="true"
+                                                                        [searchCountryFlag]="true"
+                                                                        [customPlaceholder]="'Enter phone number'"
+                                                                        [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                                                        [selectFirstCountry]="false"
+                                                                        [selectedCountryISO]="selectedCountry"
+                                                                        [maxLength]="15" [phoneValidation]="true"
+                                                                        formControlName="phone_number">
+                                                                  </ngx-intl-tel-input>
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
                                                                   'Phone number'
@@ -1886,22 +1895,33 @@
                                           data-step="6">
                                           <div class="checkout-card mb-5">
                                                 <div class="d-flex align-items-center justify-content-between mb-4">
-                                                      <div class="d-flex align-items-center gap-3">
-                                                            <img src="img/car-img.png" class="ct_img_110" />
+                                                      <div class="d-flex align-items-start gap-3">
+                                                            <img [src]="lastIntertedData?.carImages?.[0]?.url"
+                                                                  class="ct_img_110" />
                                                             <div>
                                                                   <div class="ct_fs_18 ct_fw_500">
-                                                                        2015 Mercedes-Benz C-Class
+                                                                        {{lastIntertedData?.brandName}}
+                                                                        {{lastIntertedData?.modalName}}
                                                                   </div>
-                                                                  <small class="ct_fs_14 ct_fw_400">2015 • 250
-                                                                        km</small>
+                                                                  <div class="ct_fs_14 ct_fw_400">
+                                                                        {{lastIntertedData?.body_type_value
+                                                                        }}
+                                                                  </div>
+                                                                  <div class="ct_fs_14 ct_fw_400">
+                                                                        {{lastIntertedData?.transmission_value
+                                                                        }}
+                                                                  </div>
                                                                   <div
                                                                         class="ct_fs_20 ct_fw_600 ct_font_cairo ct_color_8f0c1f">
-                                                                        CHF 45,900
+                                                                        {{lastIntertedData?.leasing_value | chfFormat}}
                                                                   </div>
                                                             </div>
                                                       </div>
                                                       <button type="button" class="ct_preview-btn">Preview</button>
                                                 </div>
+
+                                                <app-car-preview [carData]="lastIntertedData"></app-car-preview>
+
                                                 <!-- <hr class="mb-4" />
                                                 <div class="mb-4">
                                                       <label class="ct_fs_16">Coupon-Code</label>
@@ -2080,14 +2100,22 @@
                                                 <span id="btnText">Previous</span>
                                           </button>
                                           }@else {
-                                          <button type="button" id="prevBtn" class="ct_edit_pill_btn"
+                                          <button type="button" id="prevBtn" class="ct_edit_pill_btn ps-4"
                                                 (click)="currentFormStep = 2">
                                                 <span id="btnText">Enter Manually</span>
                                           </button>
                                           }
                                           <button type="submit" id="nextBtn" class="ct_submit_pill_btn">
                                                 <span class="ct_btn_icon">→</span>
-                                                <span id="btnText">Next</span>
+                                                @if(!loading){
+                                                @if(currentFormStep < 6){ <span id="btnText">Next</span>
+                                                      }@else {
+                                                      <span id="btnText">Submit</span>
+                                                      }
+                                                      }@else {
+                                                      <span class="spinner-border spinner-border-sm me-2" role="status"
+                                                            aria-hidden="true"></span>
+                                                      }
                                           </button>
                                     </div>
                               </form>

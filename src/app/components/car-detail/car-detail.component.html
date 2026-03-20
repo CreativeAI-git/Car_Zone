@@ -79,46 +79,187 @@
                               <h4 class="ct_fs_20 ct_fw_600 ct_mt_40 mb-3">Vehicle Details</h4>
                               <div class="d-flex gap-5 align-items-center">
                                     <ul class="p-0 car-content-detail-list">
-                                          <li class="d-flex gap-3 align-items-start">
+                                          <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/calendar-brown.png" />
-                                                <span> {{carData?.vehicle.year}} </span>
+                                                <span> {{carData?.vehicle.registration_year || 'N/A'}} </span>
                                           </li>
-                                          <li class="d-flex gap-3 align-items-start">
+                                          <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/km-brown.png" />
-                                                <span> {{carData?.vehicle.mileage}} km </span>
+                                                <span> {{carData?.vehicle.mileage || 'N/A'}} km </span>
                                           </li>
-                                          <li class="d-flex gap-3 align-items-start">
+                                          <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/transmission-brown.png" />
-                                                <span> {{carData?.vehicle.transmission}} </span>
+                                                <span> {{carData?.vehicle.transmission || 'N/A'}} </span>
                                           </li>
 
-                                          <li class="d-flex gap-3 align-items-start">
+                                          <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/Hinterantrieb.png" />
-                                                <span> Hinterantrieb </span>
+                                                <span> {{carData?.vehicle.driveType || 'N/A'}} </span>
                                           </li>
                                     </ul>
                                     <ul class="p-0 car-content-detail-list">
-                                          <li class="d-flex gap-3 align-items-start">
+                                          <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/carn.png" />
                                                 <span> {{carData?.vehicle.bodyType}} </span>
                                           </li>
-                                          <li class="d-flex gap-3 align-items-start">
+                                          <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/fuel-brown.png" />
                                                 <span> {{carData?.vehicle.fuel}} </span>
                                           </li>
-                                          <li class="d-flex gap-3 align-items-start">
+                                          <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/power-brown.png" />
-                                                <span> {{carData?.vehicle.power}} ps </span>
+                                                <span> {{carData?.vehicle.braked_towing_capacity_kg || 'N/A'}} kg
+                                                </span>
                                           </li>
 
-                                          <li class="d-flex gap-3 align-items-start">
+                                          <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/km-blackn.png" />
-                                                <span> {{carData?.vehicle.consumption}} L / 100 Km </span>
+                                                <span>
+                                                      @if(carData?.vehicle.consumption){
+                                                      {{carData?.vehicle.consumption}} l/100km
+                                                      }@else {
+                                                      N/A
+                                                      }
+                                                </span>
                                           </li>
                                     </ul>
                               </div>
+                              @if(ShoMore){
+                              <div class="mt-4">
+                                    <div class="row">
+                                          <div class="col-md-6">
+                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">Technical</h6>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Energy efficiency</span>
+                                                      <span>{{carData?.vehicle.energy_efficiency || 'N/A'}}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Braked towing capacity</span>
+                                                      <span>{{carData?.vehicle.braked_towing_capacity_kg || 'N/A'}}
+                                                            kg</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Height</span>
+                                                      <span>{{carData?.vehicle.height_mm || 'N/A'}} mm</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Width</span>
+                                                      <span>{{carData?.vehicle.width_mm || 'N/A'}} mm</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Length</span>
+                                                      <span>{{carData?.vehicle.length_mm || 'N/A'}} mm</span>
+                                                </div>
+                                          </div>
+
+                                          <div class="col-md-6">
+                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">Vehicle History</h6>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Condition</span>
+                                                      <span>{{carData?.vehicle.condition_value || 'N/A'}}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>State</span>
+                                                      <span>{{carData?.vehicle.state_value || 'N/A'}}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Warranty</span>
+                                                      <span>{{carData?.vehicle.warranty_value || 'N/A'}}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Warranty type</span>
+                                                      <span>{{carData?.vehicle.warranty_type_value || 'N/A'}}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Warranty period</span>
+                                                      <span>
+                                                            {{carData?.vehicle.warranty_from | date:'dd.MM.yyyy'}} -
+                                                            {{carData?.vehicle.warranty_to | date:'dd.MM.yyyy'}}
+                                                      </span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Last MFK</span>
+                                                      <span>{{carData?.vehicle.last_mfk_date |
+                                                            date:'dd.MM.yyyy'}}</span>
+                                                </div>
+                                          </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                          <div class="col-md-6">
+                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">Colours</h6>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Exterior</span>
+                                                      <span>{{carData?.vehicle.exterior_color_value || 'N/A'}}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Interior</span>
+                                                      <span>{{carData?.vehicle.interior_color_value || 'N/A'}}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Metallic</span>
+                                                      <span>{{carData?.vehicle.is_metallic ? 'Yes' : 'No'}}</span>
+                                                </div>
+                                          </div>
+
+                                          <div class="col-md-6">
+                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">Registration</h6>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>First registration</span>
+                                                      <span>{{carData?.vehicle.first_registration_date |
+                                                            date:'dd.MM.yyyy'}}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>VIN</span>
+                                                      <span>{{carData?.vehicle.vin_number || 'N/A'}}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Type approval</span>
+                                                      <span>{{carData?.vehicle.type_approval || 'N/A'}}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Reg. master no.</span>
+                                                      <span>{{carData?.vehicle.registration_master_number ||
+                                                            'N/A'}}</span>
+                                                </div>
+                                          </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                          <div class="col-md-6">
+                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">Prices</h6>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Orginal Price</span>
+                                                      <span>{{carData?.vehicle.price | chfFormat}}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Selling price</span>
+                                                      <span>{{carData?.vehicle.selling_price | chfFormat}}</span>
+                                                </div>
+                                          </div>
+
+                                          <div class="col-md-6">
+                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">Place</h6>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>City</span>
+                                                      <span>{{carData?.vehicle.city || 'N/A'}}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Postal code</span>
+                                                      <span>{{carData?.vehicle.postal_code || 'N/A'}}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                      <span>Country</span>
+                                                      <span>{{carData?.vehicle.country || 'N/A'}}</span>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+                              }
                               <div class="mt-3">
-                                    <a class="ct_color_3e1cff ct_fs_16">Show more vehicle data</a>
+                                    <a class="ct_color_3e1cff ct_fs_16 ct_cursor_pointer"
+                                          (click)="ShoMore = !ShoMore">Show {{ShoMore ? 'less' : 'more'}}
+                                    </a>
                               </div>
                               <hr class="my-4" />
 
@@ -191,7 +332,8 @@
                                     </h4>
                                     <p>
                                           <img src="img/icons/right.png" class="me-2" />
-                                          MFK for this vehicle was done on 12.06.2025 and is valid up to
+                                          MFK for this vehicle was done on {{carData?.vehicle.last_mfk_date |
+                                          date:'dd.MM.yyyy'}} and is valid up to
                                           one year.
                                     </p>
                                     <hr class="my-4" />
@@ -199,17 +341,21 @@
                                     <h4 class="ct_fs_20 ct_fw_600 mb-3">Warranty & Returns</h4>
                                     <div class="d-flex gap-4 mb-2">
                                           <div class="w-25">Warranty Included</div>
+                                          @if(carData?.vehicle.is_warranty_included){
                                           <div class="ct_color_0acc0a">
                                                 yes <img src="img/icons/right.png" class="ms-1" />
                                           </div>
+                                          }
                                     </div>
-                                    <p class="mb-2">From take-over, 12 months or 20,000 km</p>
-                                    <p class="mb-2">Quality 1 Q Base</p>
+                                    <!-- <p class="mb-2">From take-over, 12 months or 20,000 km</p> -->
+                                    <p class="mb-2">{{carData?.vehicle.warranty_type_value || 'N/A'}}</p>
                                     <div class="d-flex gap-4 mb-2">
                                           <div class="w-25">Swiss car?</div>
+                                          @if(carData?.vehicle.is_swiss_vehicle){
                                           <div class="ct_color_0acc0a">
                                                 yes <img src="img/icons/right.png" class="ms-1" />
                                           </div>
+                                          }
                                     </div>
 
                                     <hr class="my-4" />
@@ -289,10 +435,14 @@
 
                                     <div class="mt-2">
                                           <h3 class="ct_fs_25 ct_fw_700 mb-0 ct_color_8f0c1f">
-                                                CHF {{carData?.vehicle.price | chfFormat}} /
+                                                {{carData?.vehicle.selling_price | chfFormat}}
+
+                                                @if(carData?.vehicle.isLeasing){
+                                                /
                                                 <span class="mb-0 ct_fs_18 ct_fw_400 ct_color_3e1cff fst-italic">
-                                                      CHF 550.- per month
+                                                      {{carData?.vehicle.leasing_value | chfFormat}} per month
                                                 </span>
+                                                }
                                           </h3>
                                     </div>
                               </div>
@@ -401,6 +551,7 @@
                         </div>
                   </div>
 
+                  @if(carData?.suggestedCars?.length > 0){
                   <section class="seller-vehicles mt-30">
                         <div class="container">
                               <div class="seller-header d-flex align-items-center justify-content-between mb-2">
@@ -436,10 +587,10 @@
                                                                   <div class="mt-2">
                                                                         <h3
                                                                               class="ct_fs_18 ct_fw_400 mb-0 ct_color_8f0c1f">
-                                                                              {{item.totalPrice | chfFormat}}
+                                                                              {{item.selling_price | chfFormat}}
                                                                         </h3>
                                                                         <p class="mb-0 ct_fs_14 ct_fw_300">
-                                                                              CHF 550.- per month
+                                                                              {{item.leasing_value | chfFormat}}
                                                                         </p>
                                                                   </div>
                                                             </div>
@@ -484,7 +635,7 @@
                               </div>
                         </div>
                   </section>
-
+                  }
                   <div class="d-flex gap-3 ct_mt_40">
                         <div>
                               <a href="purchase-agreement.html" class="btn-red"><img src="img/icons/contract-cion.png"

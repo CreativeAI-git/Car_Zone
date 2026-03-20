@@ -245,11 +245,11 @@
                                                                   <ul class="car-specs">
                                                                         <li>
                                                                               <img src="img/icons/petrol.svg" />
-                                                                              {{item.selectYear}}
+                                                                              {{item.registration_year || 'N/A'}}
                                                                         </li>
                                                                         <li>
                                                                               <img src="img/icons/automatic.svg" />
-                                                                              {{item.transmission}}
+                                                                              {{item.transmission_value || 'N/A'}}
                                                                         </li>
                                                                   </ul>
                                                             </div>
@@ -259,7 +259,7 @@
                                                                         <li>
                                                                               <img src="img/icons/calendar.svg" />
 
-                                                                              {{item.fuelType}}
+                                                                              {{item.fuel_type_value || 'N/A'}}
                                                                         </li>
                                                                         <li><img src="img/icons/road.svg" />
                                                                               {{item.carMileage}} km</li>

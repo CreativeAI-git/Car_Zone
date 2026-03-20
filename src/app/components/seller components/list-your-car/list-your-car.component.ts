@@ -9,10 +9,13 @@ import { carData } from '../../../helper/carData';
 import { CommonService } from '../../../services/common.service';
 import { NoWhitespaceDirective } from '../../../helper/validators';
 import { ValidationErrorService } from '../../../services/validation-error.service';
+import { CarPreviewComponent } from './car-preview/car-preview.component';
+import { ChfFormatPipe } from '../../../pipes/chf-format.pipe';
+import { SearchCountryField, CountryISO, NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
 
 @Component({
   selector: 'app-list-your-car',
-  imports: [FormsModule, NzSelectModule, ReactiveFormsModule, CommonModule, TranslateModule],
+  imports: [FormsModule, NzSelectModule, ReactiveFormsModule, NgxIntlTelInputModule, CommonModule, ChfFormatPipe, TranslateModule, CarPreviewComponent],
   templateUrl: './list-your-car.component.html',
   styleUrl: './list-your-car.component.css'
 })
@@ -20,7 +23,7 @@ export class ListYourCarComponent {
   private destroy$ = new Subject<void>();
   carFormOne!: FormGroup;
   carImages: File[] = [];
-  carImagePreviews: { file: File; url: string }[] = [];
+  carImagePreviews: { file: File | null; url: string; isRemote?: boolean }[] = [];
   selectedReel: File | null = null;
   reelPreviewUrl: string | null = null;
   reelThumbnail: File | null = null;
@@ -49,6 +52,10 @@ export class ListYourCarComponent {
   private submitInProgress = false;
   currentFormStep: number = 1;
   lastIntertedData: any = null;
+  showPreview: boolean = false;
+  SearchCountryField = SearchCountryField
+  CountryISO = CountryISO;
+  selectedCountry = CountryISO.Sweden;
   constructor(private service: CommonService, private message: NzMessageService, private fb: FormBuilder, public validationErrorService: ValidationErrorService) {
     this.initForm();
   }
@@ -119,8 +126,8 @@ export class ListYourCarComponent {
       type_approval: [''],
       carFeatures: [[]],
       extras: [[]],
-      description: ['', [Validators.maxLength(1000), NoWhitespaceDirective.validate]],
-      additional_title_999: ['', [Validators.maxLength(1000), NoWhitespaceDirective.validate]],
+      description: ['', [Validators.maxLength(1000)]],
+      additional_title_999: ['', [Validators.maxLength(1000)]],
       vin_number: [''],
       registration_master_number: [''],
       selling_price: ['', [Validators.required, Validators.min(1)]],
@@ -138,7 +145,8 @@ export class ListYourCarComponent {
       city: ['', [Validators.required, NoWhitespaceDirective.validate]],
       po_box: ['', [Validators.pattern('[0-9]{4,6}')]],
       country: ['', Validators.required],
-      phone_number: ['', [Validators.required, Validators.pattern('[0-9]{7,15}')]],
+      phone_number: ['', [Validators.required]],
+      // country_code: [''],
     });
   }
 
@@ -225,7 +233,7 @@ export class ListYourCarComponent {
     if (!input.files || input.files.length === 0) return;
     Array.from(input.files).forEach(file => {
       this.carImages.push(file);
-      this.carImagePreviews.push({ file, url: URL.createObjectURL(file) });
+      this.carImagePreviews.push({ file, url: URL.createObjectURL(file), isRemote: false });
     });
     input.value = '';
   }
@@ -256,10 +264,22 @@ export class ListYourCarComponent {
 
   removeCarImage(index: number): void {
     const preview = this.carImagePreviews[index];
-    if (preview?.url) {
+    if (!preview) return;
+
+    if (preview.isRemote && preview.url) {
+      this.deleteRemoteCarImage(preview.url, index);
+      return;
+    }
+
+    if (preview.url) {
       URL.revokeObjectURL(preview.url);
     }
-    this.carImages.splice(index, 1);
+    if (preview.file) {
+      const fileIndex = this.carImages.indexOf(preview.file);
+      if (fileIndex > -1) {
+        this.carImages.splice(fileIndex, 1);
+      }
+    }
     this.carImagePreviews.splice(index, 1);
   }
 
@@ -280,7 +300,11 @@ export class ListYourCarComponent {
   }
 
   private cleanupAllPreviews(): void {
-    this.carImagePreviews.forEach((item) => URL.revokeObjectURL(item.url));
+    this.carImagePreviews.forEach((item) => {
+      if (!item.isRemote) {
+        URL.revokeObjectURL(item.url);
+      }
+    });
     this.carImagePreviews = [];
     if (this.reelPreviewUrl) {
       URL.revokeObjectURL(this.reelPreviewUrl);
@@ -317,7 +341,18 @@ export class ListYourCarComponent {
     Object.keys(formValue).forEach((key) => {
       if (key === 'carImages' || key === 'carReel' || key === 'reelThumbnails') return;
       const apiKey = fieldMap[key] || key;
-      this.appendIfValue(formData, apiKey, formValue[key]);
+
+      if (apiKey === 'phone_number' && formValue[key]) {
+        if (formValue[key].e164Number) {
+          const phone = formValue[key].e164Number
+            .slice(formValue[key].dialCode.length);
+          formData.append('country_code', formValue[key].dialCode || '');
+          formData.append('phone_number', phone || '');
+        }
+        return;
+      } else {
+        this.appendIfValue(formData, apiKey, formValue[key]);
+      }
     });
 
     formData.append('page', this.currentFormStep.toString());
@@ -379,6 +414,7 @@ export class ListYourCarComponent {
         const totalSteps = this.getTotalSteps();
         if (this.currentFormStep < totalSteps) {
           this.goToStep(this.currentFormStep + 1);
+          this.getLastInsertedData();
         }
       },
       error: (error: any) => {
@@ -447,14 +483,41 @@ export class ListYourCarComponent {
           this.currentFormStep = this.lastIntertedData.page + 1;
           this.carFormOne.patchValue(this.lastIntertedData);
           this.carFormOne.patchValue({
+            phone_number: this.lastIntertedData.country_code + this.lastIntertedData.phone_number,
             warranty_from: this.lastIntertedData.warranty_from ? this.formatDate(this.lastIntertedData.warranty_from) : '',
             warranty_to: this.lastIntertedData.warranty_to ? this.formatDate(this.lastIntertedData.warranty_to) : '',
             last_mfk_date: this.lastIntertedData.last_mfk_date ? this.formatDate(this.lastIntertedData.last_mfk_date) : ''
           });
+
+          this.carImagePreviews = (this.lastIntertedData.carImages || []).map((img: any) => ({
+            file: null,
+            url: img.url,
+            isRemote: true
+          }));
+          this.reelPreviewUrl = this.lastIntertedData.carReel ? this.lastIntertedData.carReel : null;
+          this.reelThumbnailPreviewUrl = this.lastIntertedData.reelThumbnails ? this.lastIntertedData.reelThumbnails : null;
         }
       },
       error: (error) => {
         console.error('Error fetching last inserted data:', error);
+      }
+    });
+  }
+
+  private deleteRemoteCarImage(imageUrl: string, index: number): void {
+    this.loading = true;
+    this.service.post<any, { imageUrl: string }>('user/deleteCar-image', { imageUrl }).pipe(
+      finalize(() => {
+        this.loading = false;
+      }),
+      first()
+    ).subscribe({
+      next: (res: any) => {
+        this.carImagePreviews.splice(index, 1);
+      },
+      error: (error: any) => {
+        const errMsg = error?.message || 'Failed to delete image. Please try again.';
+        this.message.error(errMsg);
       }
     });
   }
