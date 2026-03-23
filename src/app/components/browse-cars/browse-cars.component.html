@@ -4,7 +4,7 @@
                   <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="czone-tab" type="button" role="tab">
                               <img src="img/icons/c.png" />
-                              <span>Zone</span>
+                              <span>{{ 'vehicle.zone' | translate }}</span>
                         </button>
                   </li>
                   <li class="nav-item" role="presentation">
@@ -22,31 +22,31 @@
                   <li class="nav-item" role="presentation">
                         <button class="nav-link" id="laborghini-tab" type="button" role="tab">
                               <img src="img/icons/lamborghini.png" />
-                              <span>laborghini</span>
+                              <span>{{ 'vehicle.laborghini' | translate }}</span>
                         </button>
                   </li>
                   <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tesla-tab" type="button" role="tab">
                               <img src="img/icons/Tesla.png" />
-                              <span>tesla</span>
+                              <span>{{ 'vehicle.tesla' | translate }}</span>
                         </button>
                   </li>
                   <li class="nav-item" role="presentation">
                         <button class="nav-link" id="audi-tab" type="button" role="tab">
                               <img src="img/icons/audi.png" />
-                              <span>Audi</span>
+                              <span>{{ 'vehicle.audi' | translate }}</span>
                         </button>
                   </li>
                   <li class="nav-item" role="presentation">
                         <button class="nav-link" id="mercedes-tab" type="button" role="tab">
                               <img src="img/icons/mercedes.png" />
-                              <span>mercedes</span>
+                              <span>{{ 'vehicle.mercedes' | translate }}</span>
                         </button>
                   </li>
                   <li class="nav-item" role="presentation">
                         <button class="nav-link" id="ford-tab" type="button" role="tab">
                               <img src="img/icons/ford.png" />
-                              <span>ford</span>
+                              <span>{{ 'vehicle.ford' | translate }}</span>
                         </button>
                   </li>
             </ul>
@@ -58,11 +58,11 @@
       <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                   <div>
-                        <h2 class="mb-0 ct_fs_30 ct_fw_600">Search in 196,008 vehicles</h2>
+                        <h2 class="mb-0 ct_fs_30 ct_fw_600">{{ 'vehicle.searchIn196008Vehicles' | translate }}</h2>
                   </div>
 
                   <div>
-                        <a class="ct_color_8f0c1f ct_fs_18 ct_fw_500">Reset</a>
+                        <a class="ct_color_8f0c1f ct_fs_18 ct_fw_500">{{ 'vehicle.reset' | translate }}</a>
                   </div>
             </div>
 
@@ -78,7 +78,7 @@
                               selectedBrandsModal.length - 1){, }
                               }
                               }@else{
-                              {{'MakeModel' | translate}}
+                              {{'vehicle.makeModel' | translate}}
                               }
                         </button>
                         <ng-template #contentTemplate>
@@ -99,7 +99,7 @@
                                           <div class="position-relative">
                                                 <input type="text"
                                                       class="form-control ct_input ct_input_ps_40 ct_input_h_40 ct_border_op_10"
-                                                      placeholder="Search" />
+                                                      [placeholder]="'filters.search' | translate" />
                                                 <i class="fa-solid fa-search ct_input_icon_left"></i>
                                           </div>
                                     </div>
@@ -158,7 +158,8 @@
                                                 <div class="popular-make-all">
                                                       <div class="popular-make-all-box d-flex justify-content-between">
                                                             <div>
-                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Bugatti</p>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">{{
+                                                                        'filters.bugatti' | translate }}</p>
                                                             </div>
                                                             <div>
                                                                   <a href="#">
@@ -169,7 +170,8 @@
                                                 <div class="popular-make-all">
                                                       <div class="popular-make-all-box d-flex justify-content-between">
                                                             <div>
-                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Aston Martin</p>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">{{
+                                                                        'vehicle.astonMartin' | translate }}</p>
                                                             </div>
                                                             <div>
                                                                   <a href="#">
@@ -180,7 +182,8 @@
                                                 <div class="popular-make-all">
                                                       <div class="popular-make-all-box d-flex justify-content-between">
                                                             <div>
-                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Lamborghini</p>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">{{
+                                                                        'vehicle.lamborghini' | translate }}</p>
                                                             </div>
                                                             <div>
                                                                   <a href="#">
@@ -191,7 +194,8 @@
                                                 <div class="popular-make-all">
                                                       <div class="popular-make-all-box d-flex justify-content-between">
                                                             <div>
-                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Mahindra</p>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">{{
+                                                                        'filters.mahindra' | translate }}</p>
                                                             </div>
                                                             <div>
                                                                   <a href="#">
@@ -202,7 +206,8 @@
                                                 <div class="popular-make-all">
                                                       <div class="popular-make-all-box d-flex justify-content-between">
                                                             <div>
-                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Maserati</p>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">{{
+                                                                        'filters.maserati' | translate }}</p>
                                                             </div>
                                                             <div>
                                                                   <a href="#">
@@ -213,7 +218,8 @@
                                                 <div class="popular-make-all">
                                                       <div class="popular-make-all-box d-flex justify-content-between">
                                                             <div>
-                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Skoda</p>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.skoda'
+                                                                        | translate }}</p>
                                                             </div>
                                                             <div>
                                                                   <a href="#">
@@ -224,7 +230,8 @@
                                                 <div class="popular-make-all">
                                                       <div class="popular-make-all-box d-flex justify-content-between">
                                                             <div>
-                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Renault</p>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">{{
+                                                                        'filters.renault' | translate }}</p>
                                                             </div>
                                                             <div>
                                                                   <a href="#">
@@ -236,7 +243,8 @@
                                                 <div class="popular-make-all">
                                                       <div class="popular-make-all-box d-flex justify-content-between">
                                                             <div>
-                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Suzuki</p>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.suzuki'
+                                                                        | translate }}</p>
                                                             </div>
                                                             <div>
                                                                   <a href="#">
@@ -247,7 +255,8 @@
                                                 <div class="popular-make-all">
                                                       <div class="popular-make-all-box d-flex justify-content-between">
                                                             <div>
-                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">Fiat</p>
+                                                                  <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.fiat' |
+                                                                        translate }}</p>
                                                             </div>
                                                             <div>
                                                                   <a href="#">
@@ -284,7 +293,7 @@
                               selectedBrandsModal.length - 1){, }
                               }
                               }@else{
-                              {{'bodyType' | translate}}
+                              {{'vehicle.bodyType' | translate}}
                               }
                         </button>
                         <ng-template #bodyTypecontentTemplate>
@@ -293,10 +302,12 @@
 
                                     <div class="vehicle-modal-header d-flex my-3 justify-content-between">
                                           <div class="">
-                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">Body Type</h3>
+                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">{{ 'vehicle.bodyType' |
+                                                      translate }}</h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">Reset</span>
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                                      translate }}</span>
                                           </div>
                                     </div>
 
@@ -308,7 +319,7 @@
                                                             <input class="form-check-input" type="checkbox"
                                                                   id="wagon" />
                                                             <img src="img/icons/car1.png" class="body-type-img-o" />
-                                                            <label for="wagon">Wagon</label>
+                                                            <label for="wagon">{{ 'vehicle.wagon' | translate }}</label>
                                                       </div>
                                                       <span class="ct_fs_12 ct_fw_300">356</span>
                                                 </div>
@@ -322,7 +333,8 @@
                                                             <input class="form-check-input" type="checkbox"
                                                                   id="convertible" />
                                                             <img src="img/icons/car2.png" class="body-type-img" />
-                                                            <label for="convertible">Convertible</label>
+                                                            <label for="convertible">{{ 'vehicle.convertible' |
+                                                                  translate }}</label>
                                                       </div>
                                                       <span class="ct_fs_12 ct_fw_300">1000</span>
                                                 </div>
@@ -336,7 +348,7 @@
                                                             <input class="form-check-input" type="checkbox" id="sedan"
                                                                   checked />
                                                             <img src="img/icons/car3.png" class="body-type-img" />
-                                                            <label for="sedan">Sedan</label>
+                                                            <label for="sedan">{{ 'vehicle.sedan' | translate }}</label>
                                                       </div>
                                                       <span class="ct_fs_12 ct_fw_300">1000</span>
                                                 </div>
@@ -349,7 +361,8 @@
                                                             class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                             <input class="form-check-input" type="checkbox" id="suv" />
                                                             <img src="img/icons/car4.png" class="body-type-img" />
-                                                            <label for="suv">SUV / Off-road</label>
+                                                            <label for="suv">{{ 'filters.suvOffRoad' | translate
+                                                                  }}</label>
                                                       </div>
                                                       <span class="ct_fs_12 ct_fw_300">1000</span>
                                                 </div>
@@ -363,7 +376,7 @@
                                                             <input class="form-check-input" type="checkbox"
                                                                   id="coupe" />
                                                             <img src="img/icons/car5.png" class="body-type-img" />
-                                                            <label for="coupe">Coupé</label>
+                                                            <label for="coupe">{{ 'filters.coup' | translate }}</label>
                                                       </div>
                                                       <span class="ct_fs_12 ct_fw_300">356</span>
                                                 </div>
@@ -377,7 +390,8 @@
                                                             <input class="form-check-input" type="checkbox" id="pickup"
                                                                   checked />
                                                             <img src="img/icons/car6.png" class="body-type-img" />
-                                                            <label for="pickup">Pick-up</label>
+                                                            <label for="pickup">{{ 'filters.pickUp' | translate
+                                                                  }}</label>
                                                       </div>
                                                       <span class="ct_fs_12 ct_fw_300">356</span>
                                                 </div>
@@ -391,7 +405,8 @@
                                                             <input class="form-check-input" type="checkbox"
                                                                   id="compact" />
                                                             <img src="img/icons/car7.png" class="body-type-img" />
-                                                            <label for="compact">Compact car</label>
+                                                            <label for="compact">{{ 'filters.compactCar' | translate
+                                                                  }}</label>
                                                       </div>
                                                       <span class="ct_fs_12 ct_fw_300">1000</span>
                                                 </div>
@@ -405,7 +420,8 @@
                                                             <input class="form-check-input" type="checkbox"
                                                                   id="minivan" />
                                                             <img src="img/icons/car8.png" class="body-type-img" />
-                                                            <label for="minivan">Minivan</label>
+                                                            <label for="minivan">{{ 'vehicle.minivan' | translate
+                                                                  }}</label>
                                                       </div>
                                                       <span class="ct_fs_12 ct_fw_300">1000</span>
                                                 </div>
@@ -418,7 +434,7 @@
                                                             class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                             <input class="form-check-input" type="checkbox" id="van" />
                                                             <img src="img/icons/car9.png" class="body-type-img" />
-                                                            <label for="van">Van</label>
+                                                            <label for="van">{{ 'vehicle.van' | translate }}</label>
                                                       </div>
                                                       <span class="ct_fs_12 ct_fw_300">356</span>
                                                 </div>
@@ -442,7 +458,7 @@
                               selectedBrandsModal.length - 1){, }
                               }
                               }@else{
-                              {{'PriceRange' | translate}}
+                              {{'filters.priceRange' | translate}}
                               }
                         </button>
                         <ng-template #priceContentTemplate>
@@ -450,11 +466,12 @@
                                     <div class="vehicle-modal-header d-flex my-3 justify-content-between">
                                           <div class="">
                                                 <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">
-                                                      {{'PriceRange' | translate}}
+                                                      {{'filters.priceRange' | translate}}
                                                 </h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">Reset</span>
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                                      translate }}</span>
                                           </div>
                                     </div>
 
@@ -478,7 +495,8 @@
 
                                     <!-- PRICE OF CAR -->
                                     <div class="mb-4">
-                                          <label class="ct_fs_12 ct_fw_400 mb-2">Price of car</label>
+                                          <label class="ct_fs_12 ct_fw_400 mb-2">{{ 'vehicle.priceOfCar' | translate
+                                                }}</label>
 
                                           <div class="d-flex gap-3 mb-2">
                                                 <input class="form-control price-input" value="CHF 10" />
@@ -490,7 +508,8 @@
 
                                     <!-- PRICE OF LEASING RATE -->
                                     <div class="mb-4">
-                                          <label class="ct_fs_12 ct_fw_400 mb-2">Price of leasing rate</label>
+                                          <label class="ct_fs_12 ct_fw_400 mb-2">{{ 'vehicle.priceOfLeasingRate' |
+                                                translate }}</label>
 
                                           <div class="d-flex gap-3 mb-2">
                                                 <input class="form-control price-input" value="CHF 10" />
@@ -503,7 +522,8 @@
                                     <!-- MATCHING VEHICLES -->
                                     <div class="match-box mb-4">
                                           <div class="d-flex justify-content-between mb-2">
-                                                <span class="ct_fs_14 ct_fw_400">Matching vehicles</span>
+                                                <span class="ct_fs_14 ct_fw_400">{{ 'vehicle.matchingVehicles' |
+                                                      translate }}</span>
                                                 <span class="ct_fs_14 ct_fw_400">22,331</span>
                                           </div>
 
@@ -514,16 +534,17 @@
 
                                     <!-- DOWN PAYMENT -->
                                     <div class="mb-4">
-                                          <label class="ct_fs_14 ct_fw_400">Down Payment(%)</label>
+                                          <label class="ct_fs_14 ct_fw_400">{{ 'vehicle.downPayment' | translate
+                                                }}</label>
                                           <select class="form-select custom-select">
-                                                <option>10% of Total Price</option>
-                                                <option>20% of Total Price</option>
-                                                <option>30% of Total Price</option>
+                                                <option>{{ 'vehicle.10OfTotalPrice' | translate }}</option>
+                                                <option>{{ 'vehicle.20OfTotalPrice' | translate }}</option>
+                                                <option>{{ 'vehicle.30OfTotalPrice' | translate }}</option>
                                           </select>
                                     </div>
 
                                     <!-- DONE BUTTON -->
-                                    <button class="ct_red_gradient_btn w-100">Done</button>
+                                    <button class="ct_red_gradient_btn w-100">{{ 'common.done' | translate }}</button>
                               </div>
                         </ng-template>
                   </div>
@@ -539,18 +560,20 @@
                               selectedBrandsModal.length - 1){, }
                               }
                               }@else{
-                              {{'YearRange' | translate}}
+                              {{'filters.yearRange' | translate}}
                               }
                         </button>
                         <ng-template #yearContentTemplate>
                               <div class="search-vehicle-modal-box ct_custom_scroll">
                                     <div class="vehicle-modal-header d-flex my-3 justify-content-between">
                                           <div class="">
-                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">{{'YearRange' | translate}}
+                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">{{'filters.yearRange' |
+                                                      translate}}
                                                 </h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">Reset</span>
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                                      translate }}</span>
                                           </div>
                                     </div>
 
@@ -558,35 +581,47 @@
                                           <div class="">
                                                 <div class="row">
                                                       <div class="col-6">
-                                                            <label class="ct_fs_15 ct_fw_400 mb-2">From </label>
+                                                            <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' |
+                                                                  translate }} </label>
                                                             <select class="form-select"
-                                                                  aria-label="Default select example">
-                                                                  <option selected="">Select Year</option>
-                                                                  <option value="1">One</option>
-                                                                  <option value="2">Two</option>
-                                                                  <option value="3">Three</option>
+                                                                  [attr.aria-label]="'filters.defaultSelectExample' | translate">
+                                                                  <option selected="">{{ 'vehicle.selectYear' |
+                                                                        translate }}</option>
+                                                                  <option value="1">{{ 'filters.one' | translate }}
+                                                                  </option>
+                                                                  <option value="2">{{ 'filters.two' | translate }}
+                                                                  </option>
+                                                                  <option value="3">{{ 'filters.three' | translate }}
+                                                                  </option>
                                                             </select>
                                                       </div>
                                                       <div class="col-6">
-                                                            <label class="ct_fs_15 ct_fw_400 mb-2"> To </label>
+                                                            <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' |
+                                                                  translate }} </label>
                                                             <select class="form-select"
-                                                                  aria-label="Default select example">
-                                                                  <option selected="">Select Year</option>
-                                                                  <option value="1">One</option>
-                                                                  <option value="2">Two</option>
-                                                                  <option value="3">Three</option>
+                                                                  [attr.aria-label]="'filters.defaultSelectExample' | translate">
+                                                                  <option selected="">{{ 'vehicle.selectYear' |
+                                                                        translate }}</option>
+                                                                  <option value="1">{{ 'filters.one' | translate }}
+                                                                  </option>
+                                                                  <option value="2">{{ 'filters.two' | translate }}
+                                                                  </option>
+                                                                  <option value="3">{{ 'filters.three' | translate }}
+                                                                  </option>
                                                             </select>
                                                       </div>
                                                 </div>
                                                 <div class="text-center my-4">
                                                       <h4 class="ct_fs_20 ct_fw_600 mb-0">6,894</h4>
-                                                      <p class="ct_fs_18 ct_fw_400">Cars found</p>
+                                                      <p class="ct_fs_18 ct_fw_400">{{ 'vehicle.carsFound' | translate
+                                                            }}</p>
                                                 </div>
 
                                                 <!-- SELECTED MODEL YEARS -->
                                                 <div class="year-card">
                                                       <div class="d-flex justify-content-between mb-2">
-                                                            <span class="ct_fs_14 ct_fw_400">Selected model years</span>
+                                                            <span class="ct_fs_14 ct_fw_400">{{
+                                                                  'vehicle.selectedModelYears' | translate }}</span>
                                                             <span class="ct_fs_14 ct_fw_400">22,331</span>
                                                       </div>
                                                       <div class="progress custom-progress">
@@ -598,7 +633,8 @@
                                                 <!-- OLDER MODEL YEARS -->
                                                 <div class="year-card">
                                                       <div class="d-flex justify-content-between">
-                                                            <span class="ct_fs_14 ct_fw_400">Older model years</span>
+                                                            <span class="ct_fs_14 ct_fw_400">{{
+                                                                  'vehicle.olderModelYears' | translate }}</span>
                                                             <span class="ct_fs_14 ct_fw_400">22,331</span>
                                                       </div>
                                                 </div>
@@ -606,13 +642,14 @@
                                                 <!-- NEWLY MODEL YEARS -->
                                                 <div class="year-card">
                                                       <div class="d-flex justify-content-between">
-                                                            <span class="ct_fs_14 ct_fw_400">Newly model years</span>
+                                                            <span class="ct_fs_14 ct_fw_400">{{
+                                                                  'vehicle.newlyModelYears' | translate }}</span>
                                                             <span class="ct_fs_14 ct_fw_400">22,331</span>
                                                       </div>
                                                 </div>
                                           </div>
                                     </div>
-                                    <button class="ct_red_gradient_btn mt-4">Done</button>
+                                    <button class="ct_red_gradient_btn mt-4">{{ 'common.done' | translate }}</button>
                               </div>
                         </ng-template>
                   </div>
@@ -628,18 +665,19 @@
                               selectedBrandsModal.length - 1){, }
                               }
                               }@else{
-                              {{'Kilometers' | translate}} (km)
+                              {{'vehicle.kilometers' | translate}} (km)
                               }
                         </button>
                         <ng-template #KMContentTemplate>
                               <div class="search-vehicle-modal-box ct_custom_scroll">
                                     <div class="vehicle-modal-header d-flex my-3 justify-content-between">
                                           <div class="">
-                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">{{'Kilometers' |
+                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">{{'vehicle.kilometers' |
                                                       translate}} (km)</h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">Reset</span>
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                                      translate }}</span>
                                           </div>
                                     </div>
 
@@ -647,35 +685,47 @@
                                           <div class="">
                                                 <div class="row">
                                                       <div class="col-6">
-                                                            <label class="ct_fs_15 ct_fw_400 mb-2">From </label>
+                                                            <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' |
+                                                                  translate }} </label>
                                                             <select class="form-select"
-                                                                  aria-label="Default select example">
-                                                                  <option selected="">km</option>
-                                                                  <option value="1">One</option>
-                                                                  <option value="2">Two</option>
-                                                                  <option value="3">Three</option>
+                                                                  [attr.aria-label]="'filters.defaultSelectExample' | translate">
+                                                                  <option selected="">{{ 'vehicle.km' | translate }}
+                                                                  </option>
+                                                                  <option value="1">{{ 'filters.one' | translate }}
+                                                                  </option>
+                                                                  <option value="2">{{ 'filters.two' | translate }}
+                                                                  </option>
+                                                                  <option value="3">{{ 'filters.three' | translate }}
+                                                                  </option>
                                                             </select>
                                                       </div>
                                                       <div class="col-6">
-                                                            <label class="ct_fs_15 ct_fw_400 mb-2"> To </label>
+                                                            <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' |
+                                                                  translate }} </label>
                                                             <select class="form-select"
-                                                                  aria-label="Default select example">
-                                                                  <option selected="">km</option>
-                                                                  <option value="1">One</option>
-                                                                  <option value="2">Two</option>
-                                                                  <option value="3">Three</option>
+                                                                  [attr.aria-label]="'filters.defaultSelectExample' | translate">
+                                                                  <option selected="">{{ 'vehicle.km' | translate }}
+                                                                  </option>
+                                                                  <option value="1">{{ 'filters.one' | translate }}
+                                                                  </option>
+                                                                  <option value="2">{{ 'filters.two' | translate }}
+                                                                  </option>
+                                                                  <option value="3">{{ 'filters.three' | translate }}
+                                                                  </option>
                                                             </select>
                                                       </div>
                                                 </div>
                                                 <div class="text-center my-4">
                                                       <h4 class="ct_fs_20 ct_fw_600 mb-0">6,894</h4>
-                                                      <p class="ct_fs_18 ct_fw_400">Cars found</p>
+                                                      <p class="ct_fs_18 ct_fw_400">{{ 'vehicle.carsFound' | translate
+                                                            }}</p>
                                                 </div>
 
                                                 <!-- SELECTED MODEL YEARS -->
                                                 <div class="year-card">
                                                       <div class="d-flex justify-content-between mb-2">
-                                                            <span class="ct_fs_14 ct_fw_400">Selected model years</span>
+                                                            <span class="ct_fs_14 ct_fw_400">{{
+                                                                  'vehicle.selectedModelYears' | translate }}</span>
                                                             <span class="ct_fs_14 ct_fw_400">22,331</span>
                                                       </div>
                                                       <div class="progress custom-progress">
@@ -687,7 +737,8 @@
                                                 <!-- OLDER MODEL YEARS -->
                                                 <div class="year-card">
                                                       <div class="d-flex justify-content-between">
-                                                            <span class="ct_fs_14 ct_fw_400">Older model years</span>
+                                                            <span class="ct_fs_14 ct_fw_400">{{
+                                                                  'vehicle.olderModelYears' | translate }}</span>
                                                             <span class="ct_fs_14 ct_fw_400">22,331</span>
                                                       </div>
                                                 </div>
@@ -695,13 +746,14 @@
                                                 <!-- NEWLY MODEL YEARS -->
                                                 <div class="year-card">
                                                       <div class="d-flex justify-content-between">
-                                                            <span class="ct_fs_14 ct_fw_400">Newly model years</span>
+                                                            <span class="ct_fs_14 ct_fw_400">{{
+                                                                  'vehicle.newlyModelYears' | translate }}</span>
                                                             <span class="ct_fs_14 ct_fw_400">22,331</span>
                                                       </div>
                                                 </div>
                                           </div>
                                     </div>
-                                    <button class="ct_red_gradient_btn mt-4">Done</button>
+                                    <button class="ct_red_gradient_btn mt-4">{{ 'common.done' | translate }}</button>
                               </div>
                         </ng-template>
                   </div>
@@ -717,7 +769,7 @@
                               selectedBrandsModal.length - 1){, }
                               }
                               }@else{
-                              {{'Transmission' | translate}}
+                              {{'vehicle.transmission' | translate}}
                               }
                         </button>
                         <ng-template #transmissionContentTemplate>
@@ -727,18 +779,20 @@
                                     <div class="vehicle-modal-header d-flex my-3 justify-content-between">
                                           <div class="">
                                                 <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">
-                                                      {{'Transmission' | translate}}
+                                                      {{'vehicle.transmission' | translate}}
                                                 </h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">Reset</span>
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                                      translate }}</span>
                                           </div>
                                     </div>
 
                                     <div class="collapse-cont-wrapper">
                                           <div class="d-flex justify-content-between align-items-center mb-4">
                                                 <div>
-                                                      <h5 class="ct_fs_16 ct_fw_400">Automatic Transmission</h5>
+                                                      <h5 class="ct_fs_16 ct_fw_400">{{ 'vehicle.automaticTransmission'
+                                                            | translate }}</h5>
                                                 </div>
                                                 <div>
                                                       <img src="img/icons/chevron-up-b.png" data-bs-toggle="collapse"
@@ -757,7 +811,8 @@
                                                                         <input class="form-check-input" type="checkbox"
                                                                               id="wagon" />
 
-                                                                        <label for="wagon">Automatic</label>
+                                                                        <label for="wagon">{{ 'common.automatic' |
+                                                                              translate }}</label>
                                                                   </div>
                                                                   <span class="ct_fs_12 ct_fw_300">356</span>
                                                             </div>
@@ -788,7 +843,8 @@
                                                                         <input class="form-check-input" type="checkbox"
                                                                               id="sedan" checked />
 
-                                                                        <label for="sedan">Automated (AMT)</label>
+                                                                        <label for="sedan">{{ 'vehicle.automatedAmt' |
+                                                                              translate }}</label>
                                                                   </div>
                                                                   <span class="ct_fs_12 ct_fw_300">1000</span>
                                                             </div>
@@ -803,7 +859,8 @@
                                                                         <input class="form-check-input" type="checkbox"
                                                                               id="suv" />
 
-                                                                        <label for="suv">Manual Transmission</label>
+                                                                        <label for="suv">{{ 'vehicle.manualTransmission'
+                                                                              | translate }}</label>
                                                                   </div>
                                                                   <span class="ct_fs_12 ct_fw_300">1000</span>
                                                             </div>
@@ -830,7 +887,7 @@
                               selectedBrandsModal.length - 1){, }
                               }
                               }@else{
-                              {{'PowerOutput' | translate}}
+                              {{'vehicle.powerOutput' | translate}}
                               }
                         </button>
                         <ng-template #powerContentTemplate>
@@ -840,11 +897,12 @@
                                     <div class="vehicle-modal-header d-flex my-3 justify-content-between">
                                           <div class="">
                                                 <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">
-                                                      {{'PowerOutput' | translate}}
+                                                      {{'vehicle.powerOutput' | translate}}
                                                 </h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">Reset</span>
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                                      translate }}</span>
                                           </div>
                                     </div>
 
@@ -865,14 +923,20 @@
                                     </div>
                                     <div class="row mt-4">
                                           <div class="col-6">
-                                                <label class="ct_fs_15 ct_fw_400 mb-2">From </label>
-                                                <input type="text" class="form-control" placeholder="km"
-                                                      aria-label="Username" aria-describedby="basic-addon1" />
+                                                <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }}
+                                                </label>
+                                                <input type="text" class="form-control"
+                                                      [placeholder]="'vehicle.km' | translate"
+                                                      [attr.aria-label]="'filters.username' | translate"
+                                                      aria-describedby="basic-addon1" />
                                           </div>
                                           <div class="col-6">
-                                                <label class="ct_fs_15 ct_fw_400 mb-2"> To </label>
-                                                <input type="text" class="form-control" placeholder="km"
-                                                      aria-label="Username" aria-describedby="basic-addon1" />
+                                                <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }}
+                                                </label>
+                                                <input type="text" class="form-control"
+                                                      [placeholder]="'vehicle.km' | translate"
+                                                      [attr.aria-label]="'filters.username' | translate"
+                                                      aria-describedby="basic-addon1" />
                                           </div>
                                     </div>
 
@@ -894,7 +958,7 @@
                               selectedBrandsModal.length - 1){, }
                               }
                               }@else{
-                              {{'FuelType' | translate}}
+                              {{'vehicle.fuelType' | translate}}
                               }
                         </button>
                         <ng-template #fuelContentTemplate>
@@ -903,11 +967,13 @@
 
                                     <div class="vehicle-modal-header d-flex my-3 justify-content-between">
                                           <div class="">
-                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">{{'FuelType' | translate}}
+                                                <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">{{'vehicle.fuelType' |
+                                                      translate}}
                                                 </h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">Reset</span>
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                                      translate }}</span>
                                           </div>
                                     </div>
 
@@ -916,7 +982,7 @@
                                                 <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                       <input class="form-check-input" type="checkbox" id="wagon" />
 
-                                                      <label for="wagon">Petrol</label>
+                                                      <label for="wagon">{{ 'common.petrol' | translate }}</label>
                                                 </div>
                                                 <span class="ct_fs_12 ct_fw_300">356</span>
                                           </div>
@@ -924,7 +990,7 @@
                                                 <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                       <input class="form-check-input" type="checkbox" id="wagon" />
 
-                                                      <label for="wagon">Diesel</label>
+                                                      <label for="wagon">{{ 'common.diesel' | translate }}</label>
                                                 </div>
                                                 <span class="ct_fs_12 ct_fw_300">356</span>
                                           </div>
@@ -932,7 +998,7 @@
                                                 <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                       <input class="form-check-input" type="checkbox" id="wagon" />
 
-                                                      <label for="wagon">Electric</label>
+                                                      <label for="wagon">{{ 'common.electric' | translate }}</label>
                                                 </div>
                                                 <span class="ct_fs_12 ct_fw_300">356</span>
                                           </div>
@@ -941,7 +1007,8 @@
                                     <div class="collapse-cont-wrapper ps-3 mt-3">
                                           <div class="d-flex justify-content-between align-items-center">
                                                 <div>
-                                                      <h5 class="ct_fs_16 ct_fw_400">Hybrid</h5>
+                                                      <h5 class="ct_fs_16 ct_fw_400">{{ 'common.hybrid' | translate }}
+                                                      </h5>
                                                 </div>
                                                 <div>
                                                       <img src="img/icons/chevron-up-b.png" data-bs-toggle="collapse"
@@ -960,7 +1027,8 @@
                                                                         <input class="form-check-input" type="checkbox"
                                                                               id="wagon" />
 
-                                                                        <label for="wagon">Automatic</label>
+                                                                        <label for="wagon">{{ 'common.automatic' |
+                                                                              translate }}</label>
                                                                   </div>
                                                                   <span class="ct_fs_12 ct_fw_300">356</span>
                                                             </div>
@@ -991,7 +1059,8 @@
                                                                         <input class="form-check-input" type="checkbox"
                                                                               id="sedan" checked />
 
-                                                                        <label for="sedan">Automated (AMT)</label>
+                                                                        <label for="sedan">{{ 'vehicle.automatedAmt' |
+                                                                              translate }}</label>
                                                                   </div>
                                                                   <span class="ct_fs_12 ct_fw_300">1000</span>
                                                             </div>
@@ -1006,7 +1075,8 @@
                                                                         <input class="form-check-input" type="checkbox"
                                                                               id="suv" />
 
-                                                                        <label for="suv">Manual Transmission</label>
+                                                                        <label for="suv">{{ 'vehicle.manualTransmission'
+                                                                              | translate }}</label>
                                                                   </div>
                                                                   <span class="ct_fs_12 ct_fw_300">1000</span>
                                                             </div>
@@ -1018,7 +1088,8 @@
                                     <div class="collapse-cont-wrapper ps-3 mt-3">
                                           <div class="d-flex justify-content-between align-items-center">
                                                 <div>
-                                                      <h5 class="ct_fs_16 ct_fw_400">Gas</h5>
+                                                      <h5 class="ct_fs_16 ct_fw_400">{{ 'filters.gas' | translate }}
+                                                      </h5>
                                                 </div>
                                                 <div>
                                                       <img src="img/icons/chevron-up-b.png" data-bs-toggle="collapse"
@@ -1037,7 +1108,8 @@
                                                                         <input class="form-check-input" type="checkbox"
                                                                               id="wagon" />
 
-                                                                        <label for="wagon">Automatic</label>
+                                                                        <label for="wagon">{{ 'common.automatic' |
+                                                                              translate }}</label>
                                                                   </div>
                                                                   <span class="ct_fs_12 ct_fw_300">356</span>
                                                             </div>
@@ -1068,7 +1140,8 @@
                                                                         <input class="form-check-input" type="checkbox"
                                                                               id="sedan" checked />
 
-                                                                        <label for="sedan">Automated (AMT)</label>
+                                                                        <label for="sedan">{{ 'vehicle.automatedAmt' |
+                                                                              translate }}</label>
                                                                   </div>
                                                                   <span class="ct_fs_12 ct_fw_300">1000</span>
                                                             </div>
@@ -1083,7 +1156,8 @@
                                                                         <input class="form-check-input" type="checkbox"
                                                                               id="suv" />
 
-                                                                        <label for="suv">Manual Transmission</label>
+                                                                        <label for="suv">{{ 'vehicle.manualTransmission'
+                                                                              | translate }}</label>
                                                                   </div>
                                                                   <span class="ct_fs_12 ct_fw_300">1000</span>
                                                             </div>
@@ -1094,7 +1168,8 @@
                                     <div class="collapse-cont-wrapper ps-3 mt-3">
                                           <div class="d-flex justify-content-between align-items-center mb-4">
                                                 <div>
-                                                      <h5 class="ct_fs_16 ct_fw_400">Gas</h5>
+                                                      <h5 class="ct_fs_16 ct_fw_400">{{ 'filters.gas' | translate }}
+                                                      </h5>
                                                 </div>
                                                 <div>
                                                       <img src="img/icons/chevron-up-b.png" data-bs-toggle="collapse"
@@ -1113,7 +1188,8 @@
                                                                         <input class="form-check-input" type="checkbox"
                                                                               id="wagon" />
 
-                                                                        <label for="wagon">Automatic</label>
+                                                                        <label for="wagon">{{ 'common.automatic' |
+                                                                              translate }}</label>
                                                                   </div>
                                                                   <span class="ct_fs_12 ct_fw_300">356</span>
                                                             </div>
@@ -1144,7 +1220,8 @@
                                                                         <input class="form-check-input" type="checkbox"
                                                                               id="sedan" checked />
 
-                                                                        <label for="sedan">Automated (AMT)</label>
+                                                                        <label for="sedan">{{ 'vehicle.automatedAmt' |
+                                                                              translate }}</label>
                                                                   </div>
                                                                   <span class="ct_fs_12 ct_fw_300">1000</span>
                                                             </div>
@@ -1159,7 +1236,8 @@
                                                                         <input class="form-check-input" type="checkbox"
                                                                               id="suv" />
 
-                                                                        <label for="suv">Manual Transmission</label>
+                                                                        <label for="suv">{{ 'vehicle.manualTransmission'
+                                                                              | translate }}</label>
                                                                   </div>
                                                                   <span class="ct_fs_12 ct_fw_300">1000</span>
                                                             </div>
@@ -1177,8 +1255,8 @@
             </div>
             <div class="mt-3">
                   <a routerLink="/filters" class="clear-filters justify-content-end">
-                        <img src="img/icons/filter.svg" alt="More Filters" />
-                        <span class="ct_color_1877F2"> More Filters</span>
+                        <img src="img/icons/filter.svg" [alt]="'vehicle.moreFilters' | translate" />
+                        <span class="ct_color_1877F2"> {{ 'vehicle.moreFilters' | translate }}</span>
                   </a>
             </div>
       </div>
@@ -1270,9 +1348,9 @@
                                           </div>
 
                                           <!-- <div class="d-flex justify-content-between mt-3 ct_mb_35 gap-2">
-                                                <div class="box">Panoramic Sunroof</div>
-                                                <div class="box">Leather Interior</div>
-                                                <div class="box">Adaptive LED Headlights</div>
+                                                <div class="box">{{ 'vehicle.panoramicSunroof' | translate }}</div>
+                                                <div class="box">{{ 'vehicle.leatherInterior' | translate }}</div>
+                                                <div class="box">{{ 'vehicle.adaptiveLedHeadlights' | translate }}</div>
                                           </div> -->
                                     </div>
 

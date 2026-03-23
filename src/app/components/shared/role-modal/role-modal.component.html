@@ -12,29 +12,29 @@
                                     </div>
 
                                     <h5 class="login-popup__title mb-4 ct_fs_32 text-center">
-                                          Choose Your Role
+                                          {{ 'auth.chooseYourRole' | translate }}
                                     </h5>
                               </div>
 
                               <div class="login-popup__roles">
                                     <label class="login-popup__role">
-                                          <input type="radio" (change)="switchRole($event)" name="role" value="buyer"
+                                          <input type="radio" (change)="switchRole($event)" name="role" [value]="'common.buyer' | translate"
                                                 [checked]="role() === 'buyer'" />
                                           <span class="login-popup__text">
                                                 <img src="img/icons/buyer-login.png" class="me-2" />
-                                                I am a Buyer</span>
+                                                {{ 'common.iAmABuyer' | translate }}</span>
                                     </label>
 
                                     <label class="login-popup__role">
-                                          <input type="radio" (change)="switchRole($event)" name="role" value="seller"
+                                          <input type="radio" (change)="switchRole($event)" name="role" [value]="'common.seller' | translate"
                                                 [checked]="role() === 'seller'" />
                                           <img src="img/icons/seller.png" class="me-2" />
-                                          <span class="login-popup__text">I am a Seller</span>
+                                          <span class="login-popup__text">{{ 'common.iAmASeller' | translate }}</span>
                                     </label>
                               </div>
 
                               <button class="btn login-popup__btn mt-4" (click)="modal.openSignInModal()">
-                                    Continue
+                                    {{ 'common.continue' | translate }}
                               </button>
                         </div>
 

@@ -28,17 +28,17 @@
                                           Number of Additional Slots
                                     </label>
                                     <input type="number" class="form-control ct_grey_input"
-                                          placeholder="Enter number of slots (e.g. 32)" />
+                                          [placeholder]="'listing.enterNumberOfSlotsEG32' | translate" />
                               </div>
 
                               <!-- Message -->
                               <div class="mb-3">
                                     <label class="ct_fs_15 ct_fw_500 mb-2">
                                           Message to Admin
-                                          <span class="ct_color_666666">(Optional)</span>
+                                          <span class="ct_color_666666">{{ 'vehicle.optional' | translate }}</span>
                                     </label>
                                     <textarea class="form-control ct_grey_input" rows="4"
-                                          placeholder="Write here..."></textarea>
+                                          [placeholder]="'common.writeHere' | translate"></textarea>
                               </div>
 
                               <!-- Info -->
@@ -58,7 +58,7 @@
                               <!-- Button -->
                               <a class="ct_submit_pill_btn" href="choose-listing-plan.html">
                                     <span class="ct_btn_icon"> → </span>
-                                    <span class="ct_btn_text">Submit Request</span>
+                                    <span class="ct_btn_text">{{ 'common.submitRequest' | translate }}</span>
                               </a>
                         </div>
                   </div>

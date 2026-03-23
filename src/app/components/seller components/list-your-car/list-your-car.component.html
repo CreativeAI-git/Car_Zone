@@ -5,53 +5,53 @@
                   <div class="col-lg-4 stepper-step-side">
                         <div class="stepper-sticky-wrapper">
                               <div class="">
-                                    <h5 class="ct_fw_600 mb-4">1. Find vehicle</h5>
+                                    <h5 class="ct_fw_600 mb-4">{{ 'vehicle.1FindVehicle' | translate }}</h5>
                                     <ul class="ct_stepper">
                                           <li [class]="{ 'active': currentFormStep === 1 }">
                                                 <span class="ct_step_circle">1</span>
                                                 <div>
-                                                      <h6>Find vehicle</h6>
-                                                      <p>Select how you want find your vehicle</p>
+                                                      <h6>{{ 'vehicle.findVehicle' | translate }}</h6>
+                                                      <p>{{ 'vehicle.selectHowYouWantFindYourVehicle' | translate }}</p>
                                                 </div>
                                           </li>
 
                                           <li [class]="{ 'active': currentFormStep === 2 }">
                                                 <span class="ct_step_circle">2</span>
                                                 <div>
-                                                      <h6>Add vehicle data</h6>
-                                                      <p>Add required vehicle information</p>
+                                                      <h6>{{ 'vehicle.addVehicleData' | translate }}</h6>
+                                                      <p>{{ 'vehicle.addRequiredVehicleInformation' | translate }}</p>
                                                 </div>
                                           </li>
 
                                           <li [class]="{ 'active': currentFormStep === 3 }">
                                                 <span class="ct_step_circle">3</span>
                                                 <div>
-                                                      <h6>Set Pricing & Leasing</h6>
-                                                      <p>Set your car price and leasing options</p>
+                                                      <h6>{{ 'vehicle.setPricingAndLeasing' | translate }}</h6>
+                                                      <p>{{ 'vehicle.setYourCarPriceAndLeasingOptions' | translate }}</p>
                                                 </div>
                                           </li>
 
                                           <li [class]="{ 'active': currentFormStep === 4 }">
                                                 <span class="ct_step_circle">4</span>
                                                 <div>
-                                                      <h6>Billing & Contact Details</h6>
-                                                      <p>Add your billing address and contact information</p>
+                                                      <h6>{{ 'vehicle.billingAndContactDetails' | translate }}</h6>
+                                                      <p>{{ 'vehicle.addYourBillingAddressAndContactInformation' | translate }}</p>
                                                 </div>
                                           </li>
 
                                           <li [class]="{ 'active': currentFormStep === 5 }">
                                                 <span class="ct_step_circle">5</span>
                                                 <div>
-                                                      <h6>Upload Media & Reels</h6>
-                                                      <p>Add photos, videos, and a short car reel</p>
+                                                      <h6>{{ 'vehicle.uploadMediaAndReels' | translate }}</h6>
+                                                      <p>{{ 'vehicle.addPhotosVideosAndAShortCarReel' | translate }}</p>
                                                 </div>
                                           </li>
 
                                           <li [class]="{ 'active': currentFormStep === 6 }">
                                                 <span class="ct_step_circle">6</span>
                                                 <div>
-                                                      <h6>Preview & Submit</h6>
-                                                      <p>Confirm your listing and proceed</p>
+                                                      <h6>{{ 'vehicle.previewAndSubmit' | translate }}</h6>
+                                                      <p>{{ 'vehicle.confirmYourListingAndProceed' | translate }}</p>
                                                 </div>
                                           </li>
                                     </ul>
@@ -102,7 +102,7 @@
                                                                   <label class="ct_fw_400 ct_fs_17 mb-2">Enter Vehicle
                                                                         Registration Number</label>
                                                                   <input type="text" class="form-control"
-                                                                        placeholder="Enter VRN" />
+                                                                        [placeholder]="'vehicle.enterVrn2' | translate" />
                                                             </div>
 
                                                             <div class="row mb-4">
@@ -112,12 +112,12 @@
                                                                   </label>
                                                                   <div class="col-md-6">
                                                                         <select class="form-select">
-                                                                              <option>Select month</option>
+                                                                              <option>{{ 'vehicle.selectMonth' | translate }}</option>
                                                                         </select>
                                                                   </div>
                                                                   <div class="col-md-6 mt-3 mt-md-0">
                                                                         <select class="form-select">
-                                                                              <option>Select year</option>
+                                                                              <option>{{ 'filters.selectYear' | translate }}</option>
                                                                         </select>
                                                                   </div>
                                                             </div>
@@ -133,9 +133,9 @@
                                                                               Name
                                                                         </label>
                                                                         <input type="text" class="form-control"
-                                                                              placeholder="Enter brand name"
+                                                                              [placeholder]="'common.enterBrandName' | translate"
                                                                               formControlName="brandName" />
-                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage(('BrandName'
+                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage(('common.brandName'
                                                                               | translate),
                                                                               carFormOne.get("brandName"))}}</small>
                                                                   </div>
@@ -143,9 +143,9 @@
                                                                         <label class="ct_fw_400 ct_fs_17 mb-2">
                                                                               Car Model & Variant</label>
                                                                         <input type="text" class="form-control"
-                                                                              placeholder="Enter Model"
+                                                                              [placeholder]="'vehicle.enterModel2' | translate"
                                                                               formControlName="carModel" />
-                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage(('CarModel'
+                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.carModel'
                                                                               | translate),
                                                                               carFormOne.get("carModel"))}}</small>
                                                                   </div>
@@ -158,7 +158,7 @@
                                                                   </label>
                                                                   <div class="col-md-6">
                                                                         <nz-select class="form-select"
-                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              nzPlaceHolder="{{'common.select' | translate}}"
                                                                               [nzShowSearch]="true"
                                                                               formControlName="registration_month">
                                                                               @for (item of months; track $index) {
@@ -181,13 +181,13 @@
                                                                               }
                                                                         </nz-select>
                                                                         <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                              'Registration Month'
+                                                                              'vehicle.registrationMonth'
                                                                               | translate),
                                                                               carFormOne.get("registration_month"))}}</small>
                                                                   </div>
                                                                   <div class="col-md-6 mt-3 mt-md-0">
                                                                         <nz-select class="form-select"
-                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              nzPlaceHolder="{{'common.select' | translate}}"
                                                                               [nzShowSearch]="true"
                                                                               formControlName="registration_year">
                                                                               @for (item of years; track $index) {
@@ -209,7 +209,7 @@
                                                                               }
                                                                         </nz-select>
                                                                         <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                              'Registration Year'
+                                                                              'vehicle.registrationYear'
                                                                               | translate),
                                                                               carFormOne.get("registration_year"))}}</small>
                                                                   </div>
@@ -244,7 +244,7 @@
                                                                               class="spec-label ct_fs_14 ct_color_666666">
                                                                               Body type
                                                                         </div>
-                                                                        <div class="spec-value ct_fs_16">Limousine</div>
+                                                                        <div class="spec-value ct_fs_16">{{ 'vehicle.limousine' | translate }}</div>
                                                                   </div>
 
                                                                   <div class="col-md-6">
@@ -252,7 +252,7 @@
                                                                               class="spec-label ct_fs_14 ct_color_666666">
                                                                               Transmission
                                                                         </div>
-                                                                        <div class="spec-value ct_fs_16">Automatic</div>
+                                                                        <div class="spec-value ct_fs_16">{{ 'common.automatic' | translate }}</div>
                                                                   </div>
 
                                                                   <div class="col-md-6">
@@ -260,7 +260,7 @@
                                                                               class="spec-label ct_fs_14 ct_color_666666">
                                                                               Fuel
                                                                         </div>
-                                                                        <div class="spec-value ct_fs_16">Petrol</div>
+                                                                        <div class="spec-value ct_fs_16">{{ 'common.petrol' | translate }}</div>
                                                                   </div>
 
                                                                   <div class="col-md-6">
@@ -268,7 +268,7 @@
                                                                               class="spec-label ct_fs_14 ct_color_666666">
                                                                               Drive
                                                                         </div>
-                                                                        <div class="spec-value ct_fs_16">All-wheel</div>
+                                                                        <div class="spec-value ct_fs_16">{{ 'vehicle.allWheel' | translate }}</div>
                                                                   </div>
 
                                                                   <div class="col-md-6">
@@ -350,7 +350,7 @@
                                                                               class="spec-label ct_fs_14 ct_color_666666">
                                                                               CO₂ emissions (g/km)
                                                                         </div>
-                                                                        <div class="spec-value">Limousine</div>
+                                                                        <div class="spec-value">{{ 'vehicle.limousine' | translate }}</div>
                                                                   </div>
 
                                                                   <div class="col-6">
@@ -358,7 +358,7 @@
                                                                               class="spec-label ct_fs_14 ct_color_666666">
                                                                               Fuel consumption
                                                                         </div>
-                                                                        <div class="spec-value ct_fs_16">Automatic</div>
+                                                                        <div class="spec-value ct_fs_16">{{ 'common.automatic' | translate }}</div>
                                                                   </div>
 
                                                                   <div class="col-12">
@@ -425,10 +425,10 @@
                                                                               <div class="col-12">
                                                                                     <input type="text"
                                                                                           class="form-control"
-                                                                                          placeholder="Enter here"
+                                                                                          [placeholder]="'vehicle.enterHere' | translate"
                                                                                           formControlName="brandName" />
                                                                               </div>
-                                                                              <small class="text-danger">{{validationErrorService.getErrorMessage(('BrandName'
+                                                                              <small class="text-danger">{{validationErrorService.getErrorMessage(('common.brandName'
                                                                                     | translate),
                                                                                     carFormOne.get("brandName"))}}</small>
                                                                         </div>
@@ -448,10 +448,10 @@
                                                                               <div class="col-12">
                                                                                     <input type="text"
                                                                                           class="form-control"
-                                                                                          placeholder="Enter here"
+                                                                                          [placeholder]="'vehicle.enterHere' | translate"
                                                                                           formControlName="version" />
                                                                               </div>
-                                                                              <small class="text-danger">{{validationErrorService.getErrorMessage(('Version'
+                                                                              <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.version'
                                                                                     | translate),
                                                                                     carFormOne.get("version"))}}</small>
                                                                         </div>
@@ -469,10 +469,10 @@
                                                                               <div class="col-12">
                                                                                     <input type="text"
                                                                                           class="form-control"
-                                                                                          placeholder="Enter here"
+                                                                                          [placeholder]="'vehicle.enterHere' | translate"
                                                                                           formControlName="carModel" />
                                                                               </div>
-                                                                              <small class="text-danger">{{validationErrorService.getErrorMessage(('CarModel'
+                                                                              <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.carModel'
                                                                                     | translate),
                                                                                     carFormOne.get("carModel"))}}</small>
                                                                         </div>
@@ -486,7 +486,7 @@
                                                                               </h5>
                                                                         </div>
                                                                         <nz-select class="form-control ct_input"
-                                                                              nzPlaceHolder="{{ 'Select' | translate }}"
+                                                                              nzPlaceHolder="{{ 'common.select' | translate }}"
                                                                               formControlName="fuel_type_id">
                                                                               @for (group of fuelTypes; track $index) {
                                                                               <nz-option-group [nzLabel]="group.label">
@@ -511,7 +511,7 @@
                                                                               }
                                                                         </nz-select>
                                                                         <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                              'Fuel Type'
+                                                                              'vehicle.fuelType'
                                                                               | translate),
                                                                               carFormOne.get("fuel_type_id"))}}</small>
                                                                   </div>
@@ -523,7 +523,7 @@
                                                                         </div>
                                                                         <nz-select
                                                                               class="form-control ct_input ct_custom_select"
-                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              nzPlaceHolder="{{'common.select' | translate}}"
                                                                               formControlName="transmission_id">
                                                                               @for (item of transmissions; track $index)
                                                                               {
@@ -546,7 +546,7 @@
                                                                               </nz-option>
                                                                               }
                                                                         </nz-select>
-                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage(('Transmission'
+                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.transmission'
                                                                               | translate),
                                                                               carFormOne.get("transmission_id"))}}</small>
                                                                   </div>
@@ -560,7 +560,7 @@
                                                                         </div>
                                                                         <nz-select
                                                                               class="form-control ct_input ct_custom_select"
-                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              nzPlaceHolder="{{'common.select' | translate}}"
                                                                               formControlName="drive_type_id">
                                                                               @for (item of driveTypes; track $index)
                                                                               {
@@ -584,7 +584,7 @@
                                                                               }
                                                                         </nz-select>
                                                                         <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                              'Drive Type'
+                                                                              'vehicle.driveType'
                                                                               | translate),
                                                                               carFormOne.get("drive_type_id"))}}</small>
                                                                   </div>
@@ -597,7 +597,7 @@
                                                                               </h5>
                                                                         </div>
                                                                         <nz-select class="form-control ct_input"
-                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              nzPlaceHolder="{{'common.select' | translate}}"
                                                                               formControlName="body_type_id">
                                                                               @for (item of bodyTypes; track
                                                                               $index) {
@@ -625,7 +625,7 @@
                                                                               }
                                                                         </nz-select>
                                                                         <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                              'Body Style' | translate),
+                                                                              'vehicle.bodyStyle' | translate),
                                                                               carFormOne.get("body_type_id"))}}</small>
                                                                   </div>
                                                             </div>
@@ -636,7 +636,7 @@
                                                       <div
                                                             class="d-flex justify-content-between align-items-center mb-4">
                                                             <div>
-                                                                  <h5 class="ct_fs_17 ct_fw_500 mb-0">Condition</h5>
+                                                                  <h5 class="ct_fs_17 ct_fw_500 mb-0">{{ 'vehicle.condition' | translate }}</h5>
                                                             </div>
                                                             <div>
                                                                   <img src="img/icons/chevron-up-b.png"
@@ -657,7 +657,7 @@
                                                                               </h5>
                                                                         </div>
                                                                         <nz-select class="form-control ct_input"
-                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              nzPlaceHolder="{{'common.select' | translate}}"
                                                                               formControlName="carCondition">
                                                                               @for (item of conditions; track
                                                                               $index) {
@@ -681,7 +681,7 @@
                                                                               }
                                                                         </nz-select>
                                                                         <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                              'Car Condition'| translate),
+                                                                              'vehicle.carCondition'| translate),
                                                                               carFormOne.get("carCondition"))}}</small>
                                                                   </div>
 
@@ -694,7 +694,7 @@
                                                                                     <input type="text" placeholder="00"
                                                                                           class="form-control ct_input"
                                                                                           formControlName="carMileage" />
-                                                                                    <span class="ct_show_eye">km</span>
+                                                                                    <span class="ct_show_eye">{{ 'vehicle.km' | translate }}</span>
                                                                               </div>
                                                                         </div>
                                                                   </div>
@@ -705,7 +705,7 @@
                                                                               </h5>
                                                                         </div>
                                                                         <nz-select class="form-control ct_input"
-                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              nzPlaceHolder="{{'common.select' | translate}}"
                                                                               formControlName="state_id">
                                                                               @for (item of carState; track
                                                                               $index) {
@@ -729,7 +729,7 @@
                                                                               }
                                                                         </nz-select>
                                                                         <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                              'State'| translate),
+                                                                              'profile.state'| translate),
                                                                               carFormOne.get("state_id"))}}</small>
                                                                   </div>
 
@@ -740,7 +740,7 @@
                                                                               </h5>
                                                                         </div>
                                                                         <nz-select class="form-control ct_input"
-                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              nzPlaceHolder="{{'common.select' | translate}}"
                                                                               formControlName="mfk_warrenty_id">
                                                                               @for (item of warrantyList; track
                                                                               $index) {
@@ -764,7 +764,7 @@
                                                                               }
                                                                         </nz-select>
                                                                         <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                              'Warranty'| translate),
+                                                                              'vehicle.warranty'| translate),
                                                                               carFormOne.get("mfk_warrenty_id"))}}</small>
                                                                   </div>
 
@@ -792,7 +792,7 @@
                                                                               </h5>
                                                                         </div>
                                                                         <nz-select class="form-control ct_input"
-                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              nzPlaceHolder="{{'common.select' | translate}}"
                                                                               formControlName="warranty_type_id">
                                                                               @for (item of warrantyTypes; track
                                                                               $index) {
@@ -844,7 +844,7 @@
                                                                               </h5>
                                                                         </div>
                                                                         <nz-select class="form-control ct_input"
-                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              nzPlaceHolder="{{'common.select' | translate}}"
                                                                               formControlName="exterior_color_id">
                                                                               @for (item of carColors; track
                                                                               $index) {
@@ -871,7 +871,7 @@
                                                                               }
                                                                         </nz-select>
                                                                         <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                              'Vhicle color'| translate),
+                                                                              'vehicle.vehicleColor'| translate),
                                                                               carFormOne.get("exterior_color_id"))}}</small>
                                                                   </div>
                                                                   <div class="col-sm-6 mt-3">
@@ -881,7 +881,7 @@
                                                                               </h5>
                                                                         </div>
                                                                         <nz-select class="form-control ct_input"
-                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              nzPlaceHolder="{{'common.select' | translate}}"
                                                                               formControlName="interior_color_id">
                                                                               @for (item of carColors; track
                                                                               $index) {
@@ -908,7 +908,7 @@
                                                                               }
                                                                         </nz-select>
                                                                         <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                              'Vhicle color'| translate),
+                                                                              'vehicle.vehicleColor'| translate),
                                                                               carFormOne.get("interior_color_id"))}}</small>
                                                                   </div>
                                                                   <div
@@ -964,7 +964,7 @@
                                                                   <div class="position-relative">
                                                                         <input type="text"
                                                                               class="form-control ct_input ct_input_ps_40 ct_input_h_40 ct_border_op_10"
-                                                                              placeholder="Search" />
+                                                                              [placeholder]="'filters.search' | translate" />
                                                                         <i
                                                                               class="fa-solid fa-search ct_input_icon_left"></i>
                                                                   </div>
@@ -1228,7 +1228,7 @@
                                                                               <div class="col-12">
                                                                                     <input type="text"
                                                                                           class="form-control"
-                                                                                          placeholder="Enter here"
+                                                                                          [placeholder]="'vehicle.enterHere' | translate"
                                                                                           formControlName="height_mm" />
                                                                               </div>
                                                                         </div>
@@ -1246,7 +1246,7 @@
                                                                               <div class="col-12">
                                                                                     <input type="text"
                                                                                           class="form-control"
-                                                                                          placeholder="Enter here"
+                                                                                          [placeholder]="'vehicle.enterHere' | translate"
                                                                                           formControlName="width_mm" />
                                                                               </div>
                                                                         </div>
@@ -1264,7 +1264,7 @@
                                                                               <div class="col-12">
                                                                                     <input type="text"
                                                                                           class="form-control"
-                                                                                          placeholder="Enter here"
+                                                                                          [placeholder]="'vehicle.enterHere' | translate"
                                                                                           formControlName="length_mm" />
                                                                               </div>
                                                                         </div>
@@ -1285,7 +1285,7 @@
                                                                               <div class="col-12">
                                                                                     <input type="text"
                                                                                           class="form-control"
-                                                                                          placeholder="Enter here"
+                                                                                          [placeholder]="'vehicle.enterHere' | translate"
                                                                                           formControlName="braked_towing_capacity_kg" />
                                                                               </div>
                                                                         </div>
@@ -1297,7 +1297,7 @@
                                                                               </h5>
                                                                         </div>
                                                                         <nz-select class="form-control ct_input"
-                                                                              nzPlaceHolder="{{'Select' | translate}}"
+                                                                              nzPlaceHolder="{{'common.select' | translate}}"
                                                                               formControlName="energy_efficiency">
                                                                               @for (item of energyEfficiencyOptions;
                                                                               track
@@ -1336,7 +1336,7 @@
                                                                               <div class="col-12">
                                                                                     <input type="text"
                                                                                           class="form-control"
-                                                                                          placeholder="Enter here"
+                                                                                          [placeholder]="'vehicle.enterHere' | translate"
                                                                                           formControlName="type_approval" />
                                                                               </div>
                                                                         </div>
@@ -1356,7 +1356,7 @@
                                                                               <div class="col-12">
                                                                                     <input type="text"
                                                                                           class="form-control"
-                                                                                          placeholder="Enter here"
+                                                                                          [placeholder]="'vehicle.enterHere' | translate"
                                                                                           formControlName="vin_number" />
                                                                               </div>
                                                                         </div>
@@ -1374,7 +1374,7 @@
                                                                               <div class="col-12">
                                                                                     <input type="text"
                                                                                           class="form-control"
-                                                                                          placeholder="Enter here"
+                                                                                          [placeholder]="'vehicle.enterHere' | translate"
                                                                                           formControlName="registration_master_number" />
                                                                               </div>
                                                                         </div>
@@ -1392,7 +1392,7 @@
                                                       <div
                                                             class="d-flex justify-content-between align-items-center mb-2">
                                                             <div>
-                                                                  <h5 class="ct_fs_17 ct_fw_500 mb-0">Detailed Data</h5>
+                                                                  <h5 class="ct_fs_17 ct_fw_500 mb-0">{{ 'vehicle.detailedData' | translate }}</h5>
                                                             </div>
                                                             <div>
                                                                   <img src="img/icons/chevron-up-b.png"
@@ -1471,7 +1471,7 @@
                                                                   <div class="col-12">
                                                                         <textarea class="form-control mt-2 mb-2"
                                                                               id="exampleFormControlTextarea1" rows="3"
-                                                                              placeholder="Enter here"
+                                                                              [placeholder]="'vehicle.enterHere' | translate"
                                                                               formControlName="additional_title_999">
 </textarea>
                                                                   </div>
@@ -1484,7 +1484,7 @@
                                                                         </div>
                                                                         <textarea class="form-control mt-1 mb-5"
                                                                               id="exampleFormControlTextarea1" rows="3"
-                                                                              placeholder="Enter here"
+                                                                              [placeholder]="'vehicle.enterHere' | translate"
                                                                               formControlName="description">
                           </textarea>
                                                                   </div>
@@ -1501,15 +1501,15 @@
                                           <div class="">
                                                 <div class="col-lg-12 mt-3">
                                                       <div>
-                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">Selling Price</h5>
+                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'vehicle.sellingPrice' | translate }}</h5>
                                                             <div class="position-relative">
-                                                                  <input type="text" placeholder="Enter Amount"
+                                                                  <input type="text" [placeholder]="'payment.enterAmount' | translate"
                                                                         class="form-control ct_input"
                                                                         formControlName="selling_price" />
                                                                   <span class="ct_show_eye">CHF</span>
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                  'Selling price'
+                                                                  'payment.sellingPrice'
                                                                   | translate),
                                                                   carFormOne.get("selling_price"))}}</small>
                                                       </div>
@@ -1517,15 +1517,15 @@
 
                                                 <div class="col-lg-12 mt-3">
                                                       <div>
-                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">New Price</h5>
+                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'vehicle.newPrice' | translate }}</h5>
                                                             <div class="position-relative">
-                                                                  <input type="text" placeholder="Enter Amount"
+                                                                  <input type="text" [placeholder]="'payment.enterAmount' | translate"
                                                                         class="form-control ct_input"
                                                                         formControlName="new_price" />
                                                                   <span class="ct_show_eye">CHF</span>
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                  'New price'
+                                                                  'payment.newPrice'
                                                                   | translate),
                                                                   carFormOne.get("new_price"))}}</small>
                                                       </div>
@@ -1559,11 +1559,11 @@
                                                                   Select banking partner
                                                             </h5>
                                                       </div>
-                                                      <input type="text" placeholder="Enter here"
+                                                      <input type="text" [placeholder]="'vehicle.enterHere' | translate"
                                                             class="form-control ct_input"
                                                             formControlName="banking_partner" />
                                                       <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                            'Banking partner'
+                                                            'payment.bankingPartner'
                                                             | translate),
                                                             carFormOne.get("banking_partner"))}}</small>
                                                 </div>
@@ -1580,7 +1580,7 @@
                                                                   <span class="ct_show_eye">(%)</span>
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                  'Annual interest rate'
+                                                                  'payment.annualInterestRate'
                                                                   | translate),
                                                                   carFormOne.get("annual_interest_rate"))}}</small>
                                                       </div>
@@ -1588,15 +1588,15 @@
 
                                                 <div class="col-lg-12 mt-3">
                                                       <div>
-                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">Residual value:</h5>
+                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'vehicle.residualValue' | translate }}</h5>
                                                             <div class="position-relative">
                                                                   <input type="text" placeholder="60"
                                                                         class="form-control ct_input"
                                                                         formControlName="residual_value" />
-                                                                  <span class="ct_show_eye">month</span>
+                                                                  <span class="ct_show_eye">{{ 'common.month' | translate }}</span>
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                  'Residual value'
+                                                                  'payment.residualValue'
                                                                   | translate),
                                                                   carFormOne.get("residual_value"))}}</small>
                                                       </div>
@@ -1613,10 +1613,10 @@
                                                                   <input type="text" placeholder="4500"
                                                                         class="form-control ct_input"
                                                                         formControlName="leasing_value" />
-                                                                  <span class="ct_show_eye">month</span>
+                                                                  <span class="ct_show_eye">{{ 'common.month' | translate }}</span>
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                  'Leasing value'
+                                                                  'payment.leasingValue'
                                                                   | translate),
                                                                   carFormOne.get("leasing_value"))}}</small>
                                                       </div>
@@ -1632,28 +1632,28 @@
                                           <div class="row">
                                                 <div class="col-lg-6 mt-3">
                                                       <div>
-                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">Full Name</h5>
+                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'vehicle.fullName' | translate }}</h5>
                                                             <div class="position-relative">
-                                                                  <input type="text" placeholder="Enter here"
+                                                                  <input type="text" [placeholder]="'vehicle.enterHere' | translate"
                                                                         class="form-control"
                                                                         formControlName="first_name" />
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                  'First name'
+                                                                  'profile.firstName'
                                                                   | translate),
                                                                   carFormOne.get("first_name"))}}</small>
                                                       </div>
                                                 </div>
                                                 <div class="col-lg-6 mt-3">
                                                       <div>
-                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">Last Name</h5>
+                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'vehicle.lastName' | translate }}</h5>
                                                             <div class="position-relative">
-                                                                  <input type="text" placeholder="Enter here"
+                                                                  <input type="text" [placeholder]="'vehicle.enterHere' | translate"
                                                                         class="form-control"
                                                                         formControlName="last_name" />
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                  'Last name'
+                                                                  'profile.lastName'
                                                                   | translate),
                                                                   carFormOne.get("last_name"))}}</small>
                                                       </div>
@@ -1661,41 +1661,41 @@
 
                                                 <div class="col-lg-4 mt-3">
                                                       <div>
-                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">Street</h5>
+                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'profile.street' | translate }}</h5>
                                                             <div class="position-relative">
-                                                                  <input type="text" placeholder="Enter here"
+                                                                  <input type="text" [placeholder]="'vehicle.enterHere' | translate"
                                                                         class="form-control" formControlName="street" />
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                  'Street'
+                                                                  'profile.street'
                                                                   | translate),
                                                                   carFormOne.get("street"))}}</small>
                                                       </div>
                                                 </div>
                                                 <div class="col-lg-4 mt-3">
                                                       <div>
-                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">House Number</h5>
+                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'profile.houseNumber' | translate }}</h5>
                                                             <div class="position-relative">
-                                                                  <input type="text" placeholder="Enter here"
+                                                                  <input type="text" [placeholder]="'vehicle.enterHere' | translate"
                                                                         class="form-control"
                                                                         formControlName="house_number" />
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                  'House Number'
+                                                                  'profile.houseNumber'
                                                                   | translate),
                                                                   carFormOne.get("house_number"))}}</small>
                                                       </div>
                                                 </div>
                                                 <div class="col-lg-4 mt-3">
                                                       <div>
-                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">Postal code</h5>
+                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'profile.postalCode' | translate }}</h5>
                                                             <div class="position-relative">
-                                                                  <input type="text" placeholder="Enter here"
+                                                                  <input type="text" [placeholder]="'vehicle.enterHere' | translate"
                                                                         class="form-control"
                                                                         formControlName="postal_code" />
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                  'Postal Code'
+                                                                  'profile.postalCode'
                                                                   | translate),
                                                                   carFormOne.get("postal_code"))}}</small>
                                                       </div>
@@ -1703,26 +1703,26 @@
 
                                                 <div class="col-lg-4 mt-3">
                                                       <div>
-                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">P.O. Box</h5>
+                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'profile.poBox' | translate }}</h5>
                                                             <div class="position-relative">
-                                                                  <input type="text" placeholder="Enter here"
+                                                                  <input type="text" [placeholder]="'vehicle.enterHere' | translate"
                                                                         class="form-control" formControlName="po_box" />
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                  'P.O. Box'
+                                                                  'profile.poBox'
                                                                   | translate),
                                                                   carFormOne.get("po_box"))}}</small>
                                                       </div>
                                                 </div>
                                                 <div class="col-lg-4 mt-3">
                                                       <div>
-                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">City</h5>
+                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'profile.city' | translate }}</h5>
                                                             <div class="position-relative">
-                                                                  <input type="text" placeholder="Enter here"
+                                                                  <input type="text" [placeholder]="'vehicle.enterHere' | translate"
                                                                         class="form-control" formControlName="city" />
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                  'City'
+                                                                  'profile.city'
                                                                   | translate),
                                                                   carFormOne.get("city"))}}</small>
                                                       </div>
@@ -1733,12 +1733,12 @@
                                                                   Country <span class="ct_color_8f0c1f">*</span>
                                                             </h5>
                                                             <div class="position-relative">
-                                                                  <input type="text" placeholder="Enter here"
+                                                                  <input type="text" [placeholder]="'vehicle.enterHere' | translate"
                                                                         class="form-control"
                                                                         formControlName="country" />
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                  'Country'
+                                                                  'profile.country'
                                                                   | translate),
                                                                   carFormOne.get("country"))}}</small>
                                                       </div>
@@ -1764,7 +1764,7 @@
                                                                   </ngx-intl-tel-input>
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                  'Phone number'
+                                                                  'profile.phoneNumber'
                                                                   | translate),
                                                                   carFormOne.get("phone_number"))}}</small>
                                                       </div>
@@ -1782,7 +1782,7 @@
                                                       </label>
                                                       <div class="upload-box text-center py-5 ct_bg_none"
                                                             (click)="carImageInput.click()">
-                                                            <img src="img/icons/camera.png" alt="camera" />
+                                                            <img src="img/icons/camera.png" [alt]="'vehicle.camera' | translate" />
 
                                                             <!-- Label triggers file input -->
                                                             <div>
@@ -1804,7 +1804,7 @@
                                                             *ngIf="carImagePreviews.length > 0">
                                                             <div class="img-item"
                                                                   *ngFor="let item of carImagePreviews; let i = index">
-                                                                  <img [src]="item.url" alt="Car image preview" />
+                                                                  <img [src]="item.url" [alt]="'vehicle.carImagePreview' | translate" />
                                                                   <button type="button" class="img-remove"
                                                                         (click)="removeCarImage(i)">
                                                                         <i class="fa-solid fa-trash"></i>
@@ -1820,7 +1820,7 @@
 
                                                       <div class="upload-box text-center py-5 ct_bg_none"
                                                             id="videoUploadBox" (click)="carReelInput.click()">
-                                                            <img src="img/icons/video-grey.png" alt="video" />
+                                                            <img src="img/icons/video-grey.png" [alt]="'vehicle.video' | translate" />
 
                                                             <div>
                                                                   <label class="upload-label mt-2 ct_fs_15 ct_fw_500">
@@ -1859,7 +1859,7 @@
 
                                                       <div class="upload-box text-center py-5 ct_bg_none"
                                                             (click)="reelThumbnailInput.click()">
-                                                            <img src="img/icons/camera.png" alt="camera" />
+                                                            <img src="img/icons/camera.png" [alt]="'vehicle.camera' | translate" />
 
                                                             <div>
                                                                   <label class="upload-label mt-2 ct_fs_15 ct_fw_500">
@@ -1879,7 +1879,7 @@
                                                             *ngIf="reelThumbnailPreviewUrl">
                                                             <div class="img-item position-relative">
                                                                   <img [src]="reelThumbnailPreviewUrl"
-                                                                        alt="Reel thumbnail preview" />
+                                                                        [alt]="'vehicle.reelThumbnailPreview' | translate" />
                                                                   <button type="button" class="img-remove"
                                                                         (click)="removeReelThumbnail()">
                                                                         <i class="fa-solid fa-trash"></i>
@@ -1917,17 +1917,17 @@
                                                                   </div>
                                                             </div>
                                                       </div>
-                                                      <button type="button" class="ct_preview-btn">Preview</button>
+                                                      <button type="button" class="ct_preview-btn">{{ 'vehicle.preview' | translate }}</button>
                                                 </div>
 
                                                 <app-car-preview [carData]="lastIntertedData"></app-car-preview>
 
                                                 <!-- <hr class="mb-4" />
                                                 <div class="mb-4">
-                                                      <label class="ct_fs_16">Coupon-Code</label>
+                                                      <label class="ct_fs_16">{{ 'vehicle.couponCode' | translate }}</label>
                                                       <div class="d-flex gap-3">
                                                             <input type="text" class="form-control ct_h_40" />
-                                                            <button class="ct_redeem_btn">Redeem</button>
+                                                            <button class="ct_redeem_btn">{{ 'vehicle.redeem' | translate }}</button>
                                                       </div>
                                                 </div> -->
                                                 <!-- <div class="ct_color_8f0c1f ct_fs_18 ct_fw_700 mb-3">
@@ -1965,16 +1965,16 @@
                                                 </div>
                                                 <div class="ct_right_main_box mt-4">
                                                       <div class="mb-3">
-                                                            <label class="form-label ct_fs_15">Card number</label>
+                                                            <label class="form-label ct_fs_15">{{ 'payment.cardNumber' | translate }}</label>
                                                             <input type="text" class="form-control"
-                                                                  placeholder="XXX-XXX-XXXX" />
+                                                                  [placeholder]="'vehicle.xxxXxxXxxx' | translate" />
                                                       </div>
 
                                                       <div class="row mb-4">
                                                             <div class="col-6">
-                                                                  <label class="form-label ct_fs_15">End Date</label>
+                                                                  <label class="form-label ct_fs_15">{{ 'vehicle.endDate' | translate }}</label>
                                                                   <input type="text" class="form-control"
-                                                                        placeholder="YY/MM" />
+                                                                        [placeholder]="'vehicle.yyMm' | translate" />
                                                             </div>
                                                             <div class="col-6">
                                                                   <label class="form-label ct_fs_15">Security
@@ -2002,7 +2002,7 @@
                                                       <div
                                                             class="d-flex justify-content-between align-items-center w-100">
                                                             <div class="form-check gap-3 align-items-center">
-                                                                  <div class="ct_fw_600 ct_fs_17">Twint</div>
+                                                                  <div class="ct_fw_600 ct_fs_17">{{ 'vehicle.twint' | translate }}</div>
                                                                   <small class="text-muted">
                                                                         Use TWINT for faster checkout
                                                                   </small>
@@ -2023,7 +2023,7 @@
                                                       <div
                                                             class="d-flex justify-content-between align-items-center w-100">
                                                             <div class="ps-0 form-check gap-3 align-items-center">
-                                                                  <div class="ct_fw_600 ct_fs_17">Apple Pay</div>
+                                                                  <div class="ct_fw_600 ct_fs_17">{{ 'vehicle.applePay' | translate }}</div>
                                                                   <small class="text-muted">
                                                                         Pay instantly with Apple Pay
                                                                   </small>
@@ -2047,7 +2047,7 @@
                                                       <div
                                                             class="d-flex justify-content-between align-items-center w-100">
                                                             <div class="ps-0 form-check gap-3 align-items-center">
-                                                                  <div class="ct_fw_600 ct_fs_17">Samsung Pay</div>
+                                                                  <div class="ct_fw_600 ct_fs_17">{{ 'vehicle.samsungPay' | translate }}</div>
                                                                   <small class="text-muted">
                                                                         Quick & secure payment
                                                                   </small>
@@ -2070,7 +2070,7 @@
                                                       <div
                                                             class="d-flex justify-content-between align-items-center w-100">
                                                             <div class="ps-0 form-check gap-3 align-items-center">
-                                                                  <div class="ct_fw_600 ct_fs_17">Google Pay</div>
+                                                                  <div class="ct_fw_600 ct_fs_17">{{ 'vehicle.googlePay' | translate }}</div>
                                                                   <small class="text-muted">
                                                                         Fast checkout using Google Pay
                                                                   </small>
@@ -2087,7 +2087,7 @@
                                                 <button id="paybtn" class="ct_submit_pill_btn" data-bs-toggle="modal"
                                                       data-bs-target="#paymentSuccessModal">
                                                       <span class="ct_btn_icon">→</span>
-                                                      <span id="btnText">Pay</span>
+                                                      <span id="btnText">{{ 'vehicle.pay' | translate }}</span>
                                                 </button>
                                           </div> -->
                                     </div>
@@ -2097,20 +2097,20 @@
                                           <button type="button" id="prevBtn" class="ct_edit_pill_btn"
                                                 (click)="prevStep()">
                                                 <span class="ct_btn_icon">←</span>
-                                                <span id="btnText">Previous</span>
+                                                <span id="btnText">{{ 'vehicle.previous' | translate }}</span>
                                           </button>
                                           }@else {
                                           <button type="button" id="prevBtn" class="ct_edit_pill_btn ps-4"
                                                 (click)="currentFormStep = 2">
-                                                <span id="btnText">Enter Manually</span>
+                                                <span id="btnText">{{ 'common.enterManually' | translate }}</span>
                                           </button>
                                           }
                                           <button type="submit" id="nextBtn" class="ct_submit_pill_btn">
                                                 <span class="ct_btn_icon">→</span>
                                                 @if(!loading){
-                                                @if(currentFormStep < 6){ <span id="btnText">Next</span>
+                                                @if(currentFormStep < 6){ <span id="btnText">{{ 'common.next' | translate }}</span>
                                                       }@else {
-                                                      <span id="btnText">Submit</span>
+                                                      <span id="btnText">{{ 'common.submit' | translate }}</span>
                                                       }
                                                       }@else {
                                                       <span class="spinner-border spinner-border-sm me-2" role="status"

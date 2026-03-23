@@ -3,7 +3,7 @@
             <div class="container">
                   <a class="navbar-brand fw-bold main-logo" routerLink="/">
                         <img src="img/black-logo.png" alt="" class="logo-default" />
-                        <img src="img/logo.png" class="logo-sticky " alt="Sticky Logo" />
+                        <img src="img/logo.png" class="logo-sticky " [alt]="'common.stickyLogo' | translate" />
                   </a>
                   <ng-container *appRole="'buyer'">
                         <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex">
@@ -15,10 +15,11 @@
                                     </li>
                                     <li class="nav-item">
                                           <a class="nav-link ct_fs_16 ct_fw_600" routerLinkActive="active"
-                                                routerLink="/reels">Reels</a>
+                                                routerLink="/reels">{{ 'media.reels' | translate }}</a>
                                     </li>
                                     <li class="nav-item">
-                                          <a class="nav-link ct_fs_16 ct_fw_600" rou routerLink="/chats">Chats</a>
+                                          <a class="nav-link ct_fs_16 ct_fw_600" rou routerLink="/chats">{{ 'chat.chat'
+                                                | translate }}</a>
                                     </li>
                               </ul>
                         </div>
@@ -33,19 +34,19 @@
                                     </li> -->
                                     <li class="nav-item">
                                           <a class="nav-link nav-link ct_fs_18 ct_fw_400" routerLinkActive="active"
-                                                routerLink="/my-listings">My Listings</a>
+                                                routerLink="/my-listings">{{ 'listing.myListings' | translate }}</a>
                                     </li>
                                     <li class="nav-item">
                                           <a class="nav-link nav-link ct_fs_18 ct_fw_400" routerLinkActive="active"
-                                                routerLink="/chats">Chats</a>
+                                                routerLink="/chats">{{ 'chat.chat' | translate }}</a>
                                     </li>
                                     <li class="nav-item">
                                           <a class="nav-link nav-link ct_fs_18 ct_fw_400" routerLinkActive="active"
-                                                routerLink="/calendar">Calendar</a>
+                                                routerLink="/calendar">{{ 'common.calendar' | translate }}</a>
                                     </li>
                                     <li class="nav-item">
                                           <a class="nav-link nav-link ct_fs_18 ct_fw_400" routerLinkActive="active"
-                                                routerLink="/schedule-request">Schedule request</a>
+                                                routerLink="/schedule-request">{{ 'common.scheduleRequest' | translate }}</a>
                                     </li>
                               </ul>
                         </div>
@@ -73,7 +74,7 @@
                                                 <!-- Notification Item -->
                                                 <a class="dropdown-item notification-item">
                                                       <div>
-                                                            <strong>New Buyer Message:</strong>
+                                                            <strong>{{ 'common.newBuyerMessage' | translate }}</strong>
                                                             <div class="text-muted small">
                                                                   You've received a new message from a potential buyer.
                                                             </div>
@@ -84,19 +85,19 @@
                                                 </a>
                                                 <a class="dropdown-item notification-item">
                                                       <div>
-                                                            <strong>Listing Expiry Warning:</strong>
+                                                            <strong>{{ 'common.listingExpiryWarning' | translate }}</strong>
                                                             <div class="text-muted small">
                                                                   Your listing for VW Golf expires in 3 days. Renew now
                                                                   to keep it active.
                                                             </div>
                                                       </div>
                                                       <div class="text-end">
-                                                            <span class="time">12m</span> <span class="dot"></span>
+                                                            <span class="time">{{ 'common.12m' | translate }}</span> <span class="dot"></span>
                                                       </div>
                                                 </a>
                                                 <a class="dropdown-item notification-item">
                                                       <div>
-                                                            <strong>New Buyer Message:</strong>
+                                                            <strong>{{ 'common.newBuyerMessage' | translate }}</strong>
                                                             <div class="text-muted small">
                                                                   You've received a new message from a potential buyer.
                                                             </div>
@@ -107,7 +108,7 @@
                                                 </a>
                                                 <a class="dropdown-item notification-item">
                                                       <div>
-                                                            <strong>New Buyer Message:</strong>
+                                                            <strong>{{ 'common.newBuyerMessage' | translate }}</strong>
                                                             <div class="text-muted small">
                                                                   You've received a new message from a potential buyer.
                                                             </div>
@@ -124,7 +125,7 @@
                                                 style="width: 20px; margin-right: 5px;">
                                           <button class="dropdown-toggle  py-2 mt-0" data-bs-toggle="dropdown"
                                                 aria-expanded="false">{{getLanguage(selectedLang)}}</button>
-                                          <!-- <ul class="dropdown-menu">
+                                          <ul class="dropdown-menu">
                                                 <li>
                                                       <a class="dropdown-item" (click)="onCustomLangChange('en')">
                                                             <img src="img/USA.png" alt=""
@@ -153,7 +154,7 @@
                                                             Italian
                                                       </a>
                                                 </li>
-                                          </ul> -->
+                                          </ul>
                                     </div>
                                     @if(authService.isLogedIn()){
                                     <div class="">
@@ -167,7 +168,7 @@
                                                       <h5 class="ct_fs_15 ct_fw_400 mb-0">{{userData?.fullName}}</h5>
                                                       <h5 class="ct_fs_12 ct_fw_400 mb-0 ct_color_grey">
                                                             {{ role() === 'buyer' ?
-                                                            ('Buyer' | translate) : ('Seller' | translate)
+                                                            ('auth.buyer' | translate) : ('auth.seller' | translate)
                                                             }}
                                                       </h5>
                                                 </div>
@@ -204,8 +205,8 @@
       </div>
 </div>
 
-<button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
-      <img id="themeLightIcon" src="img/icons/light.png" alt="Light mode" />
-      <img id="themeDarkIcon" src="img/icons/dark.png" alt="Dark mode" />
+<button class="theme-toggle" onclick="toggleTheme()" [title]="'common.toggleTheme' | translate">
+      <img id="themeLightIcon" src="img/icons/light.png" [alt]="'common.lightMode' | translate" />
+      <img id="themeDarkIcon" src="img/icons/dark.png" [alt]="'common.darkMode' | translate" />
 </button>
 <app-role-modal />

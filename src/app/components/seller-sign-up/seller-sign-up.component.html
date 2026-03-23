@@ -4,90 +4,90 @@
                   <div class="col-xxl-6 col-xl-7 col-lg-8 mx-auto">
                         <div class="ct_login_white_bg ct_custom_scroll">
                               <img src="img/carzone_logo_black.png" alt="">
-                              <h4 class="ct_fw_700 ct_fs_28 text-white text-center mb-3">{{'WelcomeTo' | translate}}
-                                    <span class="ct_text_red">CarZone</span> </h4>
+                              <h4 class="ct_fw_700 ct_fs_28 text-white text-center mb-3">{{'auth.welcomeTo' | translate}}
+                                    <span class="ct_text_red">{{ 'auth.carzone' | translate }}</span> </h4>
                               <form [formGroup]="Form" (ngSubmit)="onSubmit()">
                                     @if(formStep === 1){
                                     <div class="form-group mb-4">
-                                          <label for="" class="mb-2 ct_fw_600 text-white">{{'FullName' |
+                                          <label for="" class="mb-2 ct_fw_600 text-white">{{'profile.fullName' |
                                                 translate}}</label>
                                           <input type="text" class="form-control ct_input"
-                                                placeholder="{{'Enter' | translate}} {{'FullName' | translate}}"
+                                                placeholder="{{'common.enter' | translate}} {{'profile.fullName' | translate}}"
                                                 formControlName="fullName">
-                                          <small class="text-danger">{{validationErrorService.getErrorMessage(('FullName'
+                                          <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.fullName'
                                                 | translate), Form.get("fullName"))}}</small>
                                     </div>
                                     <div class="row">
                                           <div class="col-md-6">
                                                 <div class="form-group mb-4">
-                                                      <label for="" class="mb-2 ct_fw_600 text-white">{{'Email' |
+                                                      <label for="" class="mb-2 ct_fw_600 text-white">{{'auth.email' |
                                                             translate}}</label>
                                                       <input type="email" class="form-control ct_input"
-                                                            placeholder="{{'Enter' | translate}} {{'Email' | translate}}"
+                                                            placeholder="{{'common.enter' | translate}} {{'auth.email' | translate}}"
                                                             formControlName="email">
-                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('Email'
+                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('auth.email'
                                                             | translate), Form.get("email"))}}</small>
                                                 </div>
                                           </div>
                                           <div class="col-md-6">
                                                 <div class="form-group mb-4">
-                                                      <label for="" class="mb-2 ct_fw_600 text-white">{{'PhoneNumber' |
+                                                      <label for="" class="mb-2 ct_fw_600 text-white">{{'profile.phoneNumber' |
                                                             translate}}</label>
                                                       <ngx-intl-tel-input name="phone"
                                                             [cssClass]="'form-control ct_input w-full ps-5 ct_pe_90'"
                                                             [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
                                                             [searchCountryFlag]="true"
-                                                            [customPlaceholder]="('Enter' | translate) + ' ' + ('PhoneNumber' | translate)"
+                                                            [customPlaceholder]="('common.enter' | translate) + ' ' + ('profile.phoneNumber' | translate)"
                                                             [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
                                                             [selectFirstCountry]="false"
                                                             [selectedCountryISO]="selectedCountry" [maxLength]="15"
                                                             [phoneValidation]="true" formControlName="phoneNumber">
                                                       </ngx-intl-tel-input>
-                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('PhoneNumber'
+                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.phoneNumber'
                                                             | translate), Form.get("phoneNumber"))}}</small>
                                                 </div>
                                           </div>
                                           <div class="col-md-6">
                                                 <div class="form-group mb-4">
-                                                      <label for="" class="mb-2 ct_fw_600 text-white">{{'Password' |
+                                                      <label for="" class="mb-2 ct_fw_600 text-white">{{'auth.password' |
                                                             translate}}</label>
                                                       <div class="position-relative">
                                                             <input [type]="isShowPassword ? 'text' : 'password'"
                                                                   class="form-control ct_input"
-                                                                  placeholder="{{'Enter' | translate}} {{'Password' | translate}}"
+                                                                  placeholder="{{'common.enter' | translate}} {{'auth.password' | translate}}"
                                                                   formControlName="password">
                                                             <i class="fa-solid ct_show_eye"
                                                                   [ngClass]="isShowPassword ? 'fa-eye' : 'fa-eye-slash'"
                                                                   (click)="isShowPassword = !isShowPassword"></i>
                                                       </div>
-                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('Password'
+                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('auth.password'
                                                             | translate), Form.get("password"))}}</small>
                                                 </div>
                                           </div>
                                           <div class="col-md-6">
                                                 <div class="form-group mb-4">
                                                       <label for=""
-                                                            class="mb-2 ct_fw_600 text-white">{{'ConfirmPassword' |
+                                                            class="mb-2 ct_fw_600 text-white">{{'auth.confirmPassword' |
                                                             translate}}</label>
                                                       <div class="position-relative">
                                                             <input [type]="isShowConfirmPassword ? 'text' : 'password'"
                                                                   class="form-control ct_input"
-                                                                  placeholder="{{'Enter' | translate}} {{'ConfirmPassword' | translate}}"
+                                                                  placeholder="{{'common.enter' | translate}} {{'auth.confirmPassword' | translate}}"
                                                                   formControlName="confirmPassword">
                                                             <i class="fa-solid ct_show_eye"
                                                                   [ngClass]="isShowConfirmPassword ? 'fa-eye' : 'fa-eye-slash'"
                                                                   (click)="isShowConfirmPassword = !isShowConfirmPassword"></i>
                                                       </div>
-                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('ConfirmPassword'
+                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('auth.confirmPassword'
                                                             | translate), Form.get("confirmPassword"))}}</small>
                                                       <small *ngIf="Form.errors?.['passwordMismatch'] && !Form.controls['confirmPassword'].errors?.['required']"
-                                                            class="text-danger">{{'passwordNotMatch' |
+                                                            class="text-danger">{{'auth.passwordNotMatch' |
                                                             translate}}</small>
                                                 </div>
                                           </div>
                                           <div class="col-md-12">
                                                 <div class="form-group mb-4">
-                                                      <label for="" class="mb-2 ct_fw_600 text-white">{{'TypeOfSeller' |
+                                                      <label for="" class="mb-2 ct_fw_600 text-white">{{'profile.typeOfSeller' |
                                                             translate}}</label>
                                                       <div
                                                             class="d-flex justify-content-between align-items-center gap-3">
@@ -95,14 +95,14 @@
                                                                   class="d-flex align-items-center gap-3 custom_border"
                                                                   [ngClass]="Form.get('typeOfSeller')?.value == 'personal' ? 'active' : ''">
                                                                   <input type="radio" class="cutom_radio_input"
-                                                                        formControlName="typeOfSeller" value="personal"
+                                                                        formControlName="typeOfSeller" [value]="'auth.personal' | translate"
                                                                         id="flexRadioDefault1" />
                                                                   <div class="d-grid">
                                                                         <span class="text-white ct_fw_500">
-                                                                              {{'PrivateSeller' | translate}}
+                                                                              {{'profile.privateSeller' | translate}}
                                                                         </span>
                                                                         <span class="text-white fs_10">
-                                                                              {{'ForIndividualSellers' | translate}}
+                                                                              {{'profile.forIndividualSellers' | translate}}
                                                                         </span>
                                                                   </div>
                                                             </label>
@@ -110,14 +110,14 @@
                                                                   class="d-flex align-items-center gap-3 custom_border gap-3"
                                                                   [ngClass]="Form.get('typeOfSeller')?.value == 'business' ? 'active' : ''">
                                                                   <input type="radio" class="cutom_radio_input"
-                                                                        formControlName="typeOfSeller" value="business"
+                                                                        formControlName="typeOfSeller" [value]="'auth.business' | translate"
                                                                         id="flexRadioDefault2" />
                                                                   <div class="d-grid">
                                                                         <span class="text-white ct_fw_500">
-                                                                              {{'OfficialSeller' | translate}}
+                                                                              {{'profile.officialSeller' | translate}}
                                                                         </span>
                                                                         <span class="text-white fs_10">
-                                                                              {{'ForBusinesses' | translate}}
+                                                                              {{'profile.forBusinesses' | translate}}
                                                                         </span>
                                                                   </div>
                                                             </label>
@@ -126,12 +126,12 @@
                                           </div>
                                           @if(!lat && !lng){
                                           <div class="form-group mb-4">
-                                                <label for="" class="mb-2 ct_fw_600 text-white">{{'Address' |
+                                                <label for="" class="mb-2 ct_fw_600 text-white">{{'profile.address' |
                                                       translate}}</label>
                                                 <textarea type="text" class="form-control ct_input h-auto"
-                                                      placeholder="{{'Enter' | translate}} {{'Address' | translate}}"
+                                                      placeholder="{{'common.enter' | translate}} {{'profile.address' | translate}}"
                                                       formControlName="address"></textarea>
-                                                <small class="text-danger">{{validationErrorService.getErrorMessage(('Address'
+                                                <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.address'
                                                       | translate), Form.get("address"))}}</small>
                                           </div>
                                           }
@@ -140,7 +140,7 @@
                                     <div class="row">
                                           <div class="col-md-12">
                                                 <div class="form-group mb-4">
-                                                      <label for="" class="mb-2 ct_fw_600 text-white">{{'LegalEntity' |
+                                                      <label for="" class="mb-2 ct_fw_600 text-white">{{'profile.legalEntity' |
                                                             translate}}</label>
                                                       <div
                                                             class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
@@ -149,11 +149,11 @@
                                                                   [ngClass]="Form.get('legalForm')?.value == 'Sole Proprietorship' ? 'active' : ''">
                                                                   <input type="radio" class="cutom_radio_input"
                                                                         formControlName="legalForm"
-                                                                        value="Sole Proprietorship"
+                                                                        [value]="'auth.soleProprietorship' | translate"
                                                                         id="flexRadioDefault1" />
                                                                   <div class="d-grid">
                                                                         <span class="text-white ct_fw_500">
-                                                                              {{'SoleProprietorship' | translate}}
+                                                                              {{'profile.soleProprietorship' | translate}}
                                                                         </span>
                                                                   </div>
                                                             </label>
@@ -162,11 +162,11 @@
                                                                   [ngClass]="Form.get('legalForm')?.value == 'Limited Liability Company (GmbH)' ? 'active' : ''">
                                                                   <input type="radio" class="cutom_radio_input"
                                                                         formControlName="legalForm"
-                                                                        value="Limited Liability Company (GmbH)"
+                                                                        [value]="'auth.limitedLiabilityCompanyGmbh' | translate"
                                                                         id="flexRadioDefault2" />
                                                                   <div class="d-grid">
                                                                         <span class="text-white ct_fw_500">
-                                                                              {{'LimitedLiabilityCompany' | translate}}
+                                                                              {{'profile.limitedLiabilityCompany' | translate}}
                                                                         </span>
                                                                   </div>
                                                             </label>
@@ -175,11 +175,11 @@
                                                                   [ngClass]="Form.get('legalForm')?.value == 'Corporation (AG)' ? 'active' : ''">
                                                                   <input type="radio" class="cutom_radio_input"
                                                                         formControlName="legalForm"
-                                                                        value="Corporation (AG)"
+                                                                        [value]="'profile.corporation' | translate"
                                                                         id="flexRadioDefault3" />
                                                                   <div class="d-grid">
                                                                         <span class="text-white ct_fw_500">
-                                                                              {{'Corporation' | translate}}
+                                                                              {{'profile.corporation' | translate}}
                                                                         </span>
                                                                   </div>
                                                             </label>
@@ -188,56 +188,56 @@
                                           </div>
                                           <div class="col-md-6">
                                                 <div class="form-group mb-4">
-                                                      <label for="" class="mb-2 ct_fw_600 text-white">{{'CompanyName' |
+                                                      <label for="" class="mb-2 ct_fw_600 text-white">{{'profile.companyName' |
                                                             translate}}</label>
                                                       <input type="text" class="form-control ct_input"
-                                                            placeholder="{{'Enter' | translate}} {{'CompanyName' | translate}}"
+                                                            placeholder="{{'common.enter' | translate}} {{'profile.companyName' | translate}}"
                                                             formControlName="companyName">
-                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('CompanyName'
+                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.companyName'
                                                             | translate), Form.get("companyName"))}}</small>
                                                 </div>
                                           </div>
                                           <div class="col-md-6">
                                                 <div class="form-group mb-4">
                                                       <label for="" class="mb-2 ct_fw_600 text-white">
-                                                            {{'VAT' | translate}}</label>
+                                                            {{'profile.vat' | translate}}</label>
                                                       <input type="text" class="form-control ct_input"
-                                                            placeholder="{{'Enter' | translate}} {{'VAT' | translate}}"
+                                                            placeholder="{{'common.enter' | translate}} {{'profile.vat' | translate}}"
                                                             formControlName="vat">
-                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('VAT'
+                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.vat'
                                                             | translate), Form.get("vat"))}}</small>
                                                 </div>
                                           </div>
                                           <div class="col-md-12">
                                                 <div class="form-group mb-4">
-                                                      <label for="" class="mb-2 ct_fw_600 text-white">{{'CompanyAddress'
+                                                      <label for="" class="mb-2 ct_fw_600 text-white">{{'profile.companyAddress'
                                                             | translate}}</label>
                                                       <textarea type="text" class="form-control ct_input h-auto"
-                                                            placeholder="{{'Enter' | translate}} {{'CompanyAddress' | translate}}"
+                                                            placeholder="{{'common.enter' | translate}} {{'profile.companyAddress' | translate}}"
                                                             formControlName="companyAddress"></textarea>
-                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('CompanyAddress'
+                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.companyAddress'
                                                             | translate), Form.get("companyAddress"))}}</small>
                                                 </div>
                                           </div>
                                           <div class="col-md-6">
                                                 <div class="form-group mb-4">
                                                       <label for="" class="mb-2 ct_fw_600 text-white">
-                                                            {{'City' | translate}}</label>
+                                                            {{'profile.city' | translate}}</label>
                                                       <input type="text" class="form-control ct_input"
-                                                            placeholder="{{'Enter' | translate}} {{'City' | translate}}"
+                                                            placeholder="{{'common.enter' | translate}} {{'profile.city' | translate}}"
                                                             formControlName="city">
-                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('City'
+                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.city'
                                                             | translate), Form.get("city"))}}</small>
                                                 </div>
                                           </div>
                                           <div class="col-md-6">
                                                 <div class="form-group mb-4">
                                                       <label for="" class="mb-2 ct_fw_600 text-white">
-                                                            {{'Pincode' | translate}}</label>
+                                                            {{'profile.pincode' | translate}}</label>
                                                       <input type="text" class="form-control ct_input"
-                                                            placeholder="{{'Enter' | translate}} {{'Pincode' | translate}}"
+                                                            placeholder="{{'common.enter' | translate}} {{'profile.pincode' | translate}}"
                                                             formControlName="pincode">
-                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('Pincode'
+                                                      <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.pincode'
                                                             | translate), Form.get("pincode"))}}</small>
                                                 </div>
                                           </div>
@@ -247,7 +247,7 @@
                                     <div class="text-center mt-4">
                                           @if(formStep === 1 && Form.get('typeOfSeller')?.value == 'business'){
                                           <button type="button" class="ct_red_btn px-5"
-                                                (click)="nextStep()">{{'Continue' | translate}}</button>
+                                                (click)="nextStep()">{{'common.continue' | translate}}</button>
                                           }@else {
                                           <app-submit-button [text]="'Sign Up'" [class]="'ct_red_btn px-5'"
                                                 [isLoading]="loading"></app-submit-button>
@@ -256,23 +256,23 @@
                               </form>
 
                               <div class="ct_sign_in_text mt-4">
-                                    <p class="mb-0">Or Sign Up With</p>
+                                    <p class="mb-0">{{ 'auth.orSignUpWith' | translate }}</p>
                               </div>
                               <div class="d-flex align-items-center justify-content-center gap-3">
                                     <button class="ct_google_btn">
                                           <img src="img/devicon_google.png" alt="">
-                                          <h6 class="mb-0 ct_fs_16">Google</h6>
+                                          <h6 class="mb-0 ct_fs_16">{{ 'auth.google' | translate }}</h6>
                                     </button>
                                     <button class="ct_google_btn">
                                           <img src="img/logos_facebook.png" alt="">
-                                          <h6 class="mb-0 ct_fs_16">Facebook</h6>
+                                          <h6 class="mb-0 ct_fs_16">{{ 'auth.facebook' | translate }}</h6>
                                     </button>
 
                               </div>
                               <p class="mb-0 text-white text-center mt-3"><span class="ct_text_op_6">
-                                          {{'AlreadyHaveAnAccount' | translate}}? </span> <a routerLink="/login"
+                                          {{'auth.alreadyHaveAnAccount' | translate}}? </span> <a routerLink="/login"
                                           class="ct_text_red ct_fw_600">
-                                          {{'LogIn' | translate}}</a></p>
+                                          {{'auth.logIn' | translate}}</a></p>
 
                         </div>
                   </div>
@@ -298,90 +298,92 @@
                   <div class="login-popup__roles">
                         <div class="">
                               <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
-                                    {{'FullName' | translate | titlecase}}
+                                    {{'profile.fullName' | translate | titlecase}}
                               </label>
                               <input type="text" class="form-control"
-                                    placeholder="{{'Enter' | translate}} {{'FullName' | translate}}"
-                                    aria-label="Username" aria-describedby="basic-addon1" formControlName="fullName" />
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('FullName'
+                                    placeholder="{{'common.enter' | translate}} {{'profile.fullName' | translate}}"
+                                    [attr.aria-label]="'filters.username' | translate" aria-describedby="basic-addon1"
+                                    formControlName="fullName" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.fullName'
                                     | translate), Form.get("fullName"))}}</small>
                         </div>
                         <div class="">
                               <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
-                                    {{'Email' | translate | titlecase}}
+                                    {{'auth.email' | translate | titlecase}}
                               </label>
                               <input type="text" class="form-control"
-                                    placeholder="{{'Enter' | translate}} {{'Email' | translate | lowercase}}"
-                                    aria-label="Username" aria-describedby="basic-addon1" formControlName="email" />
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('Email'
+                                    placeholder="{{'common.enter' | translate}} {{'auth.email' | translate | lowercase}}"
+                                    [attr.aria-label]="'filters.username' | translate" aria-describedby="basic-addon1"
+                                    formControlName="email" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('auth.email'
                                     | translate), Form.get("email"))}}</small>
                         </div>
                         <div class="">
                               <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
-                                    {{'WhatsAppNumber' | translate | titlecase}}
+                                    {{'profile.whatsAppNumber' | translate | titlecase}}
                               </label>
                               <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
                                     [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
                                     [searchCountryFlag]="true"
-                                    [customPlaceholder]="('Enter' | translate) + ' ' + ('WhatsAppNumber' | translate)"
+                                    [customPlaceholder]="('common.enter' | translate) + ' ' + ('profile.whatsAppNumber' | translate)"
                                     [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
                                     [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
                                     [phoneValidation]="true" formControlName="whatsappNumber">
                               </ngx-intl-tel-input>
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('WhatsAppNumber'
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.whatsAppNumber'
                                     | translate), Form.get("whatsappNumber"))}}</small>
                               <div class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center">
                                     <input class="form-check-input" type="checkbox"
                                           formControlName="isWhatsappSameAsPhone" id="flexCheckDefault" />
-                                    <label for="flexCheckDefault">Also phone number </label>
+                                    <label for="flexCheckDefault">{{ 'auth.alsoPhoneNumber' | translate }} </label>
                               </div>
                         </div>
                         <div class="">
                               <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
-                                    {{'PhoneNumber' | translate | titlecase}}
+                                    {{'profile.phoneNumber' | translate | titlecase}}
                               </label>
                               <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
                                     [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
                                     [searchCountryFlag]="true"
-                                    [customPlaceholder]="('Enter' | translate) + ' ' + ('PhoneNumber' | translate)"
+                                    [customPlaceholder]="('common.enter' | translate) + ' ' + ('profile.phoneNumber' | translate)"
                                     [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
                                     [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
                                     [phoneValidation]="true" formControlName="phoneNumber">
                               </ngx-intl-tel-input>
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('PhoneNumber'
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.phoneNumber'
                                     | translate | titlecase), Form.get("phoneNumber"))}}</small>
                         </div>
                         <div class="">
                               <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
-                                    {{'Password' | translate | titlecase}}
+                                    {{'auth.password' | translate | titlecase}}
                               </label>
                               <div class="position-relative">
                                     <input [type]="isShowPassword ? 'text' : 'password'" class="form-control"
-                                          placeholder="{{'Enter' | translate}} {{'Password' | translate}}"
+                                          placeholder="{{'common.enter' | translate}} {{'auth.password' | translate}}"
                                           formControlName="password">
                                     <i class="fa-solid ct_show_eye"
                                           [ngClass]="isShowPassword ? 'fa-eye' : 'fa-eye-slash'"
                                           (click)="isShowPassword = !isShowPassword"></i>
                               </div>
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('Password'
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('auth.password'
                                     | translate), Form.get("password"))}}</small>
                         </div>
                         <div class="">
                               <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
-                                    {{'ConfirmPassword' | translate | titlecase}}
+                                    {{'auth.confirmPassword' | translate | titlecase}}
                               </label>
                               <div class="position-relative">
                                     <input [type]="isShowConfirmPassword ? 'text' : 'password'" class="form-control"
-                                          placeholder="{{'Enter' | translate}} {{'ConfirmPassword' | translate}}"
+                                          placeholder="{{'common.enter' | translate}} {{'auth.confirmPassword' | translate}}"
                                           formControlName="confirmPassword">
                                     <i class="fa-solid ct_show_eye"
                                           [ngClass]="isShowConfirmPassword ? 'fa-eye' : 'fa-eye-slash'"
                                           (click)="isShowConfirmPassword = !isShowConfirmPassword"></i>
                               </div>
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('ConfirmPassword'
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('auth.confirmPassword'
                                     | translate), Form.get("confirmPassword"))}}</small>
                               <small *ngIf="Form.errors?.['passwordMismatch'] && !Form.controls['confirmPassword'].errors?.['required']"
-                                    class="text-danger">{{'passwordNotMatch' |
+                                    class="text-danger">{{'auth.passwordNotMatch' |
                                     translate}}</small>
                         </div>
                         <div class="">
@@ -416,40 +418,40 @@
                   <div class="login-popup__roles">
                         @if(Form.get('typeOfSeller')?.value === 'business') {
                         <div class="">
-                              <label for="" class="mt-3 ct_fs_16 ct_fw_500 mb-2">{{'LegalEntity' |
+                              <label for="" class="mt-3 ct_fs_16 ct_fw_500 mb-2">{{'profile.legalEntity' |
                                     translate}} <span class="ct_color_8f0c1f">*</span></label>
                               <nz-select class="form-control" nzPlaceHolder="Select Legal Entity" [nzShowSearch]="true"
                                     formControlName="legalForm">
-                                    <nz-option nzCustomContent [nzLabel]="'SoleProprietorship' | translate"
+                                    <nz-option nzCustomContent [nzLabel]="'profile.soleProprietorship' | translate"
                                           [nzValue]="'Sole Proprietorship'" class="ct_custom_select">
                                           <div class="d-flex align-items-center justify-content-between">
                                                 <div>
                                                       <p class="m-0">
-                                                            {{'SoleProprietorship' | translate}}
+                                                            {{'profile.soleProprietorship' | translate}}
                                                       </p>
                                                 </div>
                                                 <input type="radio" class="cutom_radio_input"
                                                       [checked]="Form.get('legalForm')?.value?.includes('Sole Proprietorship')" />
                                           </div>
                                     </nz-option>
-                                    <nz-option nzCustomContent [nzLabel]="'LimitedLiabilityCompany' | translate"
+                                    <nz-option nzCustomContent [nzLabel]="'profile.limitedLiabilityCompany' | translate"
                                           [nzValue]="'Limited Liability Company (GmbH)'" class="ct_custom_select">
                                           <div class="d-flex align-items-center justify-content-between">
                                                 <div>
                                                       <p class="m-0">
-                                                            {{'LimitedLiabilityCompany' | translate}}
+                                                            {{'profile.limitedLiabilityCompany' | translate}}
                                                       </p>
                                                 </div>
                                                 <input type="radio" class="cutom_radio_input"
                                                       [checked]="Form.get('legalForm')?.value?.includes('Limited Liability Company (GmbH)')" />
                                           </div>
                                     </nz-option>
-                                    <nz-option nzCustomContent [nzLabel]="'Corporation' | translate"
+                                    <nz-option nzCustomContent [nzLabel]="'profile.corporation' | translate"
                                           [nzValue]="'Corporation (AG)'" class="ct_custom_select">
                                           <div class="d-flex align-items-center justify-content-between">
                                                 <div>
                                                       <p class="m-0">
-                                                            {{'Corporation' | translate}}
+                                                            {{'profile.corporation' | translate}}
                                                       </p>
                                                 </div>
                                                 <input type="radio" class="cutom_radio_input"
@@ -465,10 +467,11 @@
                                     <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
                                           Company Name <span class="ct_color_8f0c1f">*</span>
                                     </label>
-                                    <input type="text" class="form-control" placeholder="Enter Company Name"
-                                          aria-label="Username" aria-describedby="basic-addon1"
-                                          formControlName="companyName" />
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('Company name'
+                                    <input type="text" class="form-control"
+                                          [placeholder]="'profile.enterCompanyName' | translate"
+                                          [attr.aria-label]="'filters.username' | translate"
+                                          aria-describedby="basic-addon1" formControlName="companyName" />
+                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.companyName'
                                           | translate), Form.get("companyName"))}}</small>
                               </div>
                               <div class="col-lg-12">
@@ -476,11 +479,12 @@
                                           Company Address
                                           <span class="ct_color_8f0c1f">*</span>
                                     </label>
-                                    <input type="text" class="form-control" placeholder="Enter Company Address  "
-                                          aria-label="Username" aria-describedby="basic-addon1"
-                                          formControlName="companyAddress" />
+                                    <input type="text" class="form-control"
+                                          [placeholder]="'auth.enterCompanyAddress' | translate"
+                                          [attr.aria-label]="'filters.username' | translate"
+                                          aria-describedby="basic-addon1" formControlName="companyAddress" />
                                     <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                          'Company address'
+                                          'profile.companyAddress'
                                           | translate), Form.get("companyAddress"))}}</small>
                               </div>
                               }@else {
@@ -489,28 +493,32 @@
                                           Address
                                           <span class="ct_color_8f0c1f">*</span>
                                     </label>
-                                    <input type="text" class="form-control" placeholder="Enter Address  "
-                                          aria-label="Username" aria-describedby="basic-addon1"
-                                          formControlName="address" />
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('Address'
+                                    <input type="text" class="form-control"
+                                          [placeholder]="'auth.enterAddress' | translate"
+                                          [attr.aria-label]="'filters.username' | translate"
+                                          aria-describedby="basic-addon1" formControlName="address" />
+                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.address'
                                           | translate), Form.get("address"))}}</small>
                               </div>
                               }
                               <div class="col-lg-6">
-                                    <label class="mt-3 ct_fs_16 ct_fw_500 mb-2"> City </label>
-                                    <input type="text" class="form-control" placeholder="Enter  Your City  "
-                                          aria-label="Username" aria-describedby="basic-addon1"
-                                          formControlName="city" />
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('City'
+                                    <label class="mt-3 ct_fs_16 ct_fw_500 mb-2"> {{ 'profile.city' | translate }}
+                                    </label>
+                                    <input type="text" class="form-control"
+                                          [placeholder]="'auth.enterYourCity' | translate"
+                                          [attr.aria-label]="'filters.username' | translate"
+                                          aria-describedby="basic-addon1" formControlName="city" />
+                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.city'
                                           | translate), Form.get("city"))}}</small>
                               </div>
                               <div class="col-lg-6">
                                     <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">Postal Code
                                     </label>
-                                    <input type="text" class="form-control" placeholder="Enter Postal Code  "
-                                          aria-label="Username" aria-describedby="basic-addon1"
-                                          formControlName="pincode" />
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('Postal code'
+                                    <input type="text" class="form-control"
+                                          [placeholder]="'profile.enterPostalCode' | translate"
+                                          [attr.aria-label]="'filters.username' | translate"
+                                          aria-describedby="basic-addon1" formControlName="pincode" />
+                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.postalCode'
                                           | translate), Form.get("pincode"))}}</small>
                               </div>
 
@@ -523,15 +531,17 @@
                                           </span>
                                     </label>
                                     <input type="text" class="form-control"
-                                          placeholder="Enter Business Registration Number" aria-label="Username"
-                                          formControlName="vat" aria-describedby="basic-addon1" />
+                                          [placeholder]="'profile.enterBusinessNumber' | translate"
+                                          [attr.aria-label]="'filters.username' | translate" formControlName="vat"
+                                          aria-describedby="basic-addon1" />
                               </div>
                               }
                               <div class="d-flex justify-content-between align-items-center mt-3">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                           <input class="form-check-input" type="checkbox" id="wagon"
                                                 formControlName="termsAndConditions" />
-                                          <label for="wagon">I agree to the Terms & Conditions</label>
+                                          <label for="wagon">{{ 'auth.iAgreeToTheTermsAndConditions' | translate
+                                                }}</label>
                                     </div>
                               </div>
                         </div>
@@ -542,8 +552,8 @@
                         }
                   </div>
                   <div class="d-flex align-items-center gap-3 mt-4">
-                        <button type="button" class="btn-red-transparent w-100"
-                              (click)="formStep= formStep-1">Previous</button>
+                        <button type="button" class="btn-red-transparent w-100" (click)="formStep= formStep-1">{{
+                              'vehicle.previous' | translate }}</button>
                         <app-submit-button [text]="'Sign Up'" [class]="'btn login-popup__btn w-100'"
                               [isLoading]="loading"></app-submit-button>
                   </div>
@@ -557,7 +567,7 @@
             </p>
 
             <p class="text-center">or</p>
-            <p class="text-center">Register with:</p>
+            <p class="text-center">{{ 'auth.registerWith' | translate }}</p>
 
             <div class="register-social-icon text-center">
                   <a>

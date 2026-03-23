@@ -4,9 +4,9 @@
                   <div class="col-xxl-6 col-xl-7 col-lg-8 mx-auto">
                         <div class="ct_login_white_bg ct_custom_scroll">
                               <img src="img/carzone_logo_black.png" alt="">
-                              <h4 class="ct_fw_700 ct_fs_28 text-white text-center mb-0">{{'OTPVerification' |
+                              <h4 class="ct_fw_700 ct_fs_28 text-white text-center mb-0">{{'auth.otpVerification' |
                                     translate}}</h4>
-                              <p class="mb-0 ct_text_op_5 text-white text-center mb-3">{{'EnterOTPCode' | translate}}
+                              <p class="mb-0 ct_text_op_5 text-white text-center mb-3">{{'auth.enterOtpCode' | translate}}
                                     {{email}}</p>
                               <form (ngSubmit)="verifyOtp()">
                                     <div class="form-group mb-4 d-flex justify-content-center">
@@ -17,25 +17,25 @@
                                           <div *ngIf="otpInput.touched && otpInput.invalid"
                                                 class="text-danger ct_fs_14 mt-1 d-block">
                                                 <div *ngIf="otpInput.errors?.['required']">
-                                                      {{'OtpError' | translate}}.
+                                                      {{'auth.otpError' | translate}}.
                                                 </div>
                                           </div>
                                     </div>
 
                                     <div>
                                           <p class="mb-0 text-white text-center mt-3">
-                                                {{'DidReceiveTheOTP' | translate}}
+                                                {{'auth.didReceiveTheOtp' | translate}}
                                                 <a class="ct_text_red ct_fs_14 ct_fw_600"
                                                       (click)="isResendDisabled ? null : resendOtp()"
                                                       [class.disabled]="isResendDisabled">
-                                                      {{'Resend' | translate}} OTP
+                                                      {{'auth.resend' | translate}} OTP
                                                 </a>
                                                 <span *ngIf="isResendDisabled">({{ countdown
                                                       }}s)</span>
                                           </p>
                                     </div>
                                     <div class="text-center mt-4">
-                                          <app-submit-button [isLoading]="loading" [text]="'VerifyNow' | translate"
+                                          <app-submit-button [isLoading]="loading" [text]="'auth.verifyNow' | translate"
                                                 [class]="'ct_red_btn px-5'"></app-submit-button>
                                     </div>
                               </form>
@@ -69,7 +69,7 @@
                               <div *ngIf="otpInput.touched && otpInput.invalid"
                                     class="text-danger ct_fs_14 mt-1 d-block">
                                     <div *ngIf="otpInput.errors?.['required']">
-                                          {{'OtpError' | translate}}.
+                                          {{'auth.otpError' | translate}}.
                                     </div>
                               </div>
                         </div>
@@ -78,14 +78,14 @@
                               Remaining Time :{{ countdown }}s
                         </p> -->
                   </div>
-                  <app-submit-button [isLoading]="loading" [text]="'VerifyNow' | translate"
+                  <app-submit-button [isLoading]="loading" [text]="'auth.verifyNow' | translate"
                         [class]="'btn login-popup__btn mt-4'"></app-submit-button>
             </form>
             <p class="ct_fs_16 ct_fw_500 mt-3 text-center">
-                  {{'DidReceiveTheOTP' | translate}}
+                  {{'auth.didReceiveTheOtp' | translate}}
                   <a (click)="isResendDisabled ? null : resendOtp()" class="ct_fs_16 ct_fw_600 ct_color_8f0c1f"
                         [class.disabled]="isResendDisabled">
-                        {{'Resend' | translate}}
+                        {{'auth.resend' | translate}}
                   </a>
                   <span *ngIf="isResendDisabled">({{ countdown }}s)</span>
             </p>

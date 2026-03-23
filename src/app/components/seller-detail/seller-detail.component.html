@@ -2,7 +2,7 @@
     <div class="container">
         <div>
             <img src="img/icons/amag-icon.png" />
-            <span class="ct_fs_20 ct_fw_500"> Amag AG</span>
+            <span class="ct_fs_20 ct_fw_500"> {{ 'vehicle.amagAg' | translate }}</span>
         </div>
 
         <div class="row">
@@ -30,7 +30,7 @@
                     </div>
                     <div class="d-flex align-items-center">
                         <img src="img/icons/web.png" class="me-1" />
-                        <p class="ct_fs_16 ct_fw_300 mb-0">https://www.amag.ch</p>
+                        <p class="ct_fs_16 ct_fw_300 mb-0">{{ 'vehicle.httpsWwwAmagCh' | translate }}</p>
                     </div>
                 </div>
 
@@ -245,13 +245,13 @@
                                 </div>
                             </div>
 
-                            <p class="ct_fs_15 ct_fs_500">Sales</p>
+                            <p class="ct_fs_15 ct_fs_500">{{ 'vehicle.sales' | translate }}</p>
                             <div class="d-flex gap-4 mb-3">
                                 <div class="seller-team-img">
                                     <img src="img/team-member-img.png" />
                                 </div>
                                 <div>
-                                    <h4 class="ct_fs_18 ct_fw_500">Bujar Muljaki</h4>
+                                    <h4 class="ct_fs_18 ct_fw_500">{{ 'vehicle.bujarMuljaki' | translate }}</h4>
                                     <p class="ct_fw_300 ct_fs_15 ct_color_8f0c1f">
                                         <img src="img/icons/call-brwon.png" />
                                         044 527 07 55
@@ -261,7 +261,7 @@
                                         044 527 07 55
                                     </p>
                                     <p class="ct_fw_300">
-                                        <strong class="ct_fw_600"> Head of Sales</strong> | I
+                                        <strong class="ct_fw_600"> {{ 'vehicle.headOfSales' | translate }}</strong> | I
                                         speak: German, <br />English, Albanian
                                     </p>
                                 </div>
@@ -271,7 +271,7 @@
                                     <img src="img/team-member-img.png" />
                                 </div>
                                 <div>
-                                    <h4 class="ct_fs_18 ct_fw_500">Bujar Muljaki</h4>
+                                    <h4 class="ct_fs_18 ct_fw_500">{{ 'vehicle.bujarMuljaki' | translate }}</h4>
                                     <p class="ct_fw_300 ct_fs_15 ct_color_8f0c1f">
                                         <img src="img/icons/call-brwon.png" />
                                         044 527 07 55
@@ -281,19 +281,19 @@
                                         044 527 07 55
                                     </p>
                                     <p class="ct_fw_300">
-                                        <strong class="ct_fw_600"> Head of Sales</strong> | I
+                                        <strong class="ct_fw_600"> {{ 'vehicle.headOfSales' | translate }}</strong> | I
                                         speak: German, <br />English, Albanian
                                     </p>
                                 </div>
                             </div>
 
-                            <p class="ct_fs_18 ct_fs_500 mt-3">Managemet</p>
+                            <p class="ct_fs_18 ct_fs_500 mt-3">{{ 'vehicle.managemet' | translate }}</p>
                             <div class="d-flex gap-4">
                                 <div class="seller-team-img">
                                     <img src="img/team-member-img.png" />
                                 </div>
                                 <div>
-                                    <h4 class="ct_fs_18 ct_fw_500">Bujar Muljaki</h4>
+                                    <h4 class="ct_fs_18 ct_fw_500">{{ 'vehicle.bujarMuljaki' | translate }}</h4>
                                     <p class="ct_fw_300 ct_fs_15 ct_color_8f0c1f">
                                         <img src="img/icons/call-brwon.png" />
                                         044 527 07 55
@@ -303,7 +303,7 @@
                                         044 527 07 55
                                     </p>
                                     <p class="ct_fw_300">
-                                        <strong class="ct_fw_600"> Head of Sales</strong> | I
+                                        <strong class="ct_fw_600"> {{ 'vehicle.headOfSales' | translate }}</strong> | I
                                         speak: German, <br />English, Albanian
                                     </p>
                                 </div>
@@ -323,7 +323,7 @@
                             </div>
                             <div class="position-relative">
                                 <iframe width="100%" height="315" src="https://www.youtube.com/embed/D0UnqGm_miA"
-                                    title="YouTube video player" frameborder="0" allow="
+                                    [title]="'vehicle.youtubeVideoPlayer' | translate" frameborder="0" allow="
                         accelerometer;
                         autoplay;
                         clipboard-write;
@@ -357,7 +357,7 @@
                                             Sort
                                         </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                            aria-label="Close"></button>
+                                            [attr.aria-label]="'vehicle.close' | translate"></button>
                                     </div>
                                     <div class="offcanvas-body">
                                         <div>
@@ -422,7 +422,7 @@
                             </div>
 
                             <div>
-                                <button class="btn-grey-transparent">98 vehicle</button>
+                                <button class="btn-grey-transparent">{{ 'vehicle.98Vehicle' | translate }}</button>
                             </div>
                             <div class="ct_color_8f0c1f">
                                 <a href="car-listing.html" class="ct_color_8f0c1f">
@@ -537,9 +537,9 @@
                                         </div>
 
                                         <div class="d-flex justify-content-between mt-3 ct_mb_35 gap-2">
-                                            <div class="box">Panoramic Sunroof</div>
-                                            <div class="box">Leather Interior</div>
-                                            <div class="box">Adaptive LED Headlights</div>
+                                            <div class="box">{{ 'vehicle.panoramicSunroof' | translate }}</div>
+                                            <div class="box">{{ 'vehicle.leatherInterior' | translate }}</div>
+                                            <div class="box">{{ 'vehicle.adaptiveLedHeadlights' | translate }}</div>
                                         </div>
                                     </div>
 
@@ -552,30 +552,31 @@
                                                 </li>
                                                 <li>
                                                     <img src="img/icons/km-brown.png" />
-                                                    <span> 50’000 km </span>
+                                                    <span> {{ 'vehicle.50000Km' | translate }} </span>
                                                 </li>
                                                 <li>
                                                     <img src="img/icons/fuel-brown.png" />
-                                                    <span> Benzin </span>
+                                                    <span> {{ 'vehicle.benzin' | translate }} </span>
                                                 </li>
                                                 <li>
                                                     <img src="img/icons/power-brown.png" />
-                                                    <span> 510 ps </span>
+                                                    <span> {{ 'vehicle.510Ps' | translate }} </span>
                                                 </li>
                                                 <li>
                                                     <img src="img/icons/transmission-brown.png" />
-                                                    <span> Automatic </span>
+                                                    <span> {{ 'common.automatic' | translate }} </span>
                                                 </li>
                                                 <li>
                                                     <img src="img/icons/calendar-brown.png" />
-                                                    <span> 7.0 L / 100 Km </span>
+                                                    <span> {{ 'vehicle.70L100Km' | translate }} </span>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="col-sm-7">
                                             <div class="mt-md-0 mt-3">
                                                 <img src="img/icons/amag-icon.png" />
-                                                <h4 class="ct_fs_20 ct_fw_500 mt-2">Amag AG</h4>
+                                                <h4 class="ct_fs_20 ct_fw_500 mt-2">{{ 'vehicle.amagAg' | translate }}
+                                                </h4>
                                                 <div class="d-flex align-items-center mt-3">
                                                     <img src="img/icons/ep_location.png" />
                                                     <p class="ct_fs_16 ct_fw_300 mb-0">
@@ -718,9 +719,9 @@
                                         </div>
 
                                         <div class="d-flex justify-content-between mt-3 ct_mb_35 gap-2">
-                                            <div class="box">Panoramic Sunroof</div>
-                                            <div class="box">Leather Interior</div>
-                                            <div class="box">Adaptive LED Headlights</div>
+                                            <div class="box">{{ 'vehicle.panoramicSunroof' | translate }}</div>
+                                            <div class="box">{{ 'vehicle.leatherInterior' | translate }}</div>
+                                            <div class="box">{{ 'vehicle.adaptiveLedHeadlights' | translate }}</div>
                                         </div>
                                     </div>
 
@@ -733,30 +734,31 @@
                                                 </li>
                                                 <li>
                                                     <img src="img/icons/km-brown.png" />
-                                                    <span> 50’000 km </span>
+                                                    <span> {{ 'vehicle.50000Km' | translate }} </span>
                                                 </li>
                                                 <li>
                                                     <img src="img/icons/fuel-brown.png" />
-                                                    <span> Benzin </span>
+                                                    <span> {{ 'vehicle.benzin' | translate }} </span>
                                                 </li>
                                                 <li>
                                                     <img src="img/icons/power-brown.png" />
-                                                    <span> 510 ps </span>
+                                                    <span> {{ 'vehicle.510Ps' | translate }} </span>
                                                 </li>
                                                 <li>
                                                     <img src="img/icons/transmission-brown.png" />
-                                                    <span> Automatic </span>
+                                                    <span> {{ 'common.automatic' | translate }} </span>
                                                 </li>
                                                 <li>
                                                     <img src="img/icons/calendar-brown.png" />
-                                                    <span> 7.0 L / 100 Km </span>
+                                                    <span> {{ 'vehicle.70L100Km' | translate }} </span>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="col-sm-7">
                                             <div class="mt-md-0 mt-3">
                                                 <img src="img/icons/amag-icon.png" />
-                                                <h4 class="ct_fs_20 ct_fw_500 mt-2">Amag AG</h4>
+                                                <h4 class="ct_fs_20 ct_fw_500 mt-2">{{ 'vehicle.amagAg' | translate }}
+                                                </h4>
                                                 <div class="d-flex align-items-center mt-3">
                                                     <img src="img/icons/ep_location.png" />
                                                     <p class="ct_fs_16 ct_fw_300 mb-0">
@@ -809,32 +811,32 @@
                 <table class="table opening-timing-table mt-2">
                     <tbody>
                         <tr>
-                            <td>Mon</td>
+                            <td>{{ 'vehicle.mon' | translate }}</td>
                             <td>09:00 - 11:45</td>
                             <td>13:00 - 18:00</td>
                         </tr>
                         <tr>
-                            <td>Tues</td>
+                            <td>{{ 'vehicle.tues' | translate }}</td>
                             <td>09:00 - 11:45</td>
                             <td>13:00 - 18:00</td>
                         </tr>
                         <tr>
-                            <td>Wed</td>
+                            <td>{{ 'vehicle.wed' | translate }}</td>
                             <td>09:00 - 11:45</td>
                             <td>13:00 - 18:00</td>
                         </tr>
                         <tr>
-                            <td>Thurs</td>
+                            <td>{{ 'vehicle.thurs' | translate }}</td>
                             <td>09:00 - 11:45</td>
                             <td>13:00 - 18:00</td>
                         </tr>
                         <tr>
-                            <td>Fri</td>
+                            <td>{{ 'vehicle.fri' | translate }}</td>
                             <td>09:00 - 11:45</td>
                             <td>13:00 - 18:00</td>
                         </tr>
                         <tr>
-                            <td>Sat</td>
+                            <td>{{ 'vehicle.sat' | translate }}</td>
                             <td>09:00 - 11:45</td>
                             <td>13:00 - 18:00</td>
                         </tr>

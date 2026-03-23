@@ -20,12 +20,13 @@
                   <div class="col-12">
                         <div class="form-group mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2">
-                                    {{'FullName' | translate | titlecase}}
+                                    {{'profile.fullName' | translate | titlecase}}
                               </label>
                               <input type="text" class="form-control"
-                                    placeholder="{{'Enter' | translate}} {{'FullName' | translate}}"
-                                    aria-label="Username" aria-describedby="basic-addon1" formControlName="fullName" />
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('FullName'
+                                    placeholder="{{'common.enter' | translate}} {{'profile.fullName' | translate}}"
+                                    [attr.aria-label]="'filters.username' | translate" aria-describedby="basic-addon1"
+                                    formControlName="fullName" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.fullName'
                                     | translate), Form.get("fullName"))}}</small>
                         </div>
                   </div>
@@ -33,40 +34,41 @@
                         <div class="form-group mb-4">
                               <div class="d-flex justify-content-between align-items-center">
                                     <label class="ct_fs_16 ct_fw_500 mb-2">
-                                          {{'WhatsAppNumber' | translate | titlecase}}
+                                          {{'profile.whatsAppNumber' | translate | titlecase}}
                                     </label>
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                           <input class="form-check-input" type="checkbox"
                                                 formControlName="isWhatsappSameAsPhone" id="flexCheckDefault" />
-                                          <label for="flexCheckDefault">Also phone number </label>
+                                          <label for="flexCheckDefault">{{ 'auth.alsoPhoneNumber' | translate }}
+                                          </label>
                                     </div>
                               </div>
                               <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
                                     [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
                                     [searchCountryFlag]="true"
-                                    [customPlaceholder]="('Enter' | translate) + ' ' + ('WhatsAppNumber' | translate)"
+                                    [customPlaceholder]="('common.enter' | translate) + ' ' + ('profile.whatsAppNumber' | translate)"
                                     [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
                                     [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
                                     [phoneValidation]="true" formControlName="whatsappNumber">
                               </ngx-intl-tel-input>
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('WhatsAppNumber'
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.whatsAppNumber'
                                     | translate), Form.get("whatsappNumber"))}}</small>
                         </div>
                   </div>
                   <div class="col-lg-6">
                         <div class="form-group mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2">
-                                    {{'PhoneNumber' | translate | titlecase}}
+                                    {{'profile.phoneNumber' | translate | titlecase}}
                               </label>
                               <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
                                     [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
                                     [searchCountryFlag]="true"
-                                    [customPlaceholder]="('Enter' | translate) + ' ' + ('PhoneNumber' | translate)"
+                                    [customPlaceholder]="('common.enter' | translate) + ' ' + ('profile.phoneNumber' | translate)"
                                     [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
                                     [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
                                     [phoneValidation]="true" formControlName="phoneNumber">
                               </ngx-intl-tel-input>
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('PhoneNumber'
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.phoneNumber'
                                     | translate | titlecase), Form.get("phoneNumber"))}}</small>
                         </div>
                   </div>
@@ -99,40 +101,42 @@
                         @if(Form.get('typeOfSeller')?.value === 'business') {
                         <div class="col-lg-6">
                               <div class="form-group mb-4">
-                                    <label for="" class="ct_fs_16 ct_fw_500 mb-2">{{'LegalEntity' |
+                                    <label for="" class="ct_fs_16 ct_fw_500 mb-2">{{'profile.legalEntity' |
                                           translate}} <span class="ct_color_8f0c1f">*</span></label>
                                     <nz-select class="form-control" nzPlaceHolder="Select Legal Entity"
                                           [nzShowSearch]="true" formControlName="legalForm">
-                                          <nz-option nzCustomContent [nzLabel]="'SoleProprietorship' | translate"
+                                          <nz-option nzCustomContent
+                                                [nzLabel]="'profile.soleProprietorship' | translate"
                                                 [nzValue]="'Sole Proprietorship'" class="ct_custom_select">
                                                 <div class="d-flex align-items-center justify-content-between">
                                                       <div>
                                                             <p class="m-0">
-                                                                  {{'SoleProprietorship' | translate}}
+                                                                  {{'profile.soleProprietorship' | translate}}
                                                             </p>
                                                       </div>
                                                       <input type="radio" class="cutom_radio_input"
                                                             [checked]="Form.get('legalForm')?.value?.includes('Sole Proprietorship')" />
                                                 </div>
                                           </nz-option>
-                                          <nz-option nzCustomContent [nzLabel]="'LimitedLiabilityCompany' | translate"
+                                          <nz-option nzCustomContent
+                                                [nzLabel]="'profile.limitedLiabilityCompany' | translate"
                                                 [nzValue]="'Limited Liability Company (GmbH)'" class="ct_custom_select">
                                                 <div class="d-flex align-items-center justify-content-between">
                                                       <div>
                                                             <p class="m-0">
-                                                                  {{'LimitedLiabilityCompany' | translate}}
+                                                                  {{'profile.limitedLiabilityCompany' | translate}}
                                                             </p>
                                                       </div>
                                                       <input type="radio" class="cutom_radio_input"
                                                             [checked]="Form.get('legalForm')?.value?.includes('Limited Liability Company (GmbH)')" />
                                                 </div>
                                           </nz-option>
-                                          <nz-option nzCustomContent [nzLabel]="'Corporation' | translate"
+                                          <nz-option nzCustomContent [nzLabel]="'profile.corporation' | translate"
                                                 [nzValue]="'Corporation (AG)'" class="ct_custom_select">
                                                 <div class="d-flex align-items-center justify-content-between">
                                                       <div>
                                                             <p class="m-0">
-                                                                  {{'Corporation' | translate}}
+                                                                  {{'profile.corporation' | translate}}
                                                             </p>
                                                       </div>
                                                       <input type="radio" class="cutom_radio_input"
@@ -148,10 +152,11 @@
                                     <label class="ct_fs_16 ct_fw_500 mb-2">
                                           Company Name <span class="ct_color_8f0c1f">*</span>
                                     </label>
-                                    <input type="text" class="form-control" placeholder="Enter Company Name"
-                                          aria-label="Username" aria-describedby="basic-addon1"
-                                          formControlName="companyName" />
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('Company name'
+                                    <input type="text" class="form-control"
+                                          [placeholder]="'profile.enterCompanyName' | translate"
+                                          [attr.aria-label]="'filters.username' | translate"
+                                          aria-describedby="basic-addon1" formControlName="companyName" />
+                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.companyName'
                                           | translate), Form.get("companyName"))}}</small>
                               </div>
                         </div>
@@ -160,10 +165,11 @@
                                     <label class="ct_fs_16 ct_fw_500 mb-2">
                                           Website URL
                                     </label>
-                                    <input type="text" class="form-control" placeholder="Enter Website URL"
-                                          aria-label="Username" aria-describedby="basic-addon1"
-                                          formControlName="websiteUrl" />
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('Website URL'
+                                    <input type="text" class="form-control"
+                                          [placeholder]="'profile.enterWebsiteUrl' | translate"
+                                          [attr.aria-label]="'filters.username' | translate"
+                                          aria-describedby="basic-addon1" formControlName="websiteUrl" />
+                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.websiteUrl'
                                           | translate), Form.get("websiteUrl"))}}</small>
                               </div>
                         </div>
@@ -173,8 +179,9 @@
                                           VAT/Business Registration Number
                                     </label>
                                     <input type="text" class="form-control"
-                                          placeholder="Enter Business Registration Number" aria-label="Username"
-                                          formControlName="vat" aria-describedby="basic-addon1" />
+                                          [placeholder]="'profile.enterBusinessNumber' | translate"
+                                          [attr.aria-label]="'filters.username' | translate" formControlName="vat"
+                                          aria-describedby="basic-addon1" />
                               </div>
                         </div>
                         <div class="col-lg-12">
@@ -183,11 +190,12 @@
                                           Company Address
                                           <span class="ct_color_8f0c1f">*</span>
                                     </label>
-                                    <input type="text" class="form-control" placeholder="Enter Company Address  "
-                                          aria-label="Username" aria-describedby="basic-addon1"
-                                          formControlName="companyAddress" />
+                                    <input type="text" class="form-control"
+                                          [placeholder]="'auth.enterCompanyAddress' | translate"
+                                          [attr.aria-label]="'filters.username' | translate"
+                                          aria-describedby="basic-addon1" formControlName="companyAddress" />
                                     <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                          'Company address'
+                                          'profile.companyAddress'
                                           | translate), Form.get("companyAddress"))}}</small>
                               </div>
                         </div>
@@ -198,10 +206,11 @@
                                           Address
                                           <span class="ct_color_8f0c1f">*</span>
                                     </label>
-                                    <input type="text" class="form-control" placeholder="Enter Address"
-                                          aria-label="Username" aria-describedby="basic-addon1"
-                                          formControlName="address" />
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('Address'
+                                    <input type="text" class="form-control"
+                                          [placeholder]="'auth.enterAddress' | translate"
+                                          [attr.aria-label]="'filters.username' | translate"
+                                          aria-describedby="basic-addon1" formControlName="address" />
+                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.address'
                                           | translate), Form.get("address"))}}</small>
                               </div>
                         </div>
@@ -215,20 +224,23 @@
                                           Address
                                           <span class="ct_color_8f0c1f">*</span>
                                     </label>
-                                    <input type="text" class="form-control" placeholder="Enter Address"
-                                          aria-label="Username" aria-describedby="basic-addon1"
-                                          formControlName="address" />
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('Address'
+                                    <input type="text" class="form-control"
+                                          [placeholder]="'auth.enterAddress' | translate"
+                                          [attr.aria-label]="'filters.username' | translate"
+                                          aria-describedby="basic-addon1" formControlName="address" />
+                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.address'
                                           | translate), Form.get("address"))}}</small>
                               </div>
                         </div>
                   </ng-container>
                   <div class="col-lg-6">
                         <div class="form-group mb-4">
-                              <label class="ct_fs_16 ct_fw_500 mb-2"> City </label>
-                              <input type="text" class="form-control" placeholder="Enter Your City"
-                                    aria-label="Username" aria-describedby="basic-addon1" formControlName="city" />
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('City'
+                              <label class="ct_fs_16 ct_fw_500 mb-2"> {{ 'profile.city' | translate }} </label>
+                              <input type="text" class="form-control"
+                                    [placeholder]="'profile.enterYourCity' | translate"
+                                    [attr.aria-label]="'filters.username' | translate" aria-describedby="basic-addon1"
+                                    formControlName="city" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.city'
                                     | translate), Form.get("city"))}}</small>
                         </div>
                   </div>
@@ -236,9 +248,11 @@
                         <div class="form-group mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2">Postal Code
                               </label>
-                              <input type="text" class="form-control" placeholder="Enter Postal Code"
-                                    aria-label="Username" aria-describedby="basic-addon1" formControlName="pincode" />
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('Postal code'
+                              <input type="text" class="form-control"
+                                    [placeholder]="'profile.enterPostalCode' | translate"
+                                    [attr.aria-label]="'filters.username' | translate" aria-describedby="basic-addon1"
+                                    formControlName="pincode" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.postalCode'
                                     | translate), Form.get("pincode"))}}</small>
                         </div>
                   </div>
@@ -248,11 +262,12 @@
                         @if(Form.get('typeOfSeller')?.value === 'business') {
                         <div class="col-lg-6">
                               <div class="mb-4">
-                                    <label class="ct_fs_16 ct_fw_500 mb-2">Showroom Cover Image</label>
+                                    <label class="ct_fs_16 ct_fw_500 mb-2">{{ 'profile.showroomCoverImage' | translate
+                                          }}</label>
                                     @if(!coverPreview){
                                     <div (click)="coverImageInput.click()">
                                           <div class="upload-box text-center">
-                                                <img src="img/icons/camera.png" alt="camera" />
+                                                <img src="img/icons/camera.png" [alt]="'vehicle.camera' | translate" />
                                                 <div>
                                                       Tap to upload cover
                                                 </div>
@@ -264,8 +279,8 @@
                                     <div class="upload-imgs cover-img-box ct_custom_scroll mt-0">
                                           <div class="cover-img position-relative">
                                                 <img [src]="coverPreview" alt="" />
-                                                <button type="button" title="Remove cover image" class="img-remove"
-                                                      (click)="removeCoverImage()">
+                                                <button type="button" [title]="'profile.removeCoverImage' | translate"
+                                                      class="img-remove" (click)="removeCoverImage()">
                                                       <i class="fa-solid fa-trash"></i>
                                                 </button>
                                           </div>
@@ -277,7 +292,8 @@
                         <div class="col-lg-6">
                               <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                          <h5 class="ct_fs_16 ct_fw_500 mb-2">Opening Timing</h5>
+                                          <h5 class="ct_fs_16 ct_fw_500 mb-2">{{ 'profile.openingTiming' | translate }}
+                                          </h5>
                                     </div>
                               </div>
 
@@ -300,15 +316,17 @@
                                     <label for="" class="ct_fs_16 ct_fw_500 mb-2">
                                           Tagline
                                     </label>
-                                    <input type="text" class="form-control ct_input" placeholder="Enter Tagline"
+                                    <input type="text" class="form-control ct_input"
+                                          [placeholder]="'profile.enterTagline' | translate"
                                           formControlName="tagline" />
                               </div>
                         </div>
 
                         <div class="col-12">
-                              <label class="ct_fs_16 ct_fw_500 mb-2">Description</label>
+                              <label class="ct_fs_16 ct_fw_500 mb-2">{{ 'common.description' | translate }}</label>
                               <textarea class="form-control mt-0" id="exampleFormControlTextarea1" rows="3"
-                                    placeholder="Description" formControlName="description"></textarea>
+                                    [placeholder]="'common.description' | translate"
+                                    formControlName="description"></textarea>
                         </div>
 
                         <div class="col-lg-12">
@@ -317,7 +335,7 @@
                                           Upload Images
                                     </label>
                                     <div class="upload-box text-center py-5" (click)="showroomImagesInput.click()">
-                                          <img src="img/icons/camera.png" alt="camera" />
+                                          <img src="img/icons/camera.png" [alt]="'vehicle.camera' | translate" />
                                           <div>
                                                 Tap to upload images
                                           </div>
@@ -348,7 +366,7 @@
                                                 class="d-flex align-items-center gap-3 mb-3">
                                                 <div class="w-100 ct_grey_input">
                                                       <input type="text" class="form-control ct_input"
-                                                            placeholder="Enter Advantages & Highlights"
+                                                            [placeholder]="'profile.enterAdvantagesAndHighlights' | translate"
                                                             formControlName="advantage" />
                                                 </div>
                                                 <a (click)="removeAdvantage(i)">
@@ -377,7 +395,7 @@
                                                       formControlName="isActive" id="serviceCheck{{i}}" />
                                                 <label for="serviceCheck{{i}}" class="w-100 ct_grey_input">
                                                       <input type="text" class="form-control ct_input"
-                                                            placeholder="Enter Services"
+                                                            [placeholder]="'profile.enterServices' | translate"
                                                             formControlName="service_name" />
                                                 </label>
                                                 <a (click)="removeService(i)">
@@ -418,25 +436,28 @@
                                                       </div>
                                                       <div class="w-100 ct_grey_input">
                                                             <input type="text" class="form-control ct_input mb-2"
-                                                                  placeholder="Full name" formControlName="fullName" />
+                                                                  [placeholder]="'profile.fullName2' | translate"
+                                                                  formControlName="fullName" />
                                                             <input type="text" class="form-control ct_input"
-                                                                  placeholder="Role (e.g., Sales Manager)"
+                                                                  [placeholder]="'profile.roleEGSalesManager' | translate"
                                                                   formControlName="role" />
                                                       </div>
                                                 </div>
 
                                                 <div class="w-100 ct_grey_input mb-2">
                                                       <input type="number" class="form-control ct_input"
-                                                            placeholder="Phone number" formControlName="phoneNumber" />
+                                                            [placeholder]="'profile.phoneNumber' | translate"
+                                                            formControlName="phoneNumber" />
                                                 </div>
 
                                                 <div class="w-100 ct_grey_input mb-2">
                                                       <input type="text" class="form-control ct_input"
-                                                            placeholder="Email address" formControlName="email" />
+                                                            [placeholder]="'auth.emailAddress' | translate"
+                                                            formControlName="email" />
                                                 </div>
                                                 <div class="w-100 ct_grey_input">
                                                       <input type="text" class="form-control ct_input"
-                                                            placeholder="Languages (e.g., English, Swedish)"
+                                                            [placeholder]="'profile.languagesEGEnglishSwedish' | translate"
                                                             formControlName="languages" />
                                                 </div>
 
@@ -464,7 +485,7 @@
                                     @if(!videoPreview){
                                     <div class="upload-box text-center py-5" id="videoUploadBox"
                                           (click)="videoInput.click()">
-                                          <img src="img/icons/video-grey.png" alt="video" />
+                                          <img src="img/icons/video-grey.png" [alt]="'vehicle.video' | translate" />
                                           <div>
                                                 Upload showroom tour video
                                                 <small class="ct_fs_12 d-block">
@@ -481,7 +502,8 @@
                                                 <div class="mobile-frame">
                                                       <video [src]="videoPreview" autoplay controls playsinline
                                                             class="videoPreview"></video>
-                                                      <button type="button" title="Remove" (click)="removeFile()"
+                                                      <button type="button" [title]="'common.remove' | translate"
+                                                            (click)="removeFile()"
                                                             class="video-remove btn text-danger btn-sm position-absolute top-0 end-0">
                                                             <i class="fa-solid fa-trash"></i>
                                                       </button>
@@ -512,10 +534,11 @@
                         </image-cropper>
                   </div>
                   <div class="modal-footer">
-                        <button type="button" class="btn-grey-transparent" data-bs-dismiss="modal" #closeBtn>{{'Cancel'
+                        <button type="button" class="btn-grey-transparent" data-bs-dismiss="modal"
+                              #closeBtn>{{'common.cancel'
                               |
                               translate}}</button>
-                        <button type="button" class="btn-red" (click)="onDone()">{{'Done' | translate}}</button>
+                        <button type="button" class="btn-red" (click)="onDone()">{{'common.done' | translate}}</button>
                   </div>
             </div>
       </div>

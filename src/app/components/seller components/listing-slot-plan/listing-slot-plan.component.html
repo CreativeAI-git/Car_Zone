@@ -5,9 +5,9 @@
                   <div class="col-md-8 mx-auto">
                         <div class="ct_light_red_bg">
                               <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-3">
-                                    <h5 class="ct_fs_20 ct_fw_600 mb-0">{{planList.total_slots}} {{'TotalSlots' | translate}}</h5>
+                                    <h5 class="ct_fs_20 ct_fw_600 mb-0">{{planList.total_slots}} {{'listing.totalSlots' | translate}}</h5>
                                     @if(planList.is_active){
-                                    <span class="ct_green_text ct_fw_600">{{'Active' | translate}}</span>
+                                    <span class="ct_green_text ct_fw_600">{{'status.active' | translate}}</span>
                                     }
                               </div>
                               <div class="progress ct_custom_progress_bar">
@@ -19,28 +19,28 @@
                                     </div>
                               </div>
                               <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-3 mt-1">
-                                    <p class="mb-0">{{convert(planList.cars_listed, 'used')}} {{'Used' | translate}}</p>
+                                    <p class="mb-0">{{convert(planList.cars_listed, 'used')}} {{'common.used' | translate}}</p>
                                     <p class="mb-0">
                                           {{(convert(planList.cars_listed, 'total') - convert(planList.cars_listed, 'used'))}}
-                                          {{'Available' | translate}}
+                                          {{'status.available' | translate}}
                                     </p>
 
                               </div>
                               <ul class="ct_plan_detail_list mt-2">
                                     <li>
-                                          <p class="mb-0">{{'ValidTill' | translate}}</p>
+                                          <p class="mb-0">{{'status.validTill' | translate}}</p>
                                           <p class="mb-0 ct_fw_600">{{planList.end_date | date: 'MMM yyyy'}}</p>
                                     </li>
                                     <li>
-                                          <p class="mb-0">{{'CarsListed' | translate}}</p>
+                                          <p class="mb-0">{{'vehicle.carsListed' | translate}}</p>
                                           <p class="mb-0 ct_fw_600">{{planList.cars_listed}}</p>
                                     </li>
                                     <li>
-                                          <p class="mb-0">{{'CarsSwapped' | translate}}</p>
+                                          <p class="mb-0">{{'vehicle.carsSwapped' | translate}}</p>
                                           <p class="mb-0 ct_fw_600">{{planList.cars_swapped}} this month</p>
                                     </li>
                                     <li>
-                                          <p class="mb-0">{{'DaysLeft' | translate}}</p>
+                                          <p class="mb-0">{{'common.daysLeft' | translate}}</p>
                                           <p class="mb-0 ct_fw_600">{{planList.days_left}} days</p>
                                     </li>
                               </ul>
@@ -89,12 +89,12 @@
                                     class="position-absolute top-0 start-0 w-100 h-100 rounded-circle border border-3 border-danger opacity-25"></span>
                         </div>
 
-                        <h4 class="fw-semibold text-dark mb-2">{{'NoActivePlan' | translate}}</h4>
+                        <h4 class="fw-semibold text-dark mb-2">{{'listing.noActivePlan' | translate}}</h4>
                         <p class="text-muted mb-4">
-                              {{'NoActivePlanDescription' | translate}}
+                              {{'listing.noActivePlanDescription' | translate}}
                         </p>
                         <button class="ct_red_btn text-center" type="button" routerLink="/choose-listing-plan">
-                              <i class="bi bi-arrow-left me-2"></i>{{'PurchaseAndStartListing' | translate}}
+                              <i class="bi bi-arrow-left me-2"></i>{{'listing.purchaseAndStartListing' | translate}}
                         </button>
                   </div>
                   }

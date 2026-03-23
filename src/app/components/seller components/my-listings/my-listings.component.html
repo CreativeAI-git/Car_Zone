@@ -3,20 +3,22 @@
             <div class="row">
                   <div class="col-md-12">
                         <div class="collections-header">
-                              <h3 class="ct_fs_35 ct_fw_600 ct_font_cairo text-start mb-3">My Listings</h3>
+                              <h3 class="ct_fs_35 ct_fw_600 ct_font_cairo text-start mb-3">{{ 'listing.myListings' |
+                                    translate }}</h3>
                               <div class="d-flex gap-3">
                                     <div class="position-relative w-100 ">
                                           <input type="text"
                                                 class="form-control ct_input ct_input_ps_40 ct_input_h_40 ct_border_op_10 shadow-sm"
-                                                placeholder="Search" />
+                                                [placeholder]="'filters.search' | translate" />
                                           <i class="fa-solid fa-search ct_input_icon_left"></i>
                                     </div>
                                     <div class="my-listing-all-box ">
-                                          <select class="form-select" aria-label="Default select example">
-                                                <option selected>All </option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
+                                          <select class="form-select"
+                                                [attr.aria-label]="'filters.defaultSelectExample' | translate">
+                                                <option selected>{{ 'common.allAlt' | translate }} </option>
+                                                <option value="1">{{ 'filters.one' | translate }}</option>
+                                                <option value="2">{{ 'filters.two' | translate }}</option>
+                                                <option value="3">{{ 'filters.three' | translate }}</option>
                                           </select>
                                     </div>
                               </div>
@@ -39,11 +41,11 @@
                                           </div>
 
                                           <!-- Message -->
-                                          <h2 class="fw-bold text-dark" style="z-index:1;">{{'NoCarsFound' |
+                                          <h2 class="fw-bold text-dark" style="z-index:1;">{{'vehicle.noCarsFound' |
                                                 translate}}
                                           </h2>
                                           <p class="text-muted mt-2 mb-4" style="max-width: 400px; z-index:1;">
-                                                {{'NoCarsFoundDescription' | translate}} <br>
+                                                {{'vehicle.noCarsFoundDescription' | translate}} <br>
                                           </p>
 
                                           <!-- Decorative line -->
@@ -59,7 +61,8 @@
                                                             <!-- Image -->
                                                             <div class="mb-md-0 mt-md-0 mt-2 mb-3 ">
                                                                   <img [src]="item.carImages[0]"
-                                                                        class="img-fluid  my-listing-img" alt="Car">
+                                                                        class="img-fluid  my-listing-img"
+                                                                        [alt]="'vehicle.car' | translate">
                                                             </div>
 
                                                             <div class="w-100">
@@ -71,9 +74,11 @@
                                                                         <p class="text-end mb-0"> <span
                                                                                     class="badge fst_italic"
                                                                                     [ngClass]="{'status-badge-success': item.is_active, 'status-badge-danger': !item.is_active}">●
-                                                                                    {{item.is_active ? ('Active' |
+                                                                                    {{item.is_active ? ('status.active'
+                                                                                    |
                                                                                     translate)
-                                                                                    : ('Expired' | translate)}}</span>
+                                                                                    : ('status.expired' |
+                                                                                    translate)}}</span>
                                                                         </p>
                                                                   </div>
                                                                   <div

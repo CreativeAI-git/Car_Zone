@@ -5,7 +5,7 @@
                   <div class="row">
                         <div class="col-lg-7">
                               <div class="hero-content">
-                                    <h1 class="text-white mb-2">Discover, Compare & Drive<br />Home Your Perfect Car
+                                    <h1 class="text-white mb-2">{{ 'marketing.discoverCompareAndDrive' | translate }}<br />Home Your Perfect Car
                                     </h1>
                                     <p>
                                           At CarZone, browse thousands of cars and connect directly with
@@ -26,27 +26,27 @@
                   <div class="row justify-content-center">
                         <div class="col-lg-10">
                               <div class="search-box">
-                                    <h5 class="mb-30">321764 Cars Available</h5>
+                                    <h5 class="mb-30">{{ 'marketing.321764CarsAvailable' | translate }}</h5>
                                     <div class="row g-3">
                                           <div class="col-md-3 col-sm-6">
                                                 <select class="form-select">
-                                                      <option>Make & Model</option>
-                                                      <option>Toyota</option>
-                                                      <option>Honda</option>
+                                                      <option>{{ 'vehicle.makeModel' | translate }}</option>
+                                                      <option>{{ 'marketing.toyota' | translate }}</option>
+                                                      <option>{{ 'marketing.honda' | translate }}</option>
                                                       <option>BMW</option>
                                                 </select>
                                           </div>
                                           <div class="col-md-3 col-sm-6">
                                                 <select class="form-select">
-                                                      <option>Body Type</option>
-                                                      <option>Sedan</option>
-                                                      <option>SUV</option>
-                                                      <option>Truck</option>
+                                                      <option>{{ 'vehicle.bodyType' | translate }}</option>
+                                                      <option>{{ 'vehicle.sedan' | translate }}</option>
+                                                      <option>{{ 'vehicle.suv' | translate }}</option>
+                                                      <option>{{ 'marketing.truck' | translate }}</option>
                                                 </select>
                                           </div>
                                           <div class="col-md-3 col-sm-6">
                                                 <select class="form-select">
-                                                      <option>Price Range</option>
+                                                      <option>{{ 'filters.priceRange' | translate }}</option>
                                                       <option>$0 - $20,000</option>
                                                       <option>$20,000 - $40,000</option>
                                                       <option>$40,000+</option>
@@ -54,7 +54,7 @@
                                           </div>
                                           <div class="col-md-3 col-sm-6">
                                                 <select class="form-select">
-                                                      <option>Year Range</option>
+                                                      <option>{{ 'filters.yearRange' | translate }}</option>
                                                       <option>2020-2024</option>
                                                       <option>2015-2019</option>
                                                       <option>2010-2014</option>
@@ -62,40 +62,40 @@
                                           </div>
                                           <div class="col-md-3 col-sm-6">
                                                 <select class="form-select">
-                                                      <option>Kilometers</option>
+                                                      <option>{{ 'vehicle.kilometers' | translate }}</option>
                                                       <option>0-50,000</option>
                                                       <option>50,000-100,000</option>
                                                 </select>
                                           </div>
                                           <div class="col-md-3 col-sm-6">
                                                 <select class="form-select">
-                                                      <option>Transmission</option>
-                                                      <option>Automatic</option>
-                                                      <option>Manual</option>
+                                                      <option>{{ 'vehicle.transmission' | translate }}</option>
+                                                      <option>{{ 'common.automatic' | translate }}</option>
+                                                      <option>{{ 'common.manual' | translate }}</option>
                                                 </select>
                                           </div>
                                           <div class="col-md-3 col-sm-6">
                                                 <select class="form-select">
-                                                      <option>Power Output</option>
-                                                      <option>100-200 HP</option>
-                                                      <option>200-300 HP</option>
+                                                      <option>{{ 'vehicle.powerOutput' | translate }}</option>
+                                                      <option>{{ 'marketing.100200Hp' | translate }}</option>
+                                                      <option>{{ 'marketing.200300Hp' | translate }}</option>
                                                 </select>
                                           </div>
                                           <div class="col-md-3 col-sm-6">
                                                 <select class="form-select">
-                                                      <option>Fuel Type</option>
-                                                      <option>Gasoline</option>
-                                                      <option>Diesel</option>
-                                                      <option>Electric</option>
+                                                      <option>{{ 'vehicle.fuelType' | translate }}</option>
+                                                      <option>{{ 'marketing.gasoline' | translate }}</option>
+                                                      <option>{{ 'common.diesel' | translate }}</option>
+                                                      <option>{{ 'common.electric' | translate }}</option>
                                                 </select>
                                           </div>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mt-30">
                                           <a href="car-listing.html" class="clear-filters">
-                                                <img src="img/icons/filter.svg" alt="More Filters" />
-                                                <span> More Filters</span>
+                                                <img src="img/icons/filter.svg" [alt]="'vehicle.moreFilters' | translate" />
+                                                <span> {{ 'vehicle.moreFilters' | translate }}</span>
                                           </a>
-                                          <button class="btn-red">Search</button>
+                                          <button class="btn-red">{{ 'filters.search' | translate }}</button>
                                     </div>
                               </div>
                         </div>
@@ -194,7 +194,7 @@
                   <div class="collections-header">
                         <div class="section-subheading justify-content-center">
                               <img src="img/subheading-img.png" />
-                              <p class="ct_fs_16">OUR COLLECTIONS</p>
+                              <p class="ct_fs_16">{{ 'marketing.ourCollections' | translate }}</p>
                         </div>
 
                         <h2 class="section-heading ct_fs_35 text-center">
@@ -233,7 +233,7 @@
                                           <div class="price-wrapper d-flex align-items-center">
                                                 <div class="price-text">{{item.totalPrice | chfFormat}}</div>
                                                 <a routerLink="/car-detail" [queryParams]="{id: item.id}"
-                                                      class="view-btn">View Details</a>
+                                                      class="view-btn">{{ 'common.viewDetails' | translate }}</a>
                                           </div>
                                           <div class="car-details" routerLink="/car-detail"
                                                 [queryParams]="{id: item.id}">
@@ -282,10 +282,10 @@
                   <div class="row align-items-center">
                         <div class="col-lg-6">
                               <div class="about-image">
-                                    <img src="img/about-us-img.png" alt="About" />
+                                    <img src="img/about-us-img.png" [alt]="'marketing.about' | translate" />
                                     <!-- <div class="since-badge">
                                 <div class="year">2025</div>
-                                <div>Since</div>
+                                <div>{{ 'marketing.since' | translate }}</div>
                             </div> -->
                               </div>
                         </div>
@@ -293,7 +293,7 @@
                               <div class="about-content">
                                     <div class="section-subheading">
                                           <img src="img/subheading-img.png" />
-                                          <p class="ct_fs_16">About Carzone</p>
+                                          <p class="ct_fs_16">{{ 'marketing.aboutCarzone' | translate }}</p>
                                     </div>
 
                                     <h2 class="section-heading cr_fs_30 text-start">
@@ -331,24 +331,24 @@
             <div class="cta-content d-md-flex align-items-center">
                   <div class="cta-left-col px-0 w-lg-50 w-sm-100">
                         <div class="cta-buy">
-                              <p class="ct_fs_18 ct_fw_600">Are You Looking</p>
-                              <h3 class="ct_fs_33 ct_fw_800">TO BUY A CAR?</h3>
+                              <p class="ct_fs_18 ct_fw_600">{{ 'marketing.areYouLooking' | translate }}</p>
+                              <h3 class="ct_fs_33 ct_fw_800">{{ 'marketing.toBuyACar' | translate }}</h3>
                               <p class="ct_fs_14 ct_fw_400">
                                     Browse our wide selection of verified cars at competitive prices
                                     and connect directly with trusted sellers.
                               </p>
-                              <a class="btn-transparent mt-3">Search Your Car</a>
+                              <a class="btn-transparent mt-3">{{ 'marketing.searchYourCar' | translate }}</a>
                         </div>
                   </div>
                   <div class="cta-right-col px-0 w-lg-50 w-sm-100">
                         <div class="cta-sell">
-                              <p class="ct_fs_18 ct_fw_600">Do You Want To</p>
-                              <h3 class="ct_fs_33 ct_fw_800">SELL YOUR CAR?</h3>
+                              <p class="ct_fs_18 ct_fw_600">{{ 'marketing.doYouWantTo' | translate }}</p>
+                              <h3 class="ct_fs_33 ct_fw_800">{{ 'marketing.sellYourCar' | translate }}</h3>
                               <p class="ct_fs_14 ct_fw_400">
                                     Easily create your car listing with photos, details, and reach
                                     thousands of genuine buyers quickly.
                               </p>
-                              <a class="btn-transparent mt-3">Add Listing</a>
+                              <a class="btn-transparent mt-3">{{ 'marketing.addListing' | translate }}</a>
                         </div>
                   </div>
             </div>
@@ -361,7 +361,7 @@
                         <div class="col-lg-6">
                               <div class="section-subheading">
                                     <img src="img/subheading-img.png" />
-                                    <p class="ct_fs_16">How It Works</p>
+                                    <p class="ct_fs_16">{{ 'marketing.howItWorks' | translate }}</p>
                               </div>
                               <h2 class="section-heading ct_fs_35 text-start">
                                     3 Simple Steps to Get Started
@@ -437,11 +437,11 @@
                         <div class="col-lg-6">
                               <div class="d-flex justify-content-end">
                                     <div class="step-image mt-lg-0 mt-3">
-                                          <img src="img/accordian-img.png" alt="Steps" class="accordian-right-img" />
+                                          <img src="img/accordian-img.png" [alt]="'marketing.steps' | translate" class="accordian-right-img" />
                                           <div class="step-badge">
                                                 <img src="img/icons/verified-user.png" />
-                                                <p class="mt-3 mb-2 ct_fs_12 ct_fw_400">Verified Users</p>
-                                                <p class="mb-0 ct_fs_12 ct_fw_400">Safe & Trusted Deals</p>
+                                                <p class="mt-3 mb-2 ct_fs_12 ct_fw_400">{{ 'marketing.verifiedUsers' | translate }}</p>
+                                                <p class="mb-0 ct_fs_12 ct_fw_400">{{ 'marketing.safeAndTrustedDeals' | translate }}</p>
                                           </div>
                                     </div>
                               </div>
@@ -458,11 +458,11 @@
                         <div class="row">
                               <div class="col-xxl-6 col-xl-7 col-md-8 col-sm-12">
                                     <div class="ct_seller_bnr_cnt">
-                                          <h1>show new <br> car</h1>
+                                          <h1>{{ 'marketing.showNew' | translate }} <br> {{ 'marketing.car' | translate }}</h1>
                                           <div class="ct_seller_bnr_title">
                                                 <div class="section-subheading ct_mb_28">
                                                       <img src="img/subheading-img.png" />
-                                                      <p class="ct_fs_16">INSERT YOUR CAR</p>
+                                                      <p class="ct_fs_16">{{ 'marketing.insertYourCar' | translate }}</p>
                                                 </div>
 
                                                 <h2 class="ct_fs_45 ct_fw_700">
@@ -514,7 +514,7 @@
                                           </svg>
                                     </div>
                                     <figcaption>
-                                          <h4>Verified & Trusted Buyers</h4>
+                                          <h4>{{ 'marketing.verifiedAndTrustedBuyers' | translate }}</h4>
                                           <p class="ct_para_scroll ct_custom_scroll">
                                                 Every buyer and seller goes through verification, ensuring
                                                 genuine inquiries and a secure selling experience.
@@ -536,7 +536,7 @@
                                           </svg>
                                     </div>
                                     <figcaption>
-                                          <h4>Better Deals, Full Control</h4>
+                                          <h4>{{ 'marketing.betterDealsFullControl' | translate }}</h4>
                                           <p class="ct_para_scroll ct_custom_scroll">
                                                 Set your own price, negotiate directly, and adjust offers
                                                 without middlemen or hidden fees.
@@ -558,7 +558,7 @@
                                           </svg>
                                     </div>
                                     <figcaption>
-                                          <h4>Faster Selling Process</h4>
+                                          <h4>{{ 'marketing.fasterSellingProcess' | translate }}</h4>
                                           <p class="ct_para_scroll ct_custom_scroll">
                                                 From listing to inquiry to purchase contract — everything is
                                                 streamlined to close deals quicker.
@@ -575,7 +575,7 @@
                   <div class="row">
                         <div class="col-md-6 mb-4 mb-md-0">
                               <div>
-                                    <h6 class="ct_fs_16 ct_texy_clr_35383C mb-3">Why List With Us</h6>
+                                    <h6 class="ct_fs_16 ct_texy_clr_35383C mb-3">{{ 'marketing.whyListWithUs' | translate }}</h6>
                                     <h2 class="ct_fs_45 ct_fw_700" style="max-width: 499px">
                                           Get Your Car Listed in 5 Easy Steps
                                     </h2>
@@ -590,7 +590,7 @@
                                                 <p class="mb-0">1</p>
                                           </div>
                                           <div>
-                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">Select a Slot Plan</h5>
+                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">{{ 'marketing.selectASlotPlan' | translate }}</h5>
                                                 <p class="mb-0">
                                                       Choose a listing plan that fits your selling needs.
                                                 </p>
@@ -601,7 +601,7 @@
                                                 <p class="mb-0">2</p>
                                           </div>
                                           <div>
-                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">Enter Car Details</h5>
+                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">{{ 'vehicle.enterCarDetails' | translate }}</h5>
                                                 <p class="mb-0">
                                                       Add vehicle information via VIN or manual entry.
                                                 </p>
@@ -633,7 +633,7 @@
                                                 <p class="mb-0">4</p>
                                           </div>
                                           <div>
-                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">Billing Information</h5>
+                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">{{ 'marketing.billingInformation' | translate }}</h5>
                                                 <p class="mb-0">
                                                       Provide billing and contact details for invoicing.
                                                 </p>
@@ -644,7 +644,7 @@
                                                 <p class="mb-0">5</p>
                                           </div>
                                           <div>
-                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">Review & Pay</h5>
+                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">{{ 'marketing.reviewAndPay' | translate }}</h5>
                                                 <p class="mb-0">
                                                       Confirm details, complete payment, and publish your listing.
                                                 </p>
@@ -661,7 +661,7 @@
                   <div class="row">
                         <div class="col-md-12">
                               <div>
-                                    <h2 class="ct_fs_45 mb-3 text-white">Turn Your Car into a Head-Turner</h2>
+                                    <h2 class="ct_fs_45 mb-3 text-white">{{ 'marketing.turnYourCarIntoAHeadTurner' | translate }}</h2>
                                     <hr class="bg-white opacity-100 mx-auto" style="height: 5px; max-width: 250px" />
                                     <p class="mb-0 mt-5 mx-auto" style="max-width: 634px">
                                           List your car on CarZone and give it the attention it deserves.
@@ -688,7 +688,7 @@
                         </div>
                         <div class="col-lg-7">
                               <div class="app-content">
-                                    <h2 class="ct_fs_35 ct_fw_400 text-white mb-2">Download the CarZone App</h2>
+                                    <h2 class="ct_fs_35 ct_fw_400 text-white mb-2">{{ 'marketing.downloadTheCarzoneApp' | translate }}</h2>
                                     <p class="ct_fs_18 ct_fw_400 text-white">
                                           Buy, sell, and explore cars on the go. Browse search, inspect
                                           cars, and real-time updates—all in one app.

@@ -49,7 +49,7 @@
                             </div>
                         </div>
                     </div>
-                    <h4 class="ct_fs_20 ct_fw_600 ct_mt_40 mb-3">Vehicle Details</h4>
+                    <h4 class="ct_fs_20 ct_fw_600 ct_mt_40 mb-3">{{ 'vehicle.vehicleDetails' | translate }}</h4>
                     <div class="d-flex gap-5 align-items-center">
                         <ul class="p-0 car-content-detail-list">
                             <li class="d-flex gap-2 align-items-start">
@@ -91,7 +91,7 @@
                         </ul>
                     </div>
                     <hr class="my-4" />
-                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Basic Info</h4>
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.basicInfo' | translate }}</h4>
                     <div class="row">
                         <div class="col-md-6">
                             <p class="mb-1">Brand: {{carData?.brandName || 'N/A'}}</p>
@@ -107,7 +107,7 @@
                     </div>
 
                     <hr class="my-4" />
-                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Registration</h4>
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.registration' | translate }}</h4>
                     <div class="row">
                         <div class="col-md-6">
                             <p class="mb-1">Registration Month: {{carData?.registration_month || 'N/A'}}</p>
@@ -125,7 +125,7 @@
                     </div>
 
                     <hr class="my-4" />
-                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Specifications</h4>
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.specifications' | translate }}</h4>
                     <div class="row">
                         <div class="col-md-6">
                             <p class="mb-1">Height (mm): {{carData?.height_mm || 'N/A'}}</p>
@@ -138,7 +138,7 @@
                         </div>
                     </div>
                     <hr class="my-4" />
-                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Colors & Flags</h4>
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.colorsAndFlags' | translate }}</h4>
                     <div class="row">
                         <div class="col-md-6">
                             <p class="mb-1">Exterior Color: {{carData?.exterior_color_value || 'N/A'}}</p>
@@ -152,7 +152,7 @@
                     </div>
 
                     <hr class="my-4" />
-                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Equipment & Features</h4>
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.equipmentAndFeatures' | translate }}</h4>
                     <ul class="px-0 equipment-list"
                         *ngIf="(carData?.carFeatures?.length || 0) + (carData?.extras?.length || 0) > 0; else noFeatures">
                         <li *ngFor="let feat of carData?.carFeatures">
@@ -165,28 +165,28 @@
                         </li>
                     </ul>
                     <ng-template #noFeatures>
-                        <p class="ct_fs_16 mb-0">No features listed.</p>
+                        <p class="ct_fs_16 mb-0">{{ 'vehicle.noFeaturesListed' | translate }}</p>
                     </ng-template>
 
                     <hr class="my-4" />
-                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Description</h4>
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'common.description' | translate }}</h4>
                     <p>{{carData?.description || 'No description provided.'}}</p>
                     <p class="ct_fs_14 ct_color_666666" *ngIf="carData?.additional_title_999">
                         {{carData?.additional_title_999}}
                     </p>
 
                     <hr class="my-4" />
-                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Vehicle inspection (MFK)</h4>
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.vehicleInspectionMfk' | translate }}</h4>
                     <p *ngIf="carData?.last_mfk_date; else noMfk">
                         <img src="img/icons/right.png" class="me-2" />
                         MFK done on {{carData?.last_mfk_date | date:'dd.MM.yyyy'}}.
                     </p>
                     <ng-template #noMfk>
-                        <p>No MFK date provided.</p>
+                        <p>{{ 'vehicle.noMfkDateProvided' | translate }}</p>
                     </ng-template>
 
                     <hr class="my-4" />
-                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Warranty & Returns</h4>
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.warrantyAndReturns' | translate }}</h4>
                     <p class="mb-1">Warranty: {{carData?.warranty_value || 'N/A'}}</p>
                     <p class="mb-1">Warranty Type: {{carData?.warranty_type_value || 'N/A'}}</p>
                     <p class="mb-1" *ngIf="carData?.warranty_from && carData?.warranty_to">
@@ -195,7 +195,7 @@
                     </p>
 
                     <hr class="my-4" />
-                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Leasing Summary</h4>
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.leasingSummary' | translate }}</h4>
                     @if(carData?.isLeasing){
                     <div class="row">
                         <div class="col-md-6">
@@ -208,11 +208,11 @@
                         </div>
                     </div>
                     }@else{
-                    <p class="ct_fs_16 mb-0">Leasing not selected.</p>
+                    <p class="ct_fs_16 mb-0">{{ 'vehicle.leasingNotSelected' | translate }}</p>
                     }
 
                     <hr class="my-4" />
-                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Contact Details</h4>
+                    <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.contactDetails' | translate }}</h4>
                     <div class="row">
                         <div class="col-md-6">
                             <p class="mb-1">First Name: {{carData?.first_name || 'N/A'}}</p>

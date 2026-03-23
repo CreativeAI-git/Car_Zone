@@ -1,7 +1,7 @@
 <div class="ct_mt_100">
       <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
-                  <nav aria-label="breadcrumb">
+                  <nav [attr.aria-label]="'vehicle.breadcrumb' | translate">
                         <ol class="breadcrumb mb-0">
                               <li class="breadcrumb-item">
                                     <a class="ct_color_8f0c1f ct_fs_17 ct_fw_500" (click)="location.back()">
@@ -26,18 +26,18 @@
                               <i class="fa-heart ct_fs_18"
                                     [ngClass]="carData?.is_in_wishlist ? 'fa-solid ct_text_red' : 'fa-regular'"
                                     (click)="carData?.is_in_wishlist ? removeFromWishlist(carData) : addToWishlist(carData)"></i>
-                              <span class="ct_fs_17 ct_fw_400">Shortlist</span>
+                              <span class="ct_fs_17 ct_fw_400">{{ 'vehicle.shortlist' | translate }}</span>
                         </div>
                         @if(authService.isLogedIn()){
                         <div class="d-flex align-items-center gap-2 ct_cursor_pointer" data-bs-toggle="modal"
                               data-bs-target="#reportModal">
                               <img src="img/icons/report.png" />
-                              <span class="ct_fs_17 ct_fw_400">Report Listing</span>
+                              <span class="ct_fs_17 ct_fw_400">{{ 'vehicle.reportListing' | translate }}</span>
                         </div>
                         }
                         <div class="d-flex align-items-center gap-2">
                               <img src="img/icons/share.png" />
-                              <span class="ct_fs_17 ct_fw_400">Share</span>
+                              <span class="ct_fs_17 ct_fw_400">{{ 'vehicle.share' | translate }}</span>
                         </div>
                   </div>
             </div>
@@ -76,7 +76,8 @@
                                     </div>
                               </div>
                               }
-                              <h4 class="ct_fs_20 ct_fw_600 ct_mt_40 mb-3">Vehicle Details</h4>
+                              <h4 class="ct_fs_20 ct_fw_600 ct_mt_40 mb-3">{{ 'vehicle.vehicleDetails' | translate }}
+                              </h4>
                               <div class="d-flex gap-5 align-items-center">
                                     <ul class="p-0 car-content-detail-list">
                                           <li class="d-flex gap-1 align-items-start">
@@ -128,57 +129,59 @@
                               <div class="mt-4">
                                     <div class="row">
                                           <div class="col-md-6">
-                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">Technical</h6>
+                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">{{ 'vehicle.technical' | translate
+                                                      }}</h6>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Energy efficiency</span>
+                                                      <span>{{ 'vehicle.energyEfficiency' | translate }}</span>
                                                       <span>{{carData?.vehicle.energy_efficiency || 'N/A'}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Braked towing capacity</span>
+                                                      <span>{{ 'vehicle.brakedTowingCapacity' | translate }}</span>
                                                       <span>{{carData?.vehicle.braked_towing_capacity_kg || 'N/A'}}
                                                             kg</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Height</span>
+                                                      <span>{{ 'vehicle.height' | translate }}</span>
                                                       <span>{{carData?.vehicle.height_mm || 'N/A'}} mm</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Width</span>
+                                                      <span>{{ 'vehicle.width' | translate }}</span>
                                                       <span>{{carData?.vehicle.width_mm || 'N/A'}} mm</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Length</span>
+                                                      <span>{{ 'vehicle.length' | translate }}</span>
                                                       <span>{{carData?.vehicle.length_mm || 'N/A'}} mm</span>
                                                 </div>
                                           </div>
 
                                           <div class="col-md-6">
-                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">Vehicle History</h6>
+                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">{{ 'vehicle.vehicleHistory' |
+                                                      translate }}</h6>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Condition</span>
+                                                      <span>{{ 'vehicle.condition' | translate }}</span>
                                                       <span>{{carData?.vehicle.condition_value || 'N/A'}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>State</span>
+                                                      <span>{{ 'profile.state' | translate }}</span>
                                                       <span>{{carData?.vehicle.state_value || 'N/A'}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Warranty</span>
+                                                      <span>{{ 'vehicle.warranty' | translate }}</span>
                                                       <span>{{carData?.vehicle.warranty_value || 'N/A'}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Warranty type</span>
+                                                      <span>{{ 'vehicle.warrantyType' | translate }}</span>
                                                       <span>{{carData?.vehicle.warranty_type_value || 'N/A'}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Warranty period</span>
+                                                      <span>{{ 'vehicle.warrantyPeriod' | translate }}</span>
                                                       <span>
                                                             {{carData?.vehicle.warranty_from | date:'dd.MM.yyyy'}} -
                                                             {{carData?.vehicle.warranty_to | date:'dd.MM.yyyy'}}
                                                       </span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Last MFK</span>
+                                                      <span>{{ 'vehicle.lastMfk' | translate }}</span>
                                                       <span>{{carData?.vehicle.last_mfk_date |
                                                             date:'dd.MM.yyyy'}}</span>
                                                 </div>
@@ -187,25 +190,27 @@
 
                                     <div class="row mt-3">
                                           <div class="col-md-6">
-                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">Colours</h6>
+                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">{{ 'vehicle.colours' | translate }}
+                                                </h6>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Exterior</span>
+                                                      <span>{{ 'vehicle.exterior' | translate }}</span>
                                                       <span>{{carData?.vehicle.exterior_color_value || 'N/A'}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Interior</span>
+                                                      <span>{{ 'vehicle.interior' | translate }}</span>
                                                       <span>{{carData?.vehicle.interior_color_value || 'N/A'}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Metallic</span>
+                                                      <span>{{ 'filters.metallic' | translate }}</span>
                                                       <span>{{carData?.vehicle.is_metallic ? 'Yes' : 'No'}}</span>
                                                 </div>
                                           </div>
 
                                           <div class="col-md-6">
-                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">Registration</h6>
+                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">{{ 'vehicle.registration' |
+                                                      translate }}</h6>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>First registration</span>
+                                                      <span>{{ 'vehicle.firstRegistration' | translate }}</span>
                                                       <span>{{carData?.vehicle.first_registration_date |
                                                             date:'dd.MM.yyyy'}}</span>
                                                 </div>
@@ -214,11 +219,11 @@
                                                       <span>{{carData?.vehicle.vin_number || 'N/A'}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Type approval</span>
+                                                      <span>{{ 'vehicle.typeApproval' | translate }}</span>
                                                       <span>{{carData?.vehicle.type_approval || 'N/A'}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Reg. master no.</span>
+                                                      <span>{{ 'vehicle.regMasterNo' | translate }}</span>
                                                       <span>{{carData?.vehicle.registration_master_number ||
                                                             'N/A'}}</span>
                                                 </div>
@@ -227,29 +232,31 @@
 
                                     <div class="row mt-3">
                                           <div class="col-md-6">
-                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">Prices</h6>
+                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">{{ 'vehicle.prices' | translate }}
+                                                </h6>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Orginal Price</span>
+                                                      <span>{{ 'vehicle.orginalPrice' | translate }}</span>
                                                       <span>{{carData?.vehicle.price | chfFormat}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Selling price</span>
+                                                      <span>{{ 'payment.sellingPrice' | translate }}</span>
                                                       <span>{{carData?.vehicle.selling_price | chfFormat}}</span>
                                                 </div>
                                           </div>
 
                                           <div class="col-md-6">
-                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">Place</h6>
+                                                <h6 class="ct_fw_600 ct_fs_16 mb-2">{{ 'vehicle.place' | translate }}
+                                                </h6>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>City</span>
+                                                      <span>{{ 'profile.city' | translate }}</span>
                                                       <span>{{carData?.vehicle.city || 'N/A'}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Postal code</span>
+                                                      <span>{{ 'profile.postalCode' | translate }}</span>
                                                       <span>{{carData?.vehicle.postal_code || 'N/A'}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>Country</span>
+                                                      <span>{{ 'profile.country' | translate }}</span>
                                                       <span>{{carData?.vehicle.country || 'N/A'}}</span>
                                                 </div>
                                           </div>
@@ -279,7 +286,8 @@
                                           expensive surprises.
                                     </p>
                                     <p class="ct_fs_16 ct_fw_700 mb-0">
-                                          <strong>Buy safely – with a complete vehicle history.</strong>
+                                          <strong>{{ 'vehicle.buySafelyWithACompleteVehicleHistory' | translate
+                                                }}</strong>
                                     </p>
 
                                     <div class="mt-3">
@@ -289,7 +297,8 @@
                                     </div>
                                     <hr class="my-4" />
 
-                                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Equipment & Features</h4>
+                                    <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.equipmentAndFeatures' | translate }}
+                                    </h4>
                                     <ul class="px-0 equipment-list">
                                           <li>
                                                 <img src="img/icons/list-chk.png" />
@@ -314,16 +323,16 @@
                                     </ul>
 
                                     <div class="mt-3">
-                                          <a class="ct_color_3e1cff ct_fs_16"> Show More </a>
+                                          <a class="ct_color_3e1cff ct_fs_16"> {{ 'common.showMore' | translate }} </a>
                                     </div>
                                     <hr class="my-4" />
 
-                                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Description</h4>
+                                    <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'common.description' | translate }}</h4>
                                     <p>
                                           {{carData?.vehicle.description}}
                                     </p>
                                     <div class="mt-3">
-                                          <a class="ct_color_3e1cff ct_fs_16"> Show More </a>
+                                          <a class="ct_color_3e1cff ct_fs_16"> {{ 'common.showMore' | translate }} </a>
                                     </div>
                                     <hr class="my-4" />
 
@@ -338,19 +347,20 @@
                                     </p>
                                     <hr class="my-4" />
 
-                                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Warranty & Returns</h4>
+                                    <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.warrantyAndReturns' | translate }}
+                                    </h4>
                                     <div class="d-flex gap-4 mb-2">
-                                          <div class="w-25">Warranty Included</div>
+                                          <div class="w-25">{{ 'vehicle.warrantyIncluded' | translate }}</div>
                                           @if(carData?.vehicle.is_warranty_included){
                                           <div class="ct_color_0acc0a">
                                                 yes <img src="img/icons/right.png" class="ms-1" />
                                           </div>
                                           }
                                     </div>
-                                    <!-- <p class="mb-2">From take-over, 12 months or 20,000 km</p> -->
+                                    <!-- <p class="mb-2">{{ 'vehicle.fromTakeOver12MonthsOr20000Km' | translate }}</p> -->
                                     <p class="mb-2">{{carData?.vehicle.warranty_type_value || 'N/A'}}</p>
                                     <div class="d-flex gap-4 mb-2">
-                                          <div class="w-25">Swiss car?</div>
+                                          <div class="w-25">{{ 'vehicle.swissCar' | translate }}</div>
                                           @if(carData?.vehicle.is_swiss_vehicle){
                                           <div class="ct_color_0acc0a">
                                                 yes <img src="img/icons/right.png" class="ms-1" />
@@ -359,7 +369,8 @@
                                     </div>
 
                                     <hr class="my-4" />
-                                    <h4 class="ct_fs_20 ct_fw_600 mb-3">Leasing Calculator</h4>
+                                    <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.leasingCalculator' | translate }}
+                                    </h4>
 
                                     <div class="calculator-box">
                                           <p class="ct_fs_20 mb-0">
@@ -371,21 +382,25 @@
 
                                     <div class="row ct_mt_30">
                                           <div class="col-6">
-                                                <label class="ct_fs_15 ct_fw_400 mb-2">Lease Duration</label>
-                                                <select class="form-select" aria-label="Default select example">
-                                                      <option selected>12 months</option>
-                                                      <option value="1">One</option>
-                                                      <option value="2">Two</option>
-                                                      <option value="3">Three</option>
+                                                <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'vehicle.leaseDuration' |
+                                                      translate }}</label>
+                                                <select class="form-select"
+                                                      [attr.aria-label]="'filters.defaultSelectExample' | translate">
+                                                      <option selected>{{ 'filters.12Months' | translate }}</option>
+                                                      <option value="1">{{ 'filters.one' | translate }}</option>
+                                                      <option value="2">{{ 'filters.two' | translate }}</option>
+                                                      <option value="3">{{ 'filters.three' | translate }}</option>
                                                 </select>
                                           </div>
                                           <div class="col-6">
-                                                <label class="ct_fs_15 ct_fw_400 mb-2"> Km per Year</label>
-                                                <select class="form-select" aria-label="Default select example">
+                                                <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'vehicle.kmPerYear' |
+                                                      translate }}</label>
+                                                <select class="form-select"
+                                                      [attr.aria-label]="'filters.defaultSelectExample' | translate">
                                                       <option selected>10,000 km</option>
-                                                      <option value="1">One</option>
-                                                      <option value="2">Two</option>
-                                                      <option value="3">Three</option>
+                                                      <option value="1">{{ 'filters.one' | translate }}</option>
+                                                      <option value="2">{{ 'filters.two' | translate }}</option>
+                                                      <option value="3">{{ 'filters.three' | translate }}</option>
                                                 </select>
                                           </div>
 
@@ -394,7 +409,8 @@
                                                       Down Payment
                                                 </label>
                                                 <input type="text" class="form-control" placeholder="CHF 25’43.- "
-                                                      aria-label="Username" aria-describedby="basic-addon1" />
+                                                      [attr.aria-label]="'filters.username' | translate"
+                                                      aria-describedby="basic-addon1" />
                                           </div>
                                     </div>
 
@@ -404,19 +420,20 @@
                                                 <p class="ct_fs_15 mb-0">
                                                       .05
                                                       <!-- <br /> -->
-                                                      <span>/Mt.</span>
+                                                      <span>{{ 'vehicle.mt' | translate }}</span>
                                                 </p>
                                           </div>
 
                                           <div
                                                 class="d-flex w-50 mx-auto align-items-center justify-content-between mt-3">
-                                                <p class="ct_fs_15 mb-0">Residual value:</p>
+                                                <p class="ct_fs_15 mb-0">{{ 'vehicle.residualValue' | translate }}</p>
                                                 <p class="ct_fs_15 mb-0">CHF 46’800.-</p>
                                           </div>
 
                                           <div
                                                 class="d-flex w-50 mx-auto align-items-center justify-content-between mt-2">
-                                                <p class="ct_fs_15 mb-0">Annual Interest Rate:</p>
+                                                <p class="ct_fs_15 mb-0">{{ 'vehicle.annualInterestRate' | translate }}
+                                                </p>
                                                 <p class="ct_fs_15 mb-0">5.9%</p>
                                           </div>
                                     </div>
@@ -530,7 +547,8 @@
                                                                   <td>{{time.close_time}}</td>
                                                                   }
                                                                   @else{
-                                                                  <td colspan="2">Closed</td>
+                                                                  <td colspan="2">{{ 'vehicle.closed' | translate }}
+                                                                  </td>
                                                                   }
                                                             </tr>
                                                       </tbody>
@@ -543,7 +561,7 @@
 
                   <div class="ct_mt_30">
                         <div class="container">
-                              <h4 class="ct_fw_600 ct_fs_20 mb-2">Location</h4>
+                              <h4 class="ct_fw_600 ct_fs_20 mb-2">{{ 'location.location' | translate }}</h4>
                               <iframe
                                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3669.849902513293!2d72.59278517437018!3d23.102589813339137!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8371c3b2d859%3A0x6035b10ac2e442ad!2seVitalRx%20-%20Pharmacy%20Billing%20and%20Inventory%20Management%20Software%20(PC%20%26%20Mobile)!5e0!3m2!1sen!2sin!4v1768815531384!5m2!1sen!2sin"
                                     width="100%" height="429" style="border: 0; border-radius: 20px" allowfullscreen=""
@@ -558,8 +576,8 @@
                                     <h5 class="ct_fs_20 ct_fw_600">
                                           More vehicles from this seller
                                     </h5>
-                                    <a class="ct_color_3e1cff ct_fs_18">Show all</a>
-                                    <!-- <a routerLink="/seller-detail" class="ct_color_3e1cff ct_fs_18">Show all</a> -->
+                                    <a class="ct_color_3e1cff ct_fs_18">{{ 'vehicle.showAll' | translate }}</a>
+                                    <!-- <a routerLink="/seller-detail" class="ct_color_3e1cff ct_fs_18">{{ 'vehicle.showAll' | translate }}</a> -->
                               </div>
 
                               <div class="seller-carousel CarSwiper">
@@ -659,7 +677,7 @@
       <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                   <div class="modal-header">
-                        <h5 class="modal-title">Report Car</h5>
+                        <h5 class="modal-title">{{ 'vehicle.reportCar' | translate }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" #closeReportModal></button>
                   </div>
 
@@ -683,9 +701,10 @@
                         </div>
 
                         <div class="mb-3">
-                              <label class="form-label ct_fs_16 ct_fw_400">Custom message</label>
-                              <textarea class="form-control" rows="3" placeholder="Write reason..." name="customMessage"
-                                    [(ngModel)]="customReportReason" #customMsg="ngModel"
+                              <label class="form-label ct_fs_16 ct_fw_400">{{ 'vehicle.customMessage' | translate
+                                    }}</label>
+                              <textarea class="form-control" rows="3" [placeholder]="'vehicle.writeReason' | translate"
+                                    name="customMessage" [(ngModel)]="customReportReason" #customMsg="ngModel"
                                     [required]="selectedReportReasons.includes(8)">
                                     </textarea>
                               <small class="text-danger" *ngIf="customMsg.invalid && customMsg.touched">
@@ -711,7 +730,7 @@
       <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                   <div class="modal-header">
-                        <h5 class="modal-title"> Send Inquiry</h5>
+                        <h5 class="modal-title"> {{ 'vehicle.sendInquiry' | translate }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                   </div>
 
@@ -738,8 +757,10 @@
                                           <label class="mt-3 ct_fs_15 ct_fw_400 mb-2">
                                                 Full Name
                                           </label>
-                                          <input type="text" class="form-control" placeholder="Full Name"
-                                                aria-label="Username" aria-describedby="basic-addon1">
+                                          <input type="text" class="form-control"
+                                                [placeholder]="'vehicle.fullName' | translate"
+                                                [attr.aria-label]="'filters.username' | translate"
+                                                aria-describedby="basic-addon1">
 
                                     </div>
                                     <div class="col-6">
@@ -748,7 +769,8 @@
                                                 Full Name
                                           </label>
                                           <input type="text" class="form-control" placeholder="CHF 25’43.- "
-                                                aria-label="Username" aria-describedby="basic-addon1">
+                                                [attr.aria-label]="'filters.username' | translate"
+                                                aria-describedby="basic-addon1">
 
                                     </div>
                                     <div class="col-6">
@@ -756,8 +778,10 @@
                                           <label class="mt-3 ct_fs_15 ct_fw_400 mb-2">
                                                 Email Address
                                           </label>
-                                          <input type="text" class="form-control" placeholder="john.anderson@email.com"
-                                                aria-label="Username" aria-describedby="basic-addon1">
+                                          <input type="text" class="form-control"
+                                                [placeholder]="'vehicle.johnAndersonEmailCom' | translate"
+                                                [attr.aria-label]="'filters.username' | translate"
+                                                aria-describedby="basic-addon1">
 
                                     </div>
                                     <div class="col-6">
@@ -766,7 +790,8 @@
                                                 Phone Number
                                           </label>
                                           <input type="text" class="form-control" placeholder="+44 54 670 653"
-                                                aria-label="Username" aria-describedby="basic-addon1">
+                                                [attr.aria-label]="'filters.username' | translate"
+                                                aria-describedby="basic-addon1">
 
                                     </div>
 
@@ -774,22 +799,26 @@
                                           <div class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                       id="flexCheckDefault">
-                                                <label for="flexCheckDefault"> Leasing </label>
+                                                <label for="flexCheckDefault"> {{ 'vehicle.leasing' | translate }}
+                                                </label>
                                           </div>
                                           <div class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                       id="flexCheckDefault">
-                                                <label for="flexCheckDefault">Payment </label>
+                                                <label for="flexCheckDefault">{{ 'vehicle.payment' | translate }}
+                                                </label>
                                           </div>
                                           <div class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                       id="flexCheckDefault">
-                                                <label for="flexCheckDefault">Insuarance </label>
+                                                <label for="flexCheckDefault">{{ 'vehicle.insuarance' | translate }}
+                                                </label>
                                           </div>
                                           <div class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                       id="flexCheckDefault">
-                                                <label for="flexCheckDefault">Trade-in </label>
+                                                <label for="flexCheckDefault">{{ 'vehicle.tradeIn' | translate }}
+                                                </label>
                                           </div>
                                     </div>
 
@@ -797,9 +826,10 @@
                         </div>
 
                         <div class="mt-3">
-                              <label class="form-label ct_fs_16 ct_fw_400"> Message <span
-                                          class="fst-italic">(Optional)</span></label>
-                              <textarea class="form-control" rows="3" placeholder="Write reason..."></textarea>
+                              <label class="form-label ct_fs_16 ct_fw_400"> {{ 'vehicle.message' | translate }} <span
+                                          class="fst-italic">{{ 'vehicle.optional' | translate }}</span></label>
+                              <textarea class="form-control" rows="3"
+                                    [placeholder]="'vehicle.writeReason' | translate"></textarea>
                         </div>
                   </div>
 

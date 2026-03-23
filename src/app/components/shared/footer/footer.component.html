@@ -3,7 +3,7 @@
             <div class="row">
                   <div class="col-lg-4">
                         <a class="footer-logo">
-                              <img src="img/logo.png" alt="Logo" />
+                              <img src="img/logo.png" [alt]="'marketing.logo' | translate" />
                         </a>
                         <p class="ct_fs_16 ct_fw_400 ct_lh-2">
                               Carzone is a modern platform to buy and sell cars easily. Connect
@@ -27,30 +27,30 @@
                   </div>
                   <div class="col-lg-2 col-md-4">
                         <div class="footer-nav">
-                              <h5 class="text-white">Buy a Car</h5>
+                              <h5 class="text-white">{{ 'marketing.buyACar' | translate }}</h5>
                               <ul>
-                                    <li><a routerLink="/buy-sell"> Buy & Sell</a></li>
-                                    <li><a routerLink="/quick-sell">Quick Sell Option</a></li>
-                                    <li><a routerLink="/car-reels">CarReels</a></li>
+                                    <li><a routerLink="/buy-sell"> {{ 'marketing.buySell' | translate }}</a></li>
+                                    <li><a routerLink="/quick-sell">{{ 'marketing.quickSellOption' | translate }}</a></li>
+                                    <li><a routerLink="/car-reels">{{ 'marketing.carreels' | translate }}</a></li>
                               </ul>
                         </div>
                   </div>
                   <div class="col-lg-2 col-md-4">
                         <div class="footer-nav">
-                              <h5 class="text-white">Support</h5>
+                              <h5 class="text-white">{{ 'marketing.support' | translate }}</h5>
                               <ul>
-                                    <li><a routerLink="/help-center">Help Center</a></li>
-                                    <li><a routerLink="/contact-us">Contact Us</a></li>
+                                    <li><a routerLink="/help-center">{{ 'marketing.helpCenter' | translate }}</a></li>
+                                    <li><a routerLink="/contact-us">{{ 'common.contactUs' | translate }}</a></li>
                                     <li><a routerLink="/faq">FAQ</a></li>
                               </ul>
                         </div>
                   </div>
                   <div class="col-lg-2 col-md-4">
                         <div class="footer-nav">
-                              <h5 class="text-white">Legal</h5>
+                              <h5 class="text-white">{{ 'profile.legal' | translate }}</h5>
                               <ul>
-                                    <li><a routerLink="/terms-conditions">Terms & Conditions</a></li>
-                                    <li><a routerLink="/privacy-policy">Privacy Policy</a></li>
+                                    <li><a routerLink="/terms-conditions">{{ 'vehicle.termsAndConditions' | translate }}</a></li>
+                                    <li><a routerLink="/privacy-policy">{{ 'common.privacyPolicy' | translate }}</a></li>
                               </ul>
                         </div>
                   </div>

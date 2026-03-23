@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { ChfFormatPipe } from '../../../../pipes/chf-format.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 declare var Swiper: any;
 @Component({
   selector: 'app-car-preview',
-  imports: [NzImageModule, CommonModule, ChfFormatPipe],
+  imports: [NzImageModule, CommonModule, ChfFormatPipe, TranslateModule],
   templateUrl: './car-preview.component.html',
   styleUrl: './car-preview.component.css'
 })

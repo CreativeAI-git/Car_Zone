@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-application-rejected',
-  imports: [],
+  imports: [TranslateModule],
   templateUrl: './application-rejected.component.html',
   styleUrl: './application-rejected.component.css'
 })

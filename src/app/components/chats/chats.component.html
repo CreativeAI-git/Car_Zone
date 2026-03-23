@@ -10,7 +10,7 @@
                                                 <div
                                                       class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-3">
                                                       <h4 class="ct_fs_16 mb-0 ct_fw_600 ct_nunito_font">
-                                                            {{'Contacts' | translate}}</h4>
+                                                            {{'common.contacts' | translate}}</h4>
                                                       <h4 class="ct_fs_16 mb-0 ct_fw_600 ct_nunito_font ct_text_op_05">
                                                             {{chatList.length}}
                                                       </h4>
@@ -18,7 +18,7 @@
                                                 <div class="position-relative">
                                                       <input type="text"
                                                             class="form-control ct_input ct_input_ps_40 ct_input_h_40 ct_border_op_10"
-                                                            placeholder="{{'Search' | translate}}"
+                                                            placeholder="{{'filters.search' | translate}}"
                                                             (input)="filterChatList($event)">
                                                       <i class="fa-solid fa-search ct_input_icon_left"></i>
                                                 </div>
@@ -34,7 +34,7 @@
                                                                               <div class="position-relative">
                                                                                     <img class="img-fluid ct_img_40"
                                                                                           [src]="item.avatar || 'img/np_pro.png'"
-                                                                                          alt="user img">
+                                                                                          [alt]="'chat.userImg' | translate">
                                                                                     <span class="active"></span>
                                                                               </div>
                                                                               <div class="flex-grow-1 ms-3">
@@ -82,7 +82,7 @@
                                                                         </div>
 
                                                                         <h2 class="fw-bold text-dark mb-3 ct_fs_18"
-                                                                              style="z-index:1;">{{'NoChatFound' |
+                                                                              style="z-index:1;">{{'chat.noChatFound' |
                                                                               translate}}
                                                                         </h2>
                                                                   </div>
@@ -180,13 +180,13 @@
                                                                               </div> -->
                                                                         </label>
                                                                         <input type="text" class="form-control"
-                                                                              placeholder="{{'YourMessage' | translate}}"
+                                                                              placeholder="{{'chat.yourMessage' | translate}}"
                                                                               [(ngModel)]="inputValue"
                                                                               [ngModelOptions]="{standalone: true}"
                                                                               (keyup.enter)="sendMessage()" />
                                                                         <div class="ct_right_side_send_chat_btns cursor-pointer"
                                                                               (click)="sendMessage()">
-                                                                              {{'Send' | translate}} <i
+                                                                              {{'chat.send' | translate}} <i
                                                                                     class="fa-solid fa-paper-plane"></i>
                                                                         </div>
                                                                   </form>
@@ -217,9 +217,9 @@
                                                                         stroke-linejoin="round" />
                                                             </svg>
                                                             <div>
-                                                                  <h4 class="ct_fs_20 ct_fw_600">{{'Messages' |
+                                                                  <h4 class="ct_fs_20 ct_fw_600">{{'chat.messages' |
                                                                         translate}}</h4>
-                                                                  <p>Click on a contact to view messages.</p>
+                                                                  <p>{{ 'chat.clickOnAContactToViewMessages' | translate }}</p>
                                                                   <div class="">
                                                                         <a
                                                                               class="ct_purple_btn d-flex align-items-center gap-2">
@@ -249,7 +249,7 @@
                                                                                           stroke-linecap="round"
                                                                                           stroke-linejoin="round" />
                                                                               </svg>
-                                                                              <span>{{'NewMessage' | translate}}</span>
+                                                                              <span>{{'chat.newMessage' | translate}}</span>
                                                                         </a>
                                                                   </div>
                                                             </div>
@@ -270,10 +270,10 @@
                                                       </div>
 
                                                       <h2 class="fw-bold text-dark mb-3" style="z-index:1;">
-                                                            {{'NoChatSelected' | translate}}
+                                                            {{'chat.noChatSelected' | translate}}
                                                       </h2>
                                                       <p class="text-muted" style="max-width: 400px; z-index:1;">
-                                                            {{'TapAChatFromYourChatListToStartAConversation' |
+                                                            {{'chat.tapAChatFromYourChatListToStartAConversation' |
                                                             translate}}
                                                       </p>
                                                 </div>
@@ -286,7 +286,7 @@
                   @if(sellerCarList.length > 1){
                   <div class="col-lg-3 mb-4">
                         <div class="ct_right_side_card_listed">
-                              <h4 class="ct_fs_18 ct_text_red mb-1">More Cars by the seller</h4>
+                              <h4 class="ct_fs_18 ct_text_red mb-1">{{ 'chat.moreCarsByTheSeller' | translate }}</h4>
                               <p class="ct_fs_14 ct_text_op_6">Showing {{sellerCarList.length - 1}} more cars you might
                                     like</p>
                               <ul class="mt-4 ct_custom_scroll">
@@ -321,7 +321,7 @@
                               class="position-absolute top-0 start-0 w-100 h-100 rounded-circle border border-3 border-danger opacity-25"></span>
                   </div>
             </div>
-            <h4 class="fw-semibold text-dark mb-2">Chat Feature Coming Soon!</h4>
+            <h4 class="fw-semibold text-dark mb-2">{{ 'chat.chatFeatureComingSoon' | translate }}</h4>
             <p class="text-muted mb-4">
                   We're still working on building a smooth and interactive chat experience. Stay tuned — it’ll be live
                   soon!

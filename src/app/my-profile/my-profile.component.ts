@@ -5,10 +5,11 @@ import { CommonService } from '../services/common.service';
 import { RoleService } from '../services/role.service';
 import { RoleDirective } from '../directives/role.directive';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-my-profile',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, RoleDirective, CommonModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, RoleDirective, CommonModule, TranslateModule],
   templateUrl: './my-profile.component.html',
   styleUrl: './my-profile.component.css'
 })
