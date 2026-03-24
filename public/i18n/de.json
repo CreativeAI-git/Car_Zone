@@ -1,4 +1,4 @@
-{
+﻿{
   "common": {
     "next": "Weiter",
     "select": "Auswählen",
@@ -173,6 +173,8 @@
     "iAmASeller": "Ich bin Verkäufer"
   },
   "vehicle": {
+    "doors": "Türen",
+    "horsepower": "Pferdestärke",
     "emissions": "CO₂-Emissionen",
     "pleaseEnterVrNumber": "Geben Sie ein Fahrzeugkennzeichen ein.",
     "conditions": "Bedingungen",

@@ -56,6 +56,15 @@ export class ListYourCarComponent {
   SearchCountryField = SearchCountryField
   CountryISO = CountryISO;
   selectedCountry = CountryISO.Sweden;
+  doors = [
+    { id: 1, label: '1' },
+    { id: 2, label: '2' },
+    { id: 3, label: '3' },
+    { id: 4, label: '4' },
+    { id: 5, label: '5' },
+    { id: 6, label: '6' },
+    { id: 7, label: '7' }
+  ]
   constructor(private service: CommonService, private message: NzMessageService, private fb: FormBuilder, public validationErrorService: ValidationErrorService) {
     this.initForm();
   }
@@ -101,6 +110,8 @@ export class ListYourCarComponent {
       selectYear: ['', [Validators.required]],
       carMileage: [null, [Validators.required, Validators.min(1)]],
       fuel_type_id: ['', Validators.required],
+      powerOutput: [''],
+      doors: [''],
       transmission_id: ['', Validators.required],
       state_id: ['', Validators.required],
       mfk_warrenty_id: ['', Validators.required],
@@ -110,7 +121,6 @@ export class ListYourCarComponent {
       last_mfk_date: [''],
       engineType: [''],
       co2Emission: [''],
-      powerOutput: [''],
       carCondition: ['', Validators.required],
       consuption: ['', Validators.required],
       exterior_color_id: ['', Validators.required],

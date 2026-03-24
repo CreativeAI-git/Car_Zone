@@ -173,6 +173,8 @@
     "iAmASeller": "Je suis un vendeur"
   },
   "vehicle": {
+    "doors": "Portes",
+    "horsepower": "Puissance",
     "emissions": "Émissions de CO₂",
     "pleaseEnterVrNumber": "Entrez un numéro d'immatriculation du véhicule.",
     "conditions": "Conditions",

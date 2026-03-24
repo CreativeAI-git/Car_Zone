@@ -173,6 +173,8 @@
     "iAmASeller": "Sono un venditore"
   },
   "vehicle": {
+    "doors": "Porte",
+    "horsepower": "Cavalli",
     "emissions": "Emissioni di CO₂",
     "pleaseEnterVrNumber": "Inserisci un numero di targa del veicolo.",
     "conditions": "Condizioni",

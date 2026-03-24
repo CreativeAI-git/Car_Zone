@@ -318,6 +318,7 @@ body {
 .ct_mt_100 {
   margin-top: 100px;
 }
+
 .ct_pt_100 {
   padding-top: 100px;
 }
@@ -2743,6 +2744,7 @@ body.profile-no-scroll {
 .notification-item .time {
   font-size: 12px;
   color: #6c757d;
+  margin-right: 10px;
 }
 
 .notification-item .dot {
@@ -2764,9 +2766,6 @@ button#profileSidebarClose {
   width: 26px;
   border-radius: 100%;
 }
-
-
-
 
 /* login mmodal start */
 

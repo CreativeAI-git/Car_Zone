@@ -1,4 +1,4 @@
-{
+﻿{
   "common": {
     "next": "Next",
     "select": "Select",
@@ -173,6 +173,8 @@
     "iAmASeller": "I am a Seller"
   },
   "vehicle": {
+    "doors": "Doors",
+    "horsepower": "Horsepower",
     "emissions": "CO₂ Emissions",
     "pleaseEnterVrNumber": "Enter a vehicle identification number.",
     "conditions": "Conditions",
