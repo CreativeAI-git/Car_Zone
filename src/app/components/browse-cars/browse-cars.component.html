@@ -312,136 +312,23 @@
                                     </div>
 
                                     <div>
+                                          @for (item of bodyTypes.types; track $index) {
                                           <div class="">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                       <div
                                                             class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                             <input class="form-check-input" type="checkbox"
-                                                                  id="wagon" />
-                                                            <img src="img/icons/car1.png" class="body-type-img-o" />
-                                                            <label for="wagon">{{ 'vehicle.wagon' | translate }}</label>
+                                                                  [id]="item.label" />
+                                                            <img [src]="item.image" class="body-type-img-o" />
+                                                            <label [for]="item.label">{{ item.label }}</label>
                                                       </div>
-                                                      <span class="ct_fs_12 ct_fw_300">356</span>
+                                                      <span class="ct_fs_12 ct_fw_300">{{item.count}}</span>
                                                 </div>
                                           </div>
-
-                                          <!-- Convertible -->
-                                          <div class="">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                      <div
-                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                  id="convertible" />
-                                                            <img src="img/icons/car2.png" class="body-type-img" />
-                                                            <label for="convertible">{{ 'vehicle.convertible' |
-                                                                  translate }}</label>
-                                                      </div>
-                                                      <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                </div>
-                                          </div>
-
-                                          <!-- Sedan -->
-                                          <div class="">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                      <div
-                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="sedan"
-                                                                  checked />
-                                                            <img src="img/icons/car3.png" class="body-type-img" />
-                                                            <label for="sedan">{{ 'vehicle.sedan' | translate }}</label>
-                                                      </div>
-                                                      <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                </div>
-                                          </div>
-
-                                          <!-- SUV / Off-road -->
-                                          <div class="">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                      <div
-                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="suv" />
-                                                            <img src="img/icons/car4.png" class="body-type-img" />
-                                                            <label for="suv">{{ 'filters.suvOffRoad' | translate
-                                                                  }}</label>
-                                                      </div>
-                                                      <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                </div>
-                                          </div>
-
-                                          <!-- Coupé -->
-                                          <div class="">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                      <div
-                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                  id="coupe" />
-                                                            <img src="img/icons/car5.png" class="body-type-img" />
-                                                            <label for="coupe">{{ 'filters.coup' | translate }}</label>
-                                                      </div>
-                                                      <span class="ct_fs_12 ct_fw_300">356</span>
-                                                </div>
-                                          </div>
-
-                                          <!-- Pick-up -->
-                                          <div class="">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                      <div
-                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="pickup"
-                                                                  checked />
-                                                            <img src="img/icons/car6.png" class="body-type-img" />
-                                                            <label for="pickup">{{ 'filters.pickUp' | translate
-                                                                  }}</label>
-                                                      </div>
-                                                      <span class="ct_fs_12 ct_fw_300">356</span>
-                                                </div>
-                                          </div>
-
-                                          <!-- Compact car -->
-                                          <div class="">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                      <div
-                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                  id="compact" />
-                                                            <img src="img/icons/car7.png" class="body-type-img" />
-                                                            <label for="compact">{{ 'filters.compactCar' | translate
-                                                                  }}</label>
-                                                      </div>
-                                                      <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                </div>
-                                          </div>
-
-                                          <!-- Minivan -->
-                                          <div class="">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                      <div
-                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                  id="minivan" />
-                                                            <img src="img/icons/car8.png" class="body-type-img" />
-                                                            <label for="minivan">{{ 'vehicle.minivan' | translate
-                                                                  }}</label>
-                                                      </div>
-                                                      <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                </div>
-                                          </div>
-
-                                          <!-- Van -->
-                                          <div class="">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                      <div
-                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="van" />
-                                                            <img src="img/icons/car9.png" class="body-type-img" />
-                                                            <label for="van">{{ 'vehicle.van' | translate }}</label>
-                                                      </div>
-                                                      <span class="ct_fs_12 ct_fw_300">356</span>
-                                                </div>
-                                          </div>
+                                          }
                                     </div>
                                     <button class="ct_red_gradient_btn mt-4">
-                                          Total 23156 Cars found
+                                          Total {{bodyTypes.total_cars}} Cars found
                                     </button>
                               </div>
                         </ng-template>
@@ -479,13 +366,19 @@
                                           <div class="ct_radio-container">
                                                 <div class="ct_radio-wrapper d-flex justify-content-between">
                                                       <label class="ct_radio-button ct_fw_400">
-                                                            <input id="option1" name="ct_radio-group" type="radio" />
+                                                            <input id="priceTypePurchase" name="priceType" type="radio"
+                                                                  value="Purchase" [(ngModel)]="priceType"
+                                                                  [ngModelOptions]="{standalone: true}"
+                                                                  (ngModelChange)="onPriceTypeChange()" />
                                                             <span class="ct_radio-checkmark"></span>
                                                             Purchase Price
                                                       </label>
 
                                                       <label class="ct_radio-button ct_fw_400">
-                                                            <input id="option1" name="ct_radio-group" type="radio" />
+                                                            <input id="priceTypeLease" name="priceType" type="radio"
+                                                                  value="Lease" [(ngModel)]="priceType"
+                                                                  [ngModelOptions]="{standalone: true}"
+                                                                  (ngModelChange)="onPriceTypeChange()" />
                                                             <span class="ct_radio-checkmark"></span>
                                                             Leasing Rate
                                                       </label>
@@ -494,17 +387,26 @@
                                     </div>
 
                                     <!-- PRICE OF CAR -->
+                                    @if(priceType == 'Purchase'){
                                     <div class="mb-4">
                                           <label class="ct_fs_12 ct_fw_400 mb-2">{{ 'vehicle.priceOfCar' | translate
                                                 }}</label>
 
                                           <div class="d-flex gap-3 mb-2">
-                                                <input class="form-control price-input" value="CHF 10" />
-                                                <input class="form-control price-input" value="CHF 230+" />
+                                                <input type="number" class="form-control price_input" placeholder="Min"
+                                                      [(ngModel)]="priceRange[0]" [ngModelOptions]="{standalone: true}"
+                                                      (ngModelChange)="onPriceRangeChange()" />
+                                                <input type="number" class="form-control price_input" placeholder="Max"
+                                                      [(ngModel)]="priceRange[1]" [ngModelOptions]="{standalone: true}"
+                                                      (ngModelChange)="onPriceRangeChange()" />
                                           </div>
 
-                                          <input type="range" min="10" max="230" value="230" class="range-slider" />
+                                          <nz-slider [nzTooltipVisible]="'never'" nzRange [nzStep]="1000" [nzMin]="0"
+                                                [nzMax]="100000" [(ngModel)]="priceRange"
+                                                [ngModelOptions]="{standalone: true}"
+                                                (ngModelChange)="onPriceRangeChange()"></nz-slider>
                                     </div>
+                                    }@else {
 
                                     <!-- PRICE OF LEASING RATE -->
                                     <div class="mb-4">
@@ -512,23 +414,35 @@
                                                 translate }}</label>
 
                                           <div class="d-flex gap-3 mb-2">
-                                                <input class="form-control price-input" value="CHF 10" />
-                                                <input class="form-control price-input" value="CHF 230+" />
+                                                <input type="number" class="form-control price_input" placeholder="Min"
+                                                      [(ngModel)]="leasePriceRange[0]"
+                                                      [ngModelOptions]="{standalone: true}"
+                                                      (ngModelChange)="onPriceRangeChange()" />
+                                                <input type="number" class="form-control price_input" placeholder="Max"
+                                                      [(ngModel)]="leasePriceRange[1]"
+                                                      [ngModelOptions]="{standalone: true}"
+                                                      (ngModelChange)="onPriceRangeChange()" />
                                           </div>
 
-                                          <input type="range" min="10" max="230" value="230" class="range-slider" />
+                                          <nz-slider [nzTooltipVisible]="'never'" nzRange [nzStep]="100" [nzMin]="10"
+                                                [nzMax]="2000" [(ngModel)]="leasePriceRange"
+                                                [ngModelOptions]="{standalone: true}"
+                                                (ngModelChange)="onPriceRangeChange()"></nz-slider>
                                     </div>
+                                    }
 
                                     <!-- MATCHING VEHICLES -->
                                     <div class="match-box mb-4">
                                           <div class="d-flex justify-content-between mb-2">
                                                 <span class="ct_fs_14 ct_fw_400">{{ 'vehicle.matchingVehicles' |
                                                       translate }}</span>
-                                                <span class="ct_fs_14 ct_fw_400">22,331</span>
+                                                <span
+                                                      class="ct_fs_14 ct_fw_400">{{priceRangeAnalytics.matching_vehicles}}</span>
                                           </div>
 
                                           <div class="progress custom-progress">
-                                                <div class="progress-bar bg-danger" style="width: 70%"></div>
+                                                <div class="progress-bar bg-danger" [style.width.%]="matchingProgress">
+                                                </div>
                                           </div>
                                     </div>
 
@@ -583,36 +497,61 @@
                                                       <div class="col-6">
                                                             <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' |
                                                                   translate }} </label>
-                                                            <select class="form-select"
-                                                                  [attr.aria-label]="'filters.defaultSelectExample' | translate">
-                                                                  <option selected="">{{ 'vehicle.selectYear' |
-                                                                        translate }}</option>
-                                                                  <option value="1">{{ 'filters.one' | translate }}
-                                                                  </option>
-                                                                  <option value="2">{{ 'filters.two' | translate }}
-                                                                  </option>
-                                                                  <option value="3">{{ 'filters.three' | translate }}
-                                                                  </option>
-                                                            </select>
+                                                            <nz-select class="form-select"
+                                                                  nzPlaceHolder="{{'common.select' | translate}}"
+                                                                  [nzShowSearch]="true" [(ngModel)]="yearRange[0]"
+                                                                  [ngModelOptions]="{standalone: true}"
+                                                                  (ngModelChange)="onYearRangeChange()">
+                                                                  @for (year of years; track year) {
+                                                                  <nz-option nzCustomContent [nzLabel]="year"
+                                                                        [nzValue]="year"
+                                                                        class="ct_custom_select ct_custom_scroll ">
+                                                                        <div
+                                                                              class="d-flex align-items-center justify-content-between">
+                                                                              <div>
+                                                                                    <p class="m-0">
+                                                                                          {{year}}
+                                                                                    </p>
+                                                                              </div>
+                                                                              <input type="radio"
+                                                                                    class="cutom_radio_input"
+                                                                                    [checked]="year === yearRange[0]" />
+                                                                        </div>
+                                                                  </nz-option>
+                                                                  }
+                                                            </nz-select>
                                                       </div>
                                                       <div class="col-6">
                                                             <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' |
                                                                   translate }} </label>
-                                                            <select class="form-select"
-                                                                  [attr.aria-label]="'filters.defaultSelectExample' | translate">
-                                                                  <option selected="">{{ 'vehicle.selectYear' |
-                                                                        translate }}</option>
-                                                                  <option value="1">{{ 'filters.one' | translate }}
-                                                                  </option>
-                                                                  <option value="2">{{ 'filters.two' | translate }}
-                                                                  </option>
-                                                                  <option value="3">{{ 'filters.three' | translate }}
-                                                                  </option>
-                                                            </select>
+                                                            <nz-select class="form-select"
+                                                                  nzPlaceHolder="{{'common.select' | translate}}"
+                                                                  [nzShowSearch]="true" [(ngModel)]="yearRange[1]"
+                                                                  [ngModelOptions]="{standalone: true}"
+                                                                  (ngModelChange)="onYearRangeChange()">
+                                                                  @for (year of years; track year) {
+                                                                  <nz-option nzCustomContent [nzLabel]="year"
+                                                                        [nzValue]="year"
+                                                                        class="ct_custom_select ct_custom_scroll ">
+                                                                        <div
+                                                                              class="d-flex align-items-center justify-content-between">
+                                                                              <div>
+                                                                                    <p class="m-0">
+                                                                                          {{year}}
+                                                                                    </p>
+                                                                              </div>
+                                                                              <input type="radio"
+                                                                                    class="cutom_radio_input"
+                                                                                    [checked]="year === yearRange[1]" />
+                                                                        </div>
+                                                                  </nz-option>
+                                                                  }
+                                                            </nz-select>
                                                       </div>
                                                 </div>
                                                 <div class="text-center my-4">
-                                                      <h4 class="ct_fs_20 ct_fw_600 mb-0">6,894</h4>
+                                                      <h4 class="ct_fs_20 ct_fw_600 mb-0">
+                                                            {{yearRangeAnalytics.total_cars_all_years}}</h4>
                                                       <p class="ct_fs_18 ct_fw_400">{{ 'vehicle.carsFound' | translate
                                                             }}</p>
                                                 </div>
@@ -622,12 +561,13 @@
                                                       <div class="d-flex justify-content-between mb-2">
                                                             <span class="ct_fs_14 ct_fw_400">{{
                                                                   'vehicle.selectedModelYears' | translate }}</span>
-                                                            <span class="ct_fs_14 ct_fw_400">22,331</span>
+                                                            <span
+                                                                  class="ct_fs_14 ct_fw_400">{{yearRangeAnalytics.selected_range.total_cars}}</span>
                                                       </div>
-                                                      <div class="progress custom-progress">
+                                                      <!-- <div class="progress custom-progress">
                                                             <div class="progress-bar bg-danger" style="width: 75%">
                                                             </div>
-                                                      </div>
+                                                      </div> -->
                                                 </div>
 
                                                 <!-- OLDER MODEL YEARS -->
@@ -635,7 +575,8 @@
                                                       <div class="d-flex justify-content-between">
                                                             <span class="ct_fs_14 ct_fw_400">{{
                                                                   'vehicle.olderModelYears' | translate }}</span>
-                                                            <span class="ct_fs_14 ct_fw_400">22,331</span>
+                                                            <span
+                                                                  class="ct_fs_14 ct_fw_400">{{yearRangeAnalytics.breakdown.older_models.count}}</span>
                                                       </div>
                                                 </div>
 
@@ -644,7 +585,8 @@
                                                       <div class="d-flex justify-content-between">
                                                             <span class="ct_fs_14 ct_fw_400">{{
                                                                   'vehicle.newlyModelYears' | translate }}</span>
-                                                            <span class="ct_fs_14 ct_fw_400">22,331</span>
+                                                            <span
+                                                                  class="ct_fs_14 ct_fw_400">{{yearRangeAnalytics.breakdown.newer_models.count}}</span>
                                                       </div>
                                                 </div>
                                           </div>
@@ -687,36 +629,30 @@
                                                       <div class="col-6">
                                                             <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' |
                                                                   translate }} </label>
-                                                            <select class="form-select"
-                                                                  [attr.aria-label]="'filters.defaultSelectExample' | translate">
-                                                                  <option selected="">{{ 'vehicle.km' | translate }}
-                                                                  </option>
-                                                                  <option value="1">{{ 'filters.one' | translate }}
-                                                                  </option>
-                                                                  <option value="2">{{ 'filters.two' | translate }}
-                                                                  </option>
-                                                                  <option value="3">{{ 'filters.three' | translate }}
-                                                                  </option>
-                                                            </select>
+                                                            <input type="number" class="form-control price_input"
+                                                                  placeholder="Min" [(ngModel)]="kmRange[0]"
+                                                                  [ngModelOptions]="{standalone: true}"
+                                                                  (ngModelChange)="onKmRangeChange()" />
                                                       </div>
                                                       <div class="col-6">
                                                             <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' |
                                                                   translate }} </label>
-                                                            <select class="form-select"
-                                                                  [attr.aria-label]="'filters.defaultSelectExample' | translate">
-                                                                  <option selected="">{{ 'vehicle.km' | translate }}
-                                                                  </option>
-                                                                  <option value="1">{{ 'filters.one' | translate }}
-                                                                  </option>
-                                                                  <option value="2">{{ 'filters.two' | translate }}
-                                                                  </option>
-                                                                  <option value="3">{{ 'filters.three' | translate }}
-                                                                  </option>
-                                                            </select>
+                                                            <input type="number" class="form-control price_input"
+                                                                  placeholder="Max" [(ngModel)]="kmRange[1]"
+                                                                  [ngModelOptions]="{standalone: true}"
+                                                                  (ngModelChange)="onKmRangeChange()" />
                                                       </div>
                                                 </div>
+
+                                                <div class="mt-3">
+                                                      <nz-slider [nzTooltipVisible]="'never'" nzRange [nzStep]="1000"
+                                                            [nzMin]="0" [nzMax]="400000" [(ngModel)]="kmRange"
+                                                            [ngModelOptions]="{standalone: true}"
+                                                            (ngModelChange)="onKmRangeChange()"></nz-slider>
+                                                </div>
                                                 <div class="text-center my-4">
-                                                      <h4 class="ct_fs_20 ct_fw_600 mb-0">6,894</h4>
+                                                      <h4 class="ct_fs_20 ct_fw_600 mb-0">
+                                                            {{kmRangeAnalytics.total_cars_all_mileage}}</h4>
                                                       <p class="ct_fs_18 ct_fw_400">{{ 'vehicle.carsFound' | translate
                                                             }}</p>
                                                 </div>
@@ -724,31 +660,27 @@
                                                 <!-- SELECTED MODEL YEARS -->
                                                 <div class="year-card">
                                                       <div class="d-flex justify-content-between mb-2">
-                                                            <span class="ct_fs_14 ct_fw_400">{{
-                                                                  'vehicle.selectedModelYears' | translate }}</span>
-                                                            <span class="ct_fs_14 ct_fw_400">22,331</span>
-                                                      </div>
-                                                      <div class="progress custom-progress">
-                                                            <div class="progress-bar bg-danger" style="width: 75%">
-                                                            </div>
+                                                            <span class="ct_fs_14 ct_fw_400">Selected mileage</span>
+                                                            <span
+                                                                  class="ct_fs_14 ct_fw_400">{{kmRangeAnalytics.selected_range.total_cars}}</span>
                                                       </div>
                                                 </div>
 
                                                 <!-- OLDER MODEL YEARS -->
                                                 <div class="year-card">
                                                       <div class="d-flex justify-content-between">
-                                                            <span class="ct_fs_14 ct_fw_400">{{
-                                                                  'vehicle.olderModelYears' | translate }}</span>
-                                                            <span class="ct_fs_14 ct_fw_400">22,331</span>
+                                                            <span class="ct_fs_14 ct_fw_400">Higher Mileage</span>
+                                                            <span
+                                                                  class="ct_fs_14 ct_fw_400">{{kmRangeAnalytics.breakdown.higher_mileage.count}}</span>
                                                       </div>
                                                 </div>
 
                                                 <!-- NEWLY MODEL YEARS -->
                                                 <div class="year-card">
                                                       <div class="d-flex justify-content-between">
-                                                            <span class="ct_fs_14 ct_fw_400">{{
-                                                                  'vehicle.newlyModelYears' | translate }}</span>
-                                                            <span class="ct_fs_14 ct_fw_400">22,331</span>
+                                                            <span class="ct_fs_14 ct_fw_400">Lower Mileage</span>
+                                                            <span
+                                                                  class="ct_fs_14 ct_fw_400">{{kmRangeAnalytics.breakdown.lower_mileage.count}}</span>
                                                       </div>
                                                 </div>
                                           </div>
@@ -787,90 +719,26 @@
                                                       translate }}</span>
                                           </div>
                                     </div>
+                                    @for (item of transmissions; track item.id) {
+                                    <div class="">
+                                          <div class="d-flex justify-content-between align-items-center">
+                                                <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                      <input class="form-check-input" type="checkbox"
+                                                            [id]="'transmission-' + item.id"
+                                                            [checked]="selectedTransmissionIds.includes(item.id)"
+                                                            (change)="onTransmissionToggle(item.id, $event)" />
 
-                                    <div class="collapse-cont-wrapper">
-                                          <div class="d-flex justify-content-between align-items-center mb-4">
-                                                <div>
-                                                      <h5 class="ct_fs_16 ct_fw_400">{{ 'vehicle.automaticTransmission'
-                                                            | translate }}</h5>
+                                                      <label [for]="'transmission-' + item.id">
+                                                            {{ item.label | translate }}</label>
                                                 </div>
-                                                <div>
-                                                      <img src="img/icons/chevron-up-b.png" data-bs-toggle="collapse"
-                                                            data-bs-target="#collapseBasicData" aria-expanded="false"
-                                                            class="collapsed" />
-                                                </div>
-                                          </div>
-                                          <div class="collapse-content collapse show" id="collapseBasicData"
-                                                data-bs-parent="#filterAccordion">
-                                                <div>
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="wagon" />
-
-                                                                        <label for="wagon">{{ 'common.automatic' |
-                                                                              translate }}</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">356</span>
-                                                            </div>
-                                                      </div>
-
-                                                      <!-- Convertible -->
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="convertible" />
-
-                                                                        <label for="convertible">Continuously variable
-                                                                              (AMT)</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                            </div>
-                                                      </div>
-
-                                                      <!-- Sedan -->
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="sedan" checked />
-
-                                                                        <label for="sedan">{{ 'vehicle.automatedAmt' |
-                                                                              translate }}</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                            </div>
-                                                      </div>
-
-                                                      <!-- SUV / Off-road -->
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="suv" />
-
-                                                                        <label for="suv">{{ 'vehicle.manualTransmission'
-                                                                              | translate }}</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                            </div>
-                                                      </div>
-                                                </div>
+                                                <span class="ct_fs_12 ct_fw_300">{{ item.total_cars ||
+                                                      item.count || 0 }}</span>
                                           </div>
                                     </div>
+                                    }
 
                                     <button class="ct_red_gradient_btn mt-4">
-                                          Total 23156 Cars found
+                                          Total {{23156}} Cars found
                                     </button>
                               </div>
                         </ng-template>
@@ -963,8 +831,6 @@
                         </button>
                         <ng-template #fuelContentTemplate>
                               <div class="search-vehicle-modal-box ct_custom_scroll">
-                                    <!-- Wagon -->
-
                                     <div class="vehicle-modal-header d-flex my-3 justify-content-between">
                                           <div class="">
                                                 <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">{{'vehicle.fuelType' |
@@ -978,285 +844,47 @@
                                     </div>
 
                                     <div>
-                                          <div class="d-flex justify-content-between align-items-center">
-                                                <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                      <input class="form-check-input" type="checkbox" id="wagon" />
-
-                                                      <label for="wagon">{{ 'common.petrol' | translate }}</label>
+                                          @for (group of fuelTypeGroups; track group.label) {
+                                          <div class="collapse-cont-wrapper ps-3 mt-3">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                      <div>
+                                                            <h5 class="ct_fs_16 ct_fw_400">{{ group.label | translate }}
+                                                            </h5>
+                                                      </div>
                                                 </div>
-                                                <span class="ct_fs_12 ct_fw_300">356</span>
-                                          </div>
-                                          <div class="d-flex justify-content-between align-items-center">
-                                                <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                      <input class="form-check-input" type="checkbox" id="wagon" />
+                                                <div>
+                                                      @for (item of group.options; track item.value) {
+                                                      <div class="d-flex justify-content-between align-items-center">
+                                                            <div
+                                                                  class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                  <input class="form-check-input" type="checkbox"
+                                                                        [id]="'fuel-' + item.value"
+                                                                        [checked]="selectedFuelIds.includes(item.value)"
+                                                                        (change)="onFuelToggle(item.value, $event)" />
 
-                                                      <label for="wagon">{{ 'common.diesel' | translate }}</label>
+                                                                  <label [for]="'fuel-' + item.value">
+                                                                        {{ item.label | translate }}</label>
+                                                            </div>
+                                                            <span class="ct_fs_12 ct_fw_300">{{ item.count || 0
+                                                                  }}</span>
+                                                      </div>
+                                                      }
                                                 </div>
-                                                <span class="ct_fs_12 ct_fw_300">356</span>
                                           </div>
-                                          <div class="d-flex justify-content-between align-items-center">
-                                                <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                      <input class="form-check-input" type="checkbox" id="wagon" />
-
-                                                      <label for="wagon">{{ 'common.electric' | translate }}</label>
-                                                </div>
-                                                <span class="ct_fs_12 ct_fw_300">356</span>
-                                          </div>
+                                          }
                                     </div>
-
-                                    <div class="collapse-cont-wrapper ps-3 mt-3">
-                                          <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                      <h5 class="ct_fs_16 ct_fw_400">{{ 'common.hybrid' | translate }}
-                                                      </h5>
-                                                </div>
-                                                <div>
-                                                      <img src="img/icons/chevron-up-b.png" data-bs-toggle="collapse"
-                                                            data-bs-target="#collapseBasicData" aria-expanded="false"
-                                                            class="collapsed" />
-                                                </div>
-                                          </div>
-                                          <div class="collapse-content collapse show" id="collapseBasicData"
-                                                data-bs-parent="#filterAccordion">
-                                                <div>
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="wagon" />
-
-                                                                        <label for="wagon">{{ 'common.automatic' |
-                                                                              translate }}</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">356</span>
-                                                            </div>
-                                                      </div>
-
-                                                      <!-- Convertible -->
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="convertible" />
-
-                                                                        <label for="convertible">Continuously variable
-                                                                              (AMT)</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                            </div>
-                                                      </div>
-
-                                                      <!-- Sedan -->
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="sedan" checked />
-
-                                                                        <label for="sedan">{{ 'vehicle.automatedAmt' |
-                                                                              translate }}</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                            </div>
-                                                      </div>
-
-                                                      <!-- SUV / Off-road -->
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="suv" />
-
-                                                                        <label for="suv">{{ 'vehicle.manualTransmission'
-                                                                              | translate }}</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                            </div>
-                                                      </div>
-                                                </div>
-                                          </div>
-                                    </div>
-
-                                    <div class="collapse-cont-wrapper ps-3 mt-3">
-                                          <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                      <h5 class="ct_fs_16 ct_fw_400">{{ 'filters.gas' | translate }}
-                                                      </h5>
-                                                </div>
-                                                <div>
-                                                      <img src="img/icons/chevron-up-b.png" data-bs-toggle="collapse"
-                                                            data-bs-target="#collapseBasicData2" aria-expanded="false"
-                                                            class="collapsed" />
-                                                </div>
-                                          </div>
-                                          <div class="collapse-content collapse show" id="collapseBasicData2"
-                                                data-bs-parent="#filterAccordion">
-                                                <div>
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="wagon" />
-
-                                                                        <label for="wagon">{{ 'common.automatic' |
-                                                                              translate }}</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">356</span>
-                                                            </div>
-                                                      </div>
-
-                                                      <!-- Convertible -->
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="convertible" />
-
-                                                                        <label for="convertible">Continuously variable
-                                                                              (AMT)</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                            </div>
-                                                      </div>
-
-                                                      <!-- Sedan -->
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="sedan" checked />
-
-                                                                        <label for="sedan">{{ 'vehicle.automatedAmt' |
-                                                                              translate }}</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                            </div>
-                                                      </div>
-
-                                                      <!-- SUV / Off-road -->
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="suv" />
-
-                                                                        <label for="suv">{{ 'vehicle.manualTransmission'
-                                                                              | translate }}</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                            </div>
-                                                      </div>
-                                                </div>
-                                          </div>
-                                    </div>
-                                    <div class="collapse-cont-wrapper ps-3 mt-3">
-                                          <div class="d-flex justify-content-between align-items-center mb-4">
-                                                <div>
-                                                      <h5 class="ct_fs_16 ct_fw_400">{{ 'filters.gas' | translate }}
-                                                      </h5>
-                                                </div>
-                                                <div>
-                                                      <img src="img/icons/chevron-up-b.png" data-bs-toggle="collapse"
-                                                            data-bs-target="#collapseBasicData3" aria-expanded="false"
-                                                            class="collapsed" />
-                                                </div>
-                                          </div>
-                                          <div class="collapse-content collapse show" id="collapseBasicData3"
-                                                data-bs-parent="#filterAccordion">
-                                                <div>
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="wagon" />
-
-                                                                        <label for="wagon">{{ 'common.automatic' |
-                                                                              translate }}</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">356</span>
-                                                            </div>
-                                                      </div>
-
-                                                      <!-- Convertible -->
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="convertible" />
-
-                                                                        <label for="convertible">Continuously variable
-                                                                              (AMT)</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                            </div>
-                                                      </div>
-
-                                                      <!-- Sedan -->
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="sedan" checked />
-
-                                                                        <label for="sedan">{{ 'vehicle.automatedAmt' |
-                                                                              translate }}</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                            </div>
-                                                      </div>
-
-                                                      <!-- SUV / Off-road -->
-                                                      <div class="">
-                                                            <div
-                                                                  class="d-flex justify-content-between align-items-center">
-                                                                  <div
-                                                                        class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                              id="suv" />
-
-                                                                        <label for="suv">{{ 'vehicle.manualTransmission'
-                                                                              | translate }}</label>
-                                                                  </div>
-                                                                  <span class="ct_fs_12 ct_fw_300">1000</span>
-                                                            </div>
-                                                      </div>
-                                                </div>
-                                          </div>
-                                    </div>
-
                                     <button class="ct_red_gradient_btn mt-4">
-                                          Total 23156 Cars found
+                                          Total {{fuelTypeData.total_cars}} Cars found
                                     </button>
                               </div>
                         </ng-template>
                   </div>
             </div>
             <div class="mt-3">
-                  <a routerLink="/filters" class="clear-filters justify-content-end">
+                  <a class="clear-filters justify-content-end">
                         <img src="img/icons/filter.svg" [alt]="'vehicle.moreFilters' | translate" />
-                        <span class="ct_color_1877F2"> {{ 'vehicle.moreFilters' | translate }}</span>
+                        <span routerLink="/filters" class="ct_color_1877F2"> {{ 'vehicle.moreFilters' | translate
+                              }}</span>
                   </a>
             </div>
       </div>

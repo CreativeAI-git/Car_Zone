@@ -573,100 +573,286 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6">
                         <div class="bg-wrapper">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <div>
-                                    <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Year Range
-                                    </h5>
+                            <div class="vehicle-modal-header d-flex my-3 justify-content-between">
+                                <div class="">
+                                    <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">{{'filters.yearRange' |
+                                        translate}}
+                                    </h3>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-6">
-                                    <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <select class="form-select"
-                                        [attr.aria-label]="'filters.defaultSelectExample' | translate">
-                                        <option selected>{{ 'filters.12Months' | translate }}</option>
-                                        <option value="1">{{ 'filters.one' | translate }}</option>
-                                        <option value="2">{{ 'filters.two' | translate }}</option>
-                                        <option value="3">{{ 'filters.three' | translate }}</option>
-                                    </select>
-                                </div>
-                                <div class="col-6">
-                                    <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <select class="form-select"
-                                        [attr.aria-label]="'filters.defaultSelectExample' | translate">
-                                        <option selected>10,000 km</option>
-                                        <option value="1">{{ 'filters.one' | translate }}</option>
-                                        <option value="2">{{ 'filters.two' | translate }}</option>
-                                        <option value="3">{{ 'filters.three' | translate }}</option>
-                                    </select>
+                            <div>
+                                <div class="">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' |
+                                                translate }} </label>
+                                            <nz-select class="form-select"
+                                                nzPlaceHolder="{{'common.select' | translate}}" [nzShowSearch]="true"
+                                                [(ngModel)]="yearRange[0]" [ngModelOptions]="{standalone: true}"
+                                                (ngModelChange)="onYearRangeChange()">
+                                                @for (year of years; track year) {
+                                                <nz-option nzCustomContent [nzLabel]="year" [nzValue]="year"
+                                                    class="ct_custom_select ct_custom_scroll ">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div>
+                                                            <p class="m-0">
+                                                                {{year}}
+                                                            </p>
+                                                        </div>
+                                                        <input type="radio" class="cutom_radio_input"
+                                                            [checked]="year === yearRange[0]" />
+                                                    </div>
+                                                </nz-option>
+                                                }
+                                            </nz-select>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' |
+                                                translate }} </label>
+                                            <nz-select class="form-select"
+                                                nzPlaceHolder="{{'common.select' | translate}}" [nzShowSearch]="true"
+                                                [(ngModel)]="yearRange[1]" [ngModelOptions]="{standalone: true}"
+                                                (ngModelChange)="onYearRangeChange()">
+                                                @for (year of years; track year) {
+                                                <nz-option nzCustomContent [nzLabel]="year" [nzValue]="year"
+                                                    class="ct_custom_select ct_custom_scroll ">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div>
+                                                            <p class="m-0">
+                                                                {{year}}
+                                                            </p>
+                                                        </div>
+                                                        <input type="radio" class="cutom_radio_input"
+                                                            [checked]="year === yearRange[1]" />
+                                                    </div>
+                                                </nz-option>
+                                                }
+                                            </nz-select>
+                                        </div>
+                                    </div>
+                                    <div class="text-center my-4">
+                                        <h4 class="ct_fs_20 ct_fw_600 mb-0">
+                                            {{yearRangeAnalytics.total_cars_all_years}}</h4>
+                                        <p class="ct_fs_18 ct_fw_400">{{ 'vehicle.carsFound' | translate
+                                            }}</p>
+                                    </div>
+
+                                    <!-- SELECTED MODEL YEARS -->
+                                    <div class="year-card">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span class="ct_fs_14 ct_fw_400">{{
+                                                'vehicle.selectedModelYears' | translate }}</span>
+                                            <span
+                                                class="ct_fs_14 ct_fw_400">{{yearRangeAnalytics.selected_range.total_cars}}</span>
+                                        </div>
+                                        <!-- <div class="progress custom-progress">
+                                                                                    <div class="progress-bar bg-danger" style="width: 75%">
+                                                                                    </div>
+                                                                              </div> -->
+                                    </div>
+
+                                    <!-- OLDER MODEL YEARS -->
+                                    <div class="year-card">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="ct_fs_14 ct_fw_400">{{
+                                                'vehicle.olderModelYears' | translate }}</span>
+                                            <span
+                                                class="ct_fs_14 ct_fw_400">{{yearRangeAnalytics.breakdown.older_models.count}}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- NEWLY MODEL YEARS -->
+                                    <div class="year-card">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="ct_fs_14 ct_fw_400">{{
+                                                'vehicle.newlyModelYears' | translate }}</span>
+                                            <span
+                                                class="ct_fs_14 ct_fw_400">{{yearRangeAnalytics.breakdown.newer_models.count}}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 mt-lg-0 mt-md-3">
                         <div class="bg-wrapper">
-
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <div>
-                                    <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Kilometers
-                                    </h5>
+                            <div class="vehicle-modal-header d-flex my-3 justify-content-between">
+                                <div class="">
+                                    <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">{{'vehicle.kilometers' |
+                                        translate}} (km)</h3>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'vehicle.km' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
-                                </div>
-                                <div class="col-6">
-                                    <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'vehicle.km' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+
+                            <div>
+                                <div class="">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' |
+                                                translate }} </label>
+                                            <input type="number" class="form-control price_input" placeholder="Min"
+                                                [(ngModel)]="kmRange[0]" [ngModelOptions]="{standalone: true}"
+                                                (ngModelChange)="onKmRangeChange()" />
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' |
+                                                translate }} </label>
+                                            <input type="number" class="form-control price_input" placeholder="Max"
+                                                [(ngModel)]="kmRange[1]" [ngModelOptions]="{standalone: true}"
+                                                (ngModelChange)="onKmRangeChange()" />
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <nz-slider [nzTooltipVisible]="'never'" nzRange [nzStep]="1000" [nzMin]="0"
+                                            [nzMax]="400000" [(ngModel)]="kmRange" [ngModelOptions]="{standalone: true}"
+                                            (ngModelChange)="onKmRangeChange()"></nz-slider>
+                                    </div>
+                                    <div class="text-center my-4">
+                                        <h4 class="ct_fs_20 ct_fw_600 mb-0">
+                                            {{kilometersRangeAnalytics.total_cars_all_mileage}}</h4>
+                                        <p class="ct_fs_18 ct_fw_400">{{ 'vehicle.carsFound' | translate
+                                            }}</p>
+                                    </div>
+
+                                    <!-- SELECTED MODEL YEARS -->
+                                    <div class="year-card">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span class="ct_fs_14 ct_fw_400">Selected mileage</span>
+                                            <span
+                                                class="ct_fs_14 ct_fw_400">{{kilometersRangeAnalytics.selected_range.total_cars}}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- OLDER MODEL YEARS -->
+                                    <div class="year-card">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="ct_fs_14 ct_fw_400">Higher Mileage</span>
+                                            <span
+                                                class="ct_fs_14 ct_fw_400">{{kilometersRangeAnalytics.breakdown.higher_mileage.count}}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- NEWLY MODEL YEARS -->
+                                    <div class="year-card">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="ct_fs_14 ct_fw_400">Lower Mileage</span>
+                                            <span
+                                                class="ct_fs_14 ct_fw_400">{{kilometersRangeAnalytics.breakdown.lower_mileage.count}}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 mt-md-0 mt-3">
                         <div class="bg-wrapper">
-
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <div>
-                                    <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Price Range
-                                    </h5>
+                            <div class="vehicle-modal-header d-flex my-3 justify-content-between">
+                                <div class="">
+                                    <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">
+                                        {{'filters.priceRange' | translate}}
+                                    </h3>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">Reset
-                                    </a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
-                            <div class="price-range">
-                                <input type="range" min="10" max="230" value="230" class="range-slider" />
 
-                                <div class="range-labels">
-                                    <div class="label-box">
-                                        <span class="label-text">{{ 'filters.minimum' | translate }}</span>
-                                        <span class="pill">CHF 10</span>
-                                    </div>
+                            <div class="mb-4">
+                                <div class="ct_radio-container">
+                                    <div class="ct_radio-wrapper d-flex justify-content-between">
+                                        <label class="ct_radio-button ct_fw_400">
+                                            <input id="priceTypePurchase" name="priceType" type="radio" value="Purchase"
+                                                [(ngModel)]="priceType" [ngModelOptions]="{standalone: true}"
+                                                (ngModelChange)="onPriceTypeChange()" />
+                                            <span class="ct_radio-checkmark"></span>
+                                            Purchase Price
+                                        </label>
 
-                                    <div class="label-box text-end">
-                                        <span class="label-text">{{ 'filters.maximum' | translate }}</span>
-                                        <span class="pill">CHF 230+</span>
+                                        <label class="ct_radio-button ct_fw_400">
+                                            <input id="priceTypeLease" name="priceType" type="radio" value="Lease"
+                                                [(ngModel)]="priceType" [ngModelOptions]="{standalone: true}"
+                                                (ngModelChange)="onPriceTypeChange()" />
+                                            <span class="ct_radio-checkmark"></span>
+                                            Leasing Rate
+                                        </label>
                                     </div>
                                 </div>
+                            </div>
+
+                            <!-- PRICE OF CAR -->
+                            @if(priceType == 'Purchase'){
+                            <div class="mb-4">
+                                <label class="ct_fs_12 ct_fw_400 mb-2">{{ 'vehicle.priceOfCar' | translate
+                                    }}</label>
+
+                                <div class="d-flex gap-3 mb-2">
+                                    <input type="number" class="form-control price_input" placeholder="Min"
+                                        [(ngModel)]="priceRange[0]" [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="onPriceRangeChange()" />
+                                    <input type="number" class="form-control price_input" placeholder="Max"
+                                        [(ngModel)]="priceRange[1]" [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="onPriceRangeChange()" />
+                                </div>
+
+                                <nz-slider [nzTooltipVisible]="'never'" nzRange [nzStep]="1000" [nzMin]="0"
+                                    [nzMax]="100000" [(ngModel)]="priceRange" [ngModelOptions]="{standalone: true}"
+                                    (ngModelChange)="onPriceRangeChange()"></nz-slider>
+                            </div>
+                            }@else {
+
+                            <!-- PRICE OF LEASING RATE -->
+                            <div class="mb-4">
+                                <label class="ct_fs_12 ct_fw_400 mb-2">{{ 'vehicle.priceOfLeasingRate' |
+                                    translate }}</label>
+
+                                <div class="d-flex gap-3 mb-2">
+                                    <input type="number" class="form-control price_input" placeholder="Min"
+                                        [(ngModel)]="leasePriceRange[0]" [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="onPriceRangeChange()" />
+                                    <input type="number" class="form-control price_input" placeholder="Max"
+                                        [(ngModel)]="leasePriceRange[1]" [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="onPriceRangeChange()" />
+                                </div>
+
+                                <nz-slider [nzTooltipVisible]="'never'" nzRange [nzStep]="100" [nzMin]="10"
+                                    [nzMax]="2000" [(ngModel)]="leasePriceRange" [ngModelOptions]="{standalone: true}"
+                                    (ngModelChange)="onPriceRangeChange()"></nz-slider>
+                            </div>
+                            }
+
+                            <!-- MATCHING VEHICLES -->
+                            <div class="match-box mb-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="ct_fs_14 ct_fw_400">{{ 'vehicle.matchingVehicles' |
+                                        translate }}</span>
+                                    <span class="ct_fs_14 ct_fw_400">{{priceRangeAnalytics.matching_vehicles}}</span>
+                                </div>
+
+                                <!-- <div class="progress custom-progress">
+                                    <div class="progress-bar bg-danger" [style.width.%]="matchingProgress">
+                                    </div>
+                                </div> -->
+                            </div>
+
+                            <!-- DOWN PAYMENT -->
+                            <div class="mb-4">
+                                <label class="ct_fs_14 ct_fw_400">{{ 'vehicle.downPayment' | translate
+                                    }}</label>
+                                <select class="form-select custom-select">
+                                    <option>{{ 'vehicle.10OfTotalPrice' | translate }}</option>
+                                    <option>{{ 'vehicle.20OfTotalPrice' | translate }}</option>
+                                    <option>{{ 'vehicle.30OfTotalPrice' | translate }}</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -674,49 +860,30 @@
                 <div class="row mt-5">
                     <div class="col-lg-4 col-md-6">
                         <div class="bg-wrapper">
-
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">{{ 'profile.state' | translate }}
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
 
                             <div class="d-grid ct_gap_14">
+                                @for (item of carState; track item.value) {
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'filters.new' | translate }} </label>
+                                            [id]="'state-' + item.value" />
+                                        <label [for]="'state-' + item.value">{{ item.label | translate }} </label>
                                     </div>
                                     <div>
-                                        <span class="ct_fs_12 ct_fw_300">300</span>
+                                        <span class="ct_fs_12 ct_fw_300">{{ item.count ?? 0 }}</span>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'filters.oldtimer' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">56</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'common.used' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -729,32 +896,24 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                             <div class="d-grid ct_gap_14">
+                                @for (item of warrantyList; track $index) {
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
                                             id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">Valid technical inspection
+                                        <label for="flexCheckDefault">{{ item.label | translate }}
                                         </label>
                                     </div>
                                     <div>
                                         <span class="ct_fs_12 ct_fw_300">356</span>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'filters.withWarranty' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
 
                         </div>
@@ -768,8 +927,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                             <div class="d-grid ct_gap_14">
@@ -803,127 +962,37 @@
                 <div class="row mt-5">
                     <div class="col-lg-4">
                         <div class="bg-wrapper">
-
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <div>
-                                    <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Body Type
-                                    </h5>
+                            <div class="vehicle-modal-header d-flex my-3 justify-content-between">
+                                <div class="">
+                                    <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo">{{ 'vehicle.bodyType' |
+                                        translate }}</h3>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
 
-                            <div class="d-grid ct_gap_14">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'filters.stationWagon' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'filters.suvOffRoad' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
+                            <div>
+                                @for (item of bodyTypes; track item.value) {
+                                <div class="">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                            <input class="form-check-input" type="checkbox" [id]="item.label" />
+                                            <img [src]="item.image" class="body-type-img-o" />
+                                            <label [for]="item.label">{{ item.label }}</label>
+                                        </div>
+                                        <span class="ct_fs_12 ct_fw_300">{{item.count}}</span>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'vehicle.sedan' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'filters.sedan1000' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'filters.cabriolet' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'filters.coup' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'filters.compactCar' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'filters.pickUp' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'vehicle.minivan' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'vehicle.van' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
 
         <hr class="my-4" />
 
@@ -943,7 +1012,6 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6">
                         <div class="bg-wrapper">
-
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
@@ -951,73 +1019,29 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
 
                             <div class="d-grid ct_gap_14">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'common.petrol' | translate }} </label>
+                                @for (group of fuelTypeGroups; track group.label) {
+                                <div class="mb-2">
+                                    <h6 class="ct_fs_14 ct_fw_500 mb-2">{{ group.label | translate }}</h6>
+                                    @for (item of group.options; track item.value) {
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                [id]="'fuel-' + item.value" />
+                                            <label [for]="'fuel-' + item.value">{{ item.label | translate }} </label>
+                                        </div>
+                                        <div>
+                                            <span class="ct_fs_12 ct_fw_300">{{ item.count ?? 0 }}</span>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
+                                    }
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'common.diesel' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'common.hybrid' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'filters.gas' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'common.electric' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'filters.otherFuelTypes' | translate }}
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -1031,31 +1055,25 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                             <div class="d-grid ct_gap_14">
+                                @for (item of transmissions; track item.value) {
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault"> {{ 'common.manual' | translate }} </label>
+                                            [id]="'transmission-' + item.value" />
+                                        <label [for]="'transmission-' + item.value">
+                                            {{ item.label | translate }}
+                                        </label>
                                     </div>
                                     <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
+                                        <span class="ct_fs_12 ct_fw_300">{{ item.count ?? 0 }}</span>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'common.automatic' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -1068,43 +1086,23 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                             <div class="d-grid ct_gap_14">
+                                @for (item of driveTypes; track item.value) {
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault"> {{ 'filters.allWheel4x4' | translate }} </label>
+                                            [id]="'drive-' + item.value" />
+                                        <label [for]="'drive-' + item.value"> {{ item.label | translate }} </label>
                                     </div>
                                     <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
+                                        <span class="ct_fs_12 ct_fw_300">{{ item.count ?? 0 }}</span>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault"> {{ 'filters.frontWheelDrive' | translate }}
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault"> {{ 'filters.rearWheelDrive' | translate }}
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -1121,8 +1119,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -1152,8 +1150,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -1182,8 +1180,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -1215,8 +1213,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -1246,8 +1244,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -1277,8 +1275,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -1310,8 +1308,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -1339,8 +1337,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -1419,8 +1417,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                         </div>
@@ -1645,8 +1643,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                             <div class="d-grid ct_gap_14">
@@ -1727,8 +1725,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                         </div>
@@ -1749,115 +1747,31 @@
                     <hr class="mb-4 mt-2" />
 
                     <div class="row">
-
-
-                        <div class="col-md-4">
-                            <div class="d-grid ct_gap_14">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: white"></span>
-                                        <label for="flexCheckDefault"> {{ 'common.white' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: #d7d7d7"></span>
-                                        <label for="flexCheckDefault"> {{ 'common.grey' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: #fffb00"></span>
-                                        <label for="flexCheckDefault"> {{ 'common.yellow' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @for (column of carColorColumns; track $index) {
                         <div class="col-md-4 mt-md-0 mt-3">
                             <div class="d-grid ct_gap_14">
+                                @for (item of column; track item.value) {
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: #0037fc"></span>
-                                        <label for="flexCheckDefault"> {{ 'common.blue' | translate }} </label>
+                                            [id]="'exterior-color-' + item.value" />
+                                        <span class="ct_color_dots" [style.background-color]="item.color"></span>
+                                        <label [for]="'exterior-color-' + item.value">
+                                            {{ item.label | translate }}
+                                        </label>
                                     </div>
                                     <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
+                                        <span class="ct_fs_12 ct_fw_300">{{ item.count ?? 0 }}</span>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: #262626"></span>
-                                        <label for="flexCheckDefault"> {{ 'common.black' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: #b700ff"></span>
-                                        <label for="flexCheckDefault"> {{ 'filters.purple' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
-
-                        <div class="col-md-4 mt-md-0 mt-3">
-                            <div class="d-grid ct_gap_14">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: #ff0000"></span>
-                                        <label for="flexCheckDefault"> {{ 'common.red' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: #ff007b"></span>
-                                        <label for="flexCheckDefault"> {{ 'filters.pink' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        }
                     </div>
                 </div>
                 <div class="bg-wrapper mt-5">
                     <div class="row ">
-
-
                         <div class="col-12">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
@@ -1866,111 +1780,68 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="d-grid ct_gap_14">
+                                @for (item of carColorColumns[0]; track item.value) {
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: white"></span>
-                                        <label for="flexCheckDefault"> {{ 'common.white' | translate }} </label>
+                                            [id]="'interior-color-' + item.value" />
+                                        <span class="ct_color_dots" [style.background-color]="item.color"></span>
+                                        <label [for]="'interior-color-' + item.value">
+                                            {{ item.label | translate }}
+                                        </label>
                                     </div>
                                     <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
+                                        <span class="ct_fs_12 ct_fw_300">{{ item.count ?? 0 }}</span>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: #d7d7d7"></span>
-                                        <label for="flexCheckDefault"> {{ 'common.grey' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: #fffb00"></span>
-                                        <label for="flexCheckDefault"> {{ 'common.yellow' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
                         <div class="col-md-4 mt-md-0 mt-3">
                             <div class="d-grid ct_gap_14">
+                                @for (item of carColorColumns[1]; track item.value) {
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: #0037fc"></span>
-                                        <label for="flexCheckDefault"> {{ 'common.blue' | translate }} </label>
+                                            [id]="'interior-color-' + item.value" />
+                                        <span class="ct_color_dots" [style.background-color]="item.color"></span>
+                                        <label [for]="'interior-color-' + item.value">
+                                            {{ item.label | translate }}
+                                        </label>
                                     </div>
                                     <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
+                                        <span class="ct_fs_12 ct_fw_300">{{ item.count ?? 0 }}</span>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: #262626"></span>
-                                        <label for="flexCheckDefault"> {{ 'common.black' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: #b700ff"></span>
-                                        <label for="flexCheckDefault"> {{ 'filters.purple' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
 
                         <div class="col-md-4 mt-md-0 mt-3">
                             <div class="d-grid ct_gap_14">
+                                @for (item of carColorColumns[2]; track item.value) {
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: #ff0000"></span>
-                                        <label for="flexCheckDefault"> {{ 'common.red' | translate }} </label>
+                                            [id]="'interior-color-' + item.value" />
+                                        <span class="ct_color_dots" [style.background-color]="item.color"></span>
+                                        <label [for]="'interior-color-' + item.value">
+                                            {{ item.label | translate }}
+                                        </label>
                                     </div>
                                     <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
+                                        <span class="ct_fs_12 ct_fw_300">{{ item.count ?? 0 }}</span>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <span class="ct_color_dots" style="background-color: #ff007b"></span>
-                                        <label for="flexCheckDefault"> {{ 'filters.pink' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -2004,24 +1875,23 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
-                            <div class="price-range">
-                                <input type="range" min="10" max="230" value="230" class="range-slider" />
-
-                                <div class="range-labels">
-                                    <div class="label-box">
-                                        <span class="label-text">{{ 'filters.minimum' | translate }}</span>
-                                        <span class="pill">CHF 10</span>
-                                    </div>
-
-                                    <div class="label-box text-end">
-                                        <span class="label-text">{{ 'filters.maximum' | translate }}</span>
-                                        <span class="pill">CHF 230+</span>
-                                    </div>
+                            <div class="mb-3">
+                                <div class="d-flex gap-3 mb-2">
+                                    <input type="number" class="form-control price_input" placeholder="Min"
+                                        [(ngModel)]="seatRange[0]" [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="onSeatRangeChange()" />
+                                    <input type="number" class="form-control price_input" placeholder="Max"
+                                        [(ngModel)]="seatRange[1]" [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="onSeatRangeChange()" />
                                 </div>
+
+                                <nz-slider [nzTooltipVisible]="'never'" nzRange [nzStep]="1" [nzMin]="1" [nzMax]="25"
+                                    [(ngModel)]="seatRange" [ngModelOptions]="{standalone: true}"
+                                    (ngModelChange)="onSeatRangeChange()"></nz-slider>
                             </div>
                         </div>
                     </div>
@@ -2035,24 +1905,23 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
-                            <div class="price-range">
-                                <input type="range" min="10" max="230" value="230" class="range-slider" />
-
-                                <div class="range-labels">
-                                    <div class="label-box">
-                                        <span class="label-text">{{ 'filters.minimum' | translate }}</span>
-                                        <span class="pill">CHF 10</span>
-                                    </div>
-
-                                    <div class="label-box text-end">
-                                        <span class="label-text">{{ 'filters.maximum' | translate }}</span>
-                                        <span class="pill">CHF 230+</span>
-                                    </div>
+                            <div class="mb-3">
+                                <div class="d-flex gap-3 mb-2">
+                                    <input type="number" class="form-control price_input" placeholder="Min"
+                                        [(ngModel)]="doorRange[0]" [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="onDoorRangeChange()" />
+                                    <input type="number" class="form-control price_input" placeholder="Max"
+                                        [(ngModel)]="doorRange[1]" [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="onDoorRangeChange()" />
                                 </div>
+
+                                <nz-slider [nzTooltipVisible]="'never'" nzRange [nzStep]="1" [nzMin]="1" [nzMax]="10"
+                                    [(ngModel)]="doorRange" [ngModelOptions]="{standalone: true}"
+                                    (ngModelChange)="onDoorRangeChange()"></nz-slider>
                             </div>
                         </div>
                     </div>
@@ -2086,8 +1955,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
 
@@ -2117,8 +1986,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
 
@@ -2148,83 +2017,24 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
 
                             <div class="d-grid ct_gap_14">
+                                @for (item of energyEfficiencyOptions; track item.value) {
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">A </label>
+                                            [id]="'energy-' + item.value" />
+                                        <label [for]="'energy-' + item.value">{{ item.label | translate }} </label>
                                     </div>
                                     <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
+                                        <span class="ct_fs_12 ct_fw_300">{{ item.count ?? 0 }}</span>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">B </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">C </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault"> D </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">E </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">F </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault"> G </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -2241,8 +2051,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
                         </div>
@@ -2466,8 +2276,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
 
@@ -2567,8 +2377,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <a href="#" class="ct_fs_14 ct_fw_300 ct_color_666666">
-                                        Reset</a>
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                        translate }}</span>
                                 </div>
                             </div>
 
@@ -2766,5 +2576,8 @@
             </div>
         </div>
         <!-- <hr class="my-4" /> -->
+        <button class="ct_red_gradient_btn mt-4 show_btn w-25 mx-auto mb-3">
+            Show 100 Cars
+        </button>
     </div>
 </div>

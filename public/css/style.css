@@ -314,6 +314,24 @@ body {
 }
 
 
+.cdk-virtual-scrollable::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+.cdk-virtual-scrollable::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.cdk-virtual-scrollable::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+.cdk-virtual-scrollable::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 
 .ct_mt_100 {
   margin-top: 100px;
@@ -1621,7 +1639,9 @@ span.navbar-toggler-icon i {
 }
 
 .body-type-img-o {
-  height: 45px;
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
 }
 
 
@@ -2771,7 +2791,6 @@ button#profileSidebarClose {
 
 .login-popup .modal-content {
   background: url("../img/bg-img-popup.png");
-
 }
 
 /* LEFT SIDE */

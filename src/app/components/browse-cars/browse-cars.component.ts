@@ -1,11 +1,8 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonService } from '../../services/common.service';
-import { forkJoin, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, debounceTime } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { carData } from '../../helper/carData';
-import { FormsModule } from '@angular/forms';
-import { NzSelectModule } from 'ng-zorro-antd/select';
 import { LoaderService } from '../../services/loader.service';
 import { ChfFormatPipe } from '../../pipes/chf-format.pipe';
 import { AuthService } from '../../services/auth.service';
@@ -13,12 +10,15 @@ import { ModalService } from '../../services/modal.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzImageModule } from 'ng-zorro-antd/image';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { FormsModule } from '@angular/forms';
 
 declare var Swiper: any;
 
 @Component({
   selector: 'app-browse-cars',
-  imports: [RouterLink, CommonModule, NzSelectModule, FormsModule, ChfFormatPipe, TranslateModule, NzPopoverModule, NzImageModule],
+  imports: [RouterLink, CommonModule, ChfFormatPipe, TranslateModule, NzPopoverModule, NzImageModule, NzSliderModule, NzSelectModule, FormsModule],
   templateUrl: './browse-cars.component.html',
   styleUrl: './browse-cars.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -26,17 +26,9 @@ declare var Swiper: any;
 })
 export class BrowseCarsComponent {
   private destroy$ = new Subject<void>();
+  private priceRangeChange$ = new Subject<void>();
+  private kmRangeChange$ = new Subject<void>();
   carsList: any[] = []
-  fuelTypes = carData.fuelTypes
-  transmissions = carData.transmissions
-  conditions = carData.conditions
-  loading: boolean = false
-  brandList: any[] = []
-  orgBrandList: any[] = []
-  modalList: any[] = []
-  orgModalList: any[] = []
-  sittingCapacity = [1, 2, 3, 4, 5, 6, 7]
-  sellerTypes = carData.sellerTypes
   visible: boolean = false
   bodyTypeVisible: boolean = false
   YearVisible: boolean = false
@@ -45,30 +37,26 @@ export class BrowseCarsComponent {
   FuelVisible: boolean = false
   TransmissionVisible: boolean = false
   PowerVisible: boolean = false
-  TypeOfCarVisible: boolean = false
-  selectedBrand: string[] = []
-  selectedModal: string[] = [];
-  selectedSittingCapacity: any = null
-  selectedSellerType: any = null
-  selectedFuels: string[] = [];
-  selectedTransmissions: string[] = [];
-  priceRange: any = [0, 1000000];
-  yearRange: any = [1900, 2025];
-  milageRange: any = [0, 10000];
-  powerRange: any = [0, 1000];
   token: any;
-  years: number[] = [];
   selectedBrandsModal: any[] = [];
-  searchModalValue: string = '';
-  searchBrandValue: string = '';
-  @ViewChild('modalScrollDiv') modalScrollDiv!: ElementRef<HTMLDivElement>;
-  YearFilterApplied: boolean = false
-  PriceFilterApplied: boolean = false
-  MilageFilterApplied: boolean = false
-  FuelFilterApplied: boolean = false
-  TransmissionFilterApplied: boolean = false
-  PowerFilterApplied: boolean = false
   recentlyViewedlist: any[] = []
+  bodyTypes: any
+  priceRangeAnalytics: any
+  yearRangeAnalytics: any
+  kmRangeAnalytics: any
+  matchingProgress: number = 0
+  priceRange: any = [1, 100000];
+  leasePriceRange: any = [10, 2000];
+  yearRange: any = [2015, 2020];
+  years: number[] = [];
+  kmRange: any = [1, 4000000];
+  kms: number[] = [];
+  priceType: 'Purchase' | 'Lease' = 'Purchase'
+  transmissions: any[] = [];
+  selectedTransmissionIds: any[] = [];
+  fuelTypeGroups: { label: string; options: { label: string; value: any; count?: number }[] }[] = [];
+  selectedFuelIds: any[] = [];
+  fuelTypeData: any = {};
   constructor(private service: CommonService, private loader: LoaderService, private authService: AuthService, private modalService: ModalService, private translate: TranslateService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
   }
@@ -76,26 +64,37 @@ export class BrowseCarsComponent {
   ngOnInit(): void {
     this.token = this.authService.getToken();
     this.getCars()
-    this.getBrands()
-    const currentYear = new Date().getFullYear();
-    for (let i = 0; i <= 30; i++) {
-      this.years.push(currentYear - i);
-    }
 
     if (this.authService.isLogedIn()) {
       this.getRecentlyViewedlist()
     }
-  }
+    this.getBodyTypes()
+    this.getPriceRangeAnalytics()
 
-  // Disable all years before the selected start year
-  isYearDisabled(year: number): boolean {
-    if (!this.yearRange[0]) return false;
-    return year < this.yearRange[0];
+    this.priceRangeChange$
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe(() => this.getPriceRangeAnalytics());
+
+    this.kmRangeChange$
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe(() => this.getKmRangeAnalytics());
+
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year >= 1990; year--) {
+      this.years.push(year);
+    }
+    this.getYearRangeAnalytics();
+
+    for (let km = 0; km <= 4000000; km += 1000) {
+      this.kms.push(km);
+    }
+    this.getKmRangeAnalytics();
+    this.getTransmissions();
+    this.getFuelTypes();
   }
 
   getCars() {
     this.loader.show();
-
     this.service
       .get(this.token
         ? 'user/fetchOtherSellerCarsList'
@@ -168,267 +167,178 @@ export class BrowseCarsComponent {
 
 
   removeFromWishlist(item: any) {
-
     item.isWishlist = !item.isWishlist
     this.service.delete('user/removeCarFromWishlist', { carId: item.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
     })
   }
 
-  getBrands() {
-    this.service.get('user/brand').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.brandList = res.data
-      this.orgBrandList = [...this.brandList]
-    })
+
+  getBodyTypes() {
+    this.service.get(`user/body-type?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.bodyTypes = res?.data || {};
+      },
+      error: (error) => {
+        console.error('Error fetching body types:', error);
+      }
+    });
   }
 
-  // getModalList(brand: any) {
-  //   const brandId = this.brandList.find((item: any) => item.make_display.toLowerCase() == brand.toLowerCase())?.make_id
-  //   this.service.get('user/getModel/' + brandId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-  //     this.modalList = res.data
-  //   })
-  // }
+  getPriceRangeAnalytics() {
+    const activeRange = this.priceType === 'Purchase' ? this.priceRange : this.leasePriceRange;
+    const [priceFrom, priceTo] = activeRange || [];
+    const query = `car_price_from=${priceFrom}&car_price_to=${priceTo}`;
+    const endpoint = this.priceType === 'Purchase'
+      ? `user/price-range-analytics?${query}`
+      : `get-leasing-analyics?${query}`;
 
-  selectBrand(brand: string) {
-    const selectedBrand = this.brandList.find((item: any) => item.make_display.toLowerCase() == brand.toLowerCase()).make_display
-    if (this.selectedBrand.includes(selectedBrand)) {
-      this.selectedBrand = this.selectedBrand.filter(b => b !== selectedBrand);
-    } else {
-      this.selectedBrand.push(selectedBrand);
+    this.service.get(endpoint).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.priceRangeAnalytics = res?.data || {};
+        this.updateMatchingProgress();
+      },
+      error: (error) => {
+        console.error('Error fetching price range analytics:', error);
+      }
+    });
+  }
+
+  getYearRangeAnalytics() {
+    const [fromYear, toYear] = this.yearRange || [];
+    const query = `from_year=${fromYear}&to_year=${toYear}`;
+    this.service.get(`user/year-range-analytics?${query}`).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.yearRangeAnalytics = res?.data || {};
+      },
+      error: (error) => {
+        console.error('Error fetching year range analytics:', error);
+      }
+    });
+  }
+
+  onYearRangeChange() {
+    this.getYearRangeAnalytics();
+  }
+
+  getKmRangeAnalytics() {
+    const [fromKm, toKm] = this.kmRange || [];
+    const query = `from_km=${fromKm}&to_km=${toKm}`;
+    this.service.get(`user/kilometers-range-analytics?${query}`).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.kmRangeAnalytics = res?.data || {};
+      },
+      error: (error) => {
+        console.error('Error fetching kilometers range analytics:', error);
+      }
+    });
+  }
+
+  onKmRangeChange() {
+    this.kmRangeChange$.next();
+  }
+
+  getTransmissions() {
+    this.service.get(`user/transmission?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.transmissions = res?.data?.types || [];
+      },
+      error: (error) => {
+        console.error('Error fetching transmissions:', error);
+      }
+    });
+  }
+
+  onTransmissionToggle(id: any, e: any) {
+    if (e.target.checked) {
+      if (!this.selectedTransmissionIds.includes(id)) {
+        this.selectedTransmissionIds.push(id);
+      }
+      return;
     }
-    this.getModalList(selectedBrand)
+    this.selectedTransmissionIds = this.selectedTransmissionIds.filter((x) => x !== id);
   }
 
-  getModalList(selectedBrand: string) {
-    this.service.get('user/getModel/' + selectedBrand).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.modalList = res.data
-      this.orgModalList = [...this.modalList]
-    })
+  getFuelTypes() {
+    const lang = this.translate.currentLang || 'fr';
+    const selectedIds = this.selectedFuelIds.length > 0 ? this.selectedFuelIds.join(',') : '';
+    const query = `lang=${lang}${selectedIds ? `&selected_ids=${selectedIds}` : ''}`;
+
+    this.service.get(`user/fuel?${query}`).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        const data = res?.data || {};
+        this.fuelTypeData = data;
+        this.fuelTypeGroups = [
+          {
+            label: 'Standard',
+            options: (data.standard || []).map((x: any) => ({
+              label: x.label,
+              value: x.id,
+              count: x.count ?? x.total_cars
+            }))
+          },
+          {
+            label: 'Hybrid',
+            options: (data.hybrid || []).map((x: any) => ({
+              label: x.label,
+              value: x.id,
+              count: x.count ?? x.total_cars
+            }))
+          },
+          {
+            label: 'Gas',
+            options: (data.gas || []).map((x: any) => ({
+              label: x.label,
+              value: x.id,
+              count: x.count ?? x.total_cars
+            }))
+          },
+          {
+            label: 'Other',
+            options: (data.other || []).map((x: any) => ({
+              label: x.label,
+              value: x.id,
+              count: x.count ?? x.total_cars
+            }))
+          }
+        ];
+      },
+      error: (error) => {
+        console.error('Error fetching fuel types:', error);
+      }
+    });
   }
 
-
-  onFuelChange(event: any) {
-    if (event.target.checked) {
-      this.selectedFuels.push(event.target.value);
-    } else {
-      this.selectedFuels = this.selectedFuels.filter(f => f !== event.target.value);
-    }
-  }
-
-  onTransmissionChange(event: any) {
-    if (event.target.checked) {
-      this.selectedTransmissions.push(event.target.value);
-    } else {
-      this.selectedTransmissions = this.selectedTransmissions.filter(f => f !== event.target.value);
-    }
-  }
-
-  FilterYearRange() {
-    this.yearRange = [this.yearRange[0], this.yearRange[1]]
-    this.YearFilterApplied = true
-    this.YearVisible = false
-    this.onFilterApply()
-  }
-
-  removeYearFilter() {
-    this.yearRange = [1900, 2025]
-    this.YearFilterApplied = false
-    this.onFilterApply()
-  }
-
-  FilterPriceRange() {
-    this.PriceFilterApplied = true
-    this.PriceVisible = false
-    this.onFilterApply()
-  }
-
-  removePriceFilter() {
-    this.priceRange = [0, 1000000]
-    this.PriceFilterApplied = false
-    this.onFilterApply()
-  }
-
-  FilterMilageRange() {
-    this.MilageFilterApplied = true
-    this.MilageVisible = false
-    this.onFilterApply()
-  }
-
-  removeMilageFilter() {
-    this.milageRange = [0, 10000]
-    this.MilageFilterApplied = false
-    this.onFilterApply()
-  }
-
-  FilterFuelRange() {
-    this.FuelFilterApplied = true
-    this.FuelVisible = false
-    this.onFilterApply()
-  }
-
-  removeFuelFilter() {
-    this.selectedFuels = []
-    this.FuelFilterApplied = false
-    this.onFilterApply()
-  }
-
-  FilterTransmissionRange() {
-    this.TransmissionFilterApplied = true
-    this.TransmissionVisible = false
-    this.onFilterApply()
-  }
-
-  removeTransmissionFilter() {
-    this.selectedTransmissions = []
-    this.TransmissionFilterApplied = false
-    this.onFilterApply()
-  }
-
-  FilterPowerRange() {
-    this.PowerFilterApplied = true
-    this.PowerVisible = false
-    this.onFilterApply()
-  }
-
-  removePowerFilter() {
-    this.powerRange = [0, 1000]
-    this.PowerFilterApplied = false
-    this.onFilterApply()
-  }
-
-  filterBrandModel() {
-    this.visible = false
-    this.onFilterApply()
-  }
-
-  onFilterApply() {
-    const paramsObj: any = {
-      ...(this.selectedBrand && this.selectedBrand.length > 0 && { brandName: this.selectedBrand.join(',') }),
-      ...(this.selectedModal && this.selectedModal.length > 0 && { carModel: this.selectedModal.join(',') }),
-      ...(this.selectedFuels && this.selectedFuels.length > 0 && { fuelType: this.selectedFuels.join(',') }),
-      ...(this.selectedTransmissions && this.selectedTransmissions.length > 0 && { transmission: this.selectedTransmissions.join(',') }),
-      ...(this.priceRange && Array.isArray(this.priceRange) && this.priceRange.length === 2 && this.priceRange.every((v: any) => v !== undefined && v !== null) && { priceRange: this.priceRange.join(',') }),
-      ...(this.yearRange && Array.isArray(this.yearRange) && typeof this.yearRange[0] === 'number' && { min_year: this.yearRange[0] }),
-      ...(this.yearRange && Array.isArray(this.yearRange) && typeof this.yearRange[1] === 'number' && { max_year: this.yearRange[1] }),
-      ...(this.milageRange && Array.isArray(this.milageRange) && typeof this.milageRange[0] === 'number' && { min_mileage: this.milageRange[0] }),
-      ...(this.milageRange && Array.isArray(this.milageRange) && typeof this.milageRange[1] === 'number' && { max_mileage: this.milageRange[1] }),
-      ...(this.powerRange && Array.isArray(this.powerRange) && typeof this.powerRange[0] === 'number' && { min_hp: this.powerRange[0] }),
-      ...(this.powerRange && Array.isArray(this.powerRange) && typeof this.powerRange[1] === 'number' && { max_hp: this.powerRange[1] }),
-    };
-    const params = paramsObj;
-
-    this.service.get(this.token ? 'user/fetchOtherSellerCarsList' : 'user/asGuestUserFetchSellerCarsList', params).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.carsList = res.data
-    })
-  }
-
-  onFilterClear() {
-    this.selectedBrand = []
-    this.selectedModal = []
-    this.selectedFuels = []
-    this.selectedTransmissions = []
-    this.selectedBrandsModal = []
-    this.priceRange = [0, 1000000]
-    this.yearRange = [1900, 2025]
-    this.milageRange = [0, 10000]
-    this.powerRange = [0, 1000]
-    this.MilageFilterApplied = false
-    this.PriceFilterApplied = false
-    this.YearFilterApplied = false
-    this.FuelFilterApplied = false
-    this.TransmissionFilterApplied = false
-    this.PowerFilterApplied = false
-    this.MilageVisible = false
-    this.PriceVisible = false
-    this.YearVisible = false
-    this.FuelVisible = false
-    this.TransmissionVisible = false
-    this.PowerVisible = false
-    this.visible = false
-    this.onFilterApply()
-  }
-
-  filterByBrand(brand: string) {
-    if (this.selectedBrand.includes(brand)) {
-      this.selectedBrand = this.selectedBrand.filter(b => b !== brand);
-    } else {
-      this.selectedBrand.push(brand);
-    }
-    this.onFilterApply()
-  }
-
-  private searchTimeout: any;
-
-  search(event: any) {
-    clearTimeout(this.searchTimeout);
-    this.searchTimeout = setTimeout(() => {
-      this.service.get(this.token ? 'user/fetchOtherSellerCarsList' : 'user/asGuestUserFetchSellerCarsList', { search: event.target.value.trim() })
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res: any) => {
-          this.carsList = res.data;
-        });
-    }, 400);
-  }
-
-  searchModal(event: any) {
-    this.searchModalValue = event.target.value.trim()
-    if (this.searchModalValue.length > 0) {
-      this.modalList = this.orgModalList.filter((item: any) => item.modelName.toLowerCase().includes(this.searchModalValue.toLowerCase()))
-    } else {
-      this.modalList = [...this.orgModalList]
-    }
-  }
-
-  searchBrand(event: any) {
-    const searchValue = event.target.value.trim()
-    if (searchValue.length > 0) {
-      this.brandList = this.orgBrandList.filter((item: any) => item.make_display.toLowerCase().includes(searchValue.toLowerCase()))
-    } else {
-      this.brandList = [...this.orgBrandList]
-    }
-  }
-
-  selectModal(event: any, brand: string) {
-    const selectedModal = this.modalList.find((item: any) => item.modelName.toLowerCase() == event.target.value.toLowerCase()).modelName
-    const brandIndex = this.selectedBrandsModal.findIndex((item: any) => item.brand === brand);
-
-    if (this.selectedModal.includes(selectedModal)) {
-      this.selectedModal = this.selectedModal.filter(m => m !== selectedModal);
-
-      if (brandIndex !== -1) {
-        this.selectedBrandsModal[brandIndex].modals = this.selectedBrandsModal[brandIndex].modals.filter((m: any) => m !== selectedModal);
-        if (this.selectedBrandsModal[brandIndex].modals.length === 0) {
-          this.selectedBrandsModal.splice(brandIndex, 1);
-        }
+  onFuelToggle(id: any, e: any) {
+    if (e.target.checked) {
+      if (!this.selectedFuelIds.includes(id)) {
+        this.selectedFuelIds.push(id);
       }
     } else {
-      this.selectedModal.push(selectedModal);
-
-      if (brandIndex !== -1) {
-        this.selectedBrandsModal[brandIndex].modals = [...this.selectedBrandsModal[brandIndex].modals, selectedModal];
-      } else {
-        this.selectedBrandsModal.push({ brand: brand, modals: [selectedModal] });
-      }
+      this.selectedFuelIds = this.selectedFuelIds.filter((x: any) => x !== id);
     }
+    this.getFuelTypes();
   }
 
-  removeBrandModal(item: any) {
-    this.selectedBrandsModal = this.selectedBrandsModal.filter(b => b.brand !== item.brand);
-    this.selectedModal = this.selectedModal.filter(m => !item.modals.includes(m));
-    this.selectedBrand = this.selectedBrand.filter(b => b !== item.brand);
-    this.onFilterApply()
+  updateMatchingProgress() {
+    this.matchingProgress = Math.floor(Math.random() * 86) + 10;
   }
 
-  backToBrand() {
-    this.modalList = [];
-    this.orgModalList = [];
-    this.brandList = [...this.orgBrandList]
+  onPriceTypeChange() {
+    this.getPriceRangeAnalytics();
   }
+
+  onPriceRangeChange() {
+    this.priceRangeChange$.next();
+  }
+
 
   trackByImage(index: number, img: string) {
     return img;
   }
 
   ngOnDestroy(): void {
+    this.kmRangeChange$.complete();
+    this.priceRangeChange$.complete();
     this.destroy$.next();
     this.destroy$.complete();
   }
