@@ -637,7 +637,7 @@
                                     </div>
                                     <div class="text-center my-4">
                                         <h4 class="ct_fs_20 ct_fw_600 mb-0">
-                                            {{yearRangeAnalytics.total_cars_all_years}}</h4>
+                                            {{yearRangeAnalytics?.total_cars_all_years}}</h4>
                                         <p class="ct_fs_18 ct_fw_400">{{ 'vehicle.carsFound' | translate
                                             }}</p>
                                     </div>
@@ -648,7 +648,7 @@
                                             <span class="ct_fs_14 ct_fw_400">{{
                                                 'vehicle.selectedModelYears' | translate }}</span>
                                             <span
-                                                class="ct_fs_14 ct_fw_400">{{yearRangeAnalytics.selected_range.total_cars}}</span>
+                                                class="ct_fs_14 ct_fw_400">{{yearRangeAnalytics?.selected_range?.total_cars}}</span>
                                         </div>
                                         <!-- <div class="progress custom-progress">
                                                                                     <div class="progress-bar bg-danger" style="width: 75%">
@@ -662,7 +662,7 @@
                                             <span class="ct_fs_14 ct_fw_400">{{
                                                 'vehicle.olderModelYears' | translate }}</span>
                                             <span
-                                                class="ct_fs_14 ct_fw_400">{{yearRangeAnalytics.breakdown.older_models.count}}</span>
+                                                class="ct_fs_14 ct_fw_400">{{yearRangeAnalytics?.breakdown?.older_models?.count}}</span>
                                         </div>
                                     </div>
 
@@ -672,7 +672,7 @@
                                             <span class="ct_fs_14 ct_fw_400">{{
                                                 'vehicle.newlyModelYears' | translate }}</span>
                                             <span
-                                                class="ct_fs_14 ct_fw_400">{{yearRangeAnalytics.breakdown.newer_models.count}}</span>
+                                                class="ct_fs_14 ct_fw_400">{{yearRangeAnalytics?.breakdown?.newer_models?.count}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -718,7 +718,7 @@
                                     </div>
                                     <div class="text-center my-4">
                                         <h4 class="ct_fs_20 ct_fw_600 mb-0">
-                                            {{kilometersRangeAnalytics.total_cars_all_mileage}}</h4>
+                                            {{kilometersRangeAnalytics?.total_cars_all_mileage}}</h4>
                                         <p class="ct_fs_18 ct_fw_400">{{ 'vehicle.carsFound' | translate
                                             }}</p>
                                     </div>
@@ -728,7 +728,7 @@
                                         <div class="d-flex justify-content-between mb-2">
                                             <span class="ct_fs_14 ct_fw_400">Selected mileage</span>
                                             <span
-                                                class="ct_fs_14 ct_fw_400">{{kilometersRangeAnalytics.selected_range.total_cars}}</span>
+                                                class="ct_fs_14 ct_fw_400">{{kilometersRangeAnalytics?.selected_range?.total_cars}}</span>
                                         </div>
                                     </div>
 
@@ -737,7 +737,7 @@
                                         <div class="d-flex justify-content-between">
                                             <span class="ct_fs_14 ct_fw_400">Higher Mileage</span>
                                             <span
-                                                class="ct_fs_14 ct_fw_400">{{kilometersRangeAnalytics.breakdown.higher_mileage.count}}</span>
+                                                class="ct_fs_14 ct_fw_400">{{kilometersRangeAnalytics?.breakdown?.higher_mileage?.count}}</span>
                                         </div>
                                     </div>
 
@@ -746,7 +746,7 @@
                                         <div class="d-flex justify-content-between">
                                             <span class="ct_fs_14 ct_fw_400">Lower Mileage</span>
                                             <span
-                                                class="ct_fs_14 ct_fw_400">{{kilometersRangeAnalytics.breakdown.lower_mileage.count}}</span>
+                                                class="ct_fs_14 ct_fw_400">{{kilometersRangeAnalytics?.breakdown?.lower_mileage?.count}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -835,7 +835,7 @@
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="ct_fs_14 ct_fw_400">{{ 'vehicle.matchingVehicles' |
                                         translate }}</span>
-                                    <span class="ct_fs_14 ct_fw_400">{{priceRangeAnalytics.matching_vehicles}}</span>
+                                    <span class="ct_fs_14 ct_fw_400">{{priceRangeAnalytics?.matching_vehicles}}</span>
                                 </div>
 
                                 <!-- <div class="progress custom-progress">

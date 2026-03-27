@@ -71,47 +71,30 @@ export class AllFiltersComponent {
 
     this.priceRangeChange$
       .pipe(debounceTime(300), takeUntil(this.destroy$))
-      .subscribe(() => this.getPriceRangeAnalytics());
+      .subscribe(() => this.getFiltersData());
 
     this.kmRangeChange$
       .pipe(debounceTime(300), takeUntil(this.destroy$))
-      .subscribe(() => this.getKilometersRange());
+      .subscribe(() => this.getFiltersData());
 
     this.seatRangeChange$
       .pipe(debounceTime(300), takeUntil(this.destroy$))
-      .subscribe(() => this.getCarSeats());
+      .subscribe(() => this.getFiltersData());
 
     this.doorRangeChange$
       .pipe(debounceTime(300), takeUntil(this.destroy$))
-      .subscribe(() => this.getCarDoors());
+      .subscribe(() => this.getFiltersData());
   }
 
   getFiltersData() {
-    this.getKilometersRange();
-    this.getPriceRangeAnalytics();
-    this.getYearRangeAnalytics();
-    this.getFuelTypes();
-    this.getTransmissions();
-    this.getDriveTypes();
-    this.getBodyTypes();
-    this.getVhicleConditions();
-    this.getCarState();
-    this.getWarrantyList();
-    this.getCarColors();
-    this.getEnergyEfficiency();
-    this.getCarSeats();
-    this.getCarDoors();
-  }
-
-  getKilometersRange() {
-    const [fromKm, toKm] = this.kmRange || [];
-    const query = `from_km=${fromKm}&to_km=${toKm}`;
-    this.service.get(`user/kilometers-range-analytics?${query}`).pipe(takeUntil(this.destroy$)).subscribe({
+    const query = this.buildFiltersQuery();
+    this.service.get(`user/web/filters${query}`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
-        this.kilometersRangeAnalytics = res?.data || {};
+        const data = res?.data || {};
+        this.applyFiltersData(data);
       },
       error: (error) => {
-        console.error('Error fetching kilometers range:', error);
+        console.error('Error fetching filters:', error);
       }
     });
   }
@@ -120,191 +103,16 @@ export class AllFiltersComponent {
     this.kmRangeChange$.next();
   }
 
-  getPriceRangeAnalytics() {
-    const [priceFrom, priceTo] = this.priceRange || [];
-    const query = `car_price_from=${priceFrom}&car_price_to=${priceTo}`;
-    this.service.get(`user/price-range-analytics?${query}`).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res: any) => {
-        this.priceRangeAnalytics = res?.data || {};
-      },
-      error: (error) => {
-        console.error('Error fetching price range analytics:', error);
-      }
-    });
-  }
-
   onPriceTypeChange() {
-    this.getPriceRangeAnalytics();
+    this.getFiltersData();
   }
 
   onPriceRangeChange() {
     this.priceRangeChange$.next();
   }
 
-  getYearRangeAnalytics() {
-    const [fromYear, toYear] = this.yearRange || [];
-    const query = `from_year=${fromYear}&to_year=${toYear}`;
-    this.service.get(`user/year-range-analytics?${query}`).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res: any) => {
-        this.yearRangeAnalytics = res?.data || {};
-      },
-      error: (error) => {
-        console.error('Error fetching year range analytics:', error);
-      }
-    });
-  }
-
   onYearRangeChange() {
-    this.getYearRangeAnalytics();
-  }
-
-  getFuelTypes() {
-    this.service.get(`user/fuel?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res: any) => {
-        const data = res?.data || {};
-        this.fuelTypeGroups = this.buildFuelTypeGroups(data);
-      },
-      error: (error) => {
-        console.error('Error fetching fuel types:', error);
-      }
-    });
-  }
-
-
-  getTransmissions() {
-    this.service.get(`user/transmission?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res: any) => {
-        const items = res?.data?.types || [];
-        this.transmissions = this.mapOptions(items, 'label', 'id');
-      },
-      error: (error) => {
-        console.error('Error fetching transmissions:', error);
-      }
-    });
-  }
-
-  getDriveTypes() {
-    this.service.get(`user/drive?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res: any) => {
-        const items = res?.data?.types || [];
-        this.driveTypes = this.mapOptions(items, 'label', 'id');
-      },
-      error: (error) => {
-        console.error('Error fetching drive types:', error);
-      }
-    });
-  }
-
-  getBodyTypes() {
-    this.service.get(`user/body-type?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res: any) => {
-        const items = res?.data?.types || [];
-        this.bodyTypes = this.mapOptions(items, 'label', 'id');
-      },
-      error: (error) => {
-        console.error('Error fetching body types:', error);
-      }
-    });
-  }
-
-  getVhicleConditions() {
-    this.service.get(`user/vehicle-conditions?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res: any) => {
-        const items = res?.data || [];
-        this.conditions = this.mapOptions(items, 'name', 'id');
-      },
-      error: (error) => {
-        console.error('Error fetching vehicle conditions:', error);
-      }
-    });
-  }
-
-  getCarState() {
-    this.service.get(`user/vichel-state?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res: any) => {
-        const items = res?.data?.types || [];
-        this.carState = this.mapOptions(items, 'label', 'id');
-      },
-      error: (error) => {
-        console.error('Error fetching car state:', error);
-      }
-    });
-  }
-
-  getWarrantyList() {
-    this.service.get(`user/warranty?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res: any) => {
-        const items = (res?.data || []).sort((a: { id: number; }, b: { id: number; }) => a.id - b.id);
-        this.warrantyList = this.mapOptions(items, 'name', 'id');
-      },
-      error: (error) => {
-        console.error('Error fetching warranty list:', error);
-      }
-    });
-  }
-
-
-  getCarColors() {
-    this.service.get(`user/colors?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res: any) => {
-        const items = res?.data || [];
-        this.carColors = this.mapOptions(items, 'name', 'id', (item: any) => ({
-          color: item.hex_code
-        }));
-        this.carColorColumns = this.splitIntoColumns(this.carColors, 3);
-      },
-      error: (error) => {
-        console.error('Error fetching car colors:', error);
-      }
-    });
-  }
-
-  getEnergyEfficiency() {
-    this.service.get(`user/energy-efficiency?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res: any) => {
-        const items = res?.data?.types || [];
-        this.energyEfficiencyOptions = this.mapOptions(items, 'label', 'label');
-      },
-      error: (error) => {
-        console.error('Error fetching energy efficiency options:', error);
-      }
-    });
-  }
-
-  getCarSeats() {
-    const [min, max] = this.seatRange || [];
-    const query = `min=${min}&max=${max}`;
-    this.service.get(`user/seat?${query}`).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res: any) => {
-        const items = res?.data?.types || [];
-        this.seats = this.mapOptions(items, 'label', 'id');
-      },
-      error: (error) => {
-        console.error('Error fetching car seats:', error);
-      }
-    });
-  }
-
-  onSeatRangeChange() {
-    this.seatRangeChange$.next();
-  }
-
-  getCarDoors() {
-    const [min, max] = this.doorRange || [];
-    const query = `min=${min}&max=${max}`;
-    this.service.get(`user/door?${query}`).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res: any) => {
-        const items = res?.data?.types || [];
-        this.doors = this.mapOptions(items, 'label', 'id');
-      },
-      error: (error) => {
-        console.error('Error fetching car doors:', error);
-      }
-    });
-  }
-
-  onDoorRangeChange() {
-    this.doorRangeChange$.next();
+    this.getFiltersData();
   }
 
   private mapOptions(
@@ -317,11 +125,148 @@ export class AllFiltersComponent {
       label: item?.[labelKey],
       value: item?.[valueKey],
       image: item?.image,
-      ...(item?.count !== undefined || item?.total_cars !== undefined
-        ? { count: item?.count ?? item?.total_cars }
+      ...(item?.count !== undefined || item?.total_cars !== undefined || item?.total !== undefined
+        ? { count: item?.count ?? item?.total_cars ?? item?.total }
         : {}),
       ...(extra ? extra(item) : {})
     }));
+  }
+
+  private buildFiltersQuery(): string {
+    const [fromKm, toKm] = this.kmRange || [];
+    const [priceFrom, priceTo] = this.priceRange || [];
+    const [fromYear, toYear] = this.yearRange || [];
+    const [seatMin, seatMax] = this.seatRange || [];
+    const [doorMin, doorMax] = this.doorRange || [];
+    const params = new URLSearchParams();
+
+    if (fromKm !== undefined) params.set('from_km', String(fromKm));
+    if (toKm !== undefined) params.set('to_km', String(toKm));
+    if (priceFrom !== undefined) params.set('car_price_from', String(priceFrom));
+    if (priceTo !== undefined) params.set('car_price_to', String(priceTo));
+    if (fromYear !== undefined) params.set('from_year', String(fromYear));
+    if (toYear !== undefined) params.set('to_year', String(toYear));
+    if (seatMin !== undefined) params.set('seat_min', String(seatMin));
+    if (seatMax !== undefined) params.set('seat_max', String(seatMax));
+    if (doorMin !== undefined) params.set('door_min', String(doorMin));
+    if (doorMax !== undefined) params.set('door_max', String(doorMax));
+    params.set('price_type', this.priceType);
+    params.set('lang', 'en');
+
+    const query = params.toString();
+    return query ? `?${query}` : '';
+  }
+
+  private applyFiltersData(data: any) {
+    this.kilometersRangeAnalytics =
+      data?.kilometers_range_analytics ??
+      data?.kilometersRangeAnalytics ??
+      data?.km_range_analytics ??
+      data?.kmRangeAnalytics ??
+      {};
+
+    this.priceRangeAnalytics =
+      data?.price_range_analytics ??
+      data?.priceRangeAnalytics ??
+      {};
+
+    this.yearRangeAnalytics =
+      data?.year_range_analytics ??
+      data?.yearRangeAnalytics ??
+      {};
+
+    const fuelData =
+      data?.fuel_type ??
+      data?.fuel ??
+      data?.fuel_types ??
+      data?.fuelTypeGroups ??
+      data?.fuel_groups ??
+      {};
+
+    if (Array.isArray(fuelData)) {
+      if (fuelData.length && fuelData[0]?.options) {
+        this.fuelTypeGroups = fuelData.map((group: any) => ({
+          label: group?.label ?? '',
+          options: (group?.options || []).map((x: any) => ({
+            label: x?.label,
+            value: x?.id ?? x?.value,
+            count: x?.count ?? x?.total_cars
+          }))
+        }));
+      } else {
+        this.fuelTypeGroups = [
+          {
+            label: 'Fuel',
+            options: this.mapOptions(fuelData, 'name', 'id')
+          }
+        ];
+      }
+    } else {
+      this.fuelTypeGroups = this.buildFuelTypeGroups(fuelData);
+    }
+
+    const transmissionData = data?.transmission ?? data?.transmissions ?? {};
+    this.transmissions = this.mapOptions(this.normalizeItems(transmissionData), 'name', 'id');
+
+    const driveData = data?.drive ?? data?.drive_types ?? data?.driveTypes ?? {};
+    this.driveTypes = this.mapOptions(this.normalizeItems(driveData), 'name', 'id');
+
+    const bodyData = data?.body_type ?? data?.body_types ?? data?.bodyTypes ?? {};
+    this.bodyTypes = this.mapOptions(this.normalizeItems(bodyData), 'name', 'id');
+
+    const conditionsData = data?.vehicle_conditions ?? data?.conditions ?? [];
+    this.conditions = this.mapOptions(this.normalizeItems(conditionsData), 'name', 'id');
+
+    const stateData = data?.vehicle_state ?? data?.car_state ?? data?.state ?? {};
+    this.carState = this.mapOptions(this.normalizeItems(stateData), 'name', 'id');
+
+    const warrantyData = data?.warranty ?? data?.warranty_list ?? [];
+    const warrantyItems = this.normalizeItems(warrantyData).slice().sort(
+      (a: { id: number }, b: { id: number }) => a.id - b.id
+    );
+    this.warrantyList = this.mapOptions(warrantyItems, 'name', 'id');
+
+    const colorsData =
+      data?.exterior_color ??
+      data?.colors ??
+      data?.car_colors ??
+      data?.color ??
+      [];
+    this.carColors = this.mapOptions(this.normalizeItems(colorsData), 'name', 'id', (item: any) => ({
+      color: item?.hex_code
+    }));
+    this.carColorColumns = this.splitIntoColumns(this.carColors, 3);
+
+    const energyData = data?.energy_efficiency_raw ?? data?.energy_efficiency ?? data?.energyEfficiency ?? {};
+    this.energyEfficiencyOptions = this.mapOptions(
+      this.normalizeItems(energyData),
+      'grade',
+      'grade'
+    );
+
+    const seatsData = data?.seats ?? {};
+    this.seats = this.mapOptions(this.normalizeItems(seatsData), 'name', 'id');
+
+    const doorsData = data?.doors ?? {};
+    this.doors = this.mapOptions(this.normalizeItems(doorsData), 'name', 'id');
+  }
+
+  private normalizeItems(data: any): any[] {
+    if (Array.isArray(data)) {
+      return data;
+    }
+    if (Array.isArray(data?.types)) {
+      return data.types;
+    }
+    return [];
+  }
+
+  onSeatRangeChange() {
+    this.seatRangeChange$.next();
+  }
+
+  onDoorRangeChange() {
+    this.doorRangeChange$.next();
   }
 
   private buildFuelTypeGroups(data: any): FilterGroup[] {
