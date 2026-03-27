@@ -31,12 +31,12 @@ export class SellerSignUpComponent {
   isShowPassword: boolean = false
   isShowConfirmPassword: boolean = false
   sellerTypes: any[] = [{
-    label: 'PrivateSeller',
-    label2: 'ForIndividualSellers',
+    label: 'profile.privateSeller',
+    label2: 'profile.forIndividualSellers',
     value: 'personal'
   }, {
-    label: 'OfficialSeller',
-    label2: 'ForBusinesses',
+    label: 'profile.officialSeller',
+    label2: 'profile.forBusinesses',
     value: 'business'
   }];
 
@@ -44,7 +44,7 @@ export class SellerSignUpComponent {
 
   selectedSellerType: string = 'personal';
   constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private translate: TranslateService, public modal: ModalService) {
-    this.translate.use(localStorage.getItem('lang') || 'en');
+    // this.translate.use(localStorage.getItem('lang') || 'en');
     this.Form = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20), NoWhitespaceDirective.validate]],
       email: ['', [Validators.required, Validators.email]],

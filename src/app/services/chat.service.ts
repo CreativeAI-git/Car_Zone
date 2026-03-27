@@ -1,23 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Firestore, updateDoc } from '@angular/fire/firestore';
-import {
-      collection,
-      doc,
-      query,
-      orderBy,
-      limit,
-      startAfter,
-      getDocs,
-      addDoc,
-      writeBatch,
-      increment,
-      onSnapshot,
-      serverTimestamp,
-      QueryDocumentSnapshot,
-      DocumentData,
-      Unsubscribe,
-      where
-} from 'firebase/firestore';
+import { Firestore } from '@angular/fire/firestore';
+import { collection, doc, query, orderBy, getDocs, addDoc, writeBatch, increment, onSnapshot, serverTimestamp, QueryDocumentSnapshot, DocumentData, Unsubscribe } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 import { CommonService } from './common.service';
 

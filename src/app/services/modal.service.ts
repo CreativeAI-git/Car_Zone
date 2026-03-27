@@ -67,8 +67,6 @@ export class ModalService {
             this.currentModal.show();
       }
 
-
-
       async openBuyerSignUpModal(): Promise<void> {
             await this.closeCurrentModal();
             const el = document.getElementById('buyerSignUpModal');
@@ -76,8 +74,6 @@ export class ModalService {
             this.currentModal = new bootstrap.Modal(el);
             this.currentModal.show();
       }
-
-
 
       async openSellerSignUpModal(): Promise<void> {
             await this.closeCurrentModal();
