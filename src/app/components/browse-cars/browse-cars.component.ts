@@ -84,6 +84,7 @@ export class BrowseCarsComponent {
   totalCars = 0;
   loaded = false;
   isLoading = false;
+  appliedFilters: FilterPayload;
 
   constructor(
     private service: CommonService,
@@ -94,6 +95,7 @@ export class BrowseCarsComponent {
     private filterService: FilterService
   ) {
     this.translate.use(localStorage.getItem('lang') || 'en');
+    this.appliedFilters = this.filterService.getDefaultPayload();
   }
 
   ngOnInit(): void {
@@ -112,7 +114,10 @@ export class BrowseCarsComponent {
 
     this.filterService.appliedFilters$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((payload) => this.syncStateFromPayload(payload));
+      .subscribe((payload) => {
+        this.appliedFilters = payload;
+        this.syncStateFromPayload(payload);
+      });
 
     this.filterService.viewModel$
       .pipe(takeUntil(this.destroy$))
@@ -121,9 +126,9 @@ export class BrowseCarsComponent {
     this.filterService.loading$
       .pipe(takeUntil(this.destroy$))
       .subscribe((loading) => {
-        this.isLoading = loading;
+        // this.isLoading = loading;
         if (loading) {
-          this.loader.show();
+          // this.loader.show();
           return;
         }
         this.loader.hide();
@@ -177,7 +182,7 @@ export class BrowseCarsComponent {
 
   get priceButtonLabel(): string {
     const activePriceRange = this.priceType === 'Lease' ? this.leasePriceRange : this.priceRange;
-    if (!this.hasRangeChanged(activePriceRange, [0, 100000])) {
+    if (!this.hasRangeChanged(activePriceRange, [0, 1000000])) {
       return '';
     }
 
@@ -207,6 +212,30 @@ export class BrowseCarsComponent {
 
   get fuelButtonLabel(): string {
     return this.getSelectedLabels(this.fuelTypeId, this.flattenGroupedOptions(this.fuelTypeGroups));
+  }
+
+  get extraFiltersCount(): number {
+    const payload = this.appliedFilters;
+    const defaults = this.filterService.getDefaultPayload();
+
+    let count = 0;
+    count += payload.seller_type.length;
+    count += payload.state_id.length;
+    count += payload.drive_type.length;
+    count += payload.accident_vehicle.length;
+    count += payload.exterior_color.length;
+    count += payload.interior_color.length;
+    count += payload.energy_efficiency.length;
+
+    if (this.hasRangeObjectChanged(payload.seat_range, defaults.seat_range)) {
+      count += 1;
+    }
+
+    if (this.hasRangeObjectChanged(payload.door_range, defaults.door_range)) {
+      count += 1;
+    }
+
+    return count;
   }
 
   getRecentlyViewedlist() {
@@ -311,6 +340,24 @@ export class BrowseCarsComponent {
     });
   }
 
+  onResetFilters() {
+    this.visible = false;
+    this.bodyTypeVisible = false;
+    this.YearVisible = false;
+    this.PriceVisible = false;
+    this.MilageVisible = false;
+    this.FuelVisible = false;
+    this.TransmissionVisible = false;
+    this.PowerVisible = false;
+    this.filterService.resetFilters();
+    this.getCars();
+    this.filterService.loadAppliedMetadata().pipe(takeUntil(this.destroy$)).subscribe({
+      error: () => {
+        this.loaded = true;
+      }
+    });
+  }
+
   trackByImage(_index: number, img: string) {
     return img;
   }
@@ -349,7 +396,7 @@ export class BrowseCarsComponent {
     this.priceType = payload.price_type ?? 'Purchase';
     this.priceRange = [
       payload.price_range?.min_price ?? 0,
-      payload.price_range?.max_price ?? 100000
+      payload.price_range?.max_price ?? 1000000
     ];
     this.leasePriceRange = [...this.priceRange] as [number, number];
     this.yearRange = [
@@ -425,6 +472,13 @@ export class BrowseCarsComponent {
 
   private hasRangeChanged(current: [number, number], initial: [number, number]): boolean {
     return current[0] !== initial[0] || current[1] !== initial[1];
+  }
+
+  private hasRangeObjectChanged(
+    current: { [key: string]: number | null },
+    initial: { [key: string]: number | null }
+  ): boolean {
+    return Object.keys(current).some((key) => current[key] !== initial[key]);
   }
 
   private toggleSelection<T>(list: T[], value: T, checked: boolean): T[] {

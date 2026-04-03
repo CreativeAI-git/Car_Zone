@@ -62,7 +62,8 @@
                   </div>
 
                   <div>
-                        <a class="ct_color_8f0c1f ct_fs_18 ct_fw_500">{{ 'vehicle.reset' | translate }}</a>
+                        <a class="ct_color_8f0c1f ct_fs_18 ct_fw_500" (click)="onResetFilters()">{{ 'vehicle.reset' |
+                              translate }}</a>
                   </div>
             </div>
 
@@ -319,7 +320,8 @@
                                                                   [checked]="bodyTypeId.includes(item.value)"
                                                                   (change)="onBodyTypeToggle(item.value, $event)" />
                                                             <img [src]="item.image" class="body-type-img-o" />
-                                                            <label [for]="'body-type-' + item.value">{{ item.label }}</label>
+                                                            <label [for]="'body-type-' + item.value">{{ item.label
+                                                                  }}</label>
                                                       </div>
                                                       <span class="ct_fs_12 ct_fw_300">{{item.count}}</span>
                                                 </div>
@@ -398,7 +400,7 @@
                                           </div>
 
                                           <nz-slider [nzTooltipVisible]="'never'" nzRange [nzStep]="1000" [nzMin]="0"
-                                                [nzMax]="100000" [(ngModel)]="priceRange"
+                                                [nzMax]="1000000" [(ngModel)]="priceRange"
                                                 [ngModelOptions]="{standalone: true}"
                                                 (ngModelChange)="onPriceRangeChange()"></nz-slider>
                                     </div>
@@ -868,6 +870,9 @@
                         <img src="img/icons/filter.svg" [alt]="'vehicle.moreFilters' | translate" />
                         <span routerLink="/filters" class="ct_color_1877F2"> {{ 'vehicle.moreFilters' | translate
                               }}</span>
+                        @if(extraFiltersCount > 0){
+                        <span class="badge rounded-pill bg-danger ms-2">{{ extraFiltersCount }}</span>
+                        }
                   </a>
             </div>
       </div>

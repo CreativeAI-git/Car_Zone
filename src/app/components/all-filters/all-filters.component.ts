@@ -249,7 +249,7 @@ export class AllFiltersComponent {
     ];
     this.priceRange = [
       payload.price_range?.min_price ?? 0,
-      payload.price_range?.max_price ?? 100000
+      payload.price_range?.max_price ?? 1000000
     ];
     this.leasePriceRange = [...this.priceRange] as [number, number];
     this.seatRange = [

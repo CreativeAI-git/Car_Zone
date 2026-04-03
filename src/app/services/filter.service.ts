@@ -155,8 +155,22 @@ export class FilterService {
     return this.viewModelSubject.value;
   }
 
+  getDefaultPayload(): FilterPayload {
+    return this.createDefaultPayload();
+  }
+
   hasActiveAppliedFilters(): boolean {
     return this.hasMeaningfulFilters(this.appliedFiltersSubject.value);
+  }
+
+  resetFilters(): void {
+    const defaultPayload = this.createDefaultPayload();
+    this.lastRequestKey = null;
+    this.lastResponse = null;
+    this.hasAppliedFilters = false;
+    this.appliedFiltersSubject.next(this.clonePayload(defaultPayload));
+    this.draftFiltersSubject.next(this.clonePayload(defaultPayload));
+    this.viewModelSubject.next(DEFAULT_VIEW_MODEL);
   }
 
   beginEditing(): void {
@@ -384,7 +398,7 @@ export class FilterService {
       },
       price_range: {
         min_price: 0,
-        max_price: 100000
+        max_price: 1000000
       },
       seat_range: {
         min_seat: 0,
