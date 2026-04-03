@@ -287,11 +287,8 @@
                               nzPopoverTrigger="click" [nzPopoverContent]="bodyTypecontentTemplate"
                               nzPopoverPlacement="bottom" class="filter-preview-box w-100 ">
                               <img src="img/icons/body-type.png" />
-                              @if(selectedBrandsModal.length > 0){
-                              @for (item of selectedBrandsModal; track $index) {
-                              {{item.brand}}({{item.modals.join(', ')}})@if($index !==
-                              selectedBrandsModal.length - 1){, }
-                              }
+                              @if(bodyTypeButtonLabel){
+                              {{ bodyTypeButtonLabel }}
                               }@else{
                               {{'vehicle.bodyType' | translate}}
                               }
@@ -312,15 +309,17 @@
                                     </div>
 
                                     <div>
-                                          @for (item of bodyTypes.types; track $index) {
+                                          @for (item of bodyTypes; track item.value) {
                                           <div class="">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                       <div
                                                             class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                             <input class="form-check-input" type="checkbox"
-                                                                  [id]="item.label" />
+                                                                  [id]="'body-type-' + item.value"
+                                                                  [checked]="bodyTypeId.includes(item.value)"
+                                                                  (change)="onBodyTypeToggle(item.value, $event)" />
                                                             <img [src]="item.image" class="body-type-img-o" />
-                                                            <label [for]="item.label">{{ item.label }}</label>
+                                                            <label [for]="'body-type-' + item.value">{{ item.label }}</label>
                                                       </div>
                                                       <span class="ct_fs_12 ct_fw_300">{{item.count}}</span>
                                                 </div>
@@ -328,7 +327,7 @@
                                           }
                                     </div>
                                     <button class="ct_red_gradient_btn mt-4">
-                                          Total {{bodyTypes.total_cars}} Cars found
+                                          Total {{totalCars}} Cars found
                                     </button>
                               </div>
                         </ng-template>
@@ -339,11 +338,8 @@
                               nzPopoverTrigger="click" [nzPopoverContent]="priceContentTemplate"
                               nzPopoverPlacement="bottom" class="filter-preview-box w-100 ">
                               <img src="img/icons/price-range.png" />
-                              @if(selectedBrandsModal.length > 0){
-                              @for (item of selectedBrandsModal; track $index) {
-                              {{item.brand}}({{item.modals.join(', ')}})@if($index !==
-                              selectedBrandsModal.length - 1){, }
-                              }
+                              @if(priceButtonLabel){
+                              {{ priceButtonLabel }}
                               }@else{
                               {{'filters.priceRange' | translate}}
                               }
@@ -468,11 +464,8 @@
                               nzPopoverTrigger="click" [nzPopoverContent]="yearContentTemplate"
                               nzPopoverPlacement="bottom" class="filter-preview-box w-100 ">
                               <img src="img/icons/year.png" />
-                              @if(selectedBrandsModal.length > 0){
-                              @for (item of selectedBrandsModal; track $index) {
-                              {{item.brand}}({{item.modals.join(', ')}})@if($index !==
-                              selectedBrandsModal.length - 1){, }
-                              }
+                              @if(yearButtonLabel){
+                              {{ yearButtonLabel }}
                               }@else{
                               {{'filters.yearRange' | translate}}
                               }
@@ -601,11 +594,8 @@
                               nzPopoverTrigger="click" [nzPopoverContent]="KMContentTemplate"
                               nzPopoverPlacement="bottom" class="filter-preview-box w-100 ">
                               <img src="img/icons/km.png" />
-                              @if(selectedBrandsModal.length > 0){
-                              @for (item of selectedBrandsModal; track $index) {
-                              {{item.brand}}({{item.modals.join(', ')}})@if($index !==
-                              selectedBrandsModal.length - 1){, }
-                              }
+                              @if(kmButtonLabel){
+                              {{ kmButtonLabel }}
                               }@else{
                               {{'vehicle.kilometers' | translate}} (km)
                               }
@@ -695,11 +685,8 @@
                               nzPopoverTrigger="click" [nzPopoverContent]="transmissionContentTemplate"
                               nzPopoverPlacement="bottom" class="filter-preview-box w-100 ">
                               <img src="img/icons/transmision.png" />
-                              @if(selectedBrandsModal.length > 0){
-                              @for (item of selectedBrandsModal; track $index) {
-                              {{item.brand}}({{item.modals.join(', ')}})@if($index !==
-                              selectedBrandsModal.length - 1){, }
-                              }
+                              @if(transmissionButtonLabel){
+                              {{ transmissionButtonLabel }}
                               }@else{
                               {{'vehicle.transmission' | translate}}
                               }
@@ -719,26 +706,25 @@
                                                       translate }}</span>
                                           </div>
                                     </div>
-                                    @for (item of transmissions; track item.id) {
+                                    @for (item of transmissions; track item.value) {
                                     <div class="">
                                           <div class="d-flex justify-content-between align-items-center">
                                                 <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                       <input class="form-check-input" type="checkbox"
-                                                            [id]="'transmission-' + item.id"
-                                                            [checked]="selectedTransmissionIds.includes(item.id)"
-                                                            (change)="onTransmissionToggle(item.id, $event)" />
+                                                            [id]="'transmission-' + item.value"
+                                                            [checked]="transmissionId.includes(item.value)"
+                                                            (change)="onTransmissionToggle(item.value, $event)" />
 
-                                                      <label [for]="'transmission-' + item.id">
+                                                      <label [for]="'transmission-' + item.value">
                                                             {{ item.label | translate }}</label>
                                                 </div>
-                                                <span class="ct_fs_12 ct_fw_300">{{ item.total_cars ||
-                                                      item.count || 0 }}</span>
+                                                <span class="ct_fs_12 ct_fw_300">{{ item.count || 0 }}</span>
                                           </div>
                                     </div>
                                     }
 
                                     <button class="ct_red_gradient_btn mt-4">
-                                          Total {{23156}} Cars found
+                                          Total {{totalCars}} Cars found
                                     </button>
                               </div>
                         </ng-template>
@@ -809,7 +795,7 @@
                                     </div>
 
                                     <button class="ct_red_gradient_btn mt-5">
-                                          Total 23156 Cars found
+                                          Total {{totalCars}} Cars found
                                     </button>
                               </div>
                         </ng-template>
@@ -820,11 +806,8 @@
                               nzPopoverTrigger="click" [nzPopoverContent]="fuelContentTemplate"
                               nzPopoverPlacement="bottom" class="filter-preview-box w-100 ">
                               <img src="img/icons/fuel-type.png" />
-                              @if(selectedBrandsModal.length > 0){
-                              @for (item of selectedBrandsModal; track $index) {
-                              {{item.brand}}({{item.modals.join(', ')}})@if($index !==
-                              selectedBrandsModal.length - 1){, }
-                              }
+                              @if(fuelButtonLabel){
+                              {{ fuelButtonLabel }}
                               }@else{
                               {{'vehicle.fuelType' | translate}}
                               }
@@ -859,7 +842,7 @@
                                                                   class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                                   <input class="form-check-input" type="checkbox"
                                                                         [id]="'fuel-' + item.value"
-                                                                        [checked]="selectedFuelIds.includes(item.value)"
+                                                                        [checked]="fuelTypeId.includes(item.value)"
                                                                         (change)="onFuelToggle(item.value, $event)" />
 
                                                                   <label [for]="'fuel-' + item.value">
@@ -874,7 +857,7 @@
                                           }
                                     </div>
                                     <button class="ct_red_gradient_btn mt-4">
-                                          Total {{fuelTypeData.total_cars}} Cars found
+                                          Total {{totalCars}} Cars found
                                     </button>
                               </div>
                         </ng-template>

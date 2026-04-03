@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, forkJoin, of, throwError } from 'rxjs';
 import { catchError, finalize, map, tap } from 'rxjs/operators';
 import { CommonService } from './common.service';
 
@@ -141,7 +141,7 @@ export class FilterService {
   readonly viewModel$ = this.viewModelSubject.asObservable();
   readonly loading$ = this.loadingSubject.asObservable();
 
-  constructor(private commonService: CommonService, private router: Router) {}
+  constructor(private commonService: CommonService, private router: Router) { }
 
   get draftFilters(): FilterPayload {
     return this.clonePayload(this.draftFiltersSubject.value);
@@ -153,6 +153,10 @@ export class FilterService {
 
   get viewModel(): FilterViewModel {
     return this.viewModelSubject.value;
+  }
+
+  hasActiveAppliedFilters(): boolean {
+    return this.hasMeaningfulFilters(this.appliedFiltersSubject.value);
   }
 
   beginEditing(): void {
@@ -175,15 +179,19 @@ export class FilterService {
       return of(this.lastResponse);
     }
 
-    return this.executeRequest(this.appliedFiltersSubject.value, true);
+    return this.executeRequest(this.appliedFiltersSubject.value, true, true);
+  }
+
+  loadAppliedMetadata(): Observable<FilterViewModel> {
+    return this.executeRequest(this.appliedFiltersSubject.value, false, false);
   }
 
   previewDraft(): Observable<FilterViewModel> {
-    return this.executeRequest(this.draftFiltersSubject.value, false);
+    return this.executeRequest(this.draftFiltersSubject.value, false, false);
   }
 
   applyDraft(navigateToBrowse = false): Observable<FilterViewModel> {
-    return this.executeRequest(this.draftFiltersSubject.value, true).pipe(
+    return this.executeRequest(this.draftFiltersSubject.value, true, true).pipe(
       tap(() => {
         if (navigateToBrowse) {
           this.router.navigate(['/browse-cars']);
@@ -192,15 +200,20 @@ export class FilterService {
     );
   }
 
-  private executeRequest(payload: FilterPayload, persistApplied: boolean): Observable<FilterViewModel> {
+  private executeRequest(
+    payload: FilterPayload,
+    persistApplied: boolean,
+    includeCars: boolean
+  ): Observable<FilterViewModel> {
     const normalizedPayload = this.normalizePayload(payload);
-    const requestKey = JSON.stringify(normalizedPayload);
+    const shouldFetchCars = includeCars && this.hasMeaningfulFilters(normalizedPayload);
+    const requestKey = JSON.stringify({ payload: normalizedPayload, includeCars: shouldFetchCars });
 
     if (this.lastRequestKey === requestKey && this.lastResponse) {
       if (persistApplied) {
         this.appliedFiltersSubject.next(this.clonePayload(normalizedPayload));
         this.draftFiltersSubject.next(this.clonePayload(normalizedPayload));
-        this.hasAppliedFilters = true;
+        this.hasAppliedFilters = shouldFetchCars;
       }
       this.viewModelSubject.next(this.lastResponse);
       return of(this.lastResponse);
@@ -208,9 +221,14 @@ export class FilterService {
 
     this.loadingSubject.next(true);
 
-    return this.commonService.post<any, FilterPayload>('user/faceted-filters', normalizedPayload).pipe(
-      tap((res: any) => {
-        const viewModel = this.mapResponseToViewModel(res?.data || {});
+    return forkJoin({
+      metadata: this.commonService.get(`user/web/filters${this.buildFiltersQuery(normalizedPayload)}`),
+      cars: shouldFetchCars
+        ? this.commonService.post<any, FilterPayload>('user/faceted-filters', normalizedPayload)
+        : of(null)
+    }).pipe(
+      tap(({ metadata, cars }: { metadata: any; cars: any }) => {
+        const viewModel = this.mapResponseToViewModel(metadata?.data || {}, cars?.data || null);
         this.lastRequestKey = requestKey;
         this.lastResponse = viewModel;
         this.viewModelSubject.next(viewModel);
@@ -218,7 +236,7 @@ export class FilterService {
         if (persistApplied) {
           this.appliedFiltersSubject.next(this.clonePayload(normalizedPayload));
           this.draftFiltersSubject.next(this.clonePayload(normalizedPayload));
-          this.hasAppliedFilters = true;
+          this.hasAppliedFilters = shouldFetchCars;
         }
       }),
       catchError((error) => {
@@ -230,49 +248,49 @@ export class FilterService {
     );
   }
 
-  private mapResponseToViewModel(data: any): FilterViewModel {
+  private mapResponseToViewModel(metadataData: any, carsData?: any): FilterViewModel {
     const fuelData =
-      data?.fuel_type ??
-      data?.fuel ??
-      data?.fuel_types ??
-      data?.fuelTypeGroups ??
-      data?.fuel_groups ??
+      metadataData?.fuel_type ??
+      metadataData?.fuel ??
+      metadataData?.fuel_types ??
+      metadataData?.fuelTypeGroups ??
+      metadataData?.fuel_groups ??
       {};
 
     const colorsData =
-      data?.exterior_color ??
-      data?.colors ??
-      data?.car_colors ??
-      data?.color ??
+      metadataData?.exterior_color ??
+      metadataData?.colors ??
+      metadataData?.car_colors ??
+      metadataData?.color ??
       [];
 
     const transmissions = this.mapOptions(
-      this.normalizeItems(data?.transmission ?? data?.transmissions ?? {}),
+      this.normalizeItems(metadataData?.transmission ?? metadataData?.transmissions ?? {}),
       'name',
       'id'
     );
 
     const bodyTypes = this.mapOptions(
-      this.normalizeItems(data?.body_type ?? data?.body_types ?? data?.bodyTypes ?? {}),
+      this.normalizeItems(metadataData?.body_type ?? metadataData?.body_types ?? metadataData?.bodyTypes ?? {}),
       'name',
       'id'
     );
 
-    const totalCars = this.extractTotalCars(data);
+    const totalCars = this.extractTotalCars(metadataData, carsData);
 
     return {
-      raw: data,
+      raw: metadataData,
       fuelTypeGroups: Array.isArray(fuelData)
         ? this.mapFuelArrayGroups(fuelData)
         : this.buildFuelTypeGroups(fuelData),
       transmissions,
       conditions: this.mapOptions(
-        this.normalizeItems(data?.vehicle_conditions ?? data?.conditions ?? []),
+        this.normalizeItems(metadataData?.vehicle_conditions ?? metadataData?.conditions ?? []),
         'name',
         'id'
       ),
       driveTypes: this.mapOptions(
-        this.normalizeItems(data?.drive ?? data?.drive_types ?? data?.driveTypes ?? {}),
+        this.normalizeItems(metadataData?.drive ?? metadataData?.drive_types ?? metadataData?.driveTypes ?? {}),
         'name',
         'id'
       ),
@@ -287,44 +305,46 @@ export class FilterService {
         3
       ),
       carState: this.mapOptions(
-        this.normalizeItems(data?.vehicle_state ?? data?.car_state ?? data?.state ?? {}),
+        this.normalizeItems(metadataData?.vehicle_state ?? metadataData?.car_state ?? metadataData?.state ?? {}),
         'name',
         'id'
       ),
       warrantyList: this.mapOptions(
-        this.normalizeItems(data?.warranty ?? data?.warranty_list ?? []).slice().sort(
+        this.normalizeItems(metadataData?.warranty ?? metadataData?.warranty_list ?? []).slice().sort(
           (a: { id: number }, b: { id: number }) => a.id - b.id
         ),
         'name',
         'id'
       ),
       energyEfficiencyOptions: this.mapOptions(
-        this.normalizeItems(data?.energy_efficiency_raw ?? data?.energy_efficiency ?? data?.energyEfficiency ?? {}),
+        this.normalizeItems(
+          metadataData?.energy_efficiency_raw ?? metadataData?.energy_efficiency ?? metadataData?.energyEfficiency ?? {}
+        ),
         'grade',
         'grade'
       ),
       kilometersRangeAnalytics:
-        data?.kilometers_range_analytics ??
-        data?.kilometersRangeAnalytics ??
-        data?.km_range_analytics ??
-        data?.kmRangeAnalytics ??
+        metadataData?.kilometers_range_analytics ??
+        metadataData?.kilometersRangeAnalytics ??
+        metadataData?.km_range_analytics ??
+        metadataData?.kmRangeAnalytics ??
         DEFAULT_KM_ANALYTICS,
       priceRangeAnalytics:
-        data?.price_range_analytics ??
-        data?.priceRangeAnalytics ??
+        metadataData?.price_range_analytics ??
+        metadataData?.priceRangeAnalytics ??
         DEFAULT_PRICE_ANALYTICS,
       yearRangeAnalytics:
-        data?.year_range_analytics ??
-        data?.yearRangeAnalytics ??
+        metadataData?.year_range_analytics ??
+        metadataData?.yearRangeAnalytics ??
         DEFAULT_YEAR_ANALYTICS,
-      seats: this.mapOptions(this.normalizeItems(data?.seats ?? {}), 'name', 'id'),
-      doors: this.mapOptions(this.normalizeItems(data?.doors ?? {}), 'name', 'id'),
+      seats: this.mapOptions(this.normalizeItems(metadataData?.seats ?? {}), 'name', 'id'),
+      doors: this.mapOptions(this.normalizeItems(metadataData?.doors ?? {}), 'name', 'id'),
       sellerType: this.mapOptions(
-        this.normalizeItems(data?.seller_type ?? data?.sellerTypes ?? {}),
+        this.normalizeItems(metadataData?.seller_type ?? metadataData?.sellerTypes ?? {}),
         'seller_type',
         'seller_type'
       ),
-      cars: this.extractCars(data),
+      cars: this.extractCars(carsData),
       totalCars
     };
   }
@@ -420,13 +440,104 @@ export class FilterService {
     return candidates.find((candidate) => Array.isArray(candidate)) || [];
   }
 
-  private extractTotalCars(data: any): number {
+  private extractTotalCars(metadataData: any, carsData?: any): number {
     return Number(
-      data?.total_cars ??
-      data?.totalCars ??
-      data?.matching_vehicles ??
-      this.extractCars(data)?.length ??
+      metadataData?.total_cars ??
+      metadataData?.totalCars ??
+      carsData?.total_cars ??
+      carsData?.totalCars ??
+      carsData?.matching_vehicles ??
+      this.extractCars(carsData)?.length ??
       0
+    );
+  }
+
+  private buildFiltersQuery(payload: FilterPayload): string {
+    const defaults = this.createDefaultPayload();
+    const params = new URLSearchParams();
+
+    if (this.hasRangeChanged(payload.kilometers_range, defaults.kilometers_range)) {
+      this.setIfValue(params, 'km_from', payload.kilometers_range.min_km);
+      this.setIfValue(params, 'km_to', payload.kilometers_range.max_km);
+    }
+
+    if (this.hasRangeChanged(payload.price_range, defaults.price_range)) {
+      this.setIfValue(params, 'price_from', payload.price_range.min_price);
+      this.setIfValue(params, 'price_to', payload.price_range.max_price);
+    }
+
+    if (this.hasRangeChanged(payload.year_range, defaults.year_range)) {
+      this.setIfValue(params, 'year_from', payload.year_range.min_year);
+      this.setIfValue(params, 'year_to', payload.year_range.max_year);
+    }
+
+    if (this.hasRangeChanged(payload.seat_range, defaults.seat_range)) {
+      this.setIfValue(params, 'seat_min', payload.seat_range.min_seat);
+      this.setIfValue(params, 'seat_max', payload.seat_range.max_seat);
+    }
+
+    if (this.hasRangeChanged(payload.door_range, defaults.door_range)) {
+      this.setIfValue(params, 'door_min', payload.door_range.min_door);
+      this.setIfValue(params, 'door_max', payload.door_range.max_door);
+    }
+
+    if (payload.price_type !== defaults.price_type) {
+      this.setIfValue(params, 'price_type', payload.price_type);
+    }
+
+    this.setIfValue(params, 'seller_type', payload.seller_type);
+    this.setIfValue(params, 'state_id', payload.state_id);
+    this.setIfValue(params, 'body_type_id', payload.body_type_id);
+    this.setIfValue(params, 'fuel_type_id', payload.fuel_type_id);
+    this.setIfValue(params, 'transmission_id', payload.transmission);
+    this.setIfValue(params, 'drive_type_id', payload.drive_type);
+    this.setIfValue(params, 'interior_color_id', payload.interior_color);
+    this.setIfValue(params, 'exterior_color_id', payload.exterior_color);
+
+    const query = params.toString();
+    return query ? `?${query}` : '';
+  }
+
+  private hasRangeChanged(
+    current: { [key: string]: number | null },
+    initial: { [key: string]: number | null }
+  ): boolean {
+    const keys = Object.keys(current);
+    return keys.some((key) => current[key] !== initial[key]);
+  }
+
+  private setIfValue(params: URLSearchParams, key: string, value: any): void {
+    if (value === null || value === undefined || value === '') return;
+
+    if (Array.isArray(value)) {
+      if (!value.length) return;
+      params.set(key, value.join(','));
+      return;
+    }
+
+    params.set(key, String(value));
+  }
+
+  private hasMeaningfulFilters(payload: FilterPayload): boolean {
+    const defaults = this.createDefaultPayload();
+
+    return (
+      this.hasRangeChanged(payload.year_range, defaults.year_range) ||
+      this.hasRangeChanged(payload.kilometers_range, defaults.kilometers_range) ||
+      this.hasRangeChanged(payload.price_range, defaults.price_range) ||
+      this.hasRangeChanged(payload.seat_range, defaults.seat_range) ||
+      this.hasRangeChanged(payload.door_range, defaults.door_range) ||
+      payload.price_type !== defaults.price_type ||
+      payload.seller_type.length > 0 ||
+      payload.fuel_type_id.length > 0 ||
+      payload.state_id.length > 0 ||
+      payload.body_type_id.length > 0 ||
+      payload.transmission.length > 0 ||
+      payload.drive_type.length > 0 ||
+      payload.accident_vehicle.length > 0 ||
+      payload.exterior_color.length > 0 ||
+      payload.interior_color.length > 0 ||
+      payload.energy_efficiency.length > 0
     );
   }
 
