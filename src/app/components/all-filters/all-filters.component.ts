@@ -34,7 +34,7 @@ export class AllFiltersComponent {
   kilometersRangeAnalytics: any = {};
   priceRangeAnalytics: any = {};
   yearRangeAnalytics: any = {};
-  priceRange: [number, number] = [0, 100000];
+  priceRange: [number, number] = [0, 1000000];
   yearRange: [number, number] = [1990, new Date().getFullYear()];
   years: number[] = [];
   kmRange: [number, number] = [0, 4000000];
@@ -56,7 +56,7 @@ export class AllFiltersComponent {
   filterData: any = { total_cars: 0 };
   isLoading = false;
 
-  constructor(private filterService: FilterService, private message: NzMessageService) {}
+  constructor(private filterService: FilterService, private message: NzMessageService) { }
 
   ngOnInit(): void {
     const currentYear = new Date().getFullYear();

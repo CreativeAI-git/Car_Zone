@@ -174,7 +174,11 @@ export class FilterService {
   }
 
   ensureAppliedLoaded(): Observable<FilterViewModel> {
-    if (this.lastResponse && this.hasAppliedFilters) {
+    const normalizedPayload = this.normalizePayload(this.appliedFiltersSubject.value);
+    const shouldFetchCars = this.hasMeaningfulFilters(normalizedPayload);
+    const requestKey = JSON.stringify({ payload: normalizedPayload, includeCars: shouldFetchCars });
+
+    if (this.lastResponse && this.hasAppliedFilters && this.lastRequestKey === requestKey) {
       this.viewModelSubject.next(this.lastResponse);
       return of(this.lastResponse);
     }
@@ -224,7 +228,7 @@ export class FilterService {
     return forkJoin({
       metadata: this.commonService.get(`user/web/filters${this.buildFiltersQuery(normalizedPayload)}`),
       cars: shouldFetchCars
-        ? this.commonService.post<any, FilterPayload>('user/faceted-filters', normalizedPayload)
+        ? this.commonService.post<any, any>('user/faceted-filters', this.buildFacetedPayload(normalizedPayload))
         : of(null)
     }).pipe(
       tap(({ metadata, cars }: { metadata: any; cars: any }) => {
@@ -426,18 +430,7 @@ export class FilterService {
   }
 
   private extractCars(data: any): any[] {
-    const candidates = [
-      data?.cars,
-      data?.car_list,
-      data?.cars_list,
-      data?.vehicles,
-      data?.vehicle_list,
-      data?.results,
-      data?.items,
-      data?.listing
-    ];
-
-    return candidates.find((candidate) => Array.isArray(candidate)) || [];
+    return data || [];
   }
 
   private extractTotalCars(metadataData: any, carsData?: any): number {
@@ -496,6 +489,94 @@ export class FilterService {
 
     const query = params.toString();
     return query ? `?${query}` : '';
+  }
+
+  private buildFacetedPayload(payload: FilterPayload): Record<string, any> {
+    const defaults = this.createDefaultPayload();
+    const compactPayload: Record<string, any> = {
+      lang: payload.lang || defaults.lang
+    };
+
+    if (payload.seller_type.length > 0) {
+      compactPayload['seller_type'] = payload.seller_type;
+    }
+
+    if (payload.fuel_type_id.length > 0) {
+      compactPayload['fuel_type_id'] = payload.fuel_type_id;
+    }
+
+    if (payload.state_id.length > 0) {
+      compactPayload['state_id'] = payload.state_id;
+    }
+
+    if (payload.body_type_id.length > 0) {
+      compactPayload['body_type_id'] = payload.body_type_id;
+    }
+
+    if (payload.transmission.length > 0) {
+      compactPayload['transmission'] = payload.transmission;
+    }
+
+    if (payload.drive_type.length > 0) {
+      compactPayload['drive_type'] = payload.drive_type;
+    }
+
+    if (payload.accident_vehicle.length > 0) {
+      compactPayload['accident_vehicle'] = payload.accident_vehicle;
+    }
+
+    if (payload.exterior_color.length > 0) {
+      compactPayload['exterior_color'] = payload.exterior_color;
+    }
+
+    if (payload.interior_color.length > 0) {
+      compactPayload['interior_color'] = payload.interior_color;
+    }
+
+    if (payload.energy_efficiency.length > 0) {
+      compactPayload['energy_efficiency'] = payload.energy_efficiency;
+    }
+
+    if (this.hasRangeChanged(payload.year_range, defaults.year_range)) {
+      compactPayload['year_range'] = {
+        min_year: payload.year_range.min_year,
+        max_year: payload.year_range.max_year
+      };
+    }
+
+    if (this.hasRangeChanged(payload.kilometers_range, defaults.kilometers_range)) {
+      compactPayload['kilometers_range'] = {
+        min_km: payload.kilometers_range.min_km,
+        max_km: payload.kilometers_range.max_km
+      };
+    }
+
+    if (this.hasRangeChanged(payload.price_range, defaults.price_range)) {
+      compactPayload['price_range'] = {
+        min_price: payload.price_range.min_price,
+        max_price: payload.price_range.max_price
+      };
+    }
+
+    if (this.hasRangeChanged(payload.seat_range, defaults.seat_range)) {
+      compactPayload['seat_range'] = {
+        min_seat: payload.seat_range.min_seat,
+        max_seat: payload.seat_range.max_seat
+      };
+    }
+
+    if (this.hasRangeChanged(payload.door_range, defaults.door_range)) {
+      compactPayload['door_range'] = {
+        min_door: payload.door_range.min_door,
+        max_door: payload.door_range.max_door
+      };
+    }
+
+    if (payload.price_type !== defaults.price_type) {
+      compactPayload['price_type'] = payload.price_type;
+    }
+
+    return compactPayload;
   }
 
   private hasRangeChanged(

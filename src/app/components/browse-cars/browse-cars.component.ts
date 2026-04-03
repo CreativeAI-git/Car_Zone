@@ -70,7 +70,7 @@ export class BrowseCarsComponent {
     }
   };
   matchingProgress = 0;
-  priceRange: [number, number] = [0, 100000];
+  priceRange: [number, number] = [0, 1000000];
   leasePriceRange: [number, number] = [0, 100000];
   yearRange: [number, number] = [1990, new Date().getFullYear()];
   years: number[] = [];
