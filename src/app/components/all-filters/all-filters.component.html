@@ -458,39 +458,22 @@
                             </div> -->
 
                             <div class="d-grid ct_gap_14">
+                                @for (item of sellerType; track $index) {
+                                @if(item.value){
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'filters.privatePerson' | translate }} </label>
+                                        <input class="form-check-input" type="checkbox" value="" [id]="item.label"
+                                            [checked]="selectedSellerType === item.value"
+                                            (change)="onSellerTypeChange(item.value, $event)" />
+                                        <label [for]="item.label" class="">{{ item.label | titlecase}} </label>
                                     </div>
                                     <div>
-                                        <span class="ct_fs_12 ct_fw_300">125</span>
+                                        <span class="ct_fs_12 ct_fw_300">{{item.count}}</span>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'profile.officialSeller' | translate }}
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">151</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'filters.allStandard' | translate }} </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">276</span>
-                                    </div>
-                                </div>
+                                }
+                                }
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -637,7 +620,7 @@
                                     </div>
                                     <div class="text-center my-4">
                                         <h4 class="ct_fs_20 ct_fw_600 mb-0">
-                                            {{yearRangeAnalytics?.total_cars_all_years}}</h4>
+                                            {{filterData.year_range?.selected_model_years || 0}}</h4>
                                         <p class="ct_fs_18 ct_fw_400">{{ 'vehicle.carsFound' | translate
                                             }}</p>
                                     </div>
@@ -648,7 +631,8 @@
                                             <span class="ct_fs_14 ct_fw_400">{{
                                                 'vehicle.selectedModelYears' | translate }}</span>
                                             <span
-                                                class="ct_fs_14 ct_fw_400">{{yearRangeAnalytics?.selected_range?.total_cars}}</span>
+                                                class="ct_fs_14 ct_fw_400">{{filterData.year_range?.selected_model_years
+                                                || 0}}</span>
                                         </div>
                                         <!-- <div class="progress custom-progress">
                                                                                     <div class="progress-bar bg-danger" style="width: 75%">
@@ -661,8 +645,8 @@
                                         <div class="d-flex justify-content-between">
                                             <span class="ct_fs_14 ct_fw_400">{{
                                                 'vehicle.olderModelYears' | translate }}</span>
-                                            <span
-                                                class="ct_fs_14 ct_fw_400">{{yearRangeAnalytics?.breakdown?.older_models?.count}}</span>
+                                            <span class="ct_fs_14 ct_fw_400">{{filterData.year_range?.older_model_years
+                                                || 0}}</span>
                                         </div>
                                     </div>
 
@@ -671,8 +655,8 @@
                                         <div class="d-flex justify-content-between">
                                             <span class="ct_fs_14 ct_fw_400">{{
                                                 'vehicle.newlyModelYears' | translate }}</span>
-                                            <span
-                                                class="ct_fs_14 ct_fw_400">{{yearRangeAnalytics?.breakdown?.newer_models?.count}}</span>
+                                            <span class="ct_fs_14 ct_fw_400">{{filterData.year_range?.newly_model_years
+                                                || 0}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -713,12 +697,13 @@
 
                                     <div class="mt-3">
                                         <nz-slider [nzTooltipVisible]="'never'" nzRange [nzStep]="1000" [nzMin]="0"
-                                            [nzMax]="400000" [(ngModel)]="kmRange" [ngModelOptions]="{standalone: true}"
+                                            [nzMax]="4000000" [(ngModel)]="kmRange"
+                                            [ngModelOptions]="{standalone: true}"
                                             (ngModelChange)="onKmRangeChange()"></nz-slider>
                                     </div>
                                     <div class="text-center my-4">
                                         <h4 class="ct_fs_20 ct_fw_600 mb-0">
-                                            {{kilometersRangeAnalytics?.total_cars_all_mileage}}</h4>
+                                            {{filterData.kilometer_range?.selected_mileage || 0}}</h4>
                                         <p class="ct_fs_18 ct_fw_400">{{ 'vehicle.carsFound' | translate
                                             }}</p>
                                     </div>
@@ -728,7 +713,8 @@
                                         <div class="d-flex justify-content-between mb-2">
                                             <span class="ct_fs_14 ct_fw_400">Selected mileage</span>
                                             <span
-                                                class="ct_fs_14 ct_fw_400">{{kilometersRangeAnalytics?.selected_range?.total_cars}}</span>
+                                                class="ct_fs_14 ct_fw_400">{{filterData.kilometer_range?.selected_mileage
+                                                || 0}}</span>
                                         </div>
                                     </div>
 
@@ -737,7 +723,8 @@
                                         <div class="d-flex justify-content-between">
                                             <span class="ct_fs_14 ct_fw_400">Higher Mileage</span>
                                             <span
-                                                class="ct_fs_14 ct_fw_400">{{kilometersRangeAnalytics?.breakdown?.higher_mileage?.count}}</span>
+                                                class="ct_fs_14 ct_fw_400">{{filterData.kilometer_range?.higher_mileage
+                                                || 0}}</span>
                                         </div>
                                     </div>
 
@@ -745,8 +732,8 @@
                                     <div class="year-card">
                                         <div class="d-flex justify-content-between">
                                             <span class="ct_fs_14 ct_fw_400">Lower Mileage</span>
-                                            <span
-                                                class="ct_fs_14 ct_fw_400">{{kilometersRangeAnalytics?.breakdown?.lower_mileage?.count}}</span>
+                                            <span class="ct_fs_14 ct_fw_400">{{filterData.kilometer_range?.lower_mileage
+                                                || 0}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -835,7 +822,8 @@
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="ct_fs_14 ct_fw_400">{{ 'vehicle.matchingVehicles' |
                                         translate }}</span>
-                                    <span class="ct_fs_14 ct_fw_400">{{priceRangeAnalytics?.matching_vehicles}}</span>
+                                    <span class="ct_fs_14 ct_fw_400">{{filterData.price_range?.matching_vehicles ||
+                                        0}}</span>
                                 </div>
 
                                 <!-- <div class="progress custom-progress">
@@ -876,7 +864,8 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            [id]="'state-' + item.value" />
+                                            [id]="'state-' + item.value" [checked]="stateId.includes(item.value)"
+                                            (change)="onStateChange(item.value, $event)" />
                                         <label [for]="'state-' + item.value">{{ item.label | translate }} </label>
                                     </div>
                                     <div>
@@ -978,7 +967,9 @@
                                 <div class="">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                            <input class="form-check-input" type="checkbox" [id]="item.label" />
+                                            <input class="form-check-input" type="checkbox" [id]="item.label"
+                                                [checked]="bodyTypeId.includes(item.value)"
+                                                (change)="onBodyTypeChange(item.value, $event)" />
                                             <img [src]="item.image" class="body-type-img-o" />
                                             <label [for]="item.label">{{ item.label }}</label>
                                         </div>
@@ -1032,7 +1023,8 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                             <input class="form-check-input" type="checkbox" value=""
-                                                [id]="'fuel-' + item.value" />
+                                                [id]="'fuel-' + item.value" [checked]="fuelTypeId.includes(item.value)"
+                                                (change)="onFuelTypeChange(item.value, $event)" />
                                             <label [for]="'fuel-' + item.value">{{ item.label | translate }} </label>
                                         </div>
                                         <div>
@@ -1064,7 +1056,9 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            [id]="'transmission-' + item.value" />
+                                            [id]="'transmission-' + item.value"
+                                            [checked]="transmissionId.includes(item.value)"
+                                            (change)="onTransmissionChange(item.value, $event)" />
                                         <label [for]="'transmission-' + item.value">
                                             {{ item.label | translate }}
                                         </label>
@@ -1095,7 +1089,8 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            [id]="'drive-' + item.value" />
+                                            [id]="'drive-' + item.value" [checked]="driveTypeId.includes(item.value)"
+                                            (change)="onDriveTypeChange(item.value, $event)" />
                                         <label [for]="'drive-' + item.value"> {{ item.label | translate }} </label>
                                     </div>
                                     <div>
@@ -1754,7 +1749,9 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            [id]="'exterior-color-' + item.value" />
+                                            [id]="'exterior-color-' + item.value"
+                                            [checked]="exteriorColorId.includes(item.value)"
+                                            (change)="onExteriorColorChange(item.value, $event)" />
                                         <span class="ct_color_dots" [style.background-color]="item.color"></span>
                                         <label [for]="'exterior-color-' + item.value">
                                             {{ item.label | translate }}
@@ -1792,7 +1789,9 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            [id]="'interior-color-' + item.value" />
+                                            [id]="'interior-color-' + item.value"
+                                            [checked]="interiorColorId.includes(item.value)"
+                                            (change)="onInteriorColorChange(item.value, $event)" />
                                         <span class="ct_color_dots" [style.background-color]="item.color"></span>
                                         <label [for]="'interior-color-' + item.value">
                                             {{ item.label | translate }}
@@ -1811,7 +1810,9 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            [id]="'interior-color-' + item.value" />
+                                            [id]="'interior-color-' + item.value"
+                                            [checked]="interiorColorId.includes(item.value)"
+                                            (change)="onInteriorColorChange(item.value, $event)" />
                                         <span class="ct_color_dots" [style.background-color]="item.color"></span>
                                         <label [for]="'interior-color-' + item.value">
                                             {{ item.label | translate }}
@@ -1831,7 +1832,9 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            [id]="'interior-color-' + item.value" />
+                                            [id]="'interior-color-' + item.value"
+                                            [checked]="interiorColorId.includes(item.value)"
+                                            (change)="onInteriorColorChange(item.value, $event)" />
                                         <span class="ct_color_dots" [style.background-color]="item.color"></span>
                                         <label [for]="'interior-color-' + item.value">
                                             {{ item.label | translate }}
@@ -2576,8 +2579,12 @@
             </div>
         </div>
         <!-- <hr class="my-4" /> -->
-        <button class="ct_red_gradient_btn mt-4 show_btn w-25 mx-auto mb-3">
-            Show 100 Cars
+        <button class="ct_red_gradient_btn mt-4 show_btn w-25 mx-auto mb-3" [disabled]="isLoading">
+            @if(isLoading){
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            }@else{
+            Show {{filterData.total_cars}} Cars
+            }
         </button>
     </div>
 </div>

@@ -33,6 +33,22 @@ export class AllFiltersComponent {
   private kmRangeChange$ = new Subject<void>();
   private seatRangeChange$ = new Subject<void>();
   private doorRangeChange$ = new Subject<void>();
+  private initialFilters?: {
+    kmRange: [number, number];
+    priceRange: [number, number];
+    yearRange: [number, number];
+    seatRange: [number, number];
+    doorRange: [number, number];
+    priceType: 'Purchase' | 'Lease';
+    sellerType?: string[];
+    stateId?: number[];
+    bodyTypeId?: number[];
+    fuelTypeId?: number[];
+    transmissionId?: number[];
+    driveTypeId?: number[];
+    interiorColorId?: number[];
+    exteriorColorId?: number[];
+  };
 
   fuelTypeGroups: FilterGroup[] = [];
   transmissions: FilterOption[] = [];
@@ -47,26 +63,38 @@ export class AllFiltersComponent {
   kilometersRangeAnalytics: any = {};
   priceRangeAnalytics: any = {};
   yearRangeAnalytics: any = {};
-  priceRange: [number, number] = [1, 100000];
-  yearRange: [number, number] = [2015, 2020];
+  priceRange: [number, number] = [0, 100000];
+  yearRange: [number, number] = [1990, new Date().getFullYear()];
   years: number[] = [];
-  kmRange: [number, number] = [1, 4000000];
+  kmRange: [number, number] = [0, 4000000];
   priceType: 'Purchase' | 'Lease' = 'Purchase'
-  leasePriceRange: any = [10, 2000];
-  seatRange: [number, number] = [1, 25];
-  doorRange: [number, number] = [1, 10];
+  leasePriceRange: any = [0, 2000];
+  seatRange: [number, number] = [0, 25];
+  doorRange: [number, number] = [0, 10];
   seats: FilterOption[] = [];
   doors: FilterOption[] = [];
+  sellerType: FilterOption[] = [];
+  selectedSellerType: string[] = [];
+  stateId: number[] = [];
+  bodyTypeId: number[] = [];
+  fuelTypeId: number[] = [];
+  transmissionId: number[] = [];
+  driveTypeId: number[] = [];
+  interiorColorId: number[] = [];
+  exteriorColorId: number[] = [];
+  filterData: any = {};
+  isLoading = false;
   constructor(private service: CommonService, private message: NzMessageService) {
   }
 
   ngOnInit(): void {
     const currentYear = new Date().getFullYear();
-    this.yearRange = [currentYear - 5, currentYear];
+    this.yearRange = [currentYear - 35, currentYear];
     for (let year = currentYear; year >= 1990; year--) {
       this.years.push(year);
     }
 
+    this.captureInitialFilters();
     this.getFiltersData();
 
     this.priceRangeChange$
@@ -87,14 +115,18 @@ export class AllFiltersComponent {
   }
 
   getFiltersData() {
+    this.isLoading = true;
     const query = this.buildFiltersQuery();
     this.service.get(`user/web/filters${query}`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         const data = res?.data || {};
+        this.filterData = data;
         this.applyFiltersData(data);
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error fetching filters:', error);
+        this.isLoading = false;
       }
     });
   }
@@ -140,18 +172,59 @@ export class AllFiltersComponent {
     const [doorMin, doorMax] = this.doorRange || [];
     const params = new URLSearchParams();
 
-    if (fromKm !== undefined) params.set('from_km', String(fromKm));
-    if (toKm !== undefined) params.set('to_km', String(toKm));
-    if (priceFrom !== undefined) params.set('car_price_from', String(priceFrom));
-    if (priceTo !== undefined) params.set('car_price_to', String(priceTo));
-    if (fromYear !== undefined) params.set('from_year', String(fromYear));
-    if (toYear !== undefined) params.set('to_year', String(toYear));
-    if (seatMin !== undefined) params.set('seat_min', String(seatMin));
-    if (seatMax !== undefined) params.set('seat_max', String(seatMax));
-    if (doorMin !== undefined) params.set('door_min', String(doorMin));
-    if (doorMax !== undefined) params.set('door_max', String(doorMax));
-    params.set('price_type', this.priceType);
-    params.set('lang', 'en');
+    if (this.hasRangeChanged(this.kmRange, this.initialFilters?.kmRange)) {
+      if (fromKm !== undefined) params.set('km_from', String(fromKm));
+      if (toKm !== undefined) params.set('km_to', String(toKm));
+    }
+
+    if (this.hasRangeChanged(this.priceRange, this.initialFilters?.priceRange)) {
+      if (priceFrom !== undefined) params.set('price_from', String(priceFrom));
+      if (priceTo !== undefined) params.set('price_to', String(priceTo));
+    }
+
+    if (this.hasRangeChanged(this.yearRange, this.initialFilters?.yearRange)) {
+      if (fromYear !== undefined) params.set('year_from', String(fromYear));
+      if (toYear !== undefined) params.set('year_to', String(toYear));
+    }
+
+    if (this.hasRangeChanged(this.seatRange, this.initialFilters?.seatRange)) {
+      if (seatMin !== undefined) params.set('seat_min', String(seatMin));
+      if (seatMax !== undefined) params.set('seat_max', String(seatMax));
+    }
+
+    if (this.hasRangeChanged(this.doorRange, this.initialFilters?.doorRange)) {
+      if (doorMin !== undefined) params.set('door_min', String(doorMin));
+      if (doorMax !== undefined) params.set('door_max', String(doorMax));
+    }
+
+    if (this.initialFilters && this.priceType !== this.initialFilters.priceType) {
+      params.set('price_type', this.priceType);
+    }
+
+    if (this.hasArrayChanged(this.selectedSellerType, this.initialFilters?.sellerType)) {
+      this.setIfValue(params, 'seller_type', this.selectedSellerType);
+    }
+    if (this.hasArrayChanged(this.stateId, this.initialFilters?.stateId)) {
+      this.setIfValue(params, 'state_id', this.stateId);
+    }
+    if (this.hasArrayChanged(this.bodyTypeId, this.initialFilters?.bodyTypeId)) {
+      this.setIfValue(params, 'body_type_id', this.bodyTypeId);
+    }
+    if (this.hasArrayChanged(this.fuelTypeId, this.initialFilters?.fuelTypeId)) {
+      this.setIfValue(params, 'fuel_type_id', this.fuelTypeId);
+    }
+    if (this.hasArrayChanged(this.transmissionId, this.initialFilters?.transmissionId)) {
+      this.setIfValue(params, 'transmission_id', this.transmissionId);
+    }
+    if (this.hasArrayChanged(this.driveTypeId, this.initialFilters?.driveTypeId)) {
+      this.setIfValue(params, 'drive_type_id', this.driveTypeId);
+    }
+    if (this.hasArrayChanged(this.interiorColorId, this.initialFilters?.interiorColorId)) {
+      this.setIfValue(params, 'interior_color_id', this.interiorColorId);
+    }
+    if (this.hasArrayChanged(this.exteriorColorId, this.initialFilters?.exteriorColorId)) {
+      this.setIfValue(params, 'exterior_color_id', this.exteriorColorId);
+    }
 
     const query = params.toString();
     return query ? `?${query}` : '';
@@ -249,6 +322,9 @@ export class AllFiltersComponent {
 
     const doorsData = data?.doors ?? {};
     this.doors = this.mapOptions(this.normalizeItems(doorsData), 'name', 'id');
+
+    const sellerTypeData = data?.seller_type ?? data?.sellerTypes ?? {};
+    this.sellerType = this.mapOptions(this.normalizeItems(sellerTypeData), 'seller_type', 'seller_type');
   }
 
   private normalizeItems(data: any): any[] {
@@ -261,12 +337,113 @@ export class AllFiltersComponent {
     return [];
   }
 
+  private captureInitialFilters(): void {
+    this.initialFilters = {
+      kmRange: [...this.kmRange] as [number, number],
+      priceRange: [...this.priceRange] as [number, number],
+      yearRange: [...this.yearRange] as [number, number],
+      seatRange: [...this.seatRange] as [number, number],
+      doorRange: [...this.doorRange] as [number, number],
+      priceType: this.priceType,
+      sellerType: [...this.selectedSellerType],
+      stateId: [...this.stateId],
+      bodyTypeId: [...this.bodyTypeId],
+      fuelTypeId: [...this.fuelTypeId],
+      transmissionId: [...this.transmissionId],
+      driveTypeId: [...this.driveTypeId],
+      interiorColorId: [...this.interiorColorId],
+      exteriorColorId: [...this.exteriorColorId]
+    };
+  }
+
+  private hasRangeChanged(
+    current: [number, number],
+    initial?: [number, number]
+  ): boolean {
+    // return true;
+    if (!initial) return true;
+    return current[0] !== initial[0] || current[1] !== initial[1];
+  }
+
+  private hasArrayChanged<T>(current: T[], initial?: T[]): boolean {
+    if (!initial) return current.length > 0;
+    if (current.length !== initial.length) return true;
+    const currentSorted = [...current].sort();
+    const initialSorted = [...initial].sort();
+    return currentSorted.some((val, index) => val !== initialSorted[index]);
+  }
+
+  private setIfValue(params: URLSearchParams, key: string, value: any): void {
+    if (value === null || value === undefined || value === '') return;
+    if (Array.isArray(value)) {
+      if (value.length === 0) return;
+      params.set(key, value.join(','));
+      return;
+    }
+    params.set(key, String(value));
+  }
+
+  private toggleSelection<T>(list: T[], value: T, checked: boolean): T[] {
+    if (checked) {
+      return list.includes(value) ? list : [...list, value];
+    }
+    return list.filter((item) => item !== value);
+  }
+
   onSeatRangeChange() {
     this.seatRangeChange$.next();
   }
 
   onDoorRangeChange() {
     this.doorRangeChange$.next();
+  }
+
+  onSellerTypeChange(type: string, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.selectedSellerType = this.toggleSelection(this.selectedSellerType, type, input.checked);
+    this.getFiltersData();
+  }
+
+  onStateChange(id: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.stateId = this.toggleSelection(this.stateId, id, input.checked);
+    this.getFiltersData();
+  }
+
+  onBodyTypeChange(id: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.bodyTypeId = this.toggleSelection(this.bodyTypeId, id, input.checked);
+    this.getFiltersData();
+  }
+
+  onFuelTypeChange(id: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.fuelTypeId = this.toggleSelection(this.fuelTypeId, id, input.checked);
+    this.getFiltersData();
+  }
+
+  onTransmissionChange(id: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.transmissionId = this.toggleSelection(this.transmissionId, id, input.checked);
+    this.getFiltersData();
+  }
+
+  onDriveTypeChange(id: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.driveTypeId = this.toggleSelection(this.driveTypeId, id, input.checked);
+    this.getFiltersData();
+  }
+
+  onExteriorColorChange(id: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.exteriorColorId = this.toggleSelection(this.exteriorColorId, id, input.checked);
+    this.getFiltersData();
+  }
+
+  onInteriorColorChange(id: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.interiorColorId = this.toggleSelection(this.interiorColorId, id, input.checked);
+    this.getFiltersData();
   }
 
   private buildFuelTypeGroups(data: any): FilterGroup[] {
