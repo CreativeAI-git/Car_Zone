@@ -19,6 +19,13 @@ export class CommonService {
     return this.http.get<T>(this.baseUrl + url, { params });
   };
 
+  getBlob(url: string, params?: any): Observable<Blob> {
+    return this.http.get(this.baseUrl + url, {
+      params,
+      responseType: 'blob'
+    });
+  };
+
   post<T, U>(url: string, data: U): Observable<T> {
     return this.http.post<T>(this.baseUrl + url, data)
   };

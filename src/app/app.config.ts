@@ -13,6 +13,7 @@ import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from "@ngx-translate/http-loader"
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { shareIcons } from 'ngx-sharebuttons/icons';
 const scrollConfig: InMemoryScrollingOptions = {
   scrollPositionRestoration: 'top',
   anchorScrolling: 'enabled',
@@ -46,5 +47,6 @@ export const appConfig: ApplicationConfig = {
       suffix: '.json'
     })
   }),
+  shareIcons(),
   ]
 };

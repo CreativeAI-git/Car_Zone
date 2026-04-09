@@ -81,3 +81,7 @@
     font-size: 12px;
     z-index: 9;
 }
+
+.ct_share_modal_buttons {
+    display: block;
+}

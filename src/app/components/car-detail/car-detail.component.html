@@ -22,22 +22,23 @@
                   </nav>
 
                   <div class="d-flex gap-4 align-items-center mt-xl-0 mt-3">
-                        <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex align-items-center gap-1 ct_cursor_pointer"
+                              (click)="carData?.is_in_wishlist ? removeFromWishlist(carData) : addToWishlist(carData)">
                               <i class="fa-heart ct_fs_18"
-                                    [ngClass]="carData?.is_in_wishlist ? 'fa-solid ct_text_red' : 'fa-regular'"
-                                    (click)="carData?.is_in_wishlist ? removeFromWishlist(carData) : addToWishlist(carData)"></i>
-                              <span class="ct_fs_17 ct_fw_400">{{ 'vehicle.shortlist' | translate }}</span>
+                                    [ngClass]="carData?.is_in_wishlist ? 'fa-solid ct_text_red' : 'fa-regular'"></i>
+                              <span class="ct_fs_17 mb-1 ct_fw_400">{{ 'vehicle.shortlist' | translate }}</span>
                         </div>
                         @if(authService.isLogedIn()){
-                        <div class="d-flex align-items-center gap-2 ct_cursor_pointer" data-bs-toggle="modal"
+                        <div class="d-flex align-items-center gap-1 ct_cursor_pointer" data-bs-toggle="modal"
                               data-bs-target="#reportModal">
                               <img src="img/icons/report.png" />
-                              <span class="ct_fs_17 ct_fw_400">{{ 'vehicle.reportListing' | translate }}</span>
+                              <span class="ct_fs_17 mb-1 ct_fw_400">{{ 'vehicle.reportListing' | translate }}</span>
                         </div>
                         }
-                        <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex align-items-center gap-1 ct_cursor_pointer" data-bs-toggle="modal"
+                              data-bs-target="#shareModal">
                               <img src="img/icons/share.png" />
-                              <span class="ct_fs_17 ct_fw_400">{{ 'vehicle.share' | translate }}</span>
+                              <span class="ct_fs_17 mb-1 ct_fw_400">{{ 'vehicle.share' | translate }}</span>
                         </div>
                   </div>
             </div>
@@ -583,14 +584,14 @@
                               <div class="seller-carousel CarSwiper">
                                     <div class="swiper-wrapper">
                                           @for (item of carData?.suggestedCars; track $index) {
-                                          <div class="vehicle-box swiper-slide" routerLink="/car-detail"
-                                                [queryParams]="{id: item.id}">
+                                          <div class="vehicle-box swiper-slide border-radius-10 border"
+                                                routerLink="/car-detail" [queryParams]="{id: item.id}">
                                                 <div class="d-flex gap-4 vehicle-carousel-contetn">
                                                       <div class="w-50">
                                                             <img [src]="item.car_images[0]"
                                                                   class="w-100 h-100 object-fit-cover" />
                                                       </div>
-                                                      <div class="">
+                                                      <div class="p-2">
                                                             <div class="car-content-right">
                                                                   <div
                                                                         class="d-flex justify-content-between align-items-center">
@@ -602,14 +603,14 @@
                                                                         </div>
                                                                   </div>
 
-                                                                  <div class="mt-2">
+                                                                  <div class="">
                                                                         <h3
                                                                               class="ct_fs_18 ct_fw_400 mb-0 ct_color_8f0c1f">
                                                                               {{item.selling_price | chfFormat}}
                                                                         </h3>
-                                                                        <p class="mb-0 ct_fs_14 ct_fw_300">
+                                                                        <!-- <p class="mb-0 ct_fs_14 ct_fw_300">
                                                                               {{item.leasing_value | chfFormat}}
-                                                                        </p>
+                                                                        </p> -->
                                                                   </div>
                                                             </div>
 
@@ -617,31 +618,35 @@
                                                                   class="d-flex justify-content-between align-items-center mt-2 gap-3">
                                                                   <ul class="p-0 car-content-right-list">
                                                                         <li class="d-flex align-items-center">
-                                                                              <img src=" img/icons/sppedmeter.png" />
-                                                                              <span>{{item.selectYear}} </span>
+                                                                              <img src="img/icons/carn.png" />
+                                                                              <span>{{item.body_type || 'N/A'}} </span>
                                                                         </li>
                                                                         <li class="d-flex align-items-center">
                                                                               <img src="img/icons/km.png" />
-                                                                              <span> {{item.carMileage}} km </span>
+                                                                              <span> {{item.car_mileage}} km </span>
                                                                         </li>
                                                                         <li class="d-flex align-items-center">
                                                                               <img src="img/icons/fuel-type.png" />
-                                                                              <span> {{item.fuelType}} </span>
+                                                                              <span> {{item.fuel_type || 'N/A'}}
+                                                                              </span>
                                                                         </li>
                                                                   </ul>
 
                                                                   <ul class="p-0 car-content-right-list">
                                                                         <li class="d-flex align-items-center">
                                                                               <img src="img/icons/power-output.png" />
-                                                                              <span> {{item.powerOutput}} </span>
+                                                                              <span> {{item.braked_towing_capacity}}
+                                                                                    kg </span>
                                                                         </li>
                                                                         <li class="d-flex align-items-center">
                                                                               <img src="img/icons/transmision.png" />
-                                                                              <span> {{item.transmission}} </span>
+                                                                              <span> {{item.transmission || 'N/A'}}
+                                                                              </span>
                                                                         </li>
                                                                         <li class="d-flex align-items-center">
                                                                               <img src="img/icons/year.png" />
-                                                                              <span> {{item.consumption}} </span>
+                                                                              <span> {{item.registration_year || 'N/A'}}
+                                                                              </span>
                                                                         </li>
                                                                   </ul>
                                                             </div>
@@ -662,7 +667,7 @@
                         </div>
 
                         <div>
-                              <a class="btn-red-transparent">
+                              <a class="btn-red-transparent" (click)="downloadPDF()">
                                     <img src="img/icons/download-icon.png" />
                                     Download Pdf</a>
                         </div>
@@ -673,6 +678,24 @@
 
 
 <!--Report listing modal -->
+<div class="modal fade" id="shareModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <h5 class="modal-title">{{ 'vehicle.share' | translate }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+
+                  <div class="modal-body">
+                        <share-buttons class="ct_share_modal_buttons" [theme]="'circles-dark'"
+                              [include]="['facebook', 'x','linkedin','pinterest','reddit','mix','vk','telegram','messenger','whatsapp','xing','line','sms','email','copy']"
+                              [show]="9" [url]="shareUrl"></share-buttons>
+                  </div>
+            </div>
+      </div>
+</div>
+
+<!-- Report listing modal -->
 <div class="modal fade" id="reportModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

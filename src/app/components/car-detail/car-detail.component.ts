@@ -14,10 +14,12 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { FormsModule } from '@angular/forms';
 import { SubmitButtonComponent } from '../shared/submit-button/submit-button.component';
+import { ShareButtons } from 'ngx-sharebuttons/buttons';
+
 declare var Swiper: any;
 @Component({
   selector: 'app-car-detail',
-  imports: [CommonModule, ChfFormatPipe, TranslateModule, NzImageModule, FormsModule, SubmitButtonComponent, RouterLink],
+  imports: [CommonModule, ChfFormatPipe, TranslateModule, NzImageModule, FormsModule, SubmitButtonComponent, RouterLink, ShareButtons],
   templateUrl: './car-detail.component.html',
   styleUrl: './car-detail.component.css'
 })
@@ -27,6 +29,8 @@ export class CarDetailComponent {
   carData: any
   carId: any
   token: any
+  shareUrl: string = '';
+  shareImage: string = '';
   conditions = carData.conditions
   ShoMore: boolean = false
   reportReasons: any[] = []
@@ -43,6 +47,7 @@ export class CarDetailComponent {
 
   ngOnInit(): void {
     this.token = this.authService.getToken();
+    this.shareUrl = globalThis.location?.href ?? '';
     if (this.authService.isLogedIn()) {
       this.getReportReasons()
       this.addToRecentlyViewed()
@@ -65,6 +70,7 @@ export class CarDetailComponent {
       .subscribe({
         next: (res: any) => {
           this.carData = res;
+          this.shareImage = this.carData?.images?.[0] || '';
           this.loader.hide();
           this.loadSweper()
         },
@@ -107,7 +113,7 @@ export class CarDetailComponent {
       new Swiper('.CarSwiper', {
         direction: 'horizontal',
         slidesPerView: 2,
-        spaceBetween: 10,
+        spaceBetween: 20,
         loop: true,
         breakpoints: {
           640: {
@@ -231,4 +237,21 @@ export class CarDetailComponent {
     })
   }
 
+  downloadPDF() {
+    this.service.getBlob(`user/cars/${this.carId}/download-pdf`)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: Blob) => {
+          const pdfUrl = window.URL.createObjectURL(res);
+          const link = document.createElement('a');
+          link.href = pdfUrl;
+          link.download = `car-zone.pdf`;
+          link.click();
+          window.URL.revokeObjectURL(pdfUrl);
+        },
+        error: (err: any) => {
+          console.error('Failed to download PDF:', err);
+        }
+      });
+  }
 }

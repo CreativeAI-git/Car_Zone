@@ -27,8 +27,8 @@
               }
             ],
             "styles": [
-              "src/styles.css",
-              "./node_modules/intl-tel-input/build/css/intlTelInput.css",
+              "src/styles.scss",
+              "node_modules/intl-tel-input/dist/css/intlTelInput.css",
               "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.bubble.css",
@@ -96,7 +96,7 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }

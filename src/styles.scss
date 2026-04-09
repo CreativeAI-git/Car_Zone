@@ -1,4 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+@use "ngx-sharebuttons/themes/material";
+@use "ngx-sharebuttons/themes/modern";
+@use "ngx-sharebuttons/themes/circles";
+
 .ct_text_red {
       color: rgb(180, 0, 0);
 }
@@ -346,4 +350,8 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
       -moz-appearance: textfield;
+}
+
+.pointer {
+      cursor: pointer;
 }
