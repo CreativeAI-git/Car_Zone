@@ -340,6 +340,77 @@ export class BrowseCarsComponent {
     });
   }
 
+  closePopup(popup: 'make' | 'body' | 'price' | 'year' | 'km' | 'transmission' | 'power' | 'fuel') {
+    switch (popup) {
+      case 'make':
+        this.visible = false;
+        break;
+      case 'body':
+        this.bodyTypeVisible = false;
+        break;
+      case 'price':
+        this.PriceVisible = false;
+        break;
+      case 'year':
+        this.YearVisible = false;
+        break;
+      case 'km':
+        this.MilageVisible = false;
+        break;
+      case 'transmission':
+        this.TransmissionVisible = false;
+        break;
+      case 'power':
+        this.PowerVisible = false;
+        break;
+      case 'fuel':
+        this.FuelVisible = false;
+        break;
+    }
+  }
+
+  onResetBodyType() {
+    this.bodyTypeId = [];
+    this.applyFilters({ body_type_id: [] });
+  }
+
+  onResetPrice() {
+    const defaults = this.filterService.getDefaultPayload();
+    this.priceType = defaults.price_type;
+    this.priceRange = [defaults.price_range.min_price ?? 0, defaults.price_range.max_price ?? 1000000];
+    this.leasePriceRange = [defaults.price_range.min_price ?? 0, defaults.price_range.max_price ?? 100000];
+    this.applyFilters({
+      price_type: defaults.price_type,
+      price_range: { ...defaults.price_range }
+    });
+  }
+
+  onResetYear() {
+    const defaults = this.filterService.getDefaultPayload();
+    this.yearRange = [defaults.year_range.min_year ?? 1990, defaults.year_range.max_year ?? new Date().getFullYear()];
+    this.applyFilters({
+      year_range: { ...defaults.year_range }
+    });
+  }
+
+  onResetKm() {
+    const defaults = this.filterService.getDefaultPayload();
+    this.kmRange = [defaults.kilometers_range.min_km ?? 0, defaults.kilometers_range.max_km ?? 4000000];
+    this.applyFilters({
+      kilometers_range: { ...defaults.kilometers_range }
+    });
+  }
+
+  onResetTransmission() {
+    this.transmissionId = [];
+    this.applyFilters({ transmission: [] });
+  }
+
+  onResetFuel() {
+    this.fuelTypeId = [];
+    this.applyFilters({ fuel_type_id: [] });
+  }
+
   onResetFilters() {
     this.visible = false;
     this.bodyTypeVisible = false;
@@ -417,12 +488,7 @@ export class BrowseCarsComponent {
       lang: localStorage.getItem('lang') || this.translate.currentLang || 'en',
       ...patch
     });
-
-    this.filterService.ensureAppliedLoaded().pipe(takeUntil(this.destroy$)).subscribe({
-      error: (error) => {
-        console.error('Error applying filters:', error);
-      }
-    });
+    this.refreshBrowseData();
   }
 
   private loadSwiper(): void {
@@ -479,6 +545,24 @@ export class BrowseCarsComponent {
     initial: { [key: string]: number | null }
   ): boolean {
     return Object.keys(current).some((key) => current[key] !== initial[key]);
+  }
+
+  private refreshBrowseData() {
+    if (this.filterService.hasActiveAppliedFilters()) {
+      this.filterService.ensureAppliedLoaded().pipe(takeUntil(this.destroy$)).subscribe({
+        error: (error) => {
+          console.error('Error applying filters:', error);
+        }
+      });
+      return;
+    }
+
+    this.getCars();
+    this.filterService.loadAppliedMetadata().pipe(takeUntil(this.destroy$)).subscribe({
+      error: (error) => {
+        console.error('Error loading filter metadata:', error);
+      }
+    });
   }
 
   private toggleSelection<T>(list: T[], value: T, checked: boolean): T[] {

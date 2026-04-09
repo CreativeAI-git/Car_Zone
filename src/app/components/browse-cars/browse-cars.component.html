@@ -304,7 +304,7 @@
                                                       translate }}</h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f" (click)="onResetBodyType()">{{ 'vehicle.reset' |
                                                       translate }}</span>
                                           </div>
                                     </div>
@@ -328,7 +328,7 @@
                                           </div>
                                           }
                                     </div>
-                                    <button class="ct_red_gradient_btn mt-4">
+                                    <button class="ct_red_gradient_btn mt-4" (click)="closePopup('body')">
                                           Total {{totalCars}} Cars found
                                     </button>
                               </div>
@@ -355,7 +355,7 @@
                                                 </h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f" (click)="onResetPrice()">{{ 'vehicle.reset' |
                                                       translate }}</span>
                                           </div>
                                     </div>
@@ -481,7 +481,7 @@
                                                 </h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f" (click)="onResetYear()">{{ 'vehicle.reset' |
                                                       translate }}</span>
                                           </div>
                                     </div>
@@ -586,7 +586,7 @@
                                                 </div>
                                           </div>
                                     </div>
-                                    <button class="ct_red_gradient_btn mt-4">{{ 'common.done' | translate }}</button>
+                                    <button class="ct_red_gradient_btn mt-4" (click)="closePopup('year')">{{ 'common.done' | translate }}</button>
                               </div>
                         </ng-template>
                   </div>
@@ -610,7 +610,7 @@
                                                       translate}} (km)</h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f" (click)="onResetKm()">{{ 'vehicle.reset' |
                                                       translate }}</span>
                                           </div>
                                     </div>
@@ -677,7 +677,7 @@
                                                 </div>
                                           </div>
                                     </div>
-                                    <button class="ct_red_gradient_btn mt-4">{{ 'common.done' | translate }}</button>
+                                    <button class="ct_red_gradient_btn mt-4" (click)="closePopup('km')">{{ 'common.done' | translate }}</button>
                               </div>
                         </ng-template>
                   </div>
@@ -704,7 +704,7 @@
                                                 </h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f" (click)="onResetTransmission()">{{ 'vehicle.reset' |
                                                       translate }}</span>
                                           </div>
                                     </div>
@@ -725,7 +725,7 @@
                                     </div>
                                     }
 
-                                    <button class="ct_red_gradient_btn mt-4">
+                                    <button class="ct_red_gradient_btn mt-4" (click)="closePopup('transmission')">
                                           Total {{totalCars}} Cars found
                                     </button>
                               </div>
@@ -796,7 +796,7 @@
                                           </div>
                                     </div>
 
-                                    <button class="ct_red_gradient_btn mt-5">
+                                    <button class="ct_red_gradient_btn mt-5" (click)="closePopup('power')">
                                           Total {{totalCars}} Cars found
                                     </button>
                               </div>
@@ -823,7 +823,7 @@
                                                 </h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f" (click)="onResetFuel()">{{ 'vehicle.reset' |
                                                       translate }}</span>
                                           </div>
                                     </div>
@@ -858,7 +858,7 @@
                                           </div>
                                           }
                                     </div>
-                                    <button class="ct_red_gradient_btn mt-4">
+                                    <button class="ct_red_gradient_btn mt-4" (click)="closePopup('fuel')">
                                           Total {{totalCars}} Cars found
                                     </button>
                               </div>
