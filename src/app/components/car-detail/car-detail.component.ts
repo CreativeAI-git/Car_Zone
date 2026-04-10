@@ -12,33 +12,52 @@ import { ModalService } from '../../services/modal.service';
 import { AuthService } from '../../services/auth.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzImageModule } from 'ng-zorro-antd/image';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SubmitButtonComponent } from '../shared/submit-button/submit-button.component';
 import { ShareButtons } from 'ngx-sharebuttons/buttons';
+import { ValidationErrorService } from '../../services/validation-error.service';
+import { NoWhitespaceDirective } from '../../helper/validators';
 
 declare var Swiper: any;
 @Component({
   selector: 'app-car-detail',
-  imports: [CommonModule, ChfFormatPipe, TranslateModule, NzImageModule, FormsModule, SubmitButtonComponent, RouterLink, ShareButtons],
+  imports: [CommonModule, ChfFormatPipe, TranslateModule, NzImageModule, FormsModule, ReactiveFormsModule, SubmitButtonComponent, RouterLink, ShareButtons],
   templateUrl: './car-detail.component.html',
   styleUrl: './car-detail.component.css'
 })
 export class CarDetailComponent {
   @ViewChild('closeReportModal') closeReportModal!: ElementRef;
+  @ViewChild('closeInquiryModal') closeInquiryModal!: ElementRef<HTMLButtonElement>;
   private destroy$ = new Subject<void>();
   carData: any
   carId: any
   token: any
+  inquiryForm: FormGroup;
   shareUrl: string = '';
   shareImage: string = '';
   conditions = carData.conditions
   ShoMore: boolean = false
   reportReasons: any[] = []
+  inquiryOptions = [
+    { key: 'leasing', label: 'Leasing' },
+    { key: 'payment', label: 'Payment' },
+    { key: 'insurance', label: 'Insurance' },
+    { key: 'tradeIn', label: 'Trade In' }
+  ];
   selectedReportReasons: number[] = [];
   customReportReason: string = '';
   loading: boolean = false
-  constructor(private service: CommonService, private route: ActivatedRoute, private loader: LoaderService, private router: Router, private message: NzMessageService, private modalService: ModalService, public authService: AuthService, private translate: TranslateService, public location: Location) {
+  inquiryLoading: boolean = false
+  constructor(private service: CommonService, private route: ActivatedRoute, private loader: LoaderService, private router: Router, private message: NzMessageService, private modalService: ModalService, public authService: AuthService, private translate: TranslateService, public location: Location, private fb: FormBuilder, public validationErrorService: ValidationErrorService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
+    this.token = this.authService.getToken();
+    this.inquiryForm = this.fb.group({
+      full_name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), NoWhitespaceDirective.validate]],
+      email: ['', [Validators.required, Validators.email]],
+      phone_number: ['', [Validators.required, Validators.pattern(/^[+]?[0-9\s()-]{7,20}$/)]],
+      inquiry_types: [[], [Validators.required]],
+      message: ['', [Validators.maxLength(500)]]
+    });
     this.route.queryParamMap.subscribe(params => {
       this.carId = params.get('id')
       this.getCarDetail()
@@ -46,12 +65,34 @@ export class CarDetailComponent {
   }
 
   ngOnInit(): void {
-    this.token = this.authService.getToken();
     this.shareUrl = globalThis.location?.href ?? '';
     if (this.authService.isLogedIn()) {
+      this.patchInquiryUserData();
       this.getReportReasons()
       this.addToRecentlyViewed()
     }
+  }
+
+  patchInquiryUserData() {
+    const userProfile = this.service.userData();
+    if (!userProfile) {
+      this.service.get('user/web/getUserProfile').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+        const profile = res.data;
+        this.service.userData.set(profile);
+        this.inquiryForm.patchValue({
+          full_name: profile.fullName || '',
+          email: profile.email || '',
+          phone_number: `${profile.countryCode || ''}${profile.phoneNumber || ''}`
+        });
+      });
+      return;
+    }
+
+    this.inquiryForm.patchValue({
+      full_name: userProfile.fullName || '',
+      email: userProfile.email || '',
+      phone_number: `${userProfile.countryCode || ''}${userProfile.phoneNumber || ''}`
+    });
   }
 
   addToRecentlyViewed() {
@@ -179,6 +220,10 @@ export class CarDetailComponent {
     }
   }
 
+  openInquiryLoginModal() {
+    this.modalService.openLoginModal();
+  }
+
   shareOnWhatsapp(item: any) {
     let whatsappUrl = `https://wa.me/?text=${encodeURIComponent(item.title)} ${encodeURIComponent(item.description)} ${encodeURIComponent(item.price)}`;
     window.open(whatsappUrl, '_blank');
@@ -235,6 +280,79 @@ export class CarDetailComponent {
       this.message.error('Failed to report car');
       this.loading = false
     })
+  }
+
+  onInquiryTypeChange(option: string, event: Event) {
+    const input = event.target as HTMLInputElement;
+    const selectedTypes = [...(this.inquiryForm.get('inquiry_types')?.value || [])];
+
+    if (input.checked) {
+      if (!selectedTypes.includes(option)) {
+        selectedTypes.push(option);
+      }
+    } else {
+      const index = selectedTypes.indexOf(option);
+      if (index > -1) {
+        selectedTypes.splice(index, 1);
+      }
+    }
+
+    this.inquiryForm.get('inquiry_types')?.setValue(selectedTypes);
+    this.inquiryForm.get('inquiry_types')?.markAsTouched();
+    this.inquiryForm.get('inquiry_types')?.updateValueAndValidity();
+  }
+
+  isInquiryTypeSelected(option: string) {
+    return (this.inquiryForm.get('inquiry_types')?.value || []).includes(option);
+  }
+
+  submitInquiry() {
+    if (!this.authService.isLogedIn()) {
+      this.modalService.openLoginModal();
+      return;
+    }
+
+    if (this.inquiryForm.invalid) {
+      this.inquiryForm.markAllAsTouched();
+      return;
+    }
+
+    const selectedTypes = this.inquiryForm.value.inquiry_types || [];
+    const payload = {
+      seller_id: this.carData?.seller?.id,
+      car_id: this.carData?.vehicle?.id,
+      full_name: this.inquiryForm.value.full_name?.trim(),
+      email: this.inquiryForm.value.email?.trim(),
+      phone_number: this.inquiryForm.value.phone_number?.trim(),
+      inquiry_type_text: selectedTypes.join(', '),
+      message: this.inquiryForm.value.message?.trim() || ''
+    };
+
+    if (!payload.seller_id || !payload.car_id) {
+      this.message.error('Car details are not available yet.');
+      return;
+    }
+
+    this.inquiryLoading = true;
+    this.service.post('user/car-inquiry', payload).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        this.message.success(res.message || 'Inquiry sent successfully');
+        this.inquiryLoading = false;
+        this.inquiryForm.reset({
+          full_name: this.inquiryForm.value.full_name,
+          email: this.inquiryForm.value.email,
+          phone_number: this.inquiryForm.value.phone_number,
+          inquiry_types: [],
+          message: ''
+        });
+        this.patchInquiryUserData();
+        this.closeInquiryModal?.nativeElement.click();
+      },
+      error: (err: any) => {
+        this.inquiryLoading = false;
+        this.message.error(err.message || 'Failed to send inquiry');
+      }
+    });
   }
 
   downloadPDF() {

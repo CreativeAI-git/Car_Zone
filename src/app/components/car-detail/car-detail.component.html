@@ -515,11 +515,19 @@
                                                       </button>
                                                 </div>
                                                 <div class="w-100">
-                                                      <a class="btn-purple-transparent w-100 text-center  ct_fw_400"
+                                                      @if(authService.isLogedIn()){
+                                                      <a class="btn-purple-transparent w-100 text-center ct_fw_400"
                                                             data-bs-toggle="modal" data-bs-target="#EmailModal">
                                                             <i class="fa-solid fa-envelope me-2"></i>
                                                             Email
                                                       </a>
+                                                      }@else {
+                                                      <a class="btn-purple-transparent w-100 text-center ct_fw_400"
+                                                            (click)="openInquiryLoginModal()">
+                                                            <i class="fa-solid fa-envelope me-2"></i>
+                                                            Email
+                                                      </a>
+                                                      }
                                                 </div>
                                           </div>
                                     </div>
@@ -759,98 +767,99 @@
             <div class="modal-content">
                   <div class="modal-header">
                         <h5 class="modal-title"> {{ 'vehicle.sendInquiry' | translate }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" #closeInquiryModal></button>
                   </div>
 
-                  <div class="modal-body pt-0">
-                        <div class="mb-3">
-                              <div class="d-flex align-items-center gap-3 ">
-                                    <div class="ct_width_96 ct_border_8">
-                                          <img src="img/car-img2.png" alt="" class="w-100 h-100">
-                                    </div>
-                                    <div>
-                                          <h5 class="ct_fs_16 ct_fw_500">
-                                                Mercedes-Benz C-Class
-                                          </h5>
-                                          <h3 class="ct_fw_600 ct_fs_20">CHF 45,900</h3>
+                  <form [formGroup]="inquiryForm" (ngSubmit)="submitInquiry()">
+                        <div class="modal-body pt-0">
+                              <div class="mb-3">
+                                    <div class="d-flex align-items-center gap-3 ">
+                                          <div class="ct_width_96 ct_border_8">
+                                                <img [src]="carData?.images?.[0] || 'img/placeholder.png'" alt=""
+                                                      class="w-100 h-100 object-fit-cover">
+                                          </div>
+                                          <div>
+                                                <h5 class="ct_fs_16 ct_fw_500">
+                                                      {{carData?.vehicle?.brand}} {{carData?.vehicle?.model}}
+                                                </h5>
+                                                <h3 class="ct_fw_600 ct_fs_20">{{carData?.vehicle?.selling_price |
+                                                      chfFormat}}</h3>
+                                          </div>
                                     </div>
                               </div>
+
                               <div class="row">
                                     <div class="col-6">
                                           <label class="mt-3 ct_fs_15 ct_fw_400 mb-2">
                                                 Full Name
                                           </label>
-                                          <input type="text" class="form-control"
+                                          <input type="text" class="form-control" formControlName="full_name"
                                                 [placeholder]="'vehicle.fullName' | translate"
                                                 [attr.aria-label]="'filters.username' | translate"
                                                 aria-describedby="basic-addon1">
-
+                                          <small class="text-danger">{{validationErrorService.getErrorMessage('Full Name',
+                                                inquiryForm.get('full_name'))}}</small>
                                     </div>
                                     <div class="col-6">
-
                                           <label class="mt-3 ct_fs_15 ct_fw_400 mb-2">
                                                 Email Address
                                           </label>
-                                          <input type="text" class="form-control"
+                                          <input type="email" class="form-control" formControlName="email"
                                                 [placeholder]="'vehicle.johnAndersonEmailCom' | translate"
                                                 [attr.aria-label]="'filters.username' | translate"
                                                 aria-describedby="basic-addon1">
-
+                                          <small class="text-danger">{{validationErrorService.getErrorMessage('Email',
+                                                inquiryForm.get('email'))}}</small>
                                     </div>
                                     <div class="col-6">
-
                                           <label class="mt-3 ct_fs_15 ct_fw_400 mb-2">
                                                 Phone Number
                                           </label>
-                                          <input type="text" class="form-control" placeholder="+44 54 670 653"
+                                          <input type="text" class="form-control" formControlName="phone_number"
+                                                placeholder="+44 54 670 653"
                                                 [attr.aria-label]="'filters.username' | translate"
                                                 aria-describedby="basic-addon1">
-
+                                          <small class="text-danger">{{validationErrorService.getErrorMessage('Phone Number',
+                                                inquiryForm.get('phone_number'))}}</small>
                                     </div>
 
-                                    <div class="d-flex gap-3 flex-wrap">
-                                          <div class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center">
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                      id="flexCheckDefault">
-                                                <label for="flexCheckDefault"> {{ 'vehicle.leasing' | translate }}
-                                                </label>
+                                    <div class="col-12">
+                                          <div class="d-flex gap-3 flex-wrap">
+                                                @for(option of inquiryOptions; track option.key){
+                                                <div
+                                                      class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center">
+                                                      <input class="form-check-input" type="checkbox"
+                                                            [id]="'inquiryType-' + option.key"
+                                                            [checked]="isInquiryTypeSelected(option.label)"
+                                                            (change)="onInquiryTypeChange(option.label, $event)">
+                                                      <label [for]="'inquiryType-' + option.key">
+                                                            {{ ('vehicle.' + option.key) | translate }}
+                                                      </label>
+                                                </div>
+                                                }
                                           </div>
-                                          <div class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center">
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                      id="flexCheckDefault">
-                                                <label for="flexCheckDefault">{{ 'vehicle.payment' | translate }}
-                                                </label>
-                                          </div>
-                                          <div class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center">
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                      id="flexCheckDefault">
-                                                <label for="flexCheckDefault">{{ 'vehicle.insuarance' | translate }}
-                                                </label>
-                                          </div>
-                                          <div class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center">
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                      id="flexCheckDefault">
-                                                <label for="flexCheckDefault">{{ 'vehicle.tradeIn' | translate }}
-                                                </label>
-                                          </div>
+                                          <small class="text-danger"
+                                                *ngIf="inquiryForm.get('inquiry_types')?.touched && inquiryForm.get('inquiry_types')?.invalid">
+                                                Please select at least one inquiry type.
+                                          </small>
                                     </div>
+                              </div>
 
+                              <div class="mt-3">
+                                    <label class="form-label ct_fs_16 ct_fw_400"> {{ 'vehicle.message' | translate }}
+                                          <span class="fst-italic">{{ 'vehicle.optional' | translate }}</span></label>
+                                    <textarea class="form-control" rows="3" formControlName="message"
+                                          [placeholder]="'vehicle.writeReason' | translate"></textarea>
+                                    <small class="text-danger">{{validationErrorService.getErrorMessage('Message',
+                                          inquiryForm.get('message'))}}</small>
                               </div>
                         </div>
 
-                        <div class="mt-3">
-                              <label class="form-label ct_fs_16 ct_fw_400"> {{ 'vehicle.message' | translate }} <span
-                                          class="fst-italic">{{ 'vehicle.optional' | translate }}</span></label>
-                              <textarea class="form-control" rows="3"
-                                    [placeholder]="'vehicle.writeReason' | translate"></textarea>
+                        <div class="modal-footer border-0">
+                              <app-submit-button class="w-100" [text]="'Submit'" [class]="'btn-red w-100'"
+                                    [isLoading]="inquiryLoading" [disabled]="inquiryLoading"></app-submit-button>
                         </div>
-                  </div>
-
-                  <div class="modal-footer border-0">
-                        <button type="button" class="btn-red w-100">
-                              Submit
-                        </button>
-                  </div>
+                  </form>
             </div>
       </div>
 </div>
