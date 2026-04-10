@@ -238,6 +238,7 @@ export class CarDetailComponent {
   }
 
   downloadPDF() {
+    this.loading = true
     this.service.getBlob(`user/cars/${this.carId}/download-pdf`)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -248,9 +249,11 @@ export class CarDetailComponent {
           link.download = `car-zone.pdf`;
           link.click();
           window.URL.revokeObjectURL(pdfUrl);
+          this.loading = false
         },
         error: (err: any) => {
           console.error('Failed to download PDF:', err);
+          this.loading = false
         }
       });
   }

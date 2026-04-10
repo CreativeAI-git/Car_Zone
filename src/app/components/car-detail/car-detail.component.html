@@ -661,15 +661,22 @@
                   }
                   <div class="d-flex gap-3 ct_mt_40">
                         <div>
-                              <a href="purchase-agreement.html" class="btn-red"><img src="img/icons/contract-cion.png"
-                                          class="me-2" />Buying
+                              <!-- href="purchase-agreement.html" -->
+                              <a class="btn-red"><img src="img/icons/contract-cion.png" class="me-2" />Buying
                                     Contract</a>
                         </div>
 
                         <div>
-                              <a class="btn-red-transparent" (click)="downloadPDF()">
+                              <button class="btn-red-transparent" (click)="downloadPDF()" [disabled]="loading">
+                                    @if(loading){
+                                    <span class="spinner-border spinner-border-sm" role="status"
+                                          aria-hidden="true"></span>
+                                    Downloading...
+                                    }@else {
                                     <img src="img/icons/download-icon.png" />
-                                    Download Pdf</a>
+                                    Download Pdf
+                                    }
+                              </button>
                         </div>
                   </div>
             </div>
