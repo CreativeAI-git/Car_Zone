@@ -11,7 +11,7 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-chats',
-  imports: [CommonModule, FormsModule, TranslateModule, ChfFormatPipe, RouterLink],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './chats.component.html',
   styleUrl: './chats.component.css'
 })

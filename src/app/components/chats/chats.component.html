@@ -1,90 +1,71 @@
-<section class="pt-4">
-      <div class="container-fluid">
+<!-- <section class="ct_mt_100 mb-5 ct_chat_page">
+      <div class="container">
             <div class="row">
                   <div class="col-lg-9 mb-4" [ngClass]="sellerCarList.length > 1 ? 'col-lg-9' : 'col-lg-12'">
-                        <div class="chat-area">
-                              <!-- chatlist -->
-                              <div class="chatlist ct_chatroom_chatlist">
-                                    <div class="modal-dialog-scrollable ">
-                                          <div class="modal-content ">
-                                                <div
-                                                      class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-3">
-                                                      <h4 class="ct_fs_16 mb-0 ct_fw_600 ct_nunito_font">
-                                                            {{'common.contacts' | translate}}</h4>
-                                                      <h4 class="ct_fs_16 mb-0 ct_fw_600 ct_nunito_font ct_text_op_05">
-                                                            {{chatList.length}}
-                                                      </h4>
+                        <div class="chat-area ct_chatroom_layout">
+                              <div class="chatlist ct_chatroom_chatlist ct_right_main_box bg-white"
+                                    [class.ct_hide_on_mobile]="currentChat">
+                                    <div class="modal-dialog-scrollable h-100">
+                                          <div class="modal-content h-100 border-0 bg-transparent">
+                                                <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-3">
+                                                      <h4 class="ct_fs_14 mb-0 ct_fw_600 ct_nunito_font">{{'common.contacts' | translate}}</h4>
+                                                      <h4 class="ct_fs_14 mb-0 ct_fw_600 ct_nunito_font ct_text_op_05">{{chatList.length}}</h4>
                                                 </div>
                                                 <div class="position-relative">
-                                                      <input type="text"
-                                                            class="form-control ct_input ct_input_ps_40 ct_input_h_40 ct_border_op_10"
-                                                            placeholder="{{'filters.search' | translate}}"
-                                                            (input)="filterChatList($event)">
+                                                      <input type="text" class="form-control ct_input ct_input_ps_40 ct_input_h_40 ct_border_op_10"
+                                                            placeholder="{{'filters.search' | translate}}" (input)="filterChatList($event)">
                                                       <i class="fa-solid fa-search ct_input_icon_left"></i>
                                                 </div>
-                                                <div class="modal-body mt-4 ct_custom_scroll">
-                                                      <!-- chat-list -->
-                                                      <div class="chat-lists ">
+                                                <div class="modal-body mt-4 ct_custom_scroll px-0 pb-0">
+                                                      <div class="chat-lists">
                                                             <div class="chat-list">
                                                                   @if(filteredChatList.length > 0){
-                                                                  @for (item of filteredChatList; track $index) {
-                                                                  <a (click)="openChat(item, null)"
-                                                                        class="d-flex active2">
-                                                                        <div class="ct_chat_list_grid">
+                                                                  @for (item of filteredChatList; track item.id) {
+                                                                  <a href="javascript:void(0)" class="d-flex ct_chat_contact_item"
+                                                                        [class.active2]="isActiveChat(item)"
+                                                                        [class.ct_chat_contact_item_active]="isActiveChat(item)"
+                                                                        (click)="openChat(item, null)">
+                                                                        <div class="ct_chat_list_grid w-100">
                                                                               <div class="position-relative">
-                                                                                    <img class="img-fluid ct_img_40"
-                                                                                          [src]="item.avatar || 'img/np_pro.png'"
-                                                                                          [alt]="'chat.userImg' | translate">
+                                                                                    <img class="img-fluid ct_img_40" [src]="item.avatar || 'img/np_pro.png'" [alt]="item.name">
                                                                                     <span class="active"></span>
                                                                               </div>
-                                                                              <div class="flex-grow-1 ms-3">
-                                                                                    <div
-                                                                                          class="d-flex align-items-center gap-2 justify-content-between">
-                                                                                          <h3
-                                                                                                class="ct_fs_16 ct_fw_600">
-                                                                                                {{item.name}}
-                                                                                          </h3>
-                                                                                          @if(!item.Seen){
-                                                                                          <div
-                                                                                                class="ct_caht_msg_notify">
-                                                                                                <span class=" ms-auto">
-                                                                                                      {{item.mgsCount}}</span>
+                                                                              <div class="flex-grow-1 ms-3 min-w-0">
+                                                                                    <div class="d-flex align-items-center gap-2 justify-content-between">
+                                                                                          <h3 class="ct_fs_14 ct_fw_600 mb-0 ct_text_111827 text-truncate">{{item.name}}</h3>
+                                                                                          <div class="ct_fs_12 text-black text-nowrap">{{timeAgo(item.createdAt)}}</div>
+                                                                                    </div>
+                                                                                    @if(getChatCarTitle(item)){
+                                                                                    <div class="d-flex align-items-center gap-2 justify-content-between mt-1">
+                                                                                          <div class="min-w-0">
+                                                                                                <p class="ct_fs_14 ct_fw_600 ct_overlay_text ct_overlay_text_w_150 text-limit d-flex align-items-center gap-2 mb-1">
+                                                                                                      @if(item.carImage){
+                                                                                                      <img [src]="item.carImage" class="ct_img_25 ct_chat_thumb" alt="">
+                                                                                                      }
+                                                                                                      <span class="text-truncate">{{ getChatCarTitle(item) }}</span>
+                                                                                                </p>
+                                                                                                <p class="ct_fs_12 mb-0 ct_text_op_6 text-truncate">{{getChatPreview(item)}}</p>
                                                                                           </div>
+                                                                                          @if(!item.Seen){
+                                                                                          <div class="ct_caht_msg_notify"><span class="ms-auto">{{item.mgsCount}}</span></div>
                                                                                           }
                                                                                     </div>
-                                                                                    <div
-                                                                                          class="d-flex align-items-center gap-2 justify-content-between">
-                                                                                          <p
-                                                                                                class="ct_fs_14 ct_overlay_text ct_overlay_text_w_150">
-                                                                                                {{item.lastMsg}}
-                                                                                          </p>
-                                                                                          <span
-                                                                                                class="text-end d-block ct_fs_12 text-dark me-1 text-nowrap">
-                                                                                                {{timeAgo(item.createdAt)}}</span>
+                                                                                    }@else {
+                                                                                    <div class="d-flex align-items-center gap-2 justify-content-between mt-1">
+                                                                                          <p class="ct_fs_14 ct_overlay_text ct_overlay_text_w_150 mb-0 text-truncate">{{getChatPreview(item)}}</p>
+                                                                                          @if(!item.Seen){
+                                                                                          <div class="ct_caht_msg_notify"><span class="ms-auto">{{item.mgsCount}}</span></div>
+                                                                                          }
                                                                                     </div>
+                                                                                    }
                                                                               </div>
                                                                         </div>
                                                                   </a>
                                                                   }
                                                                   }@else {
-                                                                  <div
-                                                                        class="d-flex flex-column align-items-center justify-content-center text-center bg-white p-5 position-relative overflow-hidden">
-                                                                        <div class="position-absolute top-0 start-0 w-100 h-100"
-                                                                              style="background: radial-gradient(circle at top, rgba(220,53,69,0.05), transparent); z-index:0;">
-                                                                        </div>
-
-                                                                        <div class="d-flex align-items-center justify-content-center rounded-circle mb-4 position-relative"
-                                                                              style="width: 70px; height: 70px; background: linear-gradient(135deg, #ffccd1, #fff); z-index:1;">
-                                                                              <i
-                                                                                    class="bi bi-chat-dots text-primary fs-1"></i>
-                                                                              <span
-                                                                                    class="position-absolute top-0 start-0 w-100 h-100 rounded-circle border border-3 border-danger opacity-25"></span>
-                                                                        </div>
-
-                                                                        <h2 class="fw-bold text-dark mb-3 ct_fs_18"
-                                                                              style="z-index:1;">{{'chat.noChatFound' |
-                                                                              translate}}
-                                                                        </h2>
+                                                                  <div class="ct_chat_empty_list">
+                                                                        <div class="ct_chat_empty_icon"><i class="fa-regular fa-comments"></i></div>
+                                                                        <h2 class="fw-bold text-dark mb-2 ct_fs_18">{{'chat.noChatFound' | translate}}</h2>
                                                                   </div>
                                                                   }
                                                             </div>
@@ -93,60 +74,54 @@
                                           </div>
                                     </div>
                               </div>
-                              <!-- chatlist -->
-                              <!-- chatbox -->
-                              <div class="chatbox ">
-                                    <div class="ct_white_bg ct_border_radius_10 ct_p_20 h-100">
-                                          <div class="modal-dialog-scrollable">
+                              <div class="chatbox" [class.ct_show_on_mobile]="currentChat">
+                                    <div class="ct_white_bg ct_border_radius_10 ct_p_20 h-100 ct_chat_panel">
+                                          <div class="modal-dialog-scrollable h-100">
                                                 @if(currentChat){
-                                                <div class="modal-content ct_chatroom_modal_content">
-                                                      <div class="d-block">
-                                                            <div
-                                                                  class="msg-head d-flex align-items-center justify-content-between gap-3 flex-wrap">
-                                                                  <div class="d-flex align-items-center gap-2 ">
-                                                                        <i
-                                                                              class="fa-solid fa-chevron-left chat-icon"></i>
+                                                <div class="modal-content ct_chatroom_modal_content h-100 border-0">
+                                                      <div class="d-block h-100">
+                                                            <div class="msg-head d-flex align-items-center justify-content-between gap-3 flex-wrap">
+                                                                  <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                                        <i class="fa-solid fa-chevron-left chat-icon d-md-none" (click)="closeCurrentChat()"></i>
                                                                         <div class="ct_grid_50_auto">
-                                                                              <img [src]="currentChat?.avatar || 'img/np_pro.png'"
-                                                                                    alt="">
+                                                                              <img [src]="currentChat?.avatar || 'img/np_pro.png'" alt="">
                                                                               <div>
-                                                                                    <h4
-                                                                                          class="ct_fs_18 ct_fw_600  mb-0">
-                                                                                          {{currentChat?.name}}
-                                                                                    </h4>
-
+                                                                                    <h4 class="ct_fs_18 ct_fw_600 mb-0">{{currentChat?.name}}</h4>
+                                                                                    <p class="mb-0 ct_text_008000"><span class="online-dot"></span>Online</p>
                                                                               </div>
                                                                         </div>
+                                                                        @if(currentCar || currentChat?.carName){
+                                                                        <a class="d-flex align-items-center gap-2 justify-content-between ct_chat_car_summary"
+                                                                              routerLink="/car-detail" [queryParams]="{id: currentCar?.id}">
+                                                                              <div><img [src]="getCurrentCarImage()" alt="" class="ct_img_47 ct_img_35"></div>
+                                                                              <div class="min-w-0">
+                                                                                    <p class="ct_fs_18 ct_fw_600 text-limit-chat mb-0">{{getCurrentCarTitle()}}</p>
+                                                                                    @if(currentCar){
+                                                                                    <p class="ct_fs_14 text-limit-chat mb-0">
+                                                                                          {{currentCar.totalPrice | chfFormat}}
+                                                                                          @if(currentCar.registrationYear || currentCar.registration_year){ | {{currentCar.registrationYear || currentCar.registration_year}} }
+                                                                                          @if(currentCar.carMileage || currentCar.car_mileage){ | {{currentCar.carMileage || currentCar.car_mileage}} km }
+                                                                                    </p>
+                                                                                    }
+                                                                              </div>
+                                                                        </a>
+                                                                        }
                                                                   </div>
-                                                                  @if(currentCar){
-                                                                  <a class="d-flex align-items-center gap-2"
-                                                                        routerLink="/car-detail"
-                                                                        [queryParams]="{id: currentCar.id}">
-                                                                        <img [src]="currentCar.carImages[0]" alt=""
-                                                                              class="ct_ads_card_w_100">
-                                                                        <p class="mb-0 ct_fw_600">
-                                                                              {{currentCar.brandName}}
-                                                                              {{currentCar.carModel}}</p>
-                                                                  </a>
-                                                                  }
+                                                                  <button type="button" class="ct_chat_head_action" aria-label="More actions">
+                                                                        <i class="fa-solid fa-ban"></i>
+                                                                  </button>
                                                             </div>
-                                                            <div class="modal-body">
-                                                                  <div class="msg-body ct_custom_scroll"
-                                                                        #scrollContainer>
+                                                            <div class="modal-body px-0">
+                                                                  <div class="msg-body ct_custom_scroll" #scrollContainer>
                                                                         <ul>
-                                                                              @for (item of messages; track $index) {
+                                                                              @for (item of messages; track item.id || $index) {
                                                                               @if (item.sendBy != userData.id) {
                                                                               <li>
                                                                                     <div>
                                                                                           <div class="sender">
-                                                                                                <p
-                                                                                                      class="ct_fs_16 mb-0">
+                                                                                                <p class="ct_fs_14 mb-0">
                                                                                                       {{item.msg}}
-                                                                                                      <span
-                                                                                                            class="text-start d-block ct_fs_12 text-light me-1 text-nowrap opacity-75">
-                                                                                                            {{item.createdAt
-                                                                                                            |
-                                                                                                            date:'shortTime'}}</span>
+                                                                                                      <span class="text-start d-block ct_fs_12 text-light me-1 text-nowrap opacity-75">{{item.createdAt | date:'shortTime'}}</span>
                                                                                                 </p>
                                                                                           </div>
                                                                                     </div>
@@ -154,12 +129,9 @@
                                                                               }@else{
                                                                               <li>
                                                                                     <div class="repaly">
-                                                                                          <p class="mb-0 ct_fs_16">
+                                                                                          <p class="mb-0 ct_fs_14">
                                                                                                 {{item.msg}}
-                                                                                                <span
-                                                                                                      class="text-end d-block ct_fs_12 text-muted me-1 text-nowrap">
-                                                                                                      {{item.createdAt |
-                                                                                                      date:'shortTime'}}</span>
+                                                                                                <span class="text-end d-block ct_fs_12 text-muted me-1 text-nowrap">{{item.createdAt | date:'shortTime'}}</span>
                                                                                           </p>
                                                                                     </div>
                                                                               </li>
@@ -168,25 +140,590 @@
                                                                         </ul>
                                                                   </div>
                                                             </div>
-                                                            <div class="send-box ">
-                                                                  <form action="" class="position-relative">
-                                                                        <label for="upload_chat_img_2"
-                                                                              class="ct_upload_paper_click_img">
-                                                                              <input type="text" class="d-none"
-                                                                                    id="upload_chat_img_2">
-                                                                              <!-- <div>
-                                                                                    <i
-                                                                                          class="fa-solid fa-paperclip"></i>
-                                                                              </div> -->
+                                                            <div class="send-box">
+                                                                  <form action="" class="position-relative" (submit)="$event.preventDefault(); sendMessage()">
+                                                                        <label for="upload_chat_img_2" class="ct_upload_paper_click_img">
+                                                                              <input type="text" class="d-none" id="upload_chat_img_2">
+                                                                              <div><i class="fa-solid fa-paperclip"></i></div>
                                                                         </label>
                                                                         <input type="text" class="form-control"
                                                                               placeholder="{{'chat.yourMessage' | translate}}"
                                                                               [(ngModel)]="inputValue"
                                                                               [ngModelOptions]="{standalone: true}"
                                                                               (keyup.enter)="sendMessage()" />
-                                                                        <div class="ct_right_side_send_chat_btns cursor-pointer"
-                                                                              (click)="sendMessage()">
-                                                                              {{'chat.send' | translate}} <i
+                                                                        <button type="submit" class="ct_right_side_send_chat_btns btn-red border-0">
+                                                                              {{'chat.send' | translate}} <i class="fa-solid fa-paper-plane"></i>
+                                                                        </button>
+                                                                  </form>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                }@else {
+                                                <div class="ct_empty_chat_box_content ct_chat_empty_state">
+                                                      <svg width="123" height="123" viewBox="0 0 123 123" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <rect x="0.956267" y="1.3696" width="120.87" height="120.87" rx="60.4348" fill="#F4F5FA" />
+                                                            <rect x="0.956267" y="1.3696" width="120.87" height="120.87" rx="60.4348" stroke="#E1E2E9" stroke-width="0.869565" />
+                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M76.764 77.1737C70.1202 83.8182 60.2823 85.2538 52.2315 81.5305C51.043 81.052 50.0686 80.6653 49.1423 80.6653C46.5621 80.6806 43.3505 83.1824 41.6814 81.5152C40.0122 79.8459 42.516 76.6318 42.516 74.036C42.516 73.1096 42.1446 72.1526 41.6661 70.9618C37.9411 62.9123 39.3787 53.0711 46.0225 46.4288C54.5036 37.9445 68.2828 37.9445 76.764 46.4266C85.2605 54.924 85.2452 68.6916 76.764 77.1737Z" fill="#BEC0CA" stroke="#8B8D97" stroke-width="1.30435" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <path d="M69.9541 62.7022H69.9737" stroke="#8B8D97" stroke-width="1.73913" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <path d="M61.2412 62.7022H61.2608" stroke="#8B8D97" stroke-width="1.73913" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <path d="M52.5244 62.7022H52.544" stroke="#8B8D97" stroke-width="1.73913" stroke-linecap="round" stroke-linejoin="round" />
+                                                      </svg>
+                                                      <div>
+                                                            <h4 class="ct_fs_20 ct_fw_600">{{'chat.messages' | translate}}</h4>
+                                                            <p>{{ 'chat.clickOnAContactToViewMessages' | translate }}</p>
+                                                            <div class="">
+                                                                  <a class="ct_purple_btn d-flex align-items-center gap-2">
+                                                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                              <path fill-rule="evenodd" clip-rule="evenodd" d="M15.8447 16.039C13.1871 18.6968 9.25198 19.271 6.03167 17.7817C5.55627 17.5903 5.16651 17.4356 4.79598 17.4356C3.7639 17.4417 2.47927 18.4425 1.81162 17.7756C1.14396 17.1079 2.14545 15.8222 2.14545 14.7839C2.14545 14.4133 1.99688 14.0305 1.8055 13.5542C0.315505 10.3344 0.890529 6.39795 3.54805 3.74101C6.94052 0.347298 12.4522 0.347298 15.8447 3.74014C19.2432 7.1391 19.2371 12.6461 15.8447 16.039Z" stroke="white" stroke-width="1.30435" stroke-linecap="round" stroke-linejoin="round" />
+                                                                              <path d="M13.1203 10.2505H13.1281" stroke="white" stroke-width="1.73913" stroke-linecap="round" stroke-linejoin="round" />
+                                                                              <path d="M9.63595 10.2505H9.64377" stroke="white" stroke-width="1.73913" stroke-linecap="round" stroke-linejoin="round" />
+                                                                              <path d="M6.14962 10.2505H6.15745" stroke="white" stroke-width="1.73913" stroke-linecap="round" stroke-linejoin="round" />
+                                                                        </svg>
+                                                                        <span>{{'chat.newMessage' | translate}}</span>
+                                                                  </a>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                }
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+                  @if(sellerCarList.length > 1){
+                  <div class="col-lg-3 mb-4">
+                        <div class="ct_right_side_card_listed">
+                              <h4 class="ct_fs_18 ct_text_red mb-1">{{ 'chat.moreCarsByTheSeller' | translate }}</h4>
+                              <p class="ct_fs_14 ct_text_op_6">Showing {{sellerCarList.length - 1}} more cars you might like</p>
+                              <ul class="mt-4 ct_custom_scroll">
+                                    @for(car of sellerCarList; track car.id){
+                                    <li>
+                                          <a class="d-flex align-items-start gap-3" routerLink="/car-detail" [queryParams]="{id: car.id}">
+                                                <img [src]="car.carImages[0]" alt="" class="ct_img_w_76">
+                                                <div>
+                                                      <h4 class="ct_fs_14 mb-1">{{car.brandName}} {{car.carModel}}</h4>
+                                                      <p class="mb-0 ct_text_red ">{{car.totalPrice | chfFormat}}</p>
+                                                </div>
+                                          </a>
+                                    </li>
+                                    }
+                              </ul>
+                        </div>
+                  </div>
+                  }
+            </div>
+      </div>
+</section> -->
+
+
+<div class="ct_mt_100 mb-3">
+      <div class="container">
+            <div class="row">
+                  <div class="col-md-12">
+                        <div class="chat-area">
+                              <!-- chatlist -->
+                              <div class="chatlist ct_chatroom_chatlist ct_right_main_box bg-white">
+                                    <div class="modal-dialog-scrollable">
+                                          <div class="modal-content">
+                                                <div
+                                                      class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-3">
+                                                      <h4 class="ct_fs_14 mb-0 ct_fw_600 ct_nunito_font">
+                                                            Contacts
+                                                      </h4>
+                                                      <h4 class="ct_fs_14 mb-0 ct_fw_600 ct_nunito_font ct_text_op_05">
+                                                            34
+                                                      </h4>
+                                                </div>
+                                                <div class="position-relative">
+                                                      <input type="text"
+                                                            class="form-control ct_input ct_input_ps_40 ct_input_h_40 ct_border_op_10"
+                                                            placeholder="Search" />
+                                                      <i class="fa-solid fa-search ct_input_icon_left"></i>
+                                                </div>
+                                                <div class="modal-body mt-4 ct_custom_scroll">
+                                                      <!-- chat-list -->
+                                                      <div class="chat-lists">
+                                                            <div class="chat-list">
+                                                                  <a href="javascript:void(0)" class="d-flex active2">
+                                                                        <div class="ct_chat_list_grid">
+                                                                              <div class="position-relative">
+                                                                                    <img class="img-fluid ct_img_40"
+                                                                                          src="img/user-img.jpg"
+                                                                                          alt="user img" />
+                                                                                    <span class="active"></span>
+                                                                              </div>
+                                                                              <div class="flex-grow-1 ms-3">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center gap-2 justify-content-between">
+                                                                                          <h3
+                                                                                                class="ct_fs_14 ct_fw_600">
+                                                                                                Jane Doe</h3>
+                                                                                          <div class="text-black">11: 57
+                                                                                                pm</div>
+                                                                                    </div>
+                                                                                    <div
+                                                                                          class="d-flex align-items-center gap-2 justify-content-between">
+                                                                                          <div>
+                                                                                                <p
+                                                                                                      class="ct_fs_14 ct_fw_600 ct_overlay_text ct_overlay_text_w_150 text-limit">
+                                                                                                      <img src="img/chat-img.jpg"
+                                                                                                            class="ct_img_25" />
+                                                                                                      Mercedes-Benz
+                                                                                                      C-Class
+                                                                                                </p>
+                                                                                                <p class="ct_fs_12">
+                                                                                                      CHF 29’900.– |
+                                                                                                      2018 | 85,000 km
+                                                                                                </p>
+                                                                                          </div>
+                                                                                          <div
+                                                                                                class="ct_caht_msg_notify">
+                                                                                                <span
+                                                                                                      class="ms-auto">1</span>
+                                                                                          </div>
+                                                                                    </div>
+                                                                              </div>
+                                                                        </div>
+                                                                  </a>
+                                                                  <a href="javascript:void(0)" class="d-flex">
+                                                                        <div class="position-relative">
+                                                                              <img class="img-fluid ct_img_40"
+                                                                                    src="img/user-img.jpg"
+                                                                                    alt="user img" />
+                                                                              <span class="active"></span>
+                                                                        </div>
+                                                                        <div class="flex-grow-1 ms-3">
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2 justify-content-between">
+                                                                                    <h3 class="ct_fs_14 ct_fw_600">Jane
+                                                                                          Doe</h3>
+                                                                                    <!-- <div class="ct_caht_msg_notify ">
+                                                         <span class="ms-auto">1</span>
+                                                         </div> -->
+                                                                              </div>
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2 justify-content-between">
+                                                                                    <p
+                                                                                          class="ct_fs_14 ct_overlay_text ct_overlay_text_w_150">
+                                                                                          Hi, i want make enquiries
+                                                                                          about yo...
+                                                                                    </p>
+                                                                              </div>
+                                                                        </div>
+                                                                  </a>
+                                                                  <a href="javascript:void(0)" class="d-flex">
+                                                                        <div class="position-relative">
+                                                                              <img class="img-fluid ct_img_40"
+                                                                                    src="img/user-img.jpg"
+                                                                                    alt="user img" />
+                                                                              <span class="active"></span>
+                                                                        </div>
+                                                                        <div class="flex-grow-1 ms-3">
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2 justify-content-between">
+                                                                                    <h3 class="ct_fs_14 ct_fw_600">Jane
+                                                                                          Doe</h3>
+                                                                                    <!-- <div class="ct_caht_msg_notify ">
+                                                         <span class="ms-auto">1</span>
+                                                         </div> -->
+                                                                              </div>
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2 justify-content-between">
+                                                                                    <p
+                                                                                          class="ct_fs_14 ct_overlay_text ct_overlay_text_w_150">
+                                                                                          Hi, i want make enquiries
+                                                                                          about yo...
+                                                                                    </p>
+                                                                              </div>
+                                                                        </div>
+                                                                  </a>
+                                                                  <a href="javascript:void(0)" class="d-flex">
+                                                                        <div class="position-relative">
+                                                                              <img class="img-fluid ct_img_40"
+                                                                                    src="img/user-img.jpg"
+                                                                                    alt="user img" />
+                                                                              <span class="active"></span>
+                                                                        </div>
+                                                                        <div class="flex-grow-1 ms-3">
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2 justify-content-between">
+                                                                                    <h3 class="ct_fs_14 ct_fw_600">Jane
+                                                                                          Doe</h3>
+                                                                                    <!-- <div class="ct_caht_msg_notify ">
+                                                         <span class="ms-auto">1</span>
+                                                         </div> -->
+                                                                              </div>
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2 justify-content-between">
+                                                                                    <p
+                                                                                          class="ct_fs_14 ct_overlay_text ct_overlay_text_w_150">
+                                                                                          Hi, i want make enquiries
+                                                                                          about yo...
+                                                                                    </p>
+                                                                              </div>
+                                                                        </div>
+                                                                  </a>
+                                                                  <a href="javascript:void(0)" class="d-flex">
+                                                                        <div class="position-relative">
+                                                                              <img class="img-fluid ct_img_40"
+                                                                                    src="img/user-img.jpg"
+                                                                                    alt="user img" />
+                                                                              <span class="active"></span>
+                                                                        </div>
+                                                                        <div class="flex-grow-1 ms-3">
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2 justify-content-between">
+                                                                                    <h3 class="ct_fs_14 ct_fw_600">Jane
+                                                                                          Doe</h3>
+                                                                                    <!-- <div class="ct_caht_msg_notify ">
+                                                         <span class="ms-auto">1</span>
+                                                         </div> -->
+                                                                              </div>
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2 justify-content-between">
+                                                                                    <p
+                                                                                          class="ct_fs_14 ct_overlay_text ct_overlay_text_w_150">
+                                                                                          Hi, i want make enquiries
+                                                                                          about yo...
+                                                                                    </p>
+                                                                              </div>
+                                                                        </div>
+                                                                  </a>
+                                                                  <a href="javascript:void(0)" class="d-flex">
+                                                                        <div class="position-relative">
+                                                                              <img class="img-fluid ct_img_40"
+                                                                                    src="img/user-img.jpg"
+                                                                                    alt="user img" />
+                                                                              <span class="active"></span>
+                                                                        </div>
+                                                                        <div class="flex-grow-1 ms-3">
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2 justify-content-between">
+                                                                                    <h3 class="ct_fs_14 ct_fw_600">Jane
+                                                                                          Doe</h3>
+                                                                                    <!-- <div class="ct_caht_msg_notify ">
+                                                         <span class="ms-auto">1</span>
+                                                         </div> -->
+                                                                              </div>
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2 justify-content-between">
+                                                                                    <p
+                                                                                          class="ct_fs_14 ct_overlay_text ct_overlay_text_w_150">
+                                                                                          Hi, i want make enquiries
+                                                                                          about yo...
+                                                                                    </p>
+                                                                              </div>
+                                                                        </div>
+                                                                  </a>
+                                                                  <a href="javascript:void(0)" class="d-flex">
+                                                                        <div class="position-relative">
+                                                                              <img class="img-fluid ct_img_40"
+                                                                                    src="img/user-img.jpg"
+                                                                                    alt="user img" />
+                                                                              <span class="active"></span>
+                                                                        </div>
+                                                                        <div class="flex-grow-1 ms-3">
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2 justify-content-between">
+                                                                                    <h3 class="ct_fs_14 ct_fw_600">Jane
+                                                                                          Doe</h3>
+                                                                                    <!-- <div class="ct_caht_msg_notify ">
+                                                         <span class="ms-auto">1</span>
+                                                         </div> -->
+                                                                              </div>
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2 justify-content-between">
+                                                                                    <p
+                                                                                          class="ct_fs_14 ct_overlay_text ct_overlay_text_w_150">
+                                                                                          Hi, i want make enquiries
+                                                                                          about yo...
+                                                                                    </p>
+                                                                              </div>
+                                                                        </div>
+                                                                  </a>
+                                                            </div>
+                                                      </div>
+                                                      <!-- chat-list -->
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+                              <!-- chatlist -->
+                              <!-- chatbox -->
+                              <div class="chatbox">
+                                    <div class="ct_white_bg ct_border_radius_10 ct_p_20 h-100">
+                                          <div class="modal-dialog-scrollable">
+                                                <div class="modal-content ct_chatroom_modal_content">
+                                                      <div class="d-block">
+                                                            <div
+                                                                  class="msg-head d-flex align-items-center justify-content-between gap-3">
+                                                                  <div class="d-flex align-items-center gap-2">
+                                                                        <i
+                                                                              class="fa-solid fa-chevron-left chat-icon d-md-none"></i>
+                                                                        <div class="ct_grid_50_auto">
+                                                                              <img src="img/user-img.jpg" alt="" />
+                                                                              <div>
+                                                                                    <h4
+                                                                                          class="ct_fs_16 ct_fw_600 mb-0 ct_rs_fs_12 ct_rs_fs_16">
+                                                                                          John Smith
+                                                                                    </h4>
+                                                                                    <p class="mb-0 ct_text_008000">
+                                                                                          <span
+                                                                                                class="online-dot"></span>
+                                                                                          Online
+                                                                                    </p>
+                                                                                    <!-- <p class="mb-0 ct_text_op_05">
+                                                         Order #12345
+                                                         </p> -->
+                                                                              </div>
+                                                                        </div>
+                                                                        <div
+                                                                              class="d-flex align-items-center gap-2 justify-content-between">
+                                                                              <div class="d-flex gap-2">
+                                                                                    <div class="">
+                                                                                          <img src="img/chat-img.jpg"
+                                                                                                class="ct_img_47 ct_img_35" />
+                                                                                    </div>
+                                                                                    <div>
+                                                                                          <p
+                                                                                                class="ct_fs_18 ct_fw_600 text-limit-chat">
+                                                                                                Mercedes-Benz C-Class
+                                                                                          </p>
+                                                                                          <p
+                                                                                                class="ct_fs_14 text-limit-chat">
+                                                                                                CHF 29’900.– | 2018 |
+                                                                                                85,000 km
+                                                                                          </p>
+                                                                                    </div>
+                                                                              </div>
+                                                                        </div>
+                                                                  </div>
+                                                                  <div>
+                                                                        <img src="img/block.png" />
+                                                                  </div>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                  <div class="msg-body ct_custom_scroll">
+                                                                        <div class="text-center my-4">
+                                                                              <span
+                                                                                    class="chat-date-box ct_fs_12 ct_fw_400">
+                                                                                    12 August 2022
+                                                                              </span>
+                                                                        </div>
+                                                                        <ul class="p-0">
+                                                                              <li>
+                                                                                    <div>
+                                                                                          <div class="sender">
+                                                                                                <h5
+                                                                                                      class="ct_fs_14 mb-0">
+                                                                                                      Hi, I have a
+                                                                                                      question about my
+                                                                                                      recent
+                                                                                                      order...
+                                                                                                </h5>
+                                                                                          </div>
+                                                                                          <div class="mt-1">
+                                                                                                <span class="msg-time">12:55
+                                                                                                      am</span>
+                                                                                          </div>
+                                                                                    </div>
+                                                                              </li>
+                                                                              <li>
+                                                                                    <div class="repaly">
+                                                                                          <p>
+                                                                                                Hi, I have a question
+                                                                                                about my recent
+                                                                                                order...
+                                                                                          </p>
+                                                                                    </div>
+                                                                                    <div class="text-end mt-1">
+                                                                                          <span class="msg-time">12:55
+                                                                                                am</span>
+                                                                                          <img src="img/icons/check-chat.png"
+                                                                                                alt="" />
+                                                                                    </div>
+                                                                              </li>
+                                                                              <li>
+                                                                                    <div>
+                                                                                          <div class="sender">
+                                                                                                <h5
+                                                                                                      class="ct_fs_14 mb-0">
+                                                                                                      Hi, I have a
+                                                                                                      question about my
+                                                                                                      recent
+                                                                                                      order...
+                                                                                                </h5>
+                                                                                          </div>
+                                                                                          <div class="mt-1">
+                                                                                                <span class="msg-time">12:55
+                                                                                                      am</span>
+                                                                                          </div>
+                                                                                    </div>
+                                                                              </li>
+                                                                              <li>
+                                                                                    <div class="repaly">
+                                                                                          <p>
+                                                                                                Hi, I have a question
+                                                                                                about my recent
+                                                                                                order...
+                                                                                          </p>
+                                                                                    </div>
+                                                                                    <div class="text-end mt-1">
+                                                                                          <span class="msg-time">12:55
+                                                                                                am</span>
+                                                                                          <img src="img/icons/check-chat.png"
+                                                                                                alt="" />
+                                                                                    </div>
+                                                                              </li>
+
+                                                                              <li>
+                                                                                    <div>
+                                                                                          <div class="sender">
+                                                                                                <h5
+                                                                                                      class="ct_fs_14 mb-0">
+                                                                                                      Hi, I have a
+                                                                                                      question about my
+                                                                                                      recent
+                                                                                                      order...
+                                                                                                </h5>
+                                                                                          </div>
+                                                                                          <div class="mt-1">
+                                                                                                <span class="msg-time">12:55
+                                                                                                      am</span>
+                                                                                          </div>
+                                                                                    </div>
+                                                                              </li>
+                                                                              <li>
+                                                                                    <div class="repaly">
+                                                                                          <p>
+                                                                                                Hi, I have a question
+                                                                                                about my recent
+                                                                                                order...
+                                                                                          </p>
+                                                                                    </div>
+                                                                                    <div class="text-end mt-1">
+                                                                                          <span class="msg-time">12:55
+                                                                                                am</span>
+                                                                                          <img src="img/icons/check-chat.png"
+                                                                                                alt="" />
+                                                                                    </div>
+                                                                              </li>
+                                                                              <li>
+                                                                                    <div>
+                                                                                          <div class="sender">
+                                                                                                <h5
+                                                                                                      class="ct_fs_14 mb-0">
+                                                                                                      Hi, I have a
+                                                                                                      question about my
+                                                                                                      recent
+                                                                                                      order...
+                                                                                                </h5>
+                                                                                          </div>
+                                                                                          <div class="mt-1">
+                                                                                                <span class="msg-time">12:55
+                                                                                                      am</span>
+                                                                                          </div>
+                                                                                    </div>
+                                                                              </li>
+                                                                              <li>
+                                                                                    <div class="repaly">
+                                                                                          <p>
+                                                                                                Hi, I have a question
+                                                                                                about my recent
+                                                                                                order...
+                                                                                          </p>
+                                                                                    </div>
+                                                                                    <div class="text-end mt-1">
+                                                                                          <span class="msg-time">12:55
+                                                                                                am</span>
+                                                                                          <img src="img/icons/check-chat.png"
+                                                                                                alt="" />
+                                                                                    </div>
+                                                                              </li>
+                                                                              <li>
+                                                                                    <div>
+                                                                                          <div class="sender">
+                                                                                                <h5
+                                                                                                      class="ct_fs_14 mb-0">
+                                                                                                      Hi, I have a
+                                                                                                      question about my
+                                                                                                      recent
+                                                                                                      order...
+                                                                                                </h5>
+                                                                                          </div>
+                                                                                          <div class="mt-1">
+                                                                                                <span class="msg-time">12:55
+                                                                                                      am</span>
+                                                                                          </div>
+                                                                                    </div>
+                                                                              </li>
+                                                                              <li>
+                                                                                    <div class="repaly">
+                                                                                          <p>
+                                                                                                Hi, I have a question
+                                                                                                about my recent
+                                                                                                order...
+                                                                                          </p>
+                                                                                    </div>
+                                                                                    <div class="text-end mt-1">
+                                                                                          <span class="msg-time">12:55
+                                                                                                am</span>
+                                                                                          <img src="img/icons/check-chat.png"
+                                                                                                alt="" />
+                                                                                    </div>
+                                                                              </li>
+                                                                              <li>
+                                                                                    <div>
+                                                                                          <div class="sender">
+                                                                                                <h5
+                                                                                                      class="ct_fs_14 mb-0">
+                                                                                                      Hi, I have a
+                                                                                                      question about my
+                                                                                                      recent
+                                                                                                      order...
+                                                                                                </h5>
+                                                                                          </div>
+                                                                                          <div class="mt-1">
+                                                                                                <span class="msg-time">12:55
+                                                                                                      am</span>
+                                                                                          </div>
+                                                                                    </div>
+                                                                              </li>
+                                                                              <li>
+                                                                                    <div class="repaly">
+                                                                                          <p>
+                                                                                                Hi, I have a question
+                                                                                                about my recent
+                                                                                                order...
+                                                                                          </p>
+                                                                                    </div>
+                                                                                    <div class="text-end mt-1">
+                                                                                          <span class="msg-time">12:55
+                                                                                                am</span>
+                                                                                          <img src="img/icons/check-chat.png"
+                                                                                                alt="" />
+                                                                                    </div>
+                                                                              </li>
+                                                                        </ul>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="send-box">
+                                                                  <form action="" class="position-relative">
+                                                                        <label for="upload_chat_img_2"
+                                                                              class="ct_upload_paper_click_img">
+                                                                              <input type="text" class="d-none"
+                                                                                    id="upload_chat_img_2" />
+                                                                              <div>
+                                                                                    <i
+                                                                                          class="fa-solid fa-paperclip"></i>
+                                                                              </div>
+                                                                        </label>
+                                                                        <input type="text" class="form-control"
+                                                                              placeholder="Your message" />
+                                                                        <div
+                                                                              class="ct_right_side_send_chat_btns btn-red">
+                                                                              Send <i
                                                                                     class="fa-solid fa-paper-plane"></i>
                                                                         </div>
                                                                   </form>
@@ -217,11 +754,10 @@
                                                                         stroke-linejoin="round" />
                                                             </svg>
                                                             <div>
-                                                                  <h4 class="ct_fs_20 ct_fw_600">{{'chat.messages' |
-                                                                        translate}}</h4>
-                                                                  <p>{{ 'chat.clickOnAContactToViewMessages' | translate }}</p>
+                                                                  <h4 class="ct_fs_20 ct_fw_600">Messages</h4>
+                                                                  <p>Click on a contact to view messages.</p>
                                                                   <div class="">
-                                                                        <a
+                                                                        <a href="#"
                                                                               class="ct_purple_btn d-flex align-items-center gap-2">
                                                                               <svg width="20" height="20"
                                                                                     viewBox="0 0 20 20" fill="none"
@@ -249,85 +785,17 @@
                                                                                           stroke-linecap="round"
                                                                                           stroke-linejoin="round" />
                                                                               </svg>
-                                                                              <span>{{'chat.newMessage' | translate}}</span>
+                                                                              <span> New Message</span>
                                                                         </a>
                                                                   </div>
                                                             </div>
                                                       </div>
                                                 </div>
-                                                }@else {
-                                                <div class="d-flex flex-column align-items-center justify-content-center text-center bg-white rounded-4 shadow-sm p-5 position-relative overflow-hidden"
-                                                      style="min-height: 75vh;">
-                                                      <div class="position-absolute top-0 start-0 w-100 h-100"
-                                                            style="background: radial-gradient(circle at top, rgba(220,53,69,0.05), transparent); z-index:0;">
-                                                      </div>
-
-                                                      <div class="d-flex align-items-center justify-content-center rounded-circle mb-4 position-relative"
-                                                            style="width: 120px; height: 120px; background: linear-gradient(135deg, #ffccd1, #fff); z-index:1;">
-                                                            <i class="bi bi-chat-dots text-primary fs-1"></i>
-                                                            <span
-                                                                  class="position-absolute top-0 start-0 w-100 h-100 rounded-circle border border-3 border-danger opacity-25"></span>
-                                                      </div>
-
-                                                      <h2 class="fw-bold text-dark mb-3" style="z-index:1;">
-                                                            {{'chat.noChatSelected' | translate}}
-                                                      </h2>
-                                                      <p class="text-muted" style="max-width: 400px; z-index:1;">
-                                                            {{'chat.tapAChatFromYourChatListToStartAConversation' |
-                                                            translate}}
-                                                      </p>
-                                                </div>
-                                                }
                                           </div>
                                     </div>
                               </div>
                         </div>
                   </div>
-                  @if(sellerCarList.length > 1){
-                  <div class="col-lg-3 mb-4">
-                        <div class="ct_right_side_card_listed">
-                              <h4 class="ct_fs_18 ct_text_red mb-1">{{ 'chat.moreCarsByTheSeller' | translate }}</h4>
-                              <p class="ct_fs_14 ct_text_op_6">Showing {{sellerCarList.length - 1}} more cars you might
-                                    like</p>
-                              <ul class="mt-4 ct_custom_scroll">
-                                    @for(car of sellerCarList; track $index){
-                                    <li>
-                                          <a class="d-flex align-items-start gap-3" routerLink="/car-detail"
-                                                [queryParams]="{id: car.id}">
-                                                <img [src]="car.carImages[0]" alt="" class="ct_img_w_76">
-                                                <div>
-                                                      <h4 class="ct_fs_14 mb-1">{{car.brandName}} {{car.carModel}}</h4>
-                                                      <p class=" mb-0 ct_text_red ">{{car.totalPrice |
-                                                            chfFormat}}</p>
-                                                </div>
-                                          </a>
-                                    </li>
-                                    }
-                              </ul>
-                        </div>
-                  </div>
-                  }
             </div>
       </div>
-</section>
-
-<!-- <div class="d-flex align-items-center justify-content-center" style="height: 70vh;">
-      <div class="text-center">
-            <div class="mb-4 d-flex align-items-center justify-content-center">
-                  <div class="d-flex align-items-center justify-content-center rounded-circle mb-4 position-relative"
-                        style="width: 120px; height: 120px; background: linear-gradient(135deg, #ffccd1, #fff); z-index:1;">
-                        <i class="bi bi-car-front text-danger fs-1"></i>
-                        <span
-                              class="position-absolute top-0 start-0 w-100 h-100 rounded-circle border border-3 border-danger opacity-25"></span>
-                  </div>
-            </div>
-            <h4 class="fw-semibold text-dark mb-2">{{ 'chat.chatFeatureComingSoon' | translate }}</h4>
-            <p class="text-muted mb-4">
-                  We're still working on building a smooth and interactive chat experience. Stay tuned — it’ll be live
-                  soon!
-            </p>
-            <button class="ct_red_btn text-center" type="button" (click)="location.back()">
-                  <i class="bi bi-arrow-left me-2"></i>Go Back
-            </button>
-      </div>
-</div> -->
+</div>

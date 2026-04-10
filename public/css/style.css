@@ -1826,7 +1826,7 @@ input {
 .chat-area {
   position: relative;
   width: 100%;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 100px);
   overflow: hidden;
   min-height: calc(100% - 1rem);
 }
@@ -2035,7 +2035,7 @@ a.add img {
 }
 
 .msg-body {
-  height: calc(100vh - 51vh);
+  height: calc(100vh - 230px);
   overflow-y: auto;
 }
 
@@ -2066,7 +2066,7 @@ a.add img {
   font-size: 14px;
   line-height: 1.5;
   font-weight: 400;
-  padding: 15px;
+  padding: 10px;
   background: rgba(230, 230, 230, 1);
   /* color: #fff; */
   display: inline-block;
@@ -2082,7 +2082,7 @@ a.add img {
   font-size: 14px;
   line-height: 1.5;
   font-weight: 400;
-  padding: 15px;
+  padding: 10px;
   background: rgba(0, 0, 0, 1);
   display: inline-block;
   border-top-left-radius: 10px;
@@ -2093,8 +2093,8 @@ a.add img {
 
 .msg-body ul .repaly p {
   text-align: left;
-  margin-bottom: 8px;
-  font-size: 16px;
+  margin-bottom: 0px;
+  font-size: 14px;
   font-weight: 400;
 }
 
@@ -2250,7 +2250,7 @@ a.add img {
 
 .msg-body ul .repaly {
   display: block;
-  width: 100%;
+  /* width: 100%; */
   text-align: right;
   position: relative;
   max-width: 450px;
