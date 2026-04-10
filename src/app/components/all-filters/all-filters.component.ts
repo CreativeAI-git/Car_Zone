@@ -141,6 +141,104 @@ export class AllFiltersComponent {
     this.doorRangeChange$.next();
   }
 
+  onResetFilters() {
+    this.filterService.beginEditing();
+    const defaults = this.filterService.getDefaultPayload();
+    this.syncStateFromPayload(defaults);
+    this.filterService.patchDraft(defaults);
+    this.getFiltersData();
+  }
+
+  onResetSellerType() {
+    this.selectedSellerType = [];
+    this.getFiltersData();
+  }
+
+  onResetYear() {
+    const defaults = this.filterService.getDefaultPayload();
+    this.yearRange = [
+      defaults.year_range.min_year ?? new Date().getFullYear() - 35,
+      defaults.year_range.max_year ?? new Date().getFullYear()
+    ];
+    this.getFiltersData();
+  }
+
+  onResetKm() {
+    const defaults = this.filterService.getDefaultPayload();
+    this.kmRange = [
+      defaults.kilometers_range.min_km ?? 0,
+      defaults.kilometers_range.max_km ?? 4000000
+    ];
+    this.getFiltersData();
+  }
+
+  onResetPrice() {
+    const defaults = this.filterService.getDefaultPayload();
+    this.priceType = defaults.price_type;
+    this.priceRange = [
+      defaults.price_range.min_price ?? 0,
+      defaults.price_range.max_price ?? 1000000
+    ];
+    this.leasePriceRange = [
+      defaults.price_range.min_price ?? 0,
+      defaults.price_range.max_price ?? 100000
+    ];
+    this.getFiltersData();
+  }
+
+  onResetState() {
+    this.stateId = [];
+    this.getFiltersData();
+  }
+
+  onResetBodyType() {
+    this.bodyTypeId = [];
+    this.getFiltersData();
+  }
+
+  onResetFuel() {
+    this.fuelTypeId = [];
+    this.getFiltersData();
+  }
+
+  onResetTransmission() {
+    this.transmissionId = [];
+    this.getFiltersData();
+  }
+
+  onResetDriveType() {
+    this.driveTypeId = [];
+    this.getFiltersData();
+  }
+
+  onResetExteriorColor() {
+    this.exteriorColorId = [];
+    this.getFiltersData();
+  }
+
+  onResetInteriorColor() {
+    this.interiorColorId = [];
+    this.getFiltersData();
+  }
+
+  onResetSeatRange() {
+    const defaults = this.filterService.getDefaultPayload();
+    this.seatRange = [
+      defaults.seat_range.min_seat ?? 0,
+      defaults.seat_range.max_seat ?? 25
+    ];
+    this.getFiltersData();
+  }
+
+  onResetDoorRange() {
+    const defaults = this.filterService.getDefaultPayload();
+    this.doorRange = [
+      defaults.door_range.min_door ?? 0,
+      defaults.door_range.max_door ?? 10
+    ];
+    this.getFiltersData();
+  }
+
   onSellerTypeChange(type: string, event: Event) {
     const input = event.target as HTMLInputElement;
     this.selectedSellerType = this.toggleSelection(this.selectedSellerType, type, input.checked);
