@@ -58,7 +58,9 @@
       <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                   <div>
-                        <h2 class="mb-0 ct_fs_30 ct_fw_600">{{ 'vehicle.searchIn196008Vehicles' | translate }}</h2>
+                        <h2 class="mb-0 ct_fs_30 ct_fw_600">
+                              {{ 'vehicle.searchInVehicles' | translate:{ count: (totalCars | number) } }}
+                        </h2>
                   </div>
 
                   <div>
@@ -1050,7 +1052,7 @@
                         <hr />
                   </div>
                   }
-                  @if (totalPages > 1) {
+                  @if (totalPages > 1 && !filterService.hasActiveAppliedFilters()) {
                   <div class="browse-pagination d-flex justify-content-center align-items-center my-3">
                         <nav>
                               <ul class="pagination mb-0 align-items-center">

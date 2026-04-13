@@ -96,7 +96,7 @@ export class BrowseCarsComponent {
     private authService: AuthService,
     private modalService: ModalService,
     private translate: TranslateService,
-    private filterService: FilterService
+    public filterService: FilterService
   ) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.appliedFilters = this.filterService.getDefaultPayload();
