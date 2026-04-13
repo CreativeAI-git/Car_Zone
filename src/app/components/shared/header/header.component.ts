@@ -60,15 +60,15 @@ export class HeaderComponent {
   getLanguage(langCode: string) {
     switch (langCode) {
       case 'de':
-        return 'German';
+        return this.translate.instant('common.languages.german');
       case 'en':
-        return 'English';
+        return this.translate.instant('common.languages.english');
       case 'it':
-        return 'Italian';
+        return this.translate.instant('common.languages.italian');
       case 'fr':
-        return 'French';
+        return this.translate.instant('common.languages.french');
       default:
-        return 'English';
+        return this.translate.instant('common.languages.english');
     }
   }
 

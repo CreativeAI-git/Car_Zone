@@ -34,15 +34,15 @@ export class EditProfileComponent {
   imagePreview: any
   role: any
   NoOfDays: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-  defaultServices: string[] = ['Leasing & Financing', 'Fair trade-in prices', 'Warranty & service packages']
-  defaultAdvantages: string[] = ['Flexible financing options', 'Certified vehicles', 'Warranty & service packages']
+  defaultServices: string[] = ['profile.defaultServiceLeasingAndFinancing', 'profile.defaultServiceFairTradeInPrices', 'profile.defaultServiceWarrantyAndServicePackages']
+  defaultAdvantages: string[] = ['profile.defaultAdvantageFlexibleFinancingOptions', 'profile.defaultAdvantageCertifiedVehicles', 'profile.defaultAdvantageWarrantyAndServicePackages']
   sellerTypes: any[] = [{
-    label: 'PrivateSeller',
-    label2: 'ForIndividualSellers',
+    label: 'profile.privateSeller',
+    label2: 'profile.forIndividualSellers',
     value: 'personal'
   }, {
-    label: 'OfficialSeller',
-    label2: 'ForBusinesses',
+    label: 'profile.officialSeller',
+    label2: 'profile.forBusinesses',
     value: 'business'
   }];
   imageChangedEvent: any = '';
@@ -359,7 +359,7 @@ export class EditProfileComponent {
       },
       error: (error) => {
         this.loading = false
-        this.toastr.error(error)
+        this.toastr.error(error?.message || this.translate.instant('profile.unableToUpdateProfile'))
       }
     })
   }
@@ -404,12 +404,12 @@ export class EditProfileComponent {
 
     this.defaultAdvantages.forEach((advantage) => {
       this.advantages.push(this.fb.group({
-        advantage: [advantage]
+        advantage: [this.translate.instant(advantage)]
       }));
     });
 
     this.defaultServices.forEach((service) => {
-      this.services.push(this.fb.group({ service_name: [service], isActive: [1] }));
+      this.services.push(this.fb.group({ service_name: [this.translate.instant(service)], isActive: [1] }));
     });
 
     this.teamMembers.push(
@@ -519,7 +519,7 @@ export class EditProfileComponent {
     const file = event.target.files[0];
     if (file) {
       if (file.type !== 'video/mp4') {
-        alert('Only MP4 videos are allowed');
+        alert(this.translate.instant('profile.onlyMp4VideosAreAllowed'));
         return;
       }
       this.selectedVideo = file;

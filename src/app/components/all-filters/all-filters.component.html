@@ -4,7 +4,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h5 class="ct_fs_25 ct_fw_600 ct_font_cairo mb-0 ct_color_8f0c1f">
-                        Make & Model
+                        {{ 'vehicle.makeModel' | translate }}
                     </h5>
                 </div>
                 <div>
@@ -17,7 +17,7 @@
                 <a href="#" class="btn-grey-transparent w-25 text-center" data-bs-toggle="modal"
                     data-bs-target="#selectMakeModal">
                     <img src="img/icons/proicons_add.png" class="me-2" />
-                    Add Vehicle
+                    {{ 'vehicle.addVehicleData' | translate }}
                 </a>
                 <div class="modal fade" id="selectMakeModal" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
@@ -40,7 +40,7 @@
                         </div> -->
                                         <div class="w-100">
                                             <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo text-center">
-                                                Select Make
+                                                {{ 'filters.selectMake' | translate }}
                                             </h3>
                                         </div>
                                     </div>
@@ -54,7 +54,7 @@
                                     </div>
                                     <div class="vehicle-modal-detail-box">
                                         <h4 class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f mt-4">
-                                            Popular Makes
+                                            {{ 'filters.popularMakes' | translate }}
                                         </h4>
                                         <div class="popular-make-icon">
                                             <div class="popular-make-icon-box">
@@ -91,7 +91,7 @@
                                     </div>
                                     <div class="vehicle-modal-detail-box">
                                         <h4 class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f my-4">
-                                            All Makes
+                                            {{ 'filters.allMakes' | translate }}
                                         </h4>
                                         <div class="popular-make-all-box">
                                             <div class="popular-make-all-box d-flex justify-content-between">
@@ -2396,7 +2396,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Quality seal
+                                        {{ 'filters.qualitySeal' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -2604,7 +2604,7 @@
             @if(isLoading){
             <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
             }@else{
-            Show {{filterData.total_cars}} Cars
+            {{ 'filters.showCars' | translate:{ count: filterData.total_cars } }}
             }
         </button>
     </div>

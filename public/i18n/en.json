@@ -7,7 +7,10 @@
     "holdOn": "Hold on!",
     "areYouSureYouWantToClose": "Are you sure you want to close app? Make sure you don't have anything pending before leaving.",
     "cancel": "Cancel",
+    "downloadPdf": "Download Pdf",
+    "downloading": "Downloading...",
     "yes": "Yes",
+    "no": "No",
     "or": "Or",
     "userError": "Please enter minimum 3 characters",
     "remainingTime": "Remaining Time",
@@ -170,7 +173,17 @@
     "buyer": "buyer",
     "seller": "seller",
     "iAmABuyer": "I am a Buyer",
-    "iAmASeller": "I am a Seller"
+    "iAmASeller": "I am a Seller",
+    "faq": "FAQ",
+    "menu": "Menu",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "languages": {
+      "english": "English",
+      "french": "French",
+      "german": "German",
+      "italian": "Italian"
+    }
   },
   "vehicle": {
     "doors": "Doors",
@@ -378,6 +391,18 @@
     "leasingSummary": "Leasing Summary",
     "leasingNotSelected": "Leasing not selected.",
     "contactDetails": "Contact Details",
+    "recentlyViewed": "Recently viewed",
+    "carDeletedSuccessfully": "Car deleted successfully",
+    "pleaseSelectAtLeastOneReason": "Please select at least one reason.",
+    "pleaseEnterCustomReportReason": "Please enter a custom report reason.",
+    "failedToReportCar": "Failed to report car.",
+    "carDetailsNotAvailableYet": "Car details are not available yet.",
+    "inquirySentSuccessfully": "Inquiry sent successfully.",
+    "failedToSendInquiry": "Failed to send inquiry.",
+    "moreVehiclesFromThisSeller": "More vehicles from this seller",
+    "buyingContract": "Buying Contract",
+    "messageIsRequired": "Message is required.",
+    "pleaseSelectAtLeastOneInquiryType": "Please select at least one inquiry type.",
     "1FindVehicle": "1. Find vehicle",
     "findVehicle": "Find vehicle",
     "selectHowYouWantFindYourVehicle": "Select how you want find your vehicle",
@@ -589,13 +614,51 @@
     "readyToLeave": "Ready to Leave?",
     "bookingConfirmed": "Booking Confirmed!",
     "waitingForAReply": "Waiting for a Reply",
-    "getReadyForYourStay": "Get Ready for Your Stay"
+    "getReadyForYourStay": "Get Ready for Your Stay",
+    "myListingSlot": "My Listing Slot",
+    "feedback": "Feedback",
+    "pushNotifications": "Push Notifications",
+    "downloadYourData": "Download Your Data",
+    "deleteYourAccount": "Delete Your Account",
+    "logoutPrompt": "Select \"Logout\" below if you are ready to end your current session.",
+    "unableToUpdateProfile": "Unable to update profile right now.",
+    "onlyMp4VideosAreAllowed": "Only MP4 videos are allowed.",
+    "selectEntity": "Select Entity",
+    "tagline": "Tagline",
+    "tapToUploadCover": "Tap to upload cover",
+    "tapToUploadImages": "Tap to upload images",
+    "advantagesAndHighlights": "Advantages & Highlights",
+    "addAdvantage": "Add Advantage",
+    "addMoreAdvantage": "Add More Advantage",
+    "ourServices": "Our Services",
+    "addService": "Add Service",
+    "addMoreService": "Add More Service",
+    "teamMembers": "Team Members",
+    "removeMember": "Remove Member",
+    "addTeamMember": "Add Team Member",
+    "showroomVideo": "Showroom Video",
+    "uploadShowroomTourVideo": "Upload showroom tour video",
+    "showroomVideoFormats": "MP4, MOV up to 50MB",
+    "defaultServiceLeasingAndFinancing": "Leasing & Financing",
+    "defaultServiceFairTradeInPrices": "Fair trade-in prices",
+    "defaultServiceWarrantyAndServicePackages": "Warranty & service packages",
+    "defaultAdvantageFlexibleFinancingOptions": "Flexible financing options",
+    "defaultAdvantageCertifiedVehicles": "Certified vehicles",
+    "defaultAdvantageWarrantyAndServicePackages": "Warranty & service packages",
+    "phoneNumberExample": "+44 54 670 653"
   },
   "notifications": {
     "notifications": "Notifications",
     "youDoNotHaveNotification": "You don't have any notifications at the moment!",
     "markReadAll": "Mark all as read",
     "deleteAll": "Delete All"
+  },
+  "header": {
+    "notifications": {
+      "listingExpiryBody": "Your listing for VW Golf expires in 3 days. Renew now to keep it active.",
+      "newBuyerMessageBody": "You've received a new message from a potential buyer.",
+      "threeMinutes": "3m"
+    }
   },
   "media": {
     "images": "Images",
@@ -696,7 +759,8 @@
     "reviewAndProceed": "Review and Proceed",
     "consumption": "Consumption",
     "l100Km": "L/100 km",
-    "enterNumberOfSlotsEG32": "Enter number of slots (e.g. 32)"
+    "enterNumberOfSlotsEG32": "Enter number of slots (e.g. 32)",
+    "sampleMonthlyLeasingPrice": "CHF 550.- per month"
   },
   "filters": {
     "12876": "12’876",
@@ -808,7 +872,14 @@
     "mini": "Mini",
     "quality1": "Quality1",
     "toyotaOccasionPlus": "Toyota Occasion Plus",
-    "toyotaRelax": "Toyota Relax"
+    "toyotaRelax": "Toyota Relax",
+    "popularMakes": "Popular Makes",
+    "allMakes": "All Makes",
+    "qualitySeal": "Quality Seal",
+    "totalCarsFound": "Total {{count}} Cars found",
+    "showCars": "Show {{count}} Cars",
+    "unableToLoadFiltersRightNow": "Unable to load filters right now.",
+    "unableToApplyFiltersRightNow": "Unable to apply filters right now."
   },
   "marketing": {
     "downLoadTitle": "Buy and sell cars anytime, anywhere. Get instant access to thousands of listings, chat with sellers, and manage your deals on the go.",
@@ -892,7 +963,16 @@
     "quickSellOption": "Quick Sell Option",
     "carreels": "CarReels",
     "support": "Support",
-    "helpCenter": "Help Center"
+    "helpCenter": "Help Center",
+    "homeYourPerfectCar": "Home Your Perfect Car",
+    "heroDescription": "At CarZone, browse thousands of cars and connect directly with trusted sellers. No middlemen, no extra fees, just simple, secure, and transparent deals.",
+    "exploreOurTopRatedCars": "Explore Our Top-Rated Cars",
+    "mostTrustedCarBuyingAndSellingPlatform": "The Most Trusted Car Buying & Selling Platform",
+    "getYourCarListedIn5EasySteps": "Get Your Car Listed in 5 Easy Steps",
+    "addPricingAndWarranty": "Add Pricing & Warranty"
+  },
+  "footer": {
+    "copyright": "© 2025 CarZone. All rights reserved. Designed for car buyers & sellers worldwide."
   },
   "location": {
     "searchManually": "Search Manually",
@@ -949,7 +1029,8 @@
     "sellingPrice": "Selling price",
     "paymentFailed2": "Payment failed",
     "paymentSuccessful2": "Payment successful",
-    "backToHome": "Back To Home"
+    "backToHome": "Back To Home",
+    "sampleMonthlyLeasingPrice": "CHF 550.- per month"
   },
   "status": {
     "validTill": "Valid Till",

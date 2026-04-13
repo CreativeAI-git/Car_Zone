@@ -92,7 +92,7 @@
                                           </div>
                                           <div class="w-100">
                                                 <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo text-center">
-                                                      Select Make
+                                                      {{ 'filters.selectMake' | translate }}
                                                 </h3>
                                           </div>
                                     </div>
@@ -106,7 +106,7 @@
                                     </div>
                                     <div class="vehicle-modal-detail-box">
                                           <h4 class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f mt-4">
-                                                Popular Makes
+                                                {{ 'filters.popularMakes' | translate }}
                                           </h4>
                                           <div class="popular-make-icon">
                                                 <div class="popular-make-icon-box">
@@ -143,7 +143,7 @@
                                     </div>
                                     <div class="vehicle-modal-detail-box">
                                           <h4 class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f my-4">
-                                                All Makes
+                                                {{ 'filters.allMakes' | translate }}
                                           </h4>
                                           <div class="popular-make-all-box">
                                                 <div class="popular-make-all-box d-flex justify-content-between">
@@ -797,7 +797,7 @@
                                     </div>
 
                                     <button class="ct_red_gradient_btn mt-5" (click)="closePopup('power')">
-                                          Total {{totalCars}} Cars found
+                                          {{ 'filters.totalCarsFound' | translate:{ count: totalCars } }}
                                     </button>
                               </div>
                         </ng-template>
@@ -859,7 +859,7 @@
                                           }
                                     </div>
                                     <button class="ct_red_gradient_btn mt-4" (click)="closePopup('fuel')">
-                                          Total {{totalCars}} Cars found
+                                          {{ 'filters.totalCarsFound' | translate:{ count: totalCars } }}
                                     </button>
                               </div>
                         </ng-template>
@@ -881,7 +881,7 @@
 <section>
       <div class="container">
             <h3 class="ct_fs_25 ct_fw_600 mb-3 ct_color_8f0c1f">
-                  Recently viewed
+                  {{ 'vehicle.recentlyViewed' | translate }}
             </h3>
             <div class="row">
                   @for (item of recentlyViewedlist.slice(0, 6); track $index) {
@@ -958,7 +958,7 @@
                                                 @if(item.isLeasing){
                                                 <p
                                                       class="mb-0 ct_fs_18 ct_fw_400 ct_color_1877F2 text-decoration-underline">
-                                                      CHF 550.- per month
+                                                      {{ 'payment.sampleMonthlyLeasingPrice' | translate }}
                                                 </p>
                                                 }
                                           </div>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
@@ -56,7 +56,7 @@ export class AllFiltersComponent {
   filterData: any = { total_cars: 0 };
   isLoading = false;
 
-  constructor(private filterService: FilterService, private message: NzMessageService) { }
+  constructor(private filterService: FilterService, private message: NzMessageService, private translate: TranslateService) { }
 
   ngOnInit(): void {
     const currentYear = new Date().getFullYear();
@@ -103,7 +103,7 @@ export class AllFiltersComponent {
     this.filterService.patchDraft(this.buildDraftPayload());
     this.filterService.previewDraft().pipe(takeUntil(this.destroy$)).subscribe({
       error: () => {
-        this.message.error('Unable to load filters right now.');
+        this.message.error(this.translate.instant('filters.unableToLoadFiltersRightNow'));
       }
     });
   }
@@ -112,7 +112,7 @@ export class AllFiltersComponent {
     this.filterService.patchDraft(this.buildDraftPayload());
     this.filterService.applyDraft(true).pipe(takeUntil(this.destroy$)).subscribe({
       error: () => {
-        this.message.error('Unable to apply filters right now.');
+        this.message.error(this.translate.instant('filters.unableToApplyFiltersRightNow'));
       }
     });
   }

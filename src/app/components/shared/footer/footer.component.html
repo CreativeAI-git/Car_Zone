@@ -5,11 +5,7 @@
                         <a class="footer-logo">
                               <img src="img/logo.png" [alt]="'marketing.logo' | translate" />
                         </a>
-                        <p class="ct_fs_16 ct_fw_400 ct_lh-2">
-                              Carzone is a modern platform to buy and sell cars easily. Connect
-                              with trusted buyers and sellers, chat in-app, and close deals
-                              seamlessly.
-                        </p>
+                        <p class="ct_fs_16 ct_fw_400 ct_lh-2">{{ 'marketing.footerDescription' | translate }}</p>
                         <div class="social-icons mt-3">
                               <a>
                                     <img src="img/icons/facebook.png" />
@@ -41,7 +37,7 @@
                               <ul>
                                     <li><a routerLink="/help-center">{{ 'marketing.helpCenter' | translate }}</a></li>
                                     <li><a routerLink="/contact-us">{{ 'common.contactUs' | translate }}</a></li>
-                                    <li><a routerLink="/faq">FAQ</a></li>
+                                    <li><a routerLink="/faq">{{ 'common.faq' | translate }}</a></li>
                               </ul>
                         </div>
                   </div>
@@ -59,9 +55,6 @@
 </footer>
 <div class="copyright footer-bottom">
       <div class="container">
-            <p class="mb-0 ct_fs_18 ct_fw_400">
-                  © 2025 CarZone. All rights reserved. Designed for car buyers & sellers
-                  worldwide.
-            </p>
+            <p class="mb-0 ct_fs_18 ct_fw_400">{{ 'footer.copyright' | translate }}</p>
       </div>
 </div>

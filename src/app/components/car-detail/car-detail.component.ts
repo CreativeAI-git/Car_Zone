@@ -39,10 +39,10 @@ export class CarDetailComponent {
   ShoMore: boolean = false
   reportReasons: any[] = []
   inquiryOptions = [
-    { key: 'leasing', label: 'Leasing' },
-    { key: 'payment', label: 'Payment' },
-    { key: 'insurance', label: 'Insurance' },
-    { key: 'tradeIn', label: 'Trade In' }
+    { key: 'leasing' },
+    { key: 'payment' },
+    { key: 'insurance' },
+    { key: 'tradeIn' }
   ];
   selectedReportReasons: number[] = [];
   customReportReason: string = '';
@@ -190,7 +190,7 @@ export class CarDetailComponent {
   deleteListing(item: any) {
     this.service.delete('user/deleteCar/' + item.id + '?user_id=' + item.user_id + '').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       this.router.navigate(['my-listings'])
-      this.message.success('Car deleted successfully')
+      this.message.success(this.translate.instant('vehicle.carDeletedSuccessfully'))
     })
   }
 
@@ -259,11 +259,11 @@ export class CarDetailComponent {
 
   reportCar() {
     if (this.selectedReportReasons.length === 0) {
-      this.message.error('Please select at least one reason');
+      this.message.error(this.translate.instant('vehicle.pleaseSelectAtLeastOneReason'));
       return;
     }
     if (this.selectedReportReasons.includes(8) && !this.customReportReason) {
-      this.message.error('Please enter a custom report reason');
+      this.message.error(this.translate.instant('vehicle.pleaseEnterCustomReportReason'));
       return;
     }
     this.loading = true
@@ -277,7 +277,7 @@ export class CarDetailComponent {
       this.loading = false
       this.closeReportModal.nativeElement.click();
     }, (err: any) => {
-      this.message.error('Failed to report car');
+      this.message.error(this.translate.instant('vehicle.failedToReportCar'));
       this.loading = false
     })
   }
@@ -324,19 +324,21 @@ export class CarDetailComponent {
       full_name: this.inquiryForm.value.full_name?.trim(),
       email: this.inquiryForm.value.email?.trim(),
       phone_number: this.inquiryForm.value.phone_number?.trim(),
-      inquiry_type_text: selectedTypes.join(', '),
+      inquiry_type_text: selectedTypes
+        .map((type: string) => this.translate.instant(`vehicle.${type === 'insurance' ? 'insuarance' : type}`))
+        .join(', '),
       message: this.inquiryForm.value.message?.trim() || ''
     };
 
     if (!payload.seller_id || !payload.car_id) {
-      this.message.error('Car details are not available yet.');
+      this.message.error(this.translate.instant('vehicle.carDetailsNotAvailableYet'));
       return;
     }
 
     this.inquiryLoading = true;
     this.service.post('user/car-inquiry', payload).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
-        this.message.success(res.message || 'Inquiry sent successfully');
+        this.message.success(res.message || this.translate.instant('vehicle.inquirySentSuccessfully'));
         this.inquiryLoading = false;
         this.inquiryForm.reset({
           full_name: this.inquiryForm.value.full_name,
@@ -350,7 +352,7 @@ export class CarDetailComponent {
       },
       error: (err: any) => {
         this.inquiryLoading = false;
-        this.message.error(err.message || 'Failed to send inquiry');
+        this.message.error(err.message || this.translate.instant('vehicle.failedToSendInquiry'));
       }
     });
   }
