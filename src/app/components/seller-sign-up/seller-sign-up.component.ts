@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { QuillModule } from 'ngx-quill';
-import { NoWhitespaceDirective, strongPasswordValidator, passwordMatchValidator, passwordMismatchValidator } from '../../helper/validators';
+import { NoWhitespaceDirective, passwordMatchValidator, passwordMismatchValidator } from '../../helper/validators';
 import { ValidationErrorService } from '../../services/validation-error.service';
 import { CountryISO, NgxIntlTelInputModule, SearchCountryField } from 'ngx-intl-tel-input-gg';
 import { SubmitButtonComponent } from '../shared/submit-button/submit-button.component';
@@ -52,7 +52,7 @@ export class SellerSignUpComponent {
       isWhatsappSameAsPhone: [false],
       whatsappNumber: ['', [Validators.required]],
       typeOfSeller: ['personal', [Validators.required]],
-      password: ['', [Validators.required, strongPasswordValidator]],
+      password: ['', [Validators.required]],
       confirmPassword: ['', [Validators.required]],
       address: ['', [Validators.required, NoWhitespaceDirective.validate]],
       legalForm: ['Sole Proprietorship'],

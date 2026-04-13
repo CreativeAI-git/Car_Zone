@@ -28,7 +28,7 @@ export class ChangePasswordComponent {
   initForm() {
     this.Form = new FormGroup({
       password: new FormControl('', Validators.required),
-      newPassword: new FormControl('', [Validators.required, strongPasswordValidator]),
+      newPassword: new FormControl('', [Validators.required]),
       confirmPassword: new FormControl('', Validators.required),
     }, {
       validators: [

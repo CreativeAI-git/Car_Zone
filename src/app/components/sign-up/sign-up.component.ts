@@ -39,7 +39,7 @@ export class SignUpComponent {
       phoneNumber: ['', [Validators.required]],
       isWhatsappSameAsPhone: [false],
       whatsappNumber: ['', [Validators.required]],
-      password: ['', [Validators.required, strongPasswordValidator]],
+      password: ['', [Validators.required]],
       confirmPassword: ['', [Validators.required]],
       address: ['', [Validators.required, NoWhitespaceDirective.validate]],
       city: ['', [Validators.required, NoWhitespaceDirective.validate]],
