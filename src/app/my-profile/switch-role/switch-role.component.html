@@ -5,11 +5,15 @@
                 <div class="ct_right_main_box">
                     <div class="ct_right_box p-3 d-flex justify-content-between align-items-center">
                         <div>
-                            <h3 class="ct_fs_22 mb-0">Switch to Seller Mode</h3>
+                            <h3 class="ct_fs_22 mb-0">
+                                {{ isSellerMode ? ('header.roleSwitcher.switchToBuyerMode' | translate) :
+                                ('profile.switchToSellerMode' | translate) }}
+                            </h3>
                         </div>
                         <div>
                             <label class="toggle-switch">
-                                <input type="checkbox" />
+                                <input type="checkbox" [checked]="isSellerMode" [disabled]="loading"
+                                    (change)="onRoleToggle($event)" />
                                 <div class="toggle-switch-background">
                                     <div class="toggle-switch-handle"></div>
                                 </div>
@@ -18,10 +22,8 @@
                     </div>
 
                     <p class="ct_fs_18 mt-4">
-                        Switch to Seller Mode to list your car, manage inquiries, and
-                        connect with interested buyers. Track messages, schedule visits,
-                        and control your listings — all from one place. You can switch
-                        back to Buyer Mode anytime.
+                        {{ isSellerMode ? ('header.roleSwitcher.switchToBuyerDescription' | translate) :
+                        ('header.roleSwitcher.switchToSellerDescription' | translate) }}
                     </p>
                 </div>
             </div>

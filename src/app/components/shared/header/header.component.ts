@@ -32,7 +32,7 @@ export class HeaderComponent {
     this.token = this.authService.getToken();
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.selectedLang = localStorage.getItem('lang') || 'en';
-    this.userRole = localStorage.getItem('app_role');
+    this.userRole = localStorage.getItem('loggedInRole');
 
     if (this.authService.isLogedIn()) {
       this.commonService.getProfile()

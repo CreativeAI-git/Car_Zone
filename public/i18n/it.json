@@ -654,6 +654,11 @@
     "deleteAll": "Cancella tutto"
   },
   "header": {
+    "roleSwitcher": {
+      "switchToBuyerDescription": "Passa alla modalità acquirente per sfogliare auto, salvare preferiti e contattare i venditori in qualsiasi momento.",
+      "switchToBuyerMode": "Passa alla modalità acquirente",
+      "switchToSellerDescription": "Passa alla modalità venditore per pubblicare la tua auto, gestire le richieste e metterti in contatto con acquirenti interessati. Tieni traccia dei messaggi, pianifica visite e controlla i tuoi annunci da un unico posto. Puoi tornare alla modalità acquirente in qualsiasi momento."
+    },
     "notifications": {
       "listingExpiryBody": "Il tuo annuncio per VW Golf scade tra 3 giorni. Rinnovalo ora per mantenerlo attivo.",
       "newBuyerMessageBody": "Hai ricevuto un nuovo messaggio da un potenziale acquirente.",

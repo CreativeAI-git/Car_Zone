@@ -654,6 +654,11 @@
     "deleteAll": "Alle löschen"
   },
   "header": {
+    "roleSwitcher": {
+      "switchToBuyerDescription": "Wechseln Sie in den Käufermodus, um Fahrzeuge zu durchsuchen, Favoriten zu speichern und Verkäufer jederzeit zu kontaktieren.",
+      "switchToBuyerMode": "Zum Käufermodus wechseln",
+      "switchToSellerDescription": "Wechseln Sie in den Verkäufermodus, um Ihr Auto zu inserieren, Anfragen zu verwalten und mit interessierten Käufern in Kontakt zu treten. Verfolgen Sie Nachrichten, planen Sie Besichtigungen und verwalten Sie Ihre Inserate an einem Ort. Sie können jederzeit wieder in den Käufermodus wechseln."
+    },
     "notifications": {
       "listingExpiryBody": "Ihr Inserat für den VW Golf läuft in 3 Tagen ab. Jetzt verlängern, um es aktiv zu halten.",
       "newBuyerMessageBody": "Sie haben eine neue Nachricht von einem potenziellen Käufer erhalten.",

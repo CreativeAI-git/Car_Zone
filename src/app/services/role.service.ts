@@ -1,7 +1,7 @@
 // role.service.ts
 import { Injectable, signal } from '@angular/core';
 
-export type UserRole = 'buyer' | 'seller' | undefined;
+export type UserRole = 'buyer' | 'seller';
 
 @Injectable({
       providedIn: 'root',

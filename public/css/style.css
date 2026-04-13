@@ -2360,7 +2360,7 @@ a.add img {
 }
 
 .toggle-switch input[type="checkbox"]:checked+.toggle-switch-background {
-  background-color: #111;
+  background-color: #9b1911;
 }
 
 .toggle-switch input[type="checkbox"]:checked+.toggle-switch:before {

@@ -654,6 +654,11 @@
     "deleteAll": "Tout effacer"
   },
   "header": {
+    "roleSwitcher": {
+      "switchToBuyerDescription": "Passez en mode acheteur pour parcourir les voitures, enregistrer vos favoris et contacter les vendeurs à tout moment.",
+      "switchToBuyerMode": "Passer en mode acheteur",
+      "switchToSellerDescription": "Passez en mode vendeur pour publier votre voiture, gérer les demandes et entrer en contact avec des acheteurs intéressés. Suivez les messages, planifiez les visites et gérez vos annonces depuis un seul endroit. Vous pouvez revenir au mode acheteur à tout moment."
+    },
     "notifications": {
       "listingExpiryBody": "Votre annonce pour la VW Golf expire dans 3 jours. Renouvelez-la maintenant pour la garder active.",
       "newBuyerMessageBody": "Vous avez reçu un nouveau message d'un acheteur potentiel.",

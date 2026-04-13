@@ -654,6 +654,11 @@
     "deleteAll": "Delete All"
   },
   "header": {
+    "roleSwitcher": {
+      "switchToBuyerDescription": "Switch to Buyer Mode to browse cars, save favorites, and contact sellers anytime.",
+      "switchToBuyerMode": "Switch to Buyer Mode",
+      "switchToSellerDescription": "Switch to Seller Mode to list your car, manage inquiries, and connect with interested buyers. Track messages, schedule visits, and control your listings all from one place. You can switch back to Buyer Mode anytime."
+    },
     "notifications": {
       "listingExpiryBody": "Your listing for VW Golf expires in 3 days. Renew now to keep it active.",
       "newBuyerMessageBody": "You've received a new message from a potential buyer.",
