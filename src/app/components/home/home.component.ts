@@ -24,7 +24,7 @@ export class HomeComponent {
   private destroy$ = new Subject<void>();
   carsList: any[] = []
   token: any;
-  constructor(private commonService: CommonService, private router: Router, private translate: TranslateService, private loader: LoaderService, private authService: AuthService, private roleService: RoleService, public modal: ModalService, private nzImageService: NzImageService) {
+  constructor(private commonService: CommonService, private router: Router, private translate: TranslateService, private loader: LoaderService, public authService: AuthService, private roleService: RoleService, public modal: ModalService, private nzImageService: NzImageService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     effect(() => {
       this.userData = this.commonService.userData

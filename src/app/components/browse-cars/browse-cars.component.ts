@@ -247,7 +247,7 @@ export class BrowseCarsComponent {
   getCars() {
     this.loader.show();
     this.service
-      .get(this.token ? 'user/fetchOtherSellerCarsList' : 'user/asGuestUserFetchSellerCarsList')
+      .get(this.token ? 'user/fetchOtherSellerCarsList?page=2&limit=10' : 'user/asGuestUserFetchSellerCarsList?page=2&limit=10')
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {

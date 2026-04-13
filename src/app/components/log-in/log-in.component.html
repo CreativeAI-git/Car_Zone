@@ -24,7 +24,7 @@
                         <div class="">
                               <div class="form-group mt-3">
                                     <label for="" class="mb-2 ct_fw_500 ct_fs_16">
-                                          {{ 'auth.password' | translate }}</label>
+                                          {{ 'auth.password' | translate | titlecase}}</label>
                                     <div class="position-relative">
                                           <input [type]="isShowPassword ? 'text' : 'password'" placeholder="*********"
                                                 class="form-control ct_input ct_input_pe_40"
@@ -35,7 +35,7 @@
                                     </div>
                                     <small class="text-danger">{{
                                           validationErrorService.getErrorMessage(('auth.password' |
-                                          translate), Form.get("password"))}}</small>
+                                          translate | titlecase), Form.get("password"))}}</small>
                               </div>
                         </div>
 

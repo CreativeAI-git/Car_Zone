@@ -13,7 +13,10 @@
                                           trusted sellers. No middlemen, no extra fees — just simple,
                                           secure, and transparent deals.
                                     </p>
-                                    <button (click)="modal.openBuyerSignUpModal()" class="btn-create-account">{{ 'auth.createAccount' | translate }}</button>
+                                    @if(!authService.isLogedIn()){
+                                    <button (click)="modal.openBuyerSignUpModal()" class="btn-create-account">{{
+                                          'auth.createAccount' | translate }}</button>
+                                    }
                               </div>
                         </div>
                   </div>

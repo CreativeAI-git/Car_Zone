@@ -2135,7 +2135,7 @@ a.add img {
 }
 
 .send-box {
-  padding: 15px;
+  padding: 15px 0px;
   position: absolute;
   bottom: 0px;
   width: 100%;

@@ -41,7 +41,7 @@ export class CarDetailComponent {
   inquiryOptions = [
     { key: 'leasing' },
     { key: 'payment' },
-    { key: 'insurance' },
+    { key: 'insuarance' },
     { key: 'tradeIn' }
   ];
   selectedReportReasons: number[] = [];

@@ -71,6 +71,10 @@ export const routes: Routes = [
                               {
                                     path: 'listing-slot-plan',
                                     loadComponent: () => import('./components/seller components/listing-slot-plan/listing-slot-plan.component').then(m => m.ListingSlotPlanComponent)
+                              },
+                              {
+                                    path: 'switch-role',
+                                    loadComponent: () => import('./my-profile/switch-role/switch-role.component').then(m => m.SwitchRoleComponent)
                               }
                         ]
                   },

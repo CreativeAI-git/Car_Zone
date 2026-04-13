@@ -616,7 +616,7 @@ export class ListYourCarComponent {
   getVhicleConditions() {
     this.service.get(`user/vehicle-conditions?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
-        this.conditions = res?.data || [];
+        this.conditions = res?.data.types || [];
       },
       error: (error) => {
         console.error('Error fetching vehicle conditions:', error);
