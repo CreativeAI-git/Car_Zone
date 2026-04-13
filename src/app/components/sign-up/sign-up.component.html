@@ -126,6 +126,7 @@
                               </div>
                               <div class="col-lg-6">
                                     <label class="mt-3 ct_fs_16 ct_fw_500 mb-2"> {{ 'profile.city' | translate }}
+                                          <span class="ct_color_8f0c1f">*</span>
                                     </label>
                                     <input type="text" class="form-control"
                                           [placeholder]="'auth.enterYourCity' | translate"
@@ -136,6 +137,7 @@
                               </div>
                               <div class="col-lg-6">
                                     <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">{{ 'profile.postalCode' | translate }}
+                                          <span class="ct_color_8f0c1f">*</span>
                                     </label>
                                     <input type="text" class="form-control"
                                           [placeholder]="'profile.enterPostalCode' | translate"
@@ -205,7 +207,8 @@
                         <div>
                               <p class="ct_fs_20 ct_fw_400 fst_italic">
                                     {{ 'auth.loginTestimonialName' | translate }}<br />
-                                    {{ 'auth.loginTestimonialRole' | translate }}&nbsp;&middot;&nbsp;{{ 'auth.loginTestimonialLocation' | translate }}
+                                    {{ 'auth.loginTestimonialRole' | translate }}&nbsp;&middot;&nbsp;{{
+                                    'auth.loginTestimonialLocation' | translate }}
                               </p>
                         </div>
 
@@ -220,5 +223,3 @@
             </div>
       </div>
 </div>
-
-
