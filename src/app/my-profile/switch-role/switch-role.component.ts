@@ -62,7 +62,8 @@ export class SwitchRoleComponent {
             this.reloadMainScript();
             this.commonService.getProfile();
             this.toster.success(res.message || this.translate.instant('common.saveChanges'));
-            // this.router.navigate(['/']);
+            this.loading = false;
+            this.router.navigate(['/']);
             return;
           }
 
