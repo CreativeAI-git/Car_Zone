@@ -24,6 +24,8 @@ export type NumberRange = {
 
 export type FilterPayload = {
   lang: string;
+  page: number;
+  limit: number;
   seller_type: string[];
   fuel_type_id: number[];
   state_id: number[];
@@ -77,6 +79,10 @@ export type FilterViewModel = {
   sellerType: FilterOption[];
   cars: any[];
   totalCars: number;
+  currentPage: number;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
 };
 
 const DEFAULT_PRICE_ANALYTICS = {
@@ -120,7 +126,11 @@ const DEFAULT_VIEW_MODEL: FilterViewModel = {
   doors: [],
   sellerType: [],
   cars: [],
-  totalCars: 0
+  totalCars: 0,
+  currentPage: 1,
+  pageSize: 10,
+  totalItems: 0,
+  totalPages: 1
 };
 
 @Injectable({
@@ -246,7 +256,7 @@ export class FilterService {
         : of(null)
     }).pipe(
       tap(({ metadata, cars }: { metadata: any; cars: any }) => {
-        const viewModel = this.mapResponseToViewModel(metadata?.data || {}, cars?.data || null);
+        const viewModel = this.mapResponseToViewModel(metadata?.data || {}, cars || null, normalizedPayload);
         this.lastRequestKey = requestKey;
         this.lastResponse = viewModel;
         this.viewModelSubject.next(viewModel);
@@ -266,7 +276,7 @@ export class FilterService {
     );
   }
 
-  private mapResponseToViewModel(metadataData: any, carsData?: any): FilterViewModel {
+  private mapResponseToViewModel(metadataData: any, carsData: any = null, payload?: FilterPayload): FilterViewModel {
     const fuelData =
       metadataData?.fuel_type ??
       metadataData?.fuel ??
@@ -294,7 +304,19 @@ export class FilterService {
       'id'
     );
 
-    const totalCars = this.extractTotalCars(metadataData, carsData);
+    const cars = this.extractCars(carsData);
+    const totalCars = this.extractTotalCars(metadataData, carsData, cars);
+    const pageSize = Number(carsData?.limit ?? carsData?.perPage ?? carsData?.pageSize ?? payload?.limit ?? 10);
+    const currentPage = Number(carsData?.page ?? carsData?.currentPage ?? carsData?.current_page ?? payload?.page ?? 1);
+    const totalPages = Math.max(
+      1,
+      Number(
+        carsData?.totalPages ??
+          carsData?.lastPage ??
+          carsData?.last_page ??
+          Math.ceil(totalCars / Math.max(pageSize, 1))
+      ) || 1
+    );
 
     return {
       raw: metadataData,
@@ -362,8 +384,12 @@ export class FilterService {
         'seller_type',
         'seller_type'
       ),
-      cars: this.extractCars(carsData),
-      totalCars
+      cars,
+      totalCars,
+      currentPage,
+      pageSize,
+      totalItems: totalCars,
+      totalPages
     };
   }
 
@@ -378,6 +404,8 @@ export class FilterService {
     const currentYear = new Date().getFullYear();
     return {
       lang: localStorage.getItem('lang') || 'en',
+      page: 1,
+      limit: 10,
       seller_type: [],
       fuel_type_id: [],
       state_id: [],
@@ -444,17 +472,26 @@ export class FilterService {
   }
 
   private extractCars(data: any): any[] {
-    return data || [];
+    if (Array.isArray(data)) {
+      return data;
+    }
+
+    if (Array.isArray(data?.data)) {
+      return data.data;
+    }
+
+    return [];
   }
 
-  private extractTotalCars(metadataData: any, carsData?: any): number {
+  private extractTotalCars(metadataData: any, carsData?: any, cars: any[] = []): number {
     return Number(
       metadataData?.total_cars ??
       metadataData?.totalCars ??
+      carsData?.total ??
       carsData?.total_cars ??
       carsData?.totalCars ??
       carsData?.matching_vehicles ??
-      this.extractCars(carsData)?.length ??
+      cars.length ??
       0
     );
   }
@@ -508,7 +545,9 @@ export class FilterService {
   private buildFacetedPayload(payload: FilterPayload): Record<string, any> {
     const defaults = this.createDefaultPayload();
     const compactPayload: Record<string, any> = {
-      lang: payload.lang || defaults.lang
+      lang: payload.lang || defaults.lang,
+      page: payload.page || defaults.page,
+      limit: payload.limit || defaults.limit
     };
 
     if (payload.seller_type.length > 0) {

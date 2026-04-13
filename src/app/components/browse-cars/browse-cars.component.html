@@ -304,7 +304,8 @@
                                                       translate }}</h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f" (click)="onResetBodyType()">{{ 'vehicle.reset' |
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f"
+                                                      (click)="onResetBodyType()">{{ 'vehicle.reset' |
                                                       translate }}</span>
                                           </div>
                                     </div>
@@ -355,7 +356,8 @@
                                                 </h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f" (click)="onResetPrice()">{{ 'vehicle.reset' |
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f"
+                                                      (click)="onResetPrice()">{{ 'vehicle.reset' |
                                                       translate }}</span>
                                           </div>
                                     </div>
@@ -481,7 +483,8 @@
                                                 </h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f" (click)="onResetYear()">{{ 'vehicle.reset' |
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f"
+                                                      (click)="onResetYear()">{{ 'vehicle.reset' |
                                                       translate }}</span>
                                           </div>
                                     </div>
@@ -586,7 +589,8 @@
                                                 </div>
                                           </div>
                                     </div>
-                                    <button class="ct_red_gradient_btn mt-4" (click)="closePopup('year')">{{ 'common.done' | translate }}</button>
+                                    <button class="ct_red_gradient_btn mt-4" (click)="closePopup('year')">{{
+                                          'common.done' | translate }}</button>
                               </div>
                         </ng-template>
                   </div>
@@ -610,7 +614,8 @@
                                                       translate}} (km)</h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f" (click)="onResetKm()">{{ 'vehicle.reset' |
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f"
+                                                      (click)="onResetKm()">{{ 'vehicle.reset' |
                                                       translate }}</span>
                                           </div>
                                     </div>
@@ -677,7 +682,8 @@
                                                 </div>
                                           </div>
                                     </div>
-                                    <button class="ct_red_gradient_btn mt-4" (click)="closePopup('km')">{{ 'common.done' | translate }}</button>
+                                    <button class="ct_red_gradient_btn mt-4" (click)="closePopup('km')">{{ 'common.done'
+                                          | translate }}</button>
                               </div>
                         </ng-template>
                   </div>
@@ -704,7 +710,8 @@
                                                 </h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f" (click)="onResetTransmission()">{{ 'vehicle.reset' |
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f"
+                                                      (click)="onResetTransmission()">{{ 'vehicle.reset' |
                                                       translate }}</span>
                                           </div>
                                     </div>
@@ -823,7 +830,8 @@
                                                 </h3>
                                           </div>
                                           <div>
-                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f" (click)="onResetFuel()">{{ 'vehicle.reset' |
+                                                <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f"
+                                                      (click)="onResetFuel()">{{ 'vehicle.reset' |
                                                       translate }}</span>
                                           </div>
                                     </div>
@@ -1040,6 +1048,42 @@
                               <img src="img/icons/quality.png" />
                         </div>
                         <hr />
+                  </div>
+                  }
+                  @if (totalPages > 1) {
+                  <div class="browse-pagination d-flex justify-content-center align-items-center my-3">
+                        <nav>
+                              <ul class="pagination mb-0 align-items-center">
+                                    <li class="page-item" [class.disabled]="currentPage === 1">
+                                          <button type="button" class="page-link prev-next me-2"
+                                                [disabled]="currentPage === 1" (click)="goToPreviousPage()">
+                                                &lsaquo; {{ 'vehicle.previous' | translate }}
+                                          </button>
+                                    </li>
+
+                                    @for (page of paginationItems; track $index) {
+                                    @if (page === '...') {
+                                    <li class="page-item disabled">
+                                          <span class="page-link dots">...</span>
+                                    </li>
+                                    } @else {
+                                    <li class="page-item" [class.active]="currentPage === page">
+                                          <button type="button" class="page-link" (click)="changePage(+page)"
+                                                [attr.aria-current]="currentPage === page ? 'page' : null">
+                                                {{ page }}
+                                          </button>
+                                    </li>
+                                    }
+                                    }
+
+                                    <li class="page-item" [class.disabled]="currentPage === totalPages">
+                                          <button type="button" class="page-link prev-next ms-2"
+                                                [disabled]="currentPage === totalPages" (click)="goToNextPage()">
+                                                {{ 'common.next' | translate }} &rsaquo;
+                                          </button>
+                                    </li>
+                              </ul>
+                        </nav>
                   </div>
                   }
                   }

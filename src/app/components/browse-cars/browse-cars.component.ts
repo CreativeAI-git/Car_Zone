@@ -82,6 +82,10 @@ export class BrowseCarsComponent {
   fuelTypeId: number[] = [];
   bodyTypeId: number[] = [];
   totalCars = 0;
+  totalItems = 0;
+  currentPage = 1;
+  pageSize = 10;
+  totalPages = 1;
   loaded = false;
   isLoading = false;
   appliedFilters: FilterPayload;
@@ -238,26 +242,77 @@ export class BrowseCarsComponent {
     return count;
   }
 
+  get paginationItems(): Array<number | string> {
+    if (this.totalPages <= 1) {
+      return [];
+    }
+
+    if (this.totalPages <= 7) {
+      return Array.from({ length: this.totalPages }, (_, index) => index + 1);
+    }
+
+    const items: Array<number | string> = [1];
+    const start = Math.max(2, this.currentPage - 1);
+    const end = Math.min(this.totalPages - 1, this.currentPage + 1);
+
+    if (start > 2) {
+      items.push('...');
+    }
+
+    for (let page = start; page <= end; page++) {
+      items.push(page);
+    }
+
+    if (end < this.totalPages - 1) {
+      items.push('...');
+    }
+
+    items.push(this.totalPages);
+    return items;
+  }
+
   getRecentlyViewedlist() {
     this.service.get('user/getRecentlyViewedlist').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       this.recentlyViewedlist = res.data;
     });
   }
 
-  getCars() {
+  get startItem(): number {
+    if (!this.totalItems || !this.carsList.length) {
+      return 0;
+    }
+
+    return (this.currentPage - 1) * this.pageSize + 1;
+  }
+
+  get endItem(): number {
+    if (!this.totalItems || !this.carsList.length) {
+      return 0;
+    }
+
+    return Math.min(this.currentPage * this.pageSize, this.totalItems);
+  }
+
+  getCars(page = this.currentPage) {
     this.loader.show();
+    const endpoint = this.token ? 'user/fetchOtherSellerCarsList' : 'user/asGuestUserFetchSellerCarsList';
+
     this.service
-      .get(this.token ? 'user/fetchOtherSellerCarsList?page=2&limit=10' : 'user/asGuestUserFetchSellerCarsList?page=2&limit=10')
+      .get(`${endpoint}?page=${page}&limit=${this.pageSize}`)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
           this.carsList = res?.data || [];
+          this.currentPage = Number(res?.page ?? page ?? 1);
+          this.pageSize = Number(res?.limit ?? this.pageSize ?? 10);
+          this.totalItems = Number(res?.total ?? this.carsList.length ?? 0);
+          this.totalPages = Math.max(1, Number(res?.totalPages ?? Math.ceil(this.totalItems / this.pageSize) ?? 1));
+          this.totalCars = this.totalItems;
           this.loaded = true;
 
           if (this.carsList.length > 0) {
             setTimeout(() => this.loadSwiper());
           }
-
           this.loader.hide();
         },
         error: () => {
@@ -421,7 +476,11 @@ export class BrowseCarsComponent {
     this.TransmissionVisible = false;
     this.PowerVisible = false;
     this.filterService.resetFilters();
-    this.getCars();
+    this.currentPage = 1;
+    this.pageSize = 10;
+    this.totalPages = 1;
+    this.totalItems = 0;
+    this.getCars(1);
     this.filterService.loadAppliedMetadata().pipe(takeUntil(this.destroy$)).subscribe({
       error: () => {
         this.loaded = true;
@@ -435,6 +494,29 @@ export class BrowseCarsComponent {
 
   trackByFilterValue(_index: number, item: FilterOption) {
     return item.value;
+  }
+
+  changePage(page: number) {
+    if (page < 1 || page > this.totalPages || page === this.currentPage) {
+      return;
+    }
+
+    if (this.filterService.hasActiveAppliedFilters()) {
+      this.filterService.patchAppliedAndDraft({ page });
+      this.refreshBrowseData();
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    this.getCars(page);
+  }
+
+  goToPreviousPage() {
+    this.changePage(this.currentPage - 1);
+  }
+
+  goToNextPage() {
+    this.changePage(this.currentPage + 1);
   }
 
   ngOnDestroy(): void {
@@ -455,6 +537,10 @@ export class BrowseCarsComponent {
     this.transmissions = viewModel.transmissions || [];
     this.fuelTypeGroups = viewModel.fuelTypeGroups || [];
     this.totalCars = viewModel.totalCars || 0;
+    this.totalItems = viewModel.totalItems || viewModel.totalCars || 0;
+    this.currentPage = viewModel.currentPage || this.currentPage;
+    this.pageSize = viewModel.pageSize || this.pageSize;
+    this.totalPages = viewModel.totalPages || 1;
     this.updateMatchingProgress();
 
     if (this.filterService.hasActiveAppliedFilters() && this.carsList.length > 0) {
@@ -478,6 +564,8 @@ export class BrowseCarsComponent {
       payload.kilometers_range?.min_km ?? 0,
       payload.kilometers_range?.max_km ?? 4000000
     ];
+    this.currentPage = payload.page ?? 1;
+    this.pageSize = payload.limit ?? 10;
     this.transmissionId = [...(payload.transmission || [])];
     this.fuelTypeId = [...(payload.fuel_type_id || [])];
     this.bodyTypeId = [...(payload.body_type_id || [])];
@@ -486,6 +574,7 @@ export class BrowseCarsComponent {
   private applyFilters(patch: Partial<FilterPayload>) {
     this.filterService.patchAppliedAndDraft({
       lang: localStorage.getItem('lang') || this.translate.currentLang || 'en',
+      page: 1,
       ...patch
     });
     this.refreshBrowseData();
@@ -557,7 +646,7 @@ export class BrowseCarsComponent {
       return;
     }
 
-    this.getCars();
+    this.getCars(this.currentPage);
     this.filterService.loadAppliedMetadata().pipe(takeUntil(this.destroy$)).subscribe({
       error: (error) => {
         console.error('Error loading filter metadata:', error);

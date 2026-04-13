@@ -121,3 +121,41 @@
 .ct_fs_14.ct_fw_400.ct_color_8f0c1f {
   cursor: pointer;
 }
+
+.browse-pagination .pagination {
+  gap: 8px;
+}
+
+.browse-pagination .page-link {
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  color: #111;
+  min-width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 14px;
+  background-color: #fff;
+  box-shadow: none;
+}
+
+.browse-pagination .page-item.active .page-link {
+  background: linear-gradient(180deg, #aa0f20 0%, #7f0817 100%);
+  border-color: #8f0c1f;
+  color: #fff;
+}
+
+.browse-pagination .page-item.disabled .page-link {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.browse-pagination .page-link.prev-next {
+  min-width: auto;
+}
+
+.browse-pagination .dots {
+  border: none;
+  background: transparent;
+}
