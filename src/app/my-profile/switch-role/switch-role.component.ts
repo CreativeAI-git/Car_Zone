@@ -8,6 +8,12 @@ import { AuthService } from '../../services/auth.service';
 import { CommonService } from '../../services/common.service';
 import { RoleService, UserRole } from '../../services/role.service';
 
+declare global {
+  interface Window {
+    initMainUi?: () => void;
+  }
+}
+
 @Component({
   selector: 'app-switch-role',
   imports: [CommonModule, TranslateModule],
@@ -59,7 +65,7 @@ export class SwitchRoleComponent {
         next: (res: any) => {
           if (res?.success) {
             this.persistRole(role);
-            this.reloadMainScript();
+            window.initMainUi?.();
             this.commonService.getProfile();
             this.toster.success(res.message || this.translate.instant('common.saveChanges'));
             this.loading = false;
@@ -81,18 +87,6 @@ export class SwitchRoleComponent {
     this.roleService.setRole(role);
     this.roleService.setLoggedInRole(role);
     localStorage.setItem('loggedInRole', role);
-  }
-
-  private reloadMainScript() {
-    const existingScript = document.querySelector('script[src="js/main.js"]');
-    if (existingScript) {
-      existingScript.remove();
-    }
-
-    const scriptElement = document.createElement('script');
-    scriptElement.src = 'js/main.js';
-    scriptElement.async = true;
-    document.body.appendChild(scriptElement);
   }
 
   ngOnDestroy(): void {

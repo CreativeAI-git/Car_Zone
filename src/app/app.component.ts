@@ -5,6 +5,12 @@ import { LoaderService } from './services/loader.service';
 import { NotificationService } from './services/notification.service';
 import { LoaderComponent } from './components/shared/loader/loader.component';
 
+declare global {
+  interface Window {
+    initMainUi?: () => void;
+  }
+}
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, LoaderComponent],
@@ -31,14 +37,7 @@ export class AppComponent {
     });
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
-        const existingScript = document.querySelector('script[src="js/main.js"]');
-        if (existingScript) {
-          existingScript.remove();
-        }
-        const scriptElement = document.createElement('script');
-        scriptElement.src = 'js/main.js';
-        scriptElement.async = true;
-        document.body.appendChild(scriptElement);
+        window.initMainUi?.();
       }
     });
   }

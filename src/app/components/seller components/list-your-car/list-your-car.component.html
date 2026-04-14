@@ -731,14 +731,14 @@
                                                                         @for (item of conditions; track
                                                                         $index) {
                                                                         <nz-option nzCustomContent
-                                                                              [nzLabel]="item.name | translate"
+                                                                              [nzLabel]="item.label | translate"
                                                                               [nzValue]="item.id"
                                                                               class="ct_custom_select">
                                                                               <div
                                                                                     class="d-flex align-items-center justify-content-between">
                                                                                     <div>
                                                                                           <p class="m-0">
-                                                                                                {{item.name |
+                                                                                                {{item.label |
                                                                                                 translate}}
                                                                                           </p>
                                                                                     </div>

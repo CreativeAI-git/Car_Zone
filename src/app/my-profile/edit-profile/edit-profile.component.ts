@@ -114,7 +114,7 @@ export class EditProfileComponent {
         this.patchOpeningTimes(this.userData.openingTimes);
         this.coverPreview = this.userData.coverImage
         this.showroomPreviews = this.userData.showroomImages
-        this.videoPreview = this.userData.showroomVideos[0]
+        this.videoPreview = this.userData.showroomVideos ? this.userData?.showroomVideos[0] : null
       }
     })
   }
