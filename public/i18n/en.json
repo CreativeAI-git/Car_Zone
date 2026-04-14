@@ -184,7 +184,9 @@
       "french": "French",
       "german": "German",
       "italian": "Italian"
-    }
+    },
+    "call": "Call",
+    "whatsapp": "WhatsApp"
   },
   "vehicle": {
     "doors": "Doors",
@@ -508,7 +510,20 @@
     "wed": "Wed",
     "thu": "Thu",
     "fri": "Fri",
-    "sat": "Sat"
+    "sat": "Sat",
+    "beforeBuyingAUsedCar": "Before buying a used car, make sure you know its full history and hidden defects.",
+    "calculateYourApproximateMonthlyLeaseRate": "Calculate your approximate monthly lease rate",
+    "cameraSystem360": "360? Camera System",
+    "chatWithSeller": "Chat with seller",
+    "checkAnyCarInSeconds": "Check any car in seconds and uncover hidden damage, mileage fraud, and ownership issues.",
+    "chfPlaceholderAmount": "CHF 25?43.-",
+    "getVehicleCheck": "Get Vehicle Check",
+    "harmanKardonSoundSystem": "Harman Kardon Sound System",
+    "mfkForThisVehicleWasDoneOn": "The MFK for this vehicle was done on {{date}}.",
+    "perMonth": "per month",
+    "physicalVisit": "Physical Visit",
+    "tenThousandKm": "10,000 km",
+    "getTheRealVehicleCheckWithCarVertical": "Get the real vehicle check with carVertical!"
   },
   "auth": {
     "youHaveNotPurchased": "You have not purchased any plan yet.",
@@ -1087,7 +1102,8 @@
     "paymentSuccessful2": "Payment successful",
     "backToHome": "Back To Home",
     "sampleMonthlyLeasingPrice": "CHF 550.- per month",
-    "autoCalculatedTenPercentOfTotal": "(Auto-calculated-10% of total)"
+    "autoCalculatedTenPercentOfTotal": "(Auto-calculated-10% of total)",
+    "downPayment": "Down Payment (%)"
   },
   "status": {
     "validTill": "Valid Till",

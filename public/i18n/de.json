@@ -185,7 +185,9 @@
       "italian": "Italienisch"
     },
     "notAvailable": "Nicht verf?gbar",
-    "previous": "Zur?ck"
+    "previous": "Zur?ck",
+    "call": "Anrufen",
+    "whatsapp": "WhatsApp"
   },
   "vehicle": {
     "doors": "Türen",
@@ -361,9 +363,9 @@
     "buySafelyWithACompleteVehicleHistory": "Buy safely – Mit a complete Fahrzeug history.",
     "equipmentAndFeatures": "Equipment & Features",
     "warrantyAndReturns": "Garantie & Returns",
-    "warrantyIncluded": "Garantie Included",
+    "warrantyIncluded": "Garantie inbegriffen",
     "fromTakeOver12MonthsOr20000Km": "From take-over, 12 Monate or 20,000 km",
-    "swissCar": "Swiss car?",
+    "swissCar": "Schweizer Fahrzeug?",
     "leasingCalculator": "Leasing Calculator",
     "leaseDuration": "Lease Duration",
     "kmPerYear": "Km per Jahr",
@@ -388,7 +390,7 @@
     "specifications": "Spezifikationen",
     "colorsAndFlags": "Farben & Merkmale",
     "noFeaturesListed": "Keine Merkmale aufgef?hrt.",
-    "vehicleInspectionMfk": "Fahrzeug inspection (MFK)",
+    "vehicleInspectionMfk": "Fahrzeugpr?fung (MFK)",
     "noMfkDateProvided": "Kein MFK-Datum angegeben.",
     "leasingSummary": "Leasing-Zusammenfassung",
     "leasingNotSelected": "Leasing nicht ausgew?hlt.",
@@ -509,7 +511,20 @@
     "standardEquipmentIdentified": "{{count}} Standardausstattungen erkannt",
     "wheelchairAccessible": "Rollstuhlgerecht",
     "directParallelImport": "Direkt-/Parallelimport",
-    "eightTires": "8 Reifen"
+    "eightTires": "8 Reifen",
+    "beforeBuyingAUsedCar": "Bevor Sie ein Gebrauchtfahrzeug kaufen, sollten Sie seine gesamte Historie und versteckte M?ngel kennen.",
+    "calculateYourApproximateMonthlyLeaseRate": "Berechnen Sie Ihre ungef?hre monatliche Leasingrate",
+    "cameraSystem360": "360?-Kamerasystem",
+    "chatWithSeller": "Mit dem Verk?ufer chatten",
+    "checkAnyCarInSeconds": "Pr?fen Sie jedes Fahrzeug in Sekunden und entdecken Sie versteckte Sch?den, Tachobetrug und Besitzprobleme.",
+    "chfPlaceholderAmount": "CHF 25?43.-",
+    "getVehicleCheck": "Fahrzeugcheck anfordern",
+    "harmanKardonSoundSystem": "Harman Kardon Soundsystem",
+    "mfkForThisVehicleWasDoneOn": "Die MFK f?r dieses Fahrzeug wurde am {{date}} durchgef?hrt.",
+    "perMonth": "pro Monat",
+    "physicalVisit": "Vor-Ort-Besichtigung",
+    "tenThousandKm": "10.000 km",
+    "getTheRealVehicleCheckWithCarVertical": "Holen Sie sich den echten Fahrzeugcheck mit carVertical!"
   },
   "auth": {
     "youHaveNotPurchased": "",
@@ -1087,7 +1102,8 @@
     "paymentSuccessful2": "Zahlung erfolgreich",
     "backToHome": "Zurück zur Startseite",
     "sampleMonthlyLeasingPrice": "CHF 550.- per month",
-    "autoCalculatedTenPercentOfTotal": "(Automatisch berechnet - 10 % des Gesamtbetrags)"
+    "autoCalculatedTenPercentOfTotal": "(Automatisch berechnet - 10 % des Gesamtbetrags)",
+    "downPayment": "Anzahlung (%)"
   },
   "status": {
     "validTill": "Gültig bis",
