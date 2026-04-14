@@ -183,7 +183,8 @@
       "french": "Francese",
       "german": "Tedesco",
       "italian": "Italiano"
-    }
+    },
+    "notAvailable": "Non disponibile"
   },
   "vehicle": {
     "doors": "Porte",
@@ -269,7 +270,7 @@
     "firstRegistrationDate": "Prima data di registrazione",
     "vrnDetectedSuccessfully": "VRN rilevato con successo!",
     "mfkStatus": "Stato MFK",
-    "makeAndModel": "",
+    "makeAndModel": "Marca e modello",
     "car": "Auto",
     "kilometers": "Kilometri",
     "carModel": "Modello di auto",
@@ -460,7 +461,54 @@
     "wed": "Wed",
     "thu": "Thu",
     "fri": "Fri",
-    "sat": "Sat"
+    "sat": "Sat",
+    "newVehicleRn": "Nuovo veicolo RN",
+    "withVehicleRegistrationNumber": "Con numero di immatricolazione del veicolo",
+    "vehicleRegistrationNumberAutoAddsDetails": "Il numero di immatricolazione del veicolo aggiunge automaticamente molti dettagli del veicolo",
+    "enterVehicleRegistrationNumber": "Inserisci il numero di immatricolazione del veicolo",
+    "monthAndYearOfManufacturingForFirstRegistration": "Mese e anno di produzione per la prima immatricolazione",
+    "vehicleCharacteristics": "Caratteristiche del veicolo",
+    "make": "Marca",
+    "vehicleCondition": "Condizione del veicolo",
+    "lastVehicleInspection": "Ultima ispezione del veicolo",
+    "fromMfk": "Da MFK",
+    "interiorColor": "Colore interno",
+    "swissVehicle": "Veicolo svizzero",
+    "optionalEquipment": "Dotazioni opzionali",
+    "equipment": "Dotazioni",
+    "retrofitsAndAccessories": "Retrofit e accessori",
+    "technicalData": "Dati tecnici",
+    "registrationMasterNumber": "Numero di immatricolazione / numero principale",
+    "features": "Caratteristiche",
+    "extras": "Extra",
+    "additionalTitle": "Titolo aggiuntivo",
+    "vehicleDescription": "Descrizione del veicolo",
+    "dragAndDropFilesHereOr": "Trascina qui i file oppure",
+    "maximumTenMbPerImage": "Massimo 10 MB per immagine",
+    "supportedImageFormats": "Formati supportati: JPEG, PNG, GIF, WebP",
+    "mp4MovUpTo50Mb": "MP4, MOV fino a 50 MB",
+    "jpegPngWebpUpTo5Mb": "JPEG, PNG, WebP fino a 5 MB",
+    "zeroPlaceholder": "00",
+    "tenPlaceholder": "10",
+    "sixtyPlaceholder": "60",
+    "fourThousandFiveHundredPlaceholder": "4500",
+    "carListedSuccessfully": "Auto pubblicata con successo.",
+    "failedToListCar": "Impossibile pubblicare l'auto. Riprova.",
+    "failedToDeleteImage": "Impossibile eliminare l'immagine. Riprova.",
+    "noDescriptionProvided": "Nessuna descrizione fornita.",
+    "mfkDoneOn": "MFK effettuato il {{date}}.",
+    "sampleVehicleTitle": "BMW M140i xDrive Steptronic",
+    "prefilledVehicleDetails": "Abbiamo gia compilato i seguenti dettagli del veicolo.",
+    "notYourVehicleEditData": "Non e il tuo veicolo? Modifica i dati del veicolo",
+    "cylinders": "Cilindri",
+    "gears": "Marce",
+    "wheelbase": "Passo",
+    "curbWeight": "Peso a vuoto",
+    "emissionStandard": "Norma sulle emissioni",
+    "standardEquipmentIdentified": "{{count}} dotazioni standard identificate",
+    "wheelchairAccessible": "Accessibile in sedia a rotelle",
+    "directParallelImport": "Importazione diretta/parallela",
+    "eightTires": "8 pneumatici"
   },
   "auth": {
     "youHaveNotPurchased": "",
@@ -645,7 +693,8 @@
     "defaultAdvantageFlexibleFinancingOptions": "Opzioni di finanziamento flessibili",
     "defaultAdvantageCertifiedVehicles": "Veicoli certificati",
     "defaultAdvantageWarrantyAndServicePackages": "Pacchetti garanzia e assistenza",
-    "phoneNumberExample": "+44 54 670 653"
+    "phoneNumberExample": "+44 54 670 653",
+    "enterPhoneNumber": "Inserisci il numero di telefono"
   },
   "notifications": {
     "notifications": "Notifiche",
@@ -884,7 +933,8 @@
     "totalCarsFound": "Totale {{count}} auto trovate",
     "showCars": "Mostra {{count}} auto",
     "unableToLoadFiltersRightNow": "Impossibile caricare i filtri in questo momento.",
-    "unableToApplyFiltersRightNow": "Impossibile applicare i filtri in questo momento."
+    "unableToApplyFiltersRightNow": "Impossibile applicare i filtri in questo momento.",
+    "standard": "Standard"
   },
   "marketing": {
     "downLoadTitle": "Acquista e vendi auto ovunque e in qualsiasi momento. Accedi immediatamente a migliaia di inserzioni, chatta con i venditori e gestisci i tuoi affari ovunque ti trovi.",
@@ -1035,7 +1085,8 @@
     "paymentFailed2": "Pagamento non riuscito",
     "paymentSuccessful2": "Pagamento riuscito",
     "backToHome": "Torna alla home",
-    "sampleMonthlyLeasingPrice": "CHF 550.- per month"
+    "sampleMonthlyLeasingPrice": "CHF 550.- per month",
+    "autoCalculatedTenPercentOfTotal": "(Calcolato automaticamente - 10% del totale)"
   },
   "status": {
     "validTill": "Valido fino",
@@ -1080,5 +1131,27 @@
     "clickOnAContactToViewMessages": "Click on a contact to view messages.",
     "moreCarsByTheSeller": "More Auto by the seller",
     "chatFeatureComingSoon": "Chat Feature Coming Soon!"
+  },
+  "validation": {
+    "required": "{{label}} e obbligatorio.",
+    "invalidPhoneNumber": "Inserisci un numero valido.",
+    "invalidVin": "{{label}} deve contenere 17 caratteri (A-Z, 0-9, senza I/O/Q).",
+    "minlength": "{{label}} deve contenere almeno {{requiredLength}} caratteri.",
+    "maxlength": "{{label}} supera la lunghezza massima consentita di {{requiredLength}} caratteri.",
+    "invalidEmail": "Inserisci un indirizzo email valido.",
+    "invalidField": "{{label}} non e valido.",
+    "min": "{{label}} deve essere almeno {{min}}.",
+    "max": "{{label}} non deve essere superiore a {{max}}.",
+    "endDateAfterStartDate": "La data di fine deve essere successiva alla data di inizio.",
+    "noSpaces": "{{label}} non puo contenere spazi.",
+    "invalidGst": "{{label}} non e un numero GST valido.",
+    "invalidTimeRange": "{{label}} non e un intervallo di tempo valido.",
+    "strongPassword": {
+      "length": "{{label}} deve contenere almeno 8 caratteri.",
+      "uppercase": "{{label}} deve contenere almeno una lettera maiuscola.",
+      "lowercase": "{{label}} deve contenere almeno una lettera minuscola.",
+      "number": "{{label}} deve contenere almeno un numero.",
+      "specialCharacter": "{{label}} deve contenere almeno un carattere speciale."
+    }
   }
 }

@@ -74,13 +74,13 @@
                                                       <li class="nav-item w-50 text-center">
                                                             <button type="button" class="nav-link active"
                                                                   data-bs-toggle="tab" data-bs-target="#rn">
-                                                                  New Vehicle RN
+                                                                  {{ 'vehicle.newVehicleRn' | translate }}
                                                             </button>
                                                       </li>
                                                       <li class="nav-item w-50 text-center">
                                                             <button type="button" class="nav-link" data-bs-toggle="tab"
                                                                   data-bs-target="#make">
-                                                                  Make & Model
+                                                                  {{ 'vehicle.makeAndModel' | translate }}
                                                             </button>
                                                       </li>
                                                 </ul>
@@ -91,26 +91,25 @@
                                                       <div class="tab-pane fade show active" id="rn">
                                                             <div class="my-4">
                                                                   <h6 class="ct_fw_600 ct_fs_19 mb-2">
-                                                                        With Vehicle registration number
+                                                                        {{ 'vehicle.withVehicleRegistrationNumber' | translate }}
                                                                   </h6>
                                                                   <p class="ct_fs_15 ct_fs_400 ct_color_666666">
-                                                                        The vehicle registration number automatically
-                                                                        adds
-                                                                        many vehicle details
+                                                                        {{ 'vehicle.vehicleRegistrationNumberAutoAddsDetails' | translate }}
                                                                   </p>
                                                             </div>
 
                                                             <div class="mb-4">
-                                                                  <label class="ct_fw_400 ct_fs_17 mb-2">Enter Vehicle
-                                                                        Registration Number</label>
+                                                                  <label class="ct_fw_400 ct_fs_17 mb-2">
+                                                                        {{ 'vehicle.enterVehicleRegistrationNumber' | translate }}
+                                                                  </label>
                                                                   <input type="text" class="form-control"
                                                                         [placeholder]="'vehicle.enterVrn2' | translate" />
                                                             </div>
 
                                                             <div class="row mb-4">
                                                                   <label for="" class="ct_fw_400 ct_fs_17 mb-2">
-                                                                        Month & year of manufacturing for first
-                                                                        registration
+                                                                        {{ 'vehicle.monthAndYearOfManufacturingForFirstRegistration' | translate }}
+                                                                        <span class="ct_color_8f0c1f">*</span>
                                                                   </label>
                                                                   <div class="col-md-6">
                                                                         <select class="form-select">
@@ -133,8 +132,8 @@
 
                                                             <div class="row mb-4">
                                                                   <div class="col-lg-6">
-                                                                        <label class="ct_fw_400 ct_fs_17 mb-2">Brand
-                                                                              Name
+                                                                        <label class="ct_fw_400 ct_fs_17 mb-2">{{ 'common.brandName' | translate }}
+                                                                              <span class="ct_color_8f0c1f">*</span>
                                                                         </label>
                                                                         <input type="text" class="form-control"
                                                                               [placeholder]="'common.enterBrandName' | translate"
@@ -145,7 +144,8 @@
                                                                   </div>
                                                                   <div class="col-lg-6">
                                                                         <label class="ct_fw_400 ct_fs_17 mb-2">
-                                                                              Car Model & Variant</label>
+                                                                              {{ 'vehicle.carModelVariant' | translate }}
+                                                                              <span class="ct_color_8f0c1f">*</span></label>
                                                                         <input type="text" class="form-control"
                                                                               [placeholder]="'vehicle.enterModel2' | translate"
                                                                               formControlName="carModel" />
@@ -157,8 +157,8 @@
 
                                                             <div class="row mb-4">
                                                                   <label for="" class="ct_fw_400 ct_fs_17 mb-2">
-                                                                        Month & year of manufacturing for first
-                                                                        registration
+                                                                        {{ 'vehicle.monthAndYearOfManufacturingForFirstRegistration' | translate }}
+                                                                        <span class="ct_color_8f0c1f">*</span>
                                                                   </label>
                                                                   <div class="col-md-6">
                                                                         <nz-select class="form-select"
@@ -224,14 +224,14 @@
                                           <div class="d-none">
                                                 <div>
                                                       <div class="vehicle-title ct_fs_22">
-                                                            BMW M140i xDrive Steptronic
+                                                            {{ 'vehicle.sampleVehicleTitle' | translate }}
                                                       </div>
                                                       <div class="vehicle-subtitle ct_fs_16">
-                                                            We’ve already filled in the following vehicle details.
+                                                            {{ 'vehicle.prefilledVehicleDetails' | translate }}
                                                       </div>
                                                       <div class="mt-2">
                                                             <a href="#" class="edit-link ct_fs_2563eb ct_fs_14">
-                                                                  Not your vehicle? Edit vehicle data
+                                                                  {{ 'vehicle.notYourVehicleEditData' | translate }}
                                                                   <i
                                                                         class="fa-solid fa-chevron-right ms-3 ct_fs_14"></i>
                                                             </a>
@@ -246,7 +246,7 @@
                                                                   <div class="col-md-6">
                                                                         <div
                                                                               class="spec-label ct_fs_14 ct_color_666666">
-                                                                              Body type
+                                                                              {{ 'vehicle.bodyType' | translate }}
                                                                         </div>
                                                                         <div class="spec-value ct_fs_16">{{
                                                                               'vehicle.limousine' | translate }}</div>
@@ -255,7 +255,7 @@
                                                                   <div class="col-md-6">
                                                                         <div
                                                                               class="spec-label ct_fs_14 ct_color_666666">
-                                                                              Transmission
+                                                                              {{ 'vehicle.transmission' | translate }}
                                                                         </div>
                                                                         <div class="spec-value ct_fs_16">{{
                                                                               'common.automatic' | translate }}</div>
@@ -264,7 +264,7 @@
                                                                   <div class="col-md-6">
                                                                         <div
                                                                               class="spec-label ct_fs_14 ct_color_666666">
-                                                                              Fuel
+                                                                              {{ 'vehicle.fuelType' | translate }}
                                                                         </div>
                                                                         <div class="spec-value ct_fs_16">{{
                                                                               'common.petrol' | translate }}</div>
@@ -273,7 +273,7 @@
                                                                   <div class="col-md-6">
                                                                         <div
                                                                               class="spec-label ct_fs_14 ct_color_666666">
-                                                                              Drive
+                                                                              {{ 'vehicle.driveType' | translate }}
                                                                         </div>
                                                                         <div class="spec-value ct_fs_16">{{
                                                                               'vehicle.allWheel' | translate }}</div>
@@ -282,7 +282,7 @@
                                                                   <div class="col-md-6">
                                                                         <div
                                                                               class="spec-label ct_fs_14 ct_color_666666">
-                                                                              Doors
+                                                                              {{ 'vehicle.doors' | translate }}
                                                                         </div>
                                                                         <div class="spec-value ct_fs_16">5</div>
                                                                   </div>
@@ -290,7 +290,7 @@
                                                                   <div class="col-md-6">
                                                                         <div
                                                                               class="spec-label ct_fs_14 ct_color_666666">
-                                                                              Seats
+                                                                              {{ 'filters.seats' | translate }}
                                                                         </div>
                                                                         <div class="spec-value ct_fs_16">5</div>
                                                                   </div>
@@ -298,7 +298,7 @@
                                                                   <div class="col-md-6">
                                                                         <div
                                                                               class="spec-label ct_fs_14 ct_color_666666">
-                                                                              Power (PS / kW)
+                                                                              {{ 'vehicle.powerOutput' | translate }}
                                                                         </div>
                                                                         <div class="spec-value ct_fs_16">340 / 250</div>
                                                                   </div>
@@ -314,7 +314,7 @@
                                                                   <div class="col-md-6">
                                                                         <div
                                                                               class="spec-label ct_fs_14 ct_color_666666">
-                                                                              Cylinders
+                                                                              {{ 'vehicle.cylinders' | translate }}
                                                                         </div>
                                                                         <div class="spec-value ct_fs_16">6</div>
                                                                   </div>
@@ -322,7 +322,7 @@
                                                                   <div class="col-md-6">
                                                                         <div
                                                                               class="spec-label ct_fs_14 ct_color_666666">
-                                                                              Gears
+                                                                              {{ 'vehicle.gears' | translate }}
                                                                         </div>
                                                                         <div class="spec-value ct_fs_16">8</div>
                                                                   </div>
@@ -365,7 +365,7 @@
                                                                   <div class="col-6">
                                                                         <div
                                                                               class="spec-label ct_fs_14 ct_color_666666">
-                                                                              Fuel consumption
+                                                                              {{ 'vehicle.consumption' | translate }}
                                                                         </div>
                                                                         <div class="spec-value ct_fs_16">{{
                                                                               'common.automatic' | translate }}</div>
@@ -375,7 +375,7 @@
                                                                         <div class="d-flex justify-content-between">
                                                                               <div
                                                                                     class="spec-label ct_fs_14 ct_color_666666">
-                                                                                    Emission standard
+                                                                                    {{ 'vehicle.emissionStandard' | translate }}
                                                                               </div>
                                                                               <div class="spec-value ct_fs_16">Euro 6C
                                                                               </div>
@@ -387,10 +387,10 @@
                                                             <div
                                                                   class="equipment-box d-flex justify-content-between mt-2 align-items-center">
                                                                   <div class="equipment-text ct_fs_14 ct_color_666666">
-                                                                        87 standard equipment identified
+                                                                        {{ 'vehicle.standardEquipmentIdentified' | translate:{ count: 87 } }}
                                                                   </div>
                                                                   <button class="btn btn-outline-primary view-btn">
-                                                                        View
+                                                                        {{ 'common.viewAll' | translate }}
                                                                   </button>
                                                             </div>
                                                       </div>
@@ -407,7 +407,7 @@
                                                             class="d-flex justify-content-between align-items-center mb-3">
                                                             <div>
                                                                   <h5 class="ct_fs_17 ct_fw_500 mb-0">
-                                                                        Vehicle characteristics
+                                                                        {{ 'vehicle.vehicleCharacteristics' | translate }}
                                                                   </h5>
                                                             </div>
                                                             <div>
@@ -425,7 +425,7 @@
                                                                               class="d-flex justify-content-between align-items-center mb-0">
                                                                               <div>
                                                                                     <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                          Make
+                                                                                          {{ 'vehicle.make' | translate }}
                                                                                           <span
                                                                                                 class="ct_color_8f0c1f">*</span>
                                                                                     </h5>
@@ -448,7 +448,7 @@
                                                                               class="d-flex justify-content-between align-items-center mb-0">
                                                                               <div>
                                                                                     <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                          Version
+                                                                                          {{ 'vehicle.version' | translate }}
                                                                                           <span
                                                                                                 class="ct_color_8f0c1f">*</span>
                                                                                     </h5>
@@ -471,7 +471,7 @@
                                                                               class="d-flex justify-content-between align-items-center mb-0">
                                                                               <div>
                                                                                     <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                          Model
+                                                                                          {{ 'vehicle.carModel' | translate }}
                                                                                           <span
                                                                                                 class="ct_color_8f0c1f">*</span>
                                                                                     </h5>
@@ -494,7 +494,7 @@
                                                             <div class="row">
                                                                   <div class="col-sm-6 mt-3">
                                                                         <div>
-                                                                              <h5 class="ct_fs_15 ct_fw_400 mb-2">Fuel
+                                                                              <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'vehicle.fuelType' | translate }}
                                                                                     <span
                                                                                           class="ct_color_8f0c1f">*</span>
                                                                               </h5>
@@ -503,7 +503,7 @@
                                                                               nzPlaceHolder="{{ 'common.select' | translate }}"
                                                                               formControlName="fuel_type_id">
                                                                               @for (group of fuelTypes; track $index) {
-                                                                              <nz-option-group [nzLabel]="group.label">
+                                                                              <nz-option-group [nzLabel]="group.label | translate">
                                                                                     @for (type of group.options; track
                                                                                     $index) {
                                                                                     <nz-option nzCustomContent
@@ -532,7 +532,7 @@
                                                                   <div class="col-sm-6 mt-3">
                                                                         <div>
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                    Transmission
+                                                                                    {{ 'vehicle.transmission' | translate }}
                                                                                     <span
                                                                                           class="ct_color_8f0c1f">*</span>
                                                                               </h5>
@@ -571,7 +571,7 @@
                                                             <div class="row">
                                                                   <div class="col-sm-6 mt-3">
                                                                         <div>
-                                                                              <h5 class="ct_fs_15 ct_fw_400 mb-2">Drive
+                                                                              <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'vehicle.driveType' | translate }}
                                                                                     <span
                                                                                           class="ct_color_8f0c1f">*</span>
                                                                               </h5>
@@ -609,7 +609,7 @@
                                                                   <div class="col-sm-6 mt-3">
                                                                         <div>
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                    Body Style
+                                                                                    {{ 'vehicle.bodyStyle' | translate }}
                                                                                     <span
                                                                                           class="ct_color_8f0c1f">*</span>
                                                                               </h5>
@@ -649,7 +649,8 @@
                                                                   <div class="col-sm-6 mt-3">
                                                                         <div>
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                    Horsepower (HP)
+                                                                                    {{ 'vehicle.horsepower' | translate
+                                                                                    }} (HP)
                                                                                     <span
                                                                                           class="ct_color_8f0c1f">*</span>
                                                                               </h5>
@@ -665,7 +666,7 @@
                                                                   <div class="col-sm-6 mt-3">
                                                                         <div>
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                    Doors
+                                                                                    {{ 'vehicle.doors' | translate }}
                                                                               </h5>
                                                                         </div>
                                                                         <nz-select class="form-control ct_input"
@@ -721,7 +722,7 @@
                                                             <div class="col-12">
                                                                   <div>
                                                                         <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                              Vehicle Condition
+                                                                              {{ 'vehicle.vehicleCondition' | translate }}
                                                                               <span class="ct_color_8f0c1f">*</span>
                                                                         </h5>
                                                                   </div>
@@ -757,10 +758,11 @@
                                                             <div class="col-lg-6 col-md-6 mt-3">
                                                                   <div>
                                                                         <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                              Mileage (km)
+                                                                              {{ 'vehicle.mileageKm' | translate }}
+                                                                              <span class="ct_color_8f0c1f">*</span>
                                                                         </h5>
                                                                         <div class="position-relative">
-                                                                              <input type="text" placeholder="00"
+                                                                              <input type="text" [placeholder]="'vehicle.zeroPlaceholder' | translate"
                                                                                     class="form-control ct_input"
                                                                                     formControlName="carMileage" />
                                                                               <span class="ct_show_eye">{{
@@ -772,7 +774,7 @@
 
                                                             <div class="col-lg-6 col-md-6 mt-3">
                                                                   <div>
-                                                                        <h5 class="ct_fs_15 ct_fw_400 mb-2">State
+                                                                        <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'profile.state' | translate }}
                                                                               <span class="ct_color_8f0c1f">*</span>
                                                                         </h5>
                                                                   </div>
@@ -808,7 +810,7 @@
                                                             <div class="col-12 mt-3">
                                                                   <div>
                                                                         <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                              Warranty
+                                                                              {{ 'vehicle.warranty' | translate }}
                                                                               <span class="ct_color_8f0c1f">*</span>
                                                                         </h5>
                                                                   </div>
@@ -843,8 +845,7 @@
 
                                                             <div class="col-sm-6 mt-3">
                                                                   <div>
-                                                                        <h5 class="ct_fs_15 ct_fw_400 mb-2">From
-                                                                              Date
+                                                                        <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }}
                                                                         </h5>
                                                                   </div>
                                                                   <input type="date" class="form-control"
@@ -852,8 +853,7 @@
                                                             </div>
                                                             <div class="col-sm-6 mt-3">
                                                                   <div>
-                                                                        <h5 class="ct_fs_15 ct_fw_400 mb-2">To
-                                                                              Date</h5>
+                                                                        <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.to' | translate }}</h5>
                                                                   </div>
                                                                   <input type="date" class="form-control"
                                                                         formControlName="warranty_to" />
@@ -861,7 +861,7 @@
                                                             <div class="col-12 mt-3">
                                                                   <div>
                                                                         <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                              Warranty type
+                                                                              {{ 'vehicle.warrantyType' | translate }}
                                                                         </h5>
                                                                   </div>
                                                                   <nz-select class="form-control ct_input"
@@ -892,9 +892,8 @@
                                                             <div class="col-12 mt-3">
                                                                   <div>
                                                                         <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                              Last vehicle inspection
-                                                                              <span class="fst_italic"> (optional)
-                                                                              </span>
+                                                                              {{ 'vehicle.lastVehicleInspection' | translate }}
+                                                                              <span class="fst_italic"> {{ 'vehicle.optional' | translate }}</span>
                                                                         </h5>
                                                                   </div>
                                                                   <input type="date" class="form-control"
@@ -903,14 +902,14 @@
                                                                         class="form-check ct_custom_check d-flex gap-2 align-items-center mt-3">
                                                                         <input class="form-check-input" type="checkbox"
                                                                               value="" id="flexCheckDefault" />
-                                                                        <label for="flexCheckDefault">From MFK
+                                                                        <label for="flexCheckDefault">{{ 'vehicle.fromMfk' | translate }}
                                                                         </label>
                                                                   </div>
                                                             </div>
                                                             <div class="col-sm-6 mt-3">
                                                                   <div>
                                                                         <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                              Vehicle color
+                                                                              {{ 'vehicle.exteriorColor' | translate }}
                                                                               <span class="ct_color_8f0c1f">*</span>
                                                                         </h5>
                                                                   </div>
@@ -948,7 +947,7 @@
                                                             <div class="col-sm-6 mt-3">
                                                                   <div>
                                                                         <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                              Interior color
+                                                                              {{ 'vehicle.interiorColor' | translate }}
                                                                               <span class="ct_color_8f0c1f">*</span>
                                                                         </h5>
                                                                   </div>
@@ -988,7 +987,7 @@
                                                                   <input class="form-check-input" type="checkbox"
                                                                         value="" id="flexCheckDefault12"
                                                                         formControlName="is_metallic" />
-                                                                  <label for="flexCheckDefault12">Metallic
+                                                                  <label for="flexCheckDefault12">{{ 'filters.metallic' | translate }}
                                                                   </label>
                                                             </div>
                                                             <div
@@ -996,7 +995,7 @@
                                                                   <input class="form-check-input" type="checkbox"
                                                                         value="" id="flexCheckDefault1"
                                                                         formControlName="is_swiss_vehicle" />
-                                                                  <label for="flexCheckDefault1">Swiss vehicle?
+                                                                  <label for="flexCheckDefault1">{{ 'vehicle.swissVehicle' | translate }}
                                                                   </label>
 
                                                             </div>
@@ -1005,7 +1004,7 @@
                                                                   <input class="form-check-input" type="checkbox"
                                                                         value="" id="flexCheckDefault2"
                                                                         formControlName="is_accident_vehicle" />
-                                                                  <label for="flexCheckDefault2">Accident vehicle
+                                                                  <label for="flexCheckDefault2">{{ 'vehicle.accidentVehicle' | translate }}
                                                                   </label>
 
                                                             </div>
@@ -1019,7 +1018,7 @@
                                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                                       <div>
                                                             <h5 class="ct_fs_17 ct_fw_500 mb-0">
-                                                                  Optional Equipment
+                                                                  {{ 'vehicle.optionalEquipment' | translate }}
                                                             </h5>
                                                       </div>
                                                       <div>
@@ -1044,7 +1043,7 @@
                                                                   <div class="mb-3">
                                                                         <div>
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                    Equipment</h5>
+                                                                                    {{ 'vehicle.equipment' | translate }}</h5>
                                                                         </div>
 
                                                                         <div
@@ -1174,7 +1173,7 @@
                                                                         </div>
                                                                         <div class="mt-2">
                                                                               <a class="ct_color_3e1cff ct_fs_16">
-                                                                                    View More
+                                                                                    {{ 'common.showMore' | translate }}
                                                                               </a>
                                                                         </div>
                                                                   </div>
@@ -1182,7 +1181,7 @@
                                                                   <div>
                                                                         <div>
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                    Retrofits and Accessories
+                                                                                    {{ 'vehicle.retrofitsAndAccessories' | translate }}
                                                                               </h5>
                                                                         </div>
 
@@ -1239,7 +1238,7 @@
                                                                         </div>
                                                                         <div class="mt-2">
                                                                               <a class="ct_color_3e1cff ct_fs_16">
-                                                                                    View More
+                                                                                    {{ 'common.showMore' | translate }}
                                                                               </a>
                                                                         </div>
                                                                   </div>
@@ -1255,7 +1254,7 @@
                                           <div class="collapse-cont-wrapper">
                                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                                       <div>
-                                                            <h5 class="ct_fs_17 ct_fw_500 mb-0">Technical Data
+                                                            <h5 class="ct_fs_17 ct_fw_500 mb-0">{{ 'vehicle.technicalData' | translate }}
                                                             </h5>
                                                       </div>
                                                       <div>
@@ -1273,7 +1272,7 @@
                                                                         class="d-flex justify-content-between align-items-center mb-0">
                                                                         <div>
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                    Height (mm)
+                                                                                    {{ 'vehicle.height' | translate }} (mm)
                                                                               </h5>
                                                                         </div>
                                                                   </div>
@@ -1290,7 +1289,7 @@
                                                                         class="d-flex justify-content-between align-items-center mb-0">
                                                                         <div>
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                    Width (mm)
+                                                                                    {{ 'vehicle.width' | translate }} (mm)
                                                                               </h5>
                                                                         </div>
                                                                   </div>
@@ -1307,7 +1306,7 @@
                                                                         class="d-flex justify-content-between align-items-center mb-0">
                                                                         <div>
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                    Length (mm)
+                                                                                    {{ 'vehicle.length' | translate }} (mm)
                                                                               </h5>
                                                                         </div>
                                                                   </div>
@@ -1327,7 +1326,7 @@
                                                                         class="d-flex justify-content-between align-items-center mb-0">
                                                                         <div>
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                    Braked towing capacity (kg)
+                                                                                    {{ 'vehicle.brakedTowingCapacity' | translate }} (kg)
                                                                               </h5>
                                                                         </div>
                                                                   </div>
@@ -1342,7 +1341,7 @@
                                                             <div class="col-sm-6 mt-3">
                                                                   <div>
                                                                         <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                              Energy Label
+                                                                              {{ 'vehicle.energyEfficiency' | translate }}
                                                                         </h5>
                                                                   </div>
                                                                   <nz-select class="form-control ct_input"
@@ -1377,7 +1376,7 @@
                                                                         class="d-flex justify-content-between align-items-center mb-0">
                                                                         <div>
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                    Type Approval
+                                                                                    {{ 'vehicle.typeApproval' | translate }}
                                                                               </h5>
                                                                         </div>
                                                                   </div>
@@ -1395,8 +1394,7 @@
                                                                         class="d-flex justify-content-between align-items-center mb-0">
                                                                         <div>
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                    Vehicle Identification Number
-                                                                                    (VIN)
+                                                                                    {{ 'vehicle.vehicleIdentificationNumber' | translate }} (VIN)
                                                                               </h5>
                                                                         </div>
                                                                   </div>
@@ -1413,7 +1411,7 @@
                                                                         class="d-flex justify-content-between align-items-center mb-0">
                                                                         <div>
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                    Registration / master number
+                                                                                    {{ 'vehicle.registrationMasterNumber' | translate }}
                                                                               </h5>
                                                                         </div>
                                                                   </div>
@@ -1454,7 +1452,7 @@
                                                                   <div class="mb-3">
                                                                         <div>
                                                                               <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                    Features</h5>
+                                                                                    {{ 'vehicle.features' | translate }}</h5>
                                                                         </div>
 
                                                                         <div
@@ -1465,13 +1463,13 @@
 
                                                                                           <input class="form-check-input"
                                                                                                 type="checkbox"
-                                                                                                [value]="feature"
+                                                                                                [value]="feature.value"
                                                                                                 (change)="onFeatureChange($event)"
-                                                                                                [checked]="carFormOne.get('carFeatures')?.value?.includes(feature)" />
+                                                                                                [checked]="carFormOne.get('carFeatures')?.value?.includes(feature.value)" />
 
                                                                                           <label
                                                                                                 class="ct_fs_14 ct_fw_400">
-                                                                                                {{ feature }}
+                                                                                                {{ feature.labelKey | translate }}
                                                                                           </label>
 
                                                                                     </div>
@@ -1482,24 +1480,23 @@
 
                                                             <div class="col-lg-6 col-md-6 mt-2">
                                                                   <div>
-                                                                        <h5 class="ct_fs_15 ct_fw_400 mb-2">Extras
+                                                                        <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'vehicle.extras' | translate }}
                                                                         </h5>
                                                                   </div>
 
                                                                   <div
                                                                         class="d-grid ct_gap_8 ct_height_mx_200 ct_custom_scroll">
-                                                                        <div class="">
+                                                                        <div class="" *ngFor="let extra of extraFeaturesList">
                                                                               <div
                                                                                     class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                                                     <input class="form-check-input"
                                                                                           type="checkbox" value=""
                                                                                           id="flexCheckDefault33"
-                                                                                          [value]="'8 Tires'"
+                                                                                          [value]="extra.value"
                                                                                           (change)="onExtraFeatureChange($event)"
-                                                                                          [checked]="carFormOne.get('extras')?.value?.includes('8 Tires')" />
+                                                                                          [checked]="carFormOne.get('extras')?.value?.includes(extra.value)" />
                                                                                     <label for="flexCheckDefault"
-                                                                                          class="ct_fs_14 ct_fw_400">8
-                                                                                          Tires
+                                                                                          class="ct_fs_14 ct_fw_400">{{ extra.labelKey | translate }}
                                                                                     </label>
                                                                               </div>
                                                                         </div>
@@ -1508,7 +1505,7 @@
 
                                                             <div>
                                                                   <h5 class="ct_fs_15 ct_fw_400 mb-0">
-                                                                        Additional Title (999)
+                                                                        {{ 'vehicle.additionalTitle' | translate }} (999)
                                                                   </h5>
                                                             </div>
 
@@ -1523,7 +1520,7 @@
                                                             <div class="col-12 mt-3">
                                                                   <div>
                                                                         <h5 class="ct_fs_15 ct_fw_400 mb-0">
-                                                                              Vehicle Description
+                                                                              {{ 'vehicle.vehicleDescription' | translate }}
                                                                         </h5>
                                                                   </div>
                                                                   <textarea class="form-control mt-1 mb-5"
@@ -1546,7 +1543,7 @@
                                                 <div class="col-lg-12 mt-3">
                                                       <div>
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">{{
-                                                                  'vehicle.sellingPrice' | translate }}</h5>
+                                                                  'vehicle.sellingPrice' | translate }} <span class="ct_color_8f0c1f">*</span></h5>
                                                             <div class="position-relative">
                                                                   <input type="text"
                                                                         [placeholder]="'payment.enterAmount' | translate"
@@ -1581,21 +1578,21 @@
 
                                                 <div class="d-flex align-items-center gap-3 mt-3">
                                                       <label class="form-label ct_fw_400 ct_fs_18 mb-0">
-                                                            Leasing:
+                                                            {{ 'vehicle.leasing' | translate }}:
                                                       </label>
                                                       <div class="ct_radio-wrapper d-flex gap-3">
                                                             <label class="ct_radio-button ct_fw_400">
                                                                   <input id="option1" type="radio" name="isLeasing"
                                                                         formControlName="isLeasing" [value]="true" />
                                                                   <span class="ct_radio-checkmark"></span>
-                                                                  Yes
+                                                                  {{ 'common.yes' | translate }}
                                                             </label>
 
                                                             <label class="ct_radio-button ct_fw_400">
                                                                   <input id="option2" type="radio" name="isLeasing"
                                                                         formControlName="isLeasing" [value]="false" />
                                                                   <span class="ct_radio-checkmark"></span>
-                                                                  No
+                                                                  {{ 'common.no' | translate }}
                                                             </label>
                                                       </div>
                                                 </div>
@@ -1604,7 +1601,7 @@
                                                 <div class="col-12 mt-3">
                                                       <div>
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                  Select banking partner
+                                                                  {{ 'payment.bankingPartner' | translate }}
                                                             </h5>
                                                       </div>
                                                       <input type="text" [placeholder]="'vehicle.enterHere' | translate"
@@ -1619,10 +1616,10 @@
                                                 <div class="col-lg-12 mt-3">
                                                       <div>
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                  Annual Interest Rate
+                                                                  {{ 'payment.annualInterestRate' | translate }}
                                                             </h5>
                                                             <div class="position-relative">
-                                                                  <input type="text" placeholder="10"
+                                                                  <input type="text" [placeholder]="'vehicle.tenPlaceholder' | translate"
                                                                         class="form-control ct_input"
                                                                         formControlName="annual_interest_rate" />
                                                                   <span class="ct_show_eye">(%)</span>
@@ -1639,11 +1636,10 @@
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">{{
                                                                   'vehicle.residualValue' | translate }}</h5>
                                                             <div class="position-relative">
-                                                                  <input type="text" placeholder="60"
+                                                                  <input type="text" [placeholder]="'vehicle.sixtyPlaceholder' | translate"
                                                                         class="form-control ct_input"
                                                                         formControlName="residual_value" />
-                                                                  <span class="ct_show_eye">{{ 'common.month' |
-                                                                        translate }}</span>
+                                                                  <span class="ct_show_eye">%</span>
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
                                                                   'payment.residualValue'
@@ -1655,16 +1651,15 @@
                                                 <div class="col-lg-12 mt-3">
                                                       <div>
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                  Leasing Value:
+                                                                  {{ 'payment.leasingValue' | translate }}:
                                                                   <span class="fst_italic ct_color_grey">
-                                                                        (Auto-calculated-10% of total)</span>
+                                                                        {{ 'payment.autoCalculatedTenPercentOfTotal' | translate }}</span>
                                                             </h5>
                                                             <div class="position-relative">
-                                                                  <input type="text" placeholder="4500"
+                                                                  <input type="text" [placeholder]="'vehicle.fourThousandFiveHundredPlaceholder' | translate"
                                                                         class="form-control ct_input"
                                                                         formControlName="leasing_value" />
-                                                                  <span class="ct_show_eye">{{ 'common.month' |
-                                                                        translate }}</span>
+                                                                  <span class="ct_show_eye">CHF</span>
                                                             </div>
                                                             <small class="text-danger">{{validationErrorService.getErrorMessage((
                                                                   'payment.leasingValue'
@@ -1683,8 +1678,8 @@
                                           <div class="row">
                                                 <div class="col-lg-6 mt-3">
                                                       <div>
-                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'vehicle.fullName' |
-                                                                  translate }}</h5>
+                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'profile.firstName' |
+                                                                  translate }} <span class="ct_color_8f0c1f">*</span></h5>
                                                             <div class="position-relative">
                                                                   <input type="text"
                                                                         [placeholder]="'vehicle.enterHere' | translate"
@@ -1780,7 +1775,7 @@
                                                 <div class="col-lg-4 mt-3">
                                                       <div>
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'profile.city' |
-                                                                  translate }}</h5>
+                                                                  translate }} <span class="ct_color_8f0c1f">*</span></h5>
                                                             <div class="position-relative">
                                                                   <input type="text"
                                                                         [placeholder]="'vehicle.enterHere' | translate"
@@ -1795,7 +1790,7 @@
                                                 <div class="col-lg-4 mt-3">
                                                       <div>
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                  Country <span class="ct_color_8f0c1f">*</span>
+                                                                  {{ 'profile.country' | translate }} <span class="ct_color_8f0c1f">*</span>
                                                             </h5>
                                                             <div class="position-relative">
                                                                   <input type="text"
@@ -1813,7 +1808,7 @@
                                                 <div class="col-lg-12 mt-3">
                                                       <div>
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                  Phone Number <span class="ct_color_8f0c1f">*</span>
+                                                                  {{ 'profile.phoneNumber' | translate }} <span class="ct_color_8f0c1f">*</span>
                                                             </h5>
                                                             <div class="position-relative">
                                                                   <ngx-intl-tel-input name="phone"
@@ -1821,7 +1816,7 @@
                                                                         [enableAutoCountrySelect]="true"
                                                                         [enablePlaceholder]="true"
                                                                         [searchCountryFlag]="true"
-                                                                        [customPlaceholder]="'Enter phone number'"
+                                                                        [customPlaceholder]="'profile.enterPhoneNumber' | translate"
                                                                         [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
                                                                         [selectFirstCountry]="false"
                                                                         [selectedCountryISO]="selectedCountry"
@@ -1844,7 +1839,7 @@
                                           <div class="">
                                                 <div class="mt-4">
                                                       <label class="form-label ct_fw_600 ct_font_cairo ct_fs_18">
-                                                            Upload Photos
+                                                            {{ 'vehicle.uploadPhotos' | translate }}
                                                       </label>
                                                       <div class="upload-box text-center py-5 ct_bg_none"
                                                             (click)="carImageInput.click()">
@@ -1855,9 +1850,9 @@
                                                             <div>
                                                                   <label for="fileInput"
                                                                         class="text-muted upload-label ct_fs_15 ct_fw_500 ct_color_grey mt-2">
-                                                                        Drag and drop files here or<br />
-                                                                        Maximum 10 MB per images<br />
-                                                                        Supported formats: JPEG, PNG, GIF, WebP
+                                                                        {{ 'vehicle.dragAndDropFilesHereOr' | translate }}<br />
+                                                                        {{ 'vehicle.maximumTenMbPerImage' | translate }}<br />
+                                                                        {{ 'vehicle.supportedImageFormats' | translate }}
                                                                   </label>
                                                             </div>
 
@@ -1883,7 +1878,7 @@
 
                                                 <div class="mt-4">
                                                       <label class="form-label ct_fw_600 ct_font_cairo ct_fs_18">
-                                                            Upload to CarReel
+                                                            {{ 'vehicle.uploadCarReel' | translate }}
                                                       </label>
 
                                                       <div class="upload-box text-center py-5 ct_bg_none"
@@ -1893,10 +1888,10 @@
 
                                                             <div>
                                                                   <label class="upload-label mt-2 ct_fs_15 ct_fw_500">
-                                                                        Drag and drop files here or
+                                                                        {{ 'vehicle.dragAndDropFilesHereOr' | translate }}
                                                                   </label>
                                                                   <small class="ct_fs_15 ct_fw_500 d-block">
-                                                                        MP4, MOV up to 50MB
+                                                                        {{ 'vehicle.mp4MovUpTo50Mb' | translate }}
                                                                   </small>
                                                             </div>
 
@@ -1923,7 +1918,7 @@
 
                                                 <div class="mt-4">
                                                       <label class="form-label ct_fw_600 ct_font_cairo ct_fs_18">
-                                                            Upload Reel Thumbnail
+                                                            {{ 'vehicle.uploadCarReelThumbnail' | translate }}
                                                       </label>
 
                                                       <div class="upload-box text-center py-5 ct_bg_none"
@@ -1933,10 +1928,10 @@
 
                                                             <div>
                                                                   <label class="upload-label mt-2 ct_fs_15 ct_fw_500">
-                                                                        Drag and drop files here or
+                                                                        {{ 'vehicle.dragAndDropFilesHereOr' | translate }}
                                                                   </label>
                                                                   <small class="ct_fs_15 ct_fw_500 d-block">
-                                                                        JPEG, PNG, WebP up to 5MB
+                                                                        {{ 'vehicle.jpegPngWebpUpTo5Mb' | translate }}
                                                                   </small>
                                                             </div>
 

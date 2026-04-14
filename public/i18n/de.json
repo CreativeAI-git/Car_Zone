@@ -1,4 +1,4 @@
-﻿{
+{
   "common": {
     "next": "Weiter",
     "select": "Auswählen",
@@ -183,7 +183,8 @@
       "french": "Französisch",
       "german": "Deutsch",
       "italian": "Italienisch"
-    }
+    },
+    "notAvailable": "Nicht verf?gbar"
   },
   "vehicle": {
     "doors": "Türen",
@@ -269,7 +270,7 @@
     "firstRegistrationDate": "Erstes Registrierungsdatum",
     "vrnDetectedSuccessfully": "VRN erfolgreich erkannt!",
     "mfkStatus": "MFK-Status",
-    "makeAndModel": "",
+    "makeAndModel": "Marke und Modell",
     "car": "Auto",
     "kilometers": "Kilometer",
     "carModel": "Automodell",
@@ -460,7 +461,54 @@
     "wed": "Wed",
     "thu": "Thu",
     "fri": "Fri",
-    "sat": "Sat"
+    "sat": "Sat",
+    "newVehicleRn": "Neues Fahrzeug mit Kennzeichen",
+    "withVehicleRegistrationNumber": "Mit Fahrzeugkennzeichen",
+    "vehicleRegistrationNumberAutoAddsDetails": "Die Fahrzeugregistrierungsnummer f?llt viele Fahrzeugdetails automatisch aus",
+    "enterVehicleRegistrationNumber": "Fahrzeugregistrierungsnummer eingeben",
+    "monthAndYearOfManufacturingForFirstRegistration": "Monat und Jahr der Herstellung f?r die erste Zulassung",
+    "vehicleCharacteristics": "Fahrzeugeigenschaften",
+    "make": "Marke",
+    "vehicleCondition": "Fahrzeugzustand",
+    "lastVehicleInspection": "Letzte Fahrzeugpr?fung",
+    "fromMfk": "Ab MFK",
+    "interiorColor": "Innenfarbe",
+    "swissVehicle": "Schweizer Fahrzeug",
+    "optionalEquipment": "Optionale Ausstattung",
+    "equipment": "Ausstattung",
+    "retrofitsAndAccessories": "Nachr?stungen und Zubeh?r",
+    "technicalData": "Technische Daten",
+    "registrationMasterNumber": "Zulassungs- / Stammnummer",
+    "features": "Merkmale",
+    "extras": "Extras",
+    "additionalTitle": "Zus?tzlicher Titel",
+    "vehicleDescription": "Fahrzeugbeschreibung",
+    "dragAndDropFilesHereOr": "Dateien hierher ziehen und ablegen oder",
+    "maximumTenMbPerImage": "Maximal 10 MB pro Bild",
+    "supportedImageFormats": "Unterst?tzte Formate: JPEG, PNG, GIF, WebP",
+    "mp4MovUpTo50Mb": "MP4, MOV bis zu 50 MB",
+    "jpegPngWebpUpTo5Mb": "JPEG, PNG, WebP bis zu 5 MB",
+    "zeroPlaceholder": "00",
+    "tenPlaceholder": "10",
+    "sixtyPlaceholder": "60",
+    "fourThousandFiveHundredPlaceholder": "4500",
+    "carListedSuccessfully": "Auto erfolgreich inseriert.",
+    "failedToListCar": "Das Auto konnte nicht inseriert werden. Bitte versuchen Sie es erneut.",
+    "failedToDeleteImage": "Das Bild konnte nicht gel?scht werden. Bitte versuchen Sie es erneut.",
+    "noDescriptionProvided": "Keine Beschreibung vorhanden.",
+    "mfkDoneOn": "MFK durchgef?hrt am {{date}}.",
+    "sampleVehicleTitle": "BMW M140i xDrive Steptronic",
+    "prefilledVehicleDetails": "Wir haben die folgenden Fahrzeugdetails bereits ausgef?llt.",
+    "notYourVehicleEditData": "Nicht Ihr Fahrzeug? Fahrzeugdaten bearbeiten",
+    "cylinders": "Zylinder",
+    "gears": "G?nge",
+    "wheelbase": "Radstand",
+    "curbWeight": "Leergewicht",
+    "emissionStandard": "Abgasnorm",
+    "standardEquipmentIdentified": "{{count}} Standardausstattungen erkannt",
+    "wheelchairAccessible": "Rollstuhlgerecht",
+    "directParallelImport": "Direkt-/Parallelimport",
+    "eightTires": "8 Reifen"
   },
   "auth": {
     "youHaveNotPurchased": "",
@@ -645,7 +693,8 @@
     "defaultAdvantageFlexibleFinancingOptions": "Flexible Finanzierungsoptionen",
     "defaultAdvantageCertifiedVehicles": "Zertifizierte Fahrzeuge",
     "defaultAdvantageWarrantyAndServicePackages": "Garantie- & Servicepakete",
-    "phoneNumberExample": "+44 54 670 653"
+    "phoneNumberExample": "+44 54 670 653",
+    "enterPhoneNumber": "Telefonnummer eingeben"
   },
   "notifications": {
     "notifications": "Benachrichtigungen",
@@ -884,7 +933,8 @@
     "totalCarsFound": "Insgesamt {{count}} Fahrzeuge gefunden",
     "showCars": "{{count}} Fahrzeuge anzeigen",
     "unableToLoadFiltersRightNow": "Filter können derzeit nicht geladen werden.",
-    "unableToApplyFiltersRightNow": "Filter können derzeit nicht angewendet werden."
+    "unableToApplyFiltersRightNow": "Filter können derzeit nicht angewendet werden.",
+    "standard": "Standard"
   },
   "marketing": {
     "downLoadTitle": "Kaufen und verkaufen Sie Autos unterwegs mit der CarZone-App. Bequem, schnell und sicher.",
@@ -1035,7 +1085,8 @@
     "paymentFailed2": "Zahlung fehlgeschlagen",
     "paymentSuccessful2": "Zahlung erfolgreich",
     "backToHome": "Zurück zur Startseite",
-    "sampleMonthlyLeasingPrice": "CHF 550.- per month"
+    "sampleMonthlyLeasingPrice": "CHF 550.- per month",
+    "autoCalculatedTenPercentOfTotal": "(Automatisch berechnet - 10 % des Gesamtbetrags)"
   },
   "status": {
     "validTill": "Gültig bis",
@@ -1080,5 +1131,27 @@
     "clickOnAContactToViewMessages": "Click on a contact to view messages.",
     "moreCarsByTheSeller": "More Autos by the seller",
     "chatFeatureComingSoon": "Chat Feature Coming Soon!"
+  },
+  "validation": {
+    "required": "{{label}} ist erforderlich.",
+    "invalidPhoneNumber": "Bitte geben Sie eine g?ltige Nummer ein.",
+    "invalidVin": "{{label}} muss 17 Zeichen lang sein (A-Z, 0-9, kein I/O/Q).",
+    "minlength": "{{label}} muss mindestens {{requiredLength}} Zeichen lang sein.",
+    "maxlength": "{{label}} ?berschreitet die maximal zul?ssige L?nge von {{requiredLength}} Zeichen.",
+    "invalidEmail": "Bitte geben Sie eine g?ltige E-Mail-Adresse ein.",
+    "invalidField": "{{label}} ist ung?ltig.",
+    "min": "{{label}} muss mindestens {{min}} sein.",
+    "max": "{{label}} darf nicht gr??er als {{max}} sein.",
+    "endDateAfterStartDate": "Das Enddatum muss nach dem Startdatum liegen.",
+    "noSpaces": "{{label}} darf keine Leerzeichen enthalten.",
+    "invalidGst": "{{label}} ist keine g?ltige GST-Nummer.",
+    "invalidTimeRange": "{{label}} ist kein g?ltiger Zeitbereich.",
+    "strongPassword": {
+      "length": "{{label}} muss mindestens 8 Zeichen lang sein.",
+      "uppercase": "{{label}} muss mindestens einen Gro?buchstaben enthalten.",
+      "lowercase": "{{label}} muss mindestens einen Kleinbuchstaben enthalten.",
+      "number": "{{label}} muss mindestens eine Zahl enthalten.",
+      "specialCharacter": "{{label}} muss mindestens ein Sonderzeichen enthalten."
+    }
   }
 }

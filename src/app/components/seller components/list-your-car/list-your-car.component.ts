@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { finalize, first, Subject, takeUntil } from 'rxjs';
 import { carData } from '../../../helper/carData';
@@ -41,10 +41,13 @@ export class ListYourCarComponent {
   warrantyTypes: any[] = [];
   energyEfficiencyOptions: any[] = []
   featuresList = [
-    'Wheelchair accessible',
-    'Direct/Parallel Import',
-    'Racing Car',
-    'Tuning'
+    { value: 'Wheelchair accessible', labelKey: 'vehicle.wheelchairAccessible' },
+    { value: 'Direct/Parallel Import', labelKey: 'vehicle.directParallelImport' },
+    { value: 'Racing Car', labelKey: 'vehicle.racingCar' },
+    { value: 'Tuning', labelKey: 'vehicle.tuning' }
+  ];
+  extraFeaturesList = [
+    { value: '8 Tires', labelKey: 'vehicle.eightTires' }
   ];
   months = carData.months;
   years = Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i)
@@ -65,8 +68,18 @@ export class ListYourCarComponent {
     { id: 6, label: '6' },
     { id: 7, label: '7' }
   ]
-  constructor(private service: CommonService, private message: NzMessageService, private fb: FormBuilder, public validationErrorService: ValidationErrorService) {
+  constructor(
+    private service: CommonService,
+    private message: NzMessageService,
+    private fb: FormBuilder,
+    private translate: TranslateService,
+    public validationErrorService: ValidationErrorService
+  ) {
     this.initForm();
+  }
+
+  private get currentLang(): string {
+    return localStorage.getItem('lang') || this.translate.currentLang || 'en';
   }
 
   ngOnInit(): void {
@@ -110,7 +123,7 @@ export class ListYourCarComponent {
       selectYear: ['', [Validators.required]],
       carMileage: [null, [Validators.required, Validators.min(1)]],
       fuel_type_id: ['', Validators.required],
-      powerOutput: [''],
+      powerOutput: ['', [Validators.required]],
       doors: [''],
       transmission_id: ['', Validators.required],
       state_id: ['', Validators.required],
@@ -205,7 +218,9 @@ export class ListYourCarComponent {
     });
     const btnText = document.getElementById('btnText');
     if (btnText) {
-      btnText.innerText = this.currentFormStep === this.getTotalSteps() ? 'Submit' : 'Next';
+      btnText.innerText = this.translate.instant(
+        this.currentFormStep === this.getTotalSteps() ? 'common.submit' : 'common.next'
+      );
     }
   }
 
@@ -411,7 +426,7 @@ export class ListYourCarComponent {
     ).subscribe({
       next: (res: any) => {
         if (this.currentFormStep === this.getTotalSteps()) {
-          this.message.success(res?.message || 'Car listed successfully');
+          this.message.success(res?.message || this.translate.instant('vehicle.carListedSuccessfully'));
           this.carFormOne.reset();
           this.cleanupAllPreviews();
           this.carImages = [];
@@ -428,7 +443,7 @@ export class ListYourCarComponent {
         }
       },
       error: (error: any) => {
-        const errMsg = error?.message || 'Failed to list car. Please try again.';
+        const errMsg = error?.message || this.translate.instant('vehicle.failedToListCar');
         this.submitError = errMsg;
         this.message.error(errMsg);
       }
@@ -526,7 +541,7 @@ export class ListYourCarComponent {
         this.carImagePreviews.splice(index, 1);
       },
       error: (error: any) => {
-        const errMsg = error?.message || 'Failed to delete image. Please try again.';
+        const errMsg = error?.message || this.translate.instant('vehicle.failedToDeleteImage');
         this.message.error(errMsg);
       }
     });
@@ -538,34 +553,34 @@ export class ListYourCarComponent {
   }
 
   getFuelTypes() {
-    this.service.get(`user/fuel?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/fuel?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         const data = res?.data || {};
 
         this.fuelTypes = [
           {
-            label: 'Standard',
+            label: 'filters.standard',
             options: (data.standard || []).map((x: any) => ({
               label: x.label,
               value: x.id
             }))
           },
           {
-            label: 'Hybrid',
+            label: 'common.hybrid',
             options: (data.hybrid || []).map((x: any) => ({
               label: x.label,
               value: x.id
             }))
           },
           {
-            label: 'Gas',
+            label: 'filters.gas',
             options: (data.gas || []).map((x: any) => ({
               label: x.label,
               value: x.id
             }))
           },
           {
-            label: 'Other',
+            label: 'common.other',
             options: (data.other || []).map((x: any) => ({
               label: x.label,
               value: x.id
@@ -581,7 +596,7 @@ export class ListYourCarComponent {
 
 
   getTransmissions() {
-    this.service.get(`user/transmission?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/transmission?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.transmissions = res?.data.types || [];
       },
@@ -592,7 +607,7 @@ export class ListYourCarComponent {
   }
 
   getDriveTypes() {
-    this.service.get(`user/drive?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/drive?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.driveTypes = res?.data.types || [];
       },
@@ -603,7 +618,7 @@ export class ListYourCarComponent {
   }
 
   getBodyTypes() {
-    this.service.get(`user/body-type?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/body-type?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.bodyTypes = res?.data.types || [];
       },
@@ -614,7 +629,7 @@ export class ListYourCarComponent {
   }
 
   getVhicleConditions() {
-    this.service.get(`user/vehicle-conditions?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/vehicle-conditions?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.conditions = res?.data.types || [];
       },
@@ -625,7 +640,7 @@ export class ListYourCarComponent {
   }
 
   getCarState() {
-    this.service.get(`user/vichel-state?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/vichel-state?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.carState = res?.data.types || [];
       },
@@ -636,7 +651,7 @@ export class ListYourCarComponent {
   }
 
   getWarrantyList() {
-    this.service.get(`user/warranty?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/warranty?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.warrantyList = (res?.data || []).sort((a: { id: number; }, b: { id: number; }) => a.id - b.id);
       },
@@ -647,7 +662,7 @@ export class ListYourCarComponent {
   }
 
   getWarrantyTypes() {
-    this.service.get(`user/warranty-quality?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/warranty-quality?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.warrantyTypes = res?.data || [];
       },
@@ -658,7 +673,7 @@ export class ListYourCarComponent {
   }
 
   getCarColors() {
-    this.service.get(`user/colors?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/colors?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.carColors = res?.data || [];
       },
@@ -669,7 +684,7 @@ export class ListYourCarComponent {
   }
 
   getEnergyEfficiency() {
-    this.service.get(`user/energy-efficiency?lang=${'en'}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/energy-efficiency?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.energyEfficiencyOptions = res?.data.types || [];
       },
