@@ -96,7 +96,8 @@
                                         <div class="popular-make-all-box">
                                             <div class="popular-make-all-box d-flex justify-content-between">
                                                 <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">BMW</p>
+                                                    <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.bmw' | translate }}
+                                                    </p>
                                                 </div>
                                                 <div>
                                                     <a href="#">
@@ -124,7 +125,7 @@
                                                 <div class="popular-make-all-box d-flex justify-content-between">
                                                     <div>
                                                         <p class="ct_fs_13 ct_fw_300 mb-0">
-                                                            Aston Martin
+                                                            {{ 'filters.astonMartin' | translate }}
                                                         </p>
                                                     </div>
                                                     <div>
@@ -139,7 +140,7 @@
                                                 <div class="popular-make-all-box d-flex justify-content-between">
                                                     <div>
                                                         <p class="ct_fs_13 ct_fw_300 mb-0">
-                                                            Lamborghini
+                                                            {{ 'filters.lamborghini' | translate }}
                                                         </p>
                                                     </div>
                                                     <div>
@@ -235,7 +236,8 @@
                                             <div class="popular-make-all">
                                                 <div class="popular-make-all-box d-flex justify-content-between">
                                                     <div>
-                                                        <p class="ct_fs_13 ct_fw_300 mb-0">BYD</p>
+                                                        <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.byd' | translate
+                                                            }}</p>
                                                     </div>
                                                     <div>
                                                         <a href="#">
@@ -275,7 +277,8 @@
                                         </div>
                                         <div class="w-100">
                                             <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo text-center">
-                                                BMW Models
+                                                {{ 'filters.modelsForBrand' | translate:{ brand: ('filters.bmw' |
+                                                translate) } }}
                                             </h3>
                                         </div>
                                     </div>
@@ -292,7 +295,7 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div>
                                                 <h4 class="ct_fs_18 ct_fw_400 my-4">
-                                                    Select all models
+                                                    {{ 'filters.selectAllModels' | translate }}
                                                 </h4>
                                             </div>
                                             <div>
@@ -434,7 +437,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h5 class="ct_fs_25 ct_fw_600 ct_font_cairo mb-0 ct_color_8f0c1f">
-                        Seller Type
+                        {{ 'profile.sellerType' | translate }}
                     </h5>
                 </div>
                 <!-- <div>
@@ -490,7 +493,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h5 class="ct_fs_25 ct_fw_600 ct_font_cairo mb-0 ct_color_8f0c1f">
-                        Car Type
+                        {{ 'filters.carType' | translate }}
                     </h5>
                 </div>
                 <div>
@@ -548,7 +551,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h5 class="ct_fs_25 ct_fw_600 ct_font_cairo mb-0 ct_color_8f0c1f">
-                        Basic data
+                        {{ 'vehicle.basicInfo' | translate }}
                     </h5>
                 </div>
                 <div>
@@ -688,15 +691,17 @@
                                         <div class="col-6">
                                             <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' |
                                                 translate }} </label>
-                                            <input type="number" class="form-control price_input" placeholder="Min"
-                                                [(ngModel)]="kmRange[0]" [ngModelOptions]="{standalone: true}"
+                                            <input type="number" class="form-control price_input"
+                                                [placeholder]="'filters.minimum' | translate" [(ngModel)]="kmRange[0]"
+                                                [ngModelOptions]="{standalone: true}"
                                                 (ngModelChange)="onKmRangeChange()" />
                                         </div>
                                         <div class="col-6">
                                             <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' |
                                                 translate }} </label>
-                                            <input type="number" class="form-control price_input" placeholder="Max"
-                                                [(ngModel)]="kmRange[1]" [ngModelOptions]="{standalone: true}"
+                                            <input type="number" class="form-control price_input"
+                                                [placeholder]="'filters.maximum' | translate" [(ngModel)]="kmRange[1]"
+                                                [ngModelOptions]="{standalone: true}"
                                                 (ngModelChange)="onKmRangeChange()" />
                                         </div>
                                     </div>
@@ -717,7 +722,8 @@
                                     <!-- SELECTED MODEL YEARS -->
                                     <div class="year-card">
                                         <div class="d-flex justify-content-between mb-2">
-                                            <span class="ct_fs_14 ct_fw_400">Selected mileage</span>
+                                            <span class="ct_fs_14 ct_fw_400">{{ 'filters.selectedMileage' | translate
+                                                }}</span>
                                             <span
                                                 class="ct_fs_14 ct_fw_400">{{filterData.kilometer_range?.selected_mileage
                                                 || 0}}</span>
@@ -727,7 +733,8 @@
                                     <!-- OLDER MODEL YEARS -->
                                     <div class="year-card">
                                         <div class="d-flex justify-content-between">
-                                            <span class="ct_fs_14 ct_fw_400">Higher Mileage</span>
+                                            <span class="ct_fs_14 ct_fw_400">{{ 'filters.higherMileage' | translate
+                                                }}</span>
                                             <span
                                                 class="ct_fs_14 ct_fw_400">{{filterData.kilometer_range?.higher_mileage
                                                 || 0}}</span>
@@ -737,7 +744,8 @@
                                     <!-- NEWLY MODEL YEARS -->
                                     <div class="year-card">
                                         <div class="d-flex justify-content-between">
-                                            <span class="ct_fs_14 ct_fw_400">Lower Mileage</span>
+                                            <span class="ct_fs_14 ct_fw_400">{{ 'filters.lowerMileage' | translate
+                                                }}</span>
                                             <span class="ct_fs_14 ct_fw_400">{{filterData.kilometer_range?.lower_mileage
                                                 || 0}}</span>
                                         </div>
@@ -769,7 +777,7 @@
                                                 [(ngModel)]="priceType" [ngModelOptions]="{standalone: true}"
                                                 (ngModelChange)="onPriceTypeChange()" />
                                             <span class="ct_radio-checkmark"></span>
-                                            Purchase Price
+                                            {{ 'filters.purchasePrice' | translate }}
                                         </label>
 
                                         <label class="ct_radio-button ct_fw_400">
@@ -777,7 +785,7 @@
                                                 [(ngModel)]="priceType" [ngModelOptions]="{standalone: true}"
                                                 (ngModelChange)="onPriceTypeChange()" />
                                             <span class="ct_radio-checkmark"></span>
-                                            Leasing Rate
+                                            {{ 'filters.leasingRate' | translate }}
                                         </label>
                                     </div>
                                 </div>
@@ -790,12 +798,12 @@
                                     }}</label>
 
                                 <div class="d-flex gap-3 mb-2">
-                                    <input type="number" class="form-control price_input" placeholder="Min"
-                                        [(ngModel)]="priceRange[0]" [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="onPriceRangeChange()" />
-                                    <input type="number" class="form-control price_input" placeholder="Max"
-                                        [(ngModel)]="priceRange[1]" [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="onPriceRangeChange()" />
+                                    <input type="number" class="form-control price_input"
+                                        [placeholder]="'filters.minimum' | translate" [(ngModel)]="priceRange[0]"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="onPriceRangeChange()" />
+                                    <input type="number" class="form-control price_input"
+                                        [placeholder]="'filters.maximum' | translate" [(ngModel)]="priceRange[1]"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="onPriceRangeChange()" />
                                 </div>
 
                                 <nz-slider [nzTooltipVisible]="'never'" nzRange [nzStep]="1000" [nzMin]="0"
@@ -810,12 +818,12 @@
                                     translate }}</label>
 
                                 <div class="d-flex gap-3 mb-2">
-                                    <input type="number" class="form-control price_input" placeholder="Min"
-                                        [(ngModel)]="leasePriceRange[0]" [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="onPriceRangeChange()" />
-                                    <input type="number" class="form-control price_input" placeholder="Max"
-                                        [(ngModel)]="leasePriceRange[1]" [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="onPriceRangeChange()" />
+                                    <input type="number" class="form-control price_input"
+                                        [placeholder]="'filters.minimum' | translate" [(ngModel)]="leasePriceRange[0]"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="onPriceRangeChange()" />
+                                    <input type="number" class="form-control price_input"
+                                        [placeholder]="'filters.maximum' | translate" [(ngModel)]="leasePriceRange[1]"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="onPriceRangeChange()" />
                                 </div>
 
                                 <nz-slider [nzTooltipVisible]="'never'" nzRange [nzStep]="100" [nzMin]="10"
@@ -889,7 +897,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        MFK and warranty
+                                        {{ 'filters.mfkAndWarranty' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -920,7 +928,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Accident vehicle
+                                        {{ 'vehicle.accidentVehicle' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -1000,7 +1008,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h5 class="ct_fs_25 ct_fw_600 ct_font_cairo mb-0 ct_color_8f0c1f">
-                        Technical data
+                        {{ 'vehicle.technicalData' | translate }}
                     </h5>
                 </div>
                 <div>
@@ -1015,7 +1023,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Fuel Type
+                                        {{ 'vehicle.fuelType' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -1053,7 +1061,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Transmission
+                                        {{ 'vehicle.transmission' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -1122,7 +1130,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Power Output
+                                        {{ 'vehicle.powerOutput' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -1133,13 +1141,13 @@
                             <div class="row">
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <input type="text" class="form-control" placeholder="ps"
+                                    <input type="text" class="form-control" [placeholder]="'common.ps' | translate"
                                         [attr.aria-label]="'filters.username' | translate"
                                         aria-describedby="basic-addon1" />
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <input type="text" class="form-control" placeholder="ps"
+                                    <input type="text" class="form-control" [placeholder]="'common.ps' | translate"
                                         [attr.aria-label]="'filters.username' | translate"
                                         aria-describedby="basic-addon1" />
                                 </div>
@@ -1153,7 +1161,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Cubic capacity
+                                        {{ 'filters.cubicCapacity' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -1183,7 +1191,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Cylinders
+                                        {{ 'vehicle.cylinders' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -1194,13 +1202,13 @@
                             <div class="row">
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <input type="text" class="form-control" placeholder="kg"
+                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
                                         [attr.aria-label]="'filters.username' | translate"
                                         aria-describedby="basic-addon1" />
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <input type="text" class="form-control" placeholder="kg"
+                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
                                         [attr.aria-label]="'filters.username' | translate"
                                         aria-describedby="basic-addon1" />
                                 </div>
@@ -1216,7 +1224,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Range (WLTP)
+                                        {{ 'filters.rangeWltp' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -1247,7 +1255,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Battery capacity
+                                        {{ 'filters.batteryCapacity' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -1278,7 +1286,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Tow capacity
+                                        {{ 'filters.towCapacity' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -1289,13 +1297,13 @@
                             <div class="row">
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <input type="text" class="form-control" placeholder="kg"
+                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
                                         [attr.aria-label]="'filters.username' | translate"
                                         aria-describedby="basic-addon1" />
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <input type="text" class="form-control" placeholder="kg"
+                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
                                         [attr.aria-label]="'filters.username' | translate"
                                         aria-describedby="basic-addon1" />
                                 </div>
@@ -1311,7 +1319,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Total weight
+                                        {{ 'filters.totalWeight' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -1322,13 +1330,13 @@
                             <div class="row">
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <input type="text" class="form-control" placeholder="kg"
+                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
                                         [attr.aria-label]="'filters.username' | translate"
                                         aria-describedby="basic-addon1" />
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <input type="text" class="form-control" placeholder="kg"
+                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
                                         [attr.aria-label]="'filters.username' | translate"
                                         aria-describedby="basic-addon1" />
                                 </div>
@@ -1340,7 +1348,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Empty weight
+                                        {{ 'filters.emptyWeight' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -1351,13 +1359,13 @@
                             <div class="row">
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <input type="text" class="form-control" placeholder="kg"
+                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
                                         [attr.aria-label]="'filters.username' | translate"
                                         aria-describedby="basic-addon1" />
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <input type="text" class="form-control" placeholder="kg"
+                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
                                         [attr.aria-label]="'filters.username' | translate"
                                         aria-describedby="basic-addon1" />
                                 </div>
@@ -1372,7 +1380,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h5 class="ct_fs_25 ct_fw_600 ct_font_cairo mb-0 ct_color_8f0c1f">
-                        Location
+                        {{ 'location.location' | translate }}
                     </h5>
                 </div>
                 <div>
@@ -1390,7 +1398,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="position-relative">
-                            <input type="search" class="form-control" placeholder="5km"
+                            <input type="search" class="form-control"
+                                [placeholder]="'filters.radiusPlaceholder' | translate"
                                 [attr.aria-label]="'filters.username' | translate" aria-describedby="basic-addon1" />
                             <span class="ct_color_666666 radius_unit">{{ 'filters.radiusKm' | translate }}</span>
                         </div>
@@ -1405,7 +1414,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h5 class="ct_fs_25 ct_fw_600 ct_font_cairo mb-0 ct_color_8f0c1f">
-                        Equipment
+                        {{ 'vehicle.equipment' | translate }}
                     </h5>
                 </div>
                 <div>
@@ -1420,7 +1429,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Equipment
+                                        {{ 'vehicle.equipment' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -1453,7 +1462,7 @@
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
                                             id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">ABS </label>
+                                        <label for="flexCheckDefault">{{ 'filters.abs' | translate }}</label>
                                     </div>
                                     <div>
                                         <span class="ct_fs_12 ct_fw_300">356</span>
@@ -1485,7 +1494,7 @@
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
                                             id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">Additional instruments
+                                        <label for="flexCheckDefault">{{ 'filters.additionalInstruments' | translate }}
                                         </label>
                                     </div>
                                     <div>
@@ -1598,7 +1607,7 @@
                                         <input class="form-check-input" type="checkbox" value=""
                                             id="flexCheckDefault" />
                                         <label for="flexCheckDefault">
-                                            Differential locking
+                                            {{ 'filters.differentialLocking' | translate }}
                                         </label>
                                     </div>
                                     <div>
@@ -1646,7 +1655,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Extras
+                                        {{ 'filters.extras' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -1659,7 +1668,7 @@
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
                                             id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">Handicapped accessible
+                                        <label for="flexCheckDefault">{{ 'filters.handicappedAccessible' | translate }}
                                         </label>
                                     </div>
                                     <div>
@@ -1711,7 +1720,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h5 class="ct_fs_25 ct_fw_600 ct_font_cairo mb-0 ct_color_8f0c1f">
-                        Color
+                        {{ 'vehicle.colours' | translate }}
                     </h5>
                 </div>
                 <div>
@@ -1728,7 +1737,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-5">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Exterior Color
+                                        {{ 'vehicle.exteriorColor' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -1787,7 +1796,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Interior Color
+                                        {{ 'vehicle.interiorColor' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -1874,7 +1883,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h5 class="ct_fs_25 ct_fw_600 ct_font_cairo mb-0 ct_color_8f0c1f">
-                        Seats & doors
+                        {{ 'filters.seatsAndDoors' | translate }}
                     </h5>
                 </div>
                 <div>
@@ -1957,7 +1966,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h5 class="ct_fs_25 ct_fw_600 ct_font_cairo mb-0 ct_color_8f0c1f">
-                        Energy & Environment
+                        {{ 'filters.energyAndEnvironment' | translate }}
                     </h5>
                 </div>
                 <div>
@@ -1974,7 +1983,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Consumption
+                                        {{ 'vehicle.consumption' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -2005,7 +2014,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        CO2-Emissions
+                                        {{ 'filters.co2Emissions' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -2036,7 +2045,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Energy efficiency
+                                        {{ 'vehicle.energyEfficiency' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -2070,7 +2079,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Euronorm
+                                        {{ 'filters.euronorm' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -2238,7 +2247,7 @@
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
                                             id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">Euro 6d Temp EVAP ISC
+                                        <label for="flexCheckDefault">{{ 'filters.euro6dTempEvapIsc' | translate }}
                                         </label>
                                     </div>
                                     <div>
@@ -2278,7 +2287,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h5 class="ct_fs_25 ct_fw_600 ct_font_cairo mb-0 ct_color_8f0c1f">
-                        Offer details
+                        {{ 'filters.offerDetails' | translate }}
                     </h5>
                 </div>
                 <div>
@@ -2295,7 +2304,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h5 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                        Age of the listing
+                                        {{ 'filters.ageOfTheListing' | translate }}
                                     </h5>
                                 </div>
                                 <div>
@@ -2412,7 +2421,7 @@
                                             <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="flexCheckDefault" />
-                                                <label for="flexCheckDefault">AMAG </label>
+                                                <label for="flexCheckDefault">{{ 'filters.amag' | translate }}</label>
                                             </div>
                                             <div>
                                                 <span class="ct_fs_12 ct_fw_300">356</span>
@@ -2422,7 +2431,8 @@
                                             <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="flexCheckDefault" />
-                                                <label for="flexCheckDefault">Audi Occasion :plus
+                                                <label for="flexCheckDefault">{{ 'filters.audiOccasionPlus' | translate
+                                                    }}
                                                 </label>
                                             </div>
                                             <div>
@@ -2433,7 +2443,8 @@
                                             <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="flexCheckDefault" />
-                                                <label for="flexCheckDefault">Auto Welt von Rotz AG
+                                                <label for="flexCheckDefault">{{ 'filters.autoWeltVonRotzAg' | translate
+                                                    }}
                                                 </label>
                                             </div>
                                             <div>
@@ -2445,7 +2456,7 @@
                                             <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="flexCheckDefault" />
-                                                <label for="flexCheckDefault"> BMW </label>
+                                                <label for="flexCheckDefault">{{ 'filters.bmw' | translate }}</label>
                                             </div>
                                             <div>
                                                 <span class="ct_fs_12 ct_fw_300">356</span>
@@ -2455,7 +2466,8 @@
                                             <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="flexCheckDefault" />
-                                                <label for="flexCheckDefault">BMW Premium Selection
+                                                <label for="flexCheckDefault">{{ 'filters.bmwPremiumSelection' |
+                                                    translate }}
                                                 </label>
                                             </div>
                                             <div>
@@ -2478,7 +2490,7 @@
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="flexCheckDefault" />
                                                 <label for="flexCheckDefault">
-                                                    Jaguar Approved
+                                                    {{ 'filters.jaguarApproved' | translate }}
                                                 </label>
                                             </div>
                                             <div>
@@ -2490,7 +2502,7 @@
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="flexCheckDefault" />
                                                 <label for="flexCheckDefault">
-                                                    Land Rover Approved
+                                                    {{ 'filters.landRoverApproved' | translate }}
                                                 </label>
                                             </div>
                                             <div>
@@ -2517,7 +2529,8 @@
                                             <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="flexCheckDefault" />
-                                                <label for="flexCheckDefault">Mercedes-Benz Certified
+                                                <label for="flexCheckDefault">{{ 'filters.mercedesBenzCertified' |
+                                                    translate }}
                                                 </label>
                                             </div>
                                             <div>
@@ -2538,7 +2551,8 @@
                                             <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="flexCheckDefault" />
-                                                <label for="flexCheckDefault">Occasionen MINI NEXT
+                                                <label for="flexCheckDefault">{{ 'filters.occasionenMiniNext' |
+                                                    translate }}
                                                 </label>
                                             </div>
                                             <div>
@@ -2561,7 +2575,8 @@
                                             <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="flexCheckDefault" />
-                                                <label for="flexCheckDefault">SEAT Occasion Plus
+                                                <label for="flexCheckDefault">{{ 'filters.seatOccasionPlus' | translate
+                                                    }}
                                                 </label>
                                             </div>
                                             <div>
