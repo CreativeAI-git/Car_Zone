@@ -1,0 +1,10 @@
+.request-slot-input:focus,
+.request-slot-textarea:focus {
+      border-color: #8f0c1f;
+      box-shadow: 0 0 0 0.15rem rgba(143, 12, 31, 0.12);
+}
+
+.ct_submit_pill_btn[disabled] {
+      opacity: 0.75;
+      cursor: not-allowed;
+}

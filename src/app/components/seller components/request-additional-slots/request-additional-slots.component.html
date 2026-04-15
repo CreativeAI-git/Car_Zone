@@ -1,47 +1,56 @@
 <section class="ct_mt_100 ct_mb_100">
       <div class="container">
             <div class="row align-items-center gy-4">
-                  <!-- LEFT CONTENT -->
                   <div class="col-lg-6">
                         <span class="ct_fs_14 ct_fw_500 ct_color_666666 d-inline-flex align-items-center gap-2 mb-2">
                               <img src="img/subheading-img.png" alt="" width="18" />
-                              SLOT REQUEST
+                              {{ 'listing.requestSlotEyebrow' | translate }}
                         </span>
 
-                        <h2 class="ct_fs_65 ct_fw_600 ct_texy_clr_35383C ct_font_cairo mb-3">
-                              Need More <br />
-                              Listing Slots?
+                        <h2 class="ct_fs_65 ct_fw_600 ct_texy_clr_35383C ct_font_cairo mb-3 request-slot-title">
+                              {{ 'listing.needMoreListingSlots' | translate }}
                         </h2>
 
-                        <p class="ct_fs_16 ct_color_666666 ct_lh-2" style="max-width: 376px">
-                              Request additional slots to list more cars and keep your inventory
-                              visible to buyers without interruption.
+                        <p class="ct_fs_16 ct_color_666666 ct_lh-2 request-slot-copy">
+                              {{ 'listing.requestAdditionalSlotsDescription' | translate }}
                         </p>
                   </div>
 
-                  <!-- RIGHT FORM CARD -->
                   <div class="col-lg-6">
-                        <div class="ct_right_main_box">
-                              <!-- Slots -->
+                        <form class="ct_right_main_box request-slot-card" [formGroup]="slotRequestForm"
+                              (ngSubmit)="submitRequest()">
                               <div class="mb-4">
-                                    <label class="ct_fs_15 ct_fw_500 mb-2">
-                                          Number of Additional Slots
+                                    <label class="ct_fs_15 ct_fw_500 mb-2 d-block" for="requestedSlots">
+                                          {{ 'listing.numberOfAdditionalSlots' | translate }}
                                     </label>
-                                    <input type="number" class="form-control ct_grey_input"
+                                    <input id="requestedSlots" type="number" min="1"
+                                          class="form-control ct_grey_input request-slot-input"
+                                          formControlName="requestedSlots"
                                           [placeholder]="'listing.enterNumberOfSlotsEG32' | translate" />
+                                    <small class="text-danger">
+                                          {{ validationErrorService.getErrorMessage(('listing.numberOfAdditionalSlots' |
+                                          translate), requestedSlotsControl) }}
+                                    </small>
                               </div>
 
-                              <!-- Message -->
                               <div class="mb-3">
-                                    <label class="ct_fs_15 ct_fw_500 mb-2">
-                                          Message to Admin
-                                          <span class="ct_color_666666">{{ 'vehicle.optional' | translate }}</span>
+                                    <label class="ct_fs_15 ct_fw_500 mb-2 d-block" for="message">
+                                          {{ 'chat.messageToAdmin' | translate }}
+                                          <span class="ct_color_666666">({{ 'common.optional' | translate }})</span>
                                     </label>
-                                    <textarea class="form-control ct_grey_input" rows="4"
+                                    <textarea id="message" class="form-control ct_grey_input request-slot-textarea"
+                                          rows="5" formControlName="message"
                                           [placeholder]="'common.writeHere' | translate"></textarea>
+                                    <div class="d-flex justify-content-between align-items-center mt-1 gap-3">
+                                          <small class="text-danger">
+                                                {{ validationErrorService.getErrorMessage(('chat.messageToAdmin' |
+                                                translate), messageControl) }}
+                                          </small>
+                                          <small class="text-muted text-nowrap">{{ messageControl?.value?.length || 0
+                                                }}/500</small>
+                                    </div>
                               </div>
 
-                              <!-- Info -->
                               <div class="d-flex align-items-start gap-2 ct_fs_14 ct_color_666666 mb-4">
                                     <svg width="20" height="20" class="ct_flex_shrink_0" viewBox="0 0 20 20" fill="none"
                                           xmlns="http://www.w3.org/2000/svg">
@@ -49,18 +58,19 @@
                                                 fill="#262626" fill-opacity="0.88" />
                                     </svg>
 
-                                    <span>
-                                          Requests are typically reviewed within 24–48 hours. You’ll
-                                          receive a notification once approved.
-                                    </span>
+                                    <span>{{ 'common.requestsAreTypically' | translate }}</span>
                               </div>
 
-                              <!-- Button -->
-                              <a class="ct_submit_pill_btn" href="choose-listing-plan.html">
-                                    <span class="ct_btn_icon"> → </span>
-                                    <span class="ct_btn_text">{{ 'common.submitRequest' | translate }}</span>
-                              </a>
-                        </div>
+                              <button class="ct_submit_pill_btn" type="submit" [disabled]="isSubmitting">
+                                    <span class="ct_btn_icon">
+                                          <i class="fa-solid" [ngClass]="isSubmitting ? 'fa-spinner fa-spin' : 'fa-arrow-right'"></i>
+                                    </span>
+                                    <span class="ct_btn_text">
+                                          {{ isSubmitting ? ('listing.submittingRequest' | translate) :
+                                          ('common.submitRequest' | translate) }}
+                                    </span>
+                              </button>
+                        </form>
                   </div>
             </div>
       </div>

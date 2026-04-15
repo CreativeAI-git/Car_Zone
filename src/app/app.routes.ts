@@ -91,14 +91,6 @@ export const routes: Routes = [
                         loadComponent: () => import('./components/privacy-policy/privacy-policy.component').then(m => m.PrivacyPolicyComponent)
                   },
                   {
-                        path: 'application-approved',
-                        loadComponent: () => import('./components/seller components/application-approved/application-approved.component').then(m => m.ApplicationApprovedComponent)
-                  },
-                  {
-                        path: 'application-rejected',
-                        loadComponent: () => import('./components/seller components/application-rejected/application-rejected.component').then(m => m.ApplicationRejectedComponent)
-                  },
-                  {
                         path: 'application-under-review',
                         loadComponent: () => import('./components/seller components/application-under-review/application-under-review.component').then(m => m.ApplicationUnderReviewComponent)
                   },
