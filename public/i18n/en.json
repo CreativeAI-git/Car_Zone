@@ -1,4 +1,4 @@
-{
+﻿{
   "common": {
     "next": "Next",
     "select": "Select",
@@ -87,7 +87,7 @@
     "noResultFoundForThisKey": "We couldn't find any results for your search.",
     "confirm": "Confirm",
     "tryAgainLater": "Please try again later",
-    "used": "Used",
+    "used": "USED",
     "daysLeft": "Days Left",
     "thisMonth": "this month",
     "days": "Days",
@@ -819,6 +819,13 @@
     "finalRenewalReview": "Final Renewal Review",
     "noActivePlan": "No Active Plan!",
     "noActivePlanDescription": "You currently don’t have any active plan. Please purchase a plan to start listing your cars and access all features.",
+    "purchaseHistory": "Purchase History",
+    "purchasedSlots": "Purchased Slots",
+    "purchaseType": "Purchase Type",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "purchasedOn": "Purchased On",
+    "noPurchaseHistory": "No purchase history found.",
     "purchaseAndStartListing": "Purchase and start listing",
     "pendingRenewals": "Pending Renewals",
     "deleteListing": "Delete Listing",

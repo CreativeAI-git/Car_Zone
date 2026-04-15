@@ -83,20 +83,24 @@
                                     <ul class="p-0 car-content-detail-list">
                                           <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/calendar-brown.png" />
-                                                <span> {{carData?.vehicle.registration_year || ('common.notAvailable' | translate)}} </span>
+                                                <span> {{carData?.vehicle.registration_year || ('common.notAvailable' |
+                                                      translate)}} </span>
                                           </li>
                                           <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/km-brown.png" />
-                                                <span> {{carData?.vehicle.mileage || ('common.notAvailable' | translate)}} km </span>
+                                                <span> {{carData?.vehicle.mileage || ('common.notAvailable' |
+                                                      translate)}} km </span>
                                           </li>
                                           <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/transmission-brown.png" />
-                                                <span> {{carData?.vehicle.transmission || ('common.notAvailable' | translate)}} </span>
+                                                <span> {{carData?.vehicle.transmission || ('common.notAvailable' |
+                                                      translate)}} </span>
                                           </li>
 
                                           <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/Hinterantrieb.png" />
-                                                <span> {{carData?.vehicle.driveType || ('common.notAvailable' | translate)}} </span>
+                                                <span> {{carData?.vehicle.driveType || ('common.notAvailable' |
+                                                      translate)}} </span>
                                           </li>
                                     </ul>
                                     <ul class="p-0 car-content-detail-list">
@@ -110,7 +114,8 @@
                                           </li>
                                           <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/power-brown.png" />
-                                                <span> {{carData?.vehicle.braked_towing_capacity_kg || ('common.notAvailable' | translate)}} kg
+                                                <span> {{carData?.vehicle.braked_towing_capacity_kg ||
+                                                      ('common.notAvailable' | translate)}} kg
                                                 </span>
                                           </li>
 
@@ -134,24 +139,29 @@
                                                       }}</h6>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'vehicle.energyEfficiency' | translate }}</span>
-                                                      <span>{{carData?.vehicle.energy_efficiency || ('common.notAvailable' | translate)}}</span>
+                                                      <span>{{carData?.vehicle.energy_efficiency ||
+                                                            ('common.notAvailable' | translate)}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'vehicle.brakedTowingCapacity' | translate }}</span>
-                                                      <span>{{carData?.vehicle.braked_towing_capacity_kg || ('common.notAvailable' | translate)}}
+                                                      <span>{{carData?.vehicle.braked_towing_capacity_kg ||
+                                                            ('common.notAvailable' | translate)}}
                                                             kg</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'vehicle.height' | translate }}</span>
-                                                      <span>{{carData?.vehicle.height_mm || ('common.notAvailable' | translate)}} mm</span>
+                                                      <span>{{carData?.vehicle.height_mm || ('common.notAvailable' |
+                                                            translate)}} mm</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'vehicle.width' | translate }}</span>
-                                                      <span>{{carData?.vehicle.width_mm || ('common.notAvailable' | translate)}} mm</span>
+                                                      <span>{{carData?.vehicle.width_mm || ('common.notAvailable' |
+                                                            translate)}} mm</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'vehicle.length' | translate }}</span>
-                                                      <span>{{carData?.vehicle.length_mm || ('common.notAvailable' | translate)}} mm</span>
+                                                      <span>{{carData?.vehicle.length_mm || ('common.notAvailable' |
+                                                            translate)}} mm</span>
                                                 </div>
                                           </div>
 
@@ -160,19 +170,23 @@
                                                       translate }}</h6>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'vehicle.condition' | translate }}</span>
-                                                      <span>{{carData?.vehicle.condition_value || ('common.notAvailable' | translate)}}</span>
+                                                      <span>{{carData?.vehicle.condition_value || ('common.notAvailable'
+                                                            | translate)}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'profile.state' | translate }}</span>
-                                                      <span>{{carData?.vehicle.state_value || ('common.notAvailable' | translate)}}</span>
+                                                      <span>{{carData?.vehicle.state_value || ('common.notAvailable' |
+                                                            translate)}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'vehicle.warranty' | translate }}</span>
-                                                      <span>{{carData?.vehicle.warranty_value || ('common.notAvailable' | translate)}}</span>
+                                                      <span>{{carData?.vehicle.warranty_value || ('common.notAvailable'
+                                                            | translate)}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'vehicle.warrantyType' | translate }}</span>
-                                                      <span>{{carData?.vehicle.warranty_type_value || ('common.notAvailable' | translate)}}</span>
+                                                      <span>{{carData?.vehicle.warranty_type_value ||
+                                                            ('common.notAvailable' | translate)}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'vehicle.warrantyPeriod' | translate }}</span>
@@ -195,15 +209,18 @@
                                                 </h6>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'vehicle.exterior' | translate }}</span>
-                                                      <span>{{carData?.vehicle.exterior_color_value || ('common.notAvailable' | translate)}}</span>
+                                                      <span>{{carData?.vehicle.exterior_color_value ||
+                                                            ('common.notAvailable' | translate)}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'vehicle.interior' | translate }}</span>
-                                                      <span>{{carData?.vehicle.interior_color_value || ('common.notAvailable' | translate)}}</span>
+                                                      <span>{{carData?.vehicle.interior_color_value ||
+                                                            ('common.notAvailable' | translate)}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'filters.metallic' | translate }}</span>
-                                                      <span>{{carData?.vehicle.is_metallic ? ('common.yes' | translate) : ('common.no' | translate)}}</span>
+                                                      <span>{{carData?.vehicle.is_metallic ? ('common.yes' | translate)
+                                                            : ('common.no' | translate)}}</span>
                                                 </div>
                                           </div>
 
@@ -216,12 +233,15 @@
                                                             date:'dd.MM.yyyy'}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
-                                                      <span>{{ 'vehicle.vehicleIdentificationNumber' | translate }}</span>
-                                                      <span>{{carData?.vehicle.vin_number || ('common.notAvailable' | translate)}}</span>
+                                                      <span>{{ 'vehicle.vehicleIdentificationNumber' | translate
+                                                            }}</span>
+                                                      <span>{{carData?.vehicle.vin_number || ('common.notAvailable' |
+                                                            translate)}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'vehicle.typeApproval' | translate }}</span>
-                                                      <span>{{carData?.vehicle.type_approval || ('common.notAvailable' | translate)}}</span>
+                                                      <span>{{carData?.vehicle.type_approval || ('common.notAvailable' |
+                                                            translate)}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'vehicle.regMasterNo' | translate }}</span>
@@ -250,15 +270,18 @@
                                                 </h6>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'profile.city' | translate }}</span>
-                                                      <span>{{carData?.vehicle.city || ('common.notAvailable' | translate)}}</span>
+                                                      <span>{{carData?.vehicle.city || ('common.notAvailable' |
+                                                            translate)}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'profile.postalCode' | translate }}</span>
-                                                      <span>{{carData?.vehicle.postal_code || ('common.notAvailable' | translate)}}</span>
+                                                      <span>{{carData?.vehicle.postal_code || ('common.notAvailable' |
+                                                            translate)}}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-1">
                                                       <span>{{ 'profile.country' | translate }}</span>
-                                                      <span>{{carData?.vehicle.country || ('common.notAvailable' | translate)}}</span>
+                                                      <span>{{carData?.vehicle.country || ('common.notAvailable' |
+                                                            translate)}}</span>
                                                 </div>
                                           </div>
                                     </div>
@@ -266,13 +289,14 @@
                               }
                               <div class="mt-3">
                                     <a class="ct_color_3e1cff ct_fs_16 ct_cursor_pointer"
-                                          (click)="ShoMore = !ShoMore">{{ ShoMore ? ('common.showLess' | translate) : ('common.showMore' | translate) }}
+                                          (click)="ShoMore = !ShoMore">{{ ShoMore ? ('common.showLess' | translate) :
+                                          ('common.showMore' | translate) }}
                                     </a>
                               </div>
                               <hr class="my-4" />
 
                               <div class="car-view-more-detail">
-                                    <div class="car-view-more-detail-head-img">
+                                    <!-- <div class="car-view-more-detail-head-img">
                                           <img src="img/carvertical-img.png" />
                                     </div>
                                     <h5 class="ct_fs_18 ct_fw_500">
@@ -293,8 +317,8 @@
                                           <a class="btn-red">
                                                 {{ 'vehicle.getVehicleCheck' | translate }}
                                           </a>
-                                    </div>
-                                    <hr class="my-4" />
+                                    </div> -->
+                                    <!-- <hr class="my-4" /> -->
 
                                     <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.equipmentAndFeatures' | translate }}
                                     </h4>
@@ -340,7 +364,8 @@
                                     </h4>
                                     <p>
                                           <img src="img/icons/right.png" class="me-2" />
-                                          {{ 'vehicle.mfkForThisVehicleWasDoneOn' | translate:{ date: (carData?.vehicle.last_mfk_date |
+                                          {{ 'vehicle.mfkForThisVehicleWasDoneOn' | translate:{ date:
+                                          (carData?.vehicle.last_mfk_date |
                                           date:'dd.MM.yyyy') } }}
                                     </p>
                                     <hr class="my-4" />
@@ -351,17 +376,20 @@
                                           <div class="w-25">{{ 'vehicle.warrantyIncluded' | translate }}</div>
                                           @if(carData?.vehicle.is_warranty_included){
                                           <div class="ct_color_0acc0a">
-                                                {{ 'common.yes' | translate }} <img src="img/icons/right.png" class="ms-1" />
+                                                {{ 'common.yes' | translate }} <img src="img/icons/right.png"
+                                                      class="ms-1" />
                                           </div>
                                           }
                                     </div>
                                     <!-- <p class="mb-2">{{ 'vehicle.fromTakeOver12MonthsOr20000Km' | translate }}</p> -->
-                                    <p class="mb-2">{{carData?.vehicle.warranty_type_value || ('common.notAvailable' | translate)}}</p>
+                                    <p class="mb-2">{{carData?.vehicle.warranty_type_value || ('common.notAvailable' |
+                                          translate)}}</p>
                                     <div class="d-flex gap-4 mb-2">
                                           <div class="w-25">{{ 'vehicle.swissCar' | translate }}</div>
                                           @if(carData?.vehicle.is_swiss_vehicle){
                                           <div class="ct_color_0acc0a">
-                                                {{ 'common.yes' | translate }} <img src="img/icons/right.png" class="ms-1" />
+                                                {{ 'common.yes' | translate }} <img src="img/icons/right.png"
+                                                      class="ms-1" />
                                           </div>
                                           }
                                     </div>
@@ -374,7 +402,8 @@
                                           <p class="ct_fs_20 mb-0">
                                                 <img src="img/icons/calculator.png" clas="" />
                                                 <span class="ms-3">
-                                                      {{ 'vehicle.calculateYourApproximateMonthlyLeaseRate' | translate }}</span>
+                                                      {{ 'vehicle.calculateYourApproximateMonthlyLeaseRate' | translate
+                                                      }}</span>
                                           </p>
                                     </div>
 
@@ -395,7 +424,8 @@
                                                       translate }}</label>
                                                 <select class="form-select"
                                                       [attr.aria-label]="'filters.defaultSelectExample' | translate">
-                                                      <option selected>{{ 'vehicle.tenThousandKm' | translate }}</option>
+                                                      <option selected>{{ 'vehicle.tenThousandKm' | translate }}
+                                                      </option>
                                                       <option value="1">{{ 'filters.one' | translate }}</option>
                                                       <option value="2">{{ 'filters.two' | translate }}</option>
                                                       <option value="3">{{ 'filters.three' | translate }}</option>
@@ -406,7 +436,8 @@
                                                 <label class="mt-3 ct_fs_15 ct_fw_400 mb-2">
                                                       {{ 'payment.downPayment' | translate }}
                                                 </label>
-                                                <input type="text" class="form-control" [placeholder]="'vehicle.chfPlaceholderAmount' | translate"
+                                                <input type="text" class="form-control"
+                                                      [placeholder]="'vehicle.chfPlaceholderAmount' | translate"
                                                       [attr.aria-label]="'filters.username' | translate"
                                                       aria-describedby="basic-addon1" />
                                           </div>
@@ -455,7 +486,8 @@
                                                 @if(carData?.vehicle.isLeasing){
                                                 /
                                                 <span class="mb-0 ct_fs_18 ct_fw_400 ct_color_3e1cff fst-italic">
-                                                      {{carData?.vehicle.leasing_value | chfFormat}} {{ 'vehicle.perMonth' | translate }}
+                                                      {{carData?.vehicle.leasing_value | chfFormat}} {{
+                                                      'vehicle.perMonth' | translate }}
                                                 </span>
                                                 }
                                           </h3>
@@ -486,7 +518,8 @@
                                           </div>
                                           <div class="d-flex align-items-center gap-3 my-3">
                                                 <div class="w-50">
-                                                      <a class="btn-red w-100 text-center ct_fw_500">{{ 'vehicle.physicalVisit' | translate }}</a>
+                                                      <a class="btn-red w-100 text-center ct_fw_500">{{
+                                                            'vehicle.physicalVisit' | translate }}</a>
                                                 </div>
                                                 <div class="w-50">
                                                       <button (click)="contactSeller(carData)"
@@ -623,7 +656,9 @@
                                                                   <ul class="p-0 car-content-right-list">
                                                                         <li class="d-flex align-items-center">
                                                                               <img src="img/icons/carn.png" />
-                                                                              <span>{{item.body_type || ('common.notAvailable' | translate)}} </span>
+                                                                              <span>{{item.body_type ||
+                                                                                    ('common.notAvailable' |
+                                                                                    translate)}} </span>
                                                                         </li>
                                                                         <li class="d-flex align-items-center">
                                                                               <img src="img/icons/km.png" />
@@ -631,7 +666,9 @@
                                                                         </li>
                                                                         <li class="d-flex align-items-center">
                                                                               <img src="img/icons/fuel-type.png" />
-                                                                              <span> {{item.fuel_type || ('common.notAvailable' | translate)}}
+                                                                              <span> {{item.fuel_type ||
+                                                                                    ('common.notAvailable' |
+                                                                                    translate)}}
                                                                               </span>
                                                                         </li>
                                                                   </ul>
@@ -644,12 +681,16 @@
                                                                         </li>
                                                                         <li class="d-flex align-items-center">
                                                                               <img src="img/icons/transmision.png" />
-                                                                              <span> {{item.transmission || ('common.notAvailable' | translate)}}
+                                                                              <span> {{item.transmission ||
+                                                                                    ('common.notAvailable' |
+                                                                                    translate)}}
                                                                               </span>
                                                                         </li>
                                                                         <li class="d-flex align-items-center">
                                                                               <img src="img/icons/year.png" />
-                                                                              <span> {{item.registration_year || ('common.notAvailable' | translate)}}
+                                                                              <span> {{item.registration_year ||
+                                                                                    ('common.notAvailable' |
+                                                                                    translate)}}
                                                                               </span>
                                                                         </li>
                                                                   </ul>
@@ -666,7 +707,8 @@
                   <div class="d-flex gap-3 ct_mt_40">
                         <div>
                               <!-- href="purchase-agreement.html" -->
-                              <a class="btn-red"><img src="img/icons/contract-cion.png" class="me-2" />{{ 'vehicle.buyingContract' | translate }}</a>
+                              <a class="btn-red"><img src="img/icons/contract-cion.png" class="me-2" />{{
+                                    'vehicle.buyingContract' | translate }}</a>
                         </div>
 
                         <div>
@@ -786,35 +828,41 @@
                               <div class="row">
                                     <div class="col-6">
                                           <label class="mt-3 ct_fs_15 ct_fw_400 mb-2">
-                                                {{ 'vehicle.fullName' | translate }} <span class="ct_color_8f0c1f">*</span>
+                                                {{ 'vehicle.fullName' | translate }} <span
+                                                      class="ct_color_8f0c1f">*</span>
                                           </label>
                                           <input type="text" class="form-control" formControlName="full_name"
                                                 [placeholder]="'vehicle.fullName' | translate"
                                                 [attr.aria-label]="'filters.username' | translate"
                                                 aria-describedby="basic-addon1">
-                                          <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.fullName' | translate),
+                                          <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.fullName'
+                                                | translate),
                                                 inquiryForm.get('full_name'))}}</small>
                                     </div>
                                     <div class="col-6">
                                           <label class="mt-3 ct_fs_15 ct_fw_400 mb-2">
-                                                {{ 'auth.emailAddress' | translate }} <span class="ct_color_8f0c1f">*</span>
+                                                {{ 'auth.emailAddress' | translate }} <span
+                                                      class="ct_color_8f0c1f">*</span>
                                           </label>
                                           <input type="email" class="form-control" formControlName="email"
                                                 [placeholder]="'vehicle.johnAndersonEmailCom' | translate"
                                                 [attr.aria-label]="'filters.username' | translate"
                                                 aria-describedby="basic-addon1">
-                                          <small class="text-danger">{{validationErrorService.getErrorMessage(('auth.email' | translate),
+                                          <small class="text-danger">{{validationErrorService.getErrorMessage(('auth.email'
+                                                | translate),
                                                 inquiryForm.get('email'))}}</small>
                                     </div>
                                     <div class="col-6">
                                           <label class="mt-3 ct_fs_15 ct_fw_400 mb-2">
-                                                {{ 'profile.phoneNumber' | translate }} <span class="ct_color_8f0c1f">*</span>
+                                                {{ 'profile.phoneNumber' | translate }} <span
+                                                      class="ct_color_8f0c1f">*</span>
                                           </label>
                                           <input type="text" class="form-control" formControlName="phone_number"
                                                 [placeholder]="'profile.phoneNumberExample' | translate"
                                                 [attr.aria-label]="'filters.username' | translate"
                                                 aria-describedby="basic-addon1">
-                                          <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.phoneNumber' | translate),
+                                          <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.phoneNumber'
+                                                | translate),
                                                 inquiryForm.get('phone_number'))}}</small>
                                     </div>
 
@@ -845,7 +893,8 @@
                                           <span class="fst-italic">{{ 'vehicle.optional' | translate }}</span></label>
                                     <textarea class="form-control" rows="3" formControlName="message"
                                           [placeholder]="'vehicle.writeReason' | translate"></textarea>
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.message' | translate),
+                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.message'
+                                          | translate),
                                           inquiryForm.get('message'))}}</small>
                               </div>
                         </div>

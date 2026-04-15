@@ -1006,7 +1006,8 @@
                                                       </li>
                                                       <li class="d-flex gap-1 align-items-start">
                                                             <img src="img/icons/calendar-brown.png" />
-                                                            <span> {{item.registration_year || 'N/A'}} </span>
+                                                            <span> {{(item.first_registration_date | date:'yyyy-MM') ||
+                                                                  'N/A'}} </span>
                                                       </li>
                                                 </ul>
                                           </div>

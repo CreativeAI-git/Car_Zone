@@ -223,11 +223,13 @@
 /* Ribbon */
 .starter-ribbon {
   position: absolute;
-  top: 0px;
-  right: 6px;
+  top: 10px;
+  right: 0px;
   background: #8f0d1d;
   color: #fff;
-  padding: 6px 27px;
+  padding: 6px;
+  text-align: center;
+  width: 147px;
   font-size: 12px;
   transform: rotate(45deg) translate(30px, -20px);
 }

@@ -10,3 +10,115 @@
 .ct_custom_progress_bar .progress-bar {
       background-color: var(--red);
 }
+
+.listing-slot-plan-wrap {
+      padding: 32px 20px;
+}
+
+.listing-plan-card {
+      /* background: #fff; */
+      border-radius: 18px;
+      border: 1px solid #ececec;
+      padding: 28px;
+      /* box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06); */
+}
+
+
+.history-count {
+      min-width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #f3f4f6;
+      color: #111827;
+      font-size: 14px;
+      font-weight: 600;
+}
+
+.history-list {
+      display: grid;
+      gap: 16px;
+}
+
+.history-item {
+      border: 1px solid #ececec;
+      border-radius: 14px;
+      padding: 18px;
+      background: #fcfcfd;
+}
+
+.purchase-type-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #4b5563;
+      font-size: 13px;
+}
+
+.history-price {
+      color: var(--primary-color);
+}
+
+.history-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+}
+
+.history-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+}
+
+.history-label {
+      color: #6b7280;
+      font-size: 13px;
+}
+
+@media screen and (max-width: 767px) {
+      .listing-slot-plan-wrap {
+            padding: 24px 14px;
+      }
+
+      .listing-plan-card,
+      .purchase-history-card {
+            padding: 20px;
+      }
+
+      .bundle-card .bundle-title {
+            font-size: 26px;
+      }
+
+      .history-grid {
+            grid-template-columns: 1fr;
+      }
+}
+
+.bundle-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid #22c55e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      margin-bottom: 8px;
+}
+
+.status-badge {
+      background: #e7f8ed;
+      color: #22c55e;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 10px;
+}
+
+.bundle-price {
+      color: #6b7280;
+}

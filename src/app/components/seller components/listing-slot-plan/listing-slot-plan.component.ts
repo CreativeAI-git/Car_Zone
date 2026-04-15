@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonService } from '../../../services/common.service';
 import { RouterLink } from '@angular/router';
@@ -36,6 +35,49 @@ export class ListingSlotPlanComponent {
         this.loader.hide()
       }
     )
+  }
+
+  get historyList(): any[] {
+    return Array.isArray(this.planList?.history) ? this.planList.history : [];
+  }
+
+  getStatusClass(isActive: number | boolean): string {
+    return isActive ? 'approved' : 'rejected';
+  }
+
+  getStatusKey(isActive: number | boolean): string {
+    return isActive ? 'status.active' : 'status.expired';
+  }
+
+  getPurchaseTypeKey(type: string): string {
+    return type === 'additional' ? 'common.additional' : 'common.main';
+  }
+
+  formatDate(date: string): string {
+    if (!date) return '-';
+
+    const parsedDate = new Date(date);
+    if (Number.isNaN(parsedDate.getTime())) return '-';
+
+    const lang = this.translate.currentLang || localStorage.getItem('lang') || 'en';
+    const localeMap: Record<string, string> = {
+      en: 'en-GB',
+      fr: 'fr-FR',
+      de: 'de-DE',
+      it: 'it-IT'
+    };
+
+    return new Intl.DateTimeFormat(localeMap[lang] || 'en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    }).format(parsedDate);
+  }
+
+  formatPrice(value: string | number): string {
+    const amount = Number(value);
+    if (Number.isNaN(amount)) return 'CHF 0.00';
+    return `CHF ${amount.toFixed(2)}`;
   }
 
   convert(val: string, type: 'used' | 'total'): number {
