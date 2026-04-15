@@ -744,7 +744,7 @@ span.ct_step_circle.completed {
 /* slot css */
 .slot-req-tabs {
   max-width: 900px;
-  margin: 40px auto;
+  /* margin: 40px auto; */
 }
 
 .slot-req-tabs .nav-tabs {

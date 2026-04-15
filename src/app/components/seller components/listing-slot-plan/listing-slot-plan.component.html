@@ -4,7 +4,7 @@
                   @if(planList){
                   <div class="ct_edit_profile_bg profile-edit-box listing-slot-plan-wrap">
                         <div class="row justify-content-center">
-                              <div class="col-xl-8 col-lg-10">
+                              <div class="col-xl-10 col-lg-10">
                                     <div class="bundle-card listing-plan-card">
                                           <div class="bundle-icon">
                                                 <i class="fa-solid fa-layer-group"></i>
@@ -26,18 +26,21 @@
                                                       <div class="bundle-info d-flex justify-content-between mb-2">
                                                             <div class="ct_fs_14 ct_fw_400">{{ 'status.validTill' |
                                                                   translate }}</div>
-                                                            <div class="ct_fs_500 ct_fs_14">{{ formatDate(planList?.end_date)
+                                                            <div class="ct_fs_500 ct_fs_14">{{
+                                                                  formatDate(planList?.end_date)
                                                                   }}</div>
                                                       </div>
                                                       <div class="bundle-info d-flex justify-content-between mb-2">
                                                             <div class="ct_fs_14 ct_fw_400">{{ 'vehicle.carsListed' |
                                                                   translate }}</div>
-                                                            <div class="ct_fs_500 ct_fs_14">{{ planList?.cars_listed }}</div>
+                                                            <div class="ct_fs_500 ct_fs_14">{{ planList?.cars_listed }}
+                                                            </div>
                                                       </div>
                                                       <div class="bundle-info d-flex justify-content-between">
                                                             <div class="ct_fs_14 ct_fw_400">{{ 'common.daysLeft' |
                                                                   translate }}</div>
-                                                            <div class="ct_fs_500 ct_fs_14">{{ planList?.days_left }}</div>
+                                                            <div class="ct_fs_500 ct_fs_14">{{ planList?.days_left }}
+                                                            </div>
                                                       </div>
                                                 </div>
                                           </div>
@@ -57,7 +60,8 @@
                                                       <div
                                                             class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-3">
                                                             <div>
-                                                                  <h5 class="mb-1 ct_fs_18 ct_fw_600">{{ item.plan_name }}</h5>
+                                                                  <h5 class="mb-1 ct_fs_18 ct_fw_600">{{ item.plan_name
+                                                                        }}</h5>
                                                                   <p class="mb-0 purchase-type-badge">
                                                                         {{ 'listing.purchaseType' | translate }}:
                                                                         {{ getPurchaseTypeKey(item.purchase_type) |

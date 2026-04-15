@@ -16,6 +16,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 })
 export class RequestAdditionalSlotsComponent {
   private destroy$ = new Subject<void>();
+  private readonly requestSummaryStorageKey = 'latestSlotRequestSummary';
   isSubmitting = false;
 
   slotRequestForm;
@@ -59,12 +60,24 @@ export class RequestAdditionalSlotsComponent {
     this.service.post('user/requestSlot', payload).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.isSubmitting = false;
+        const requestSummary = {
+          requestedSlots: this.requestedSlotsControl?.value,
+          message: this.messageControl?.value?.trim() || '',
+          submittedAt: new Date().toISOString(),
+          status: 'underReview'
+        };
+
+        sessionStorage.setItem(this.requestSummaryStorageKey, JSON.stringify(requestSummary));
         this.message.success(res?.message || this.translate.instant('listing.slotRequestSubmitted'));
         this.slotRequestForm.reset({
           requestedSlots: null,
           message: ''
         });
-        this.router.navigate(['/application-under-review']);
+        this.router.navigate(['/application-under-review'], {
+          state: {
+            requestSummary
+          }
+        });
       },
       error: (error: any) => {
         this.isSubmitting = false;
