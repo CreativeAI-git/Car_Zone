@@ -1,0 +1,67 @@
+.requested-slot-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.42);
+    z-index: 1040;
+}
+
+.requested-slot-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1050;
+}
+
+.requested-slot-modal-card {
+    width: min(720px, 100%);
+    background: #fff;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+    position: relative;
+}
+
+.requested-slot-close {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: #f8fafc;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.requested-slot-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.requested-slot-detail-item {
+    border: 1px solid #edf0f4;
+    border-radius: 18px;
+    padding: 18px;
+    background: #fcfcfd;
+}
+
+.requested-slot-detail-label {
+    display: block;
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+@media (max-width: 767px) {
+    .requested-slot-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .requested-slot-modal-card {
+        padding: 20px;
+    }
+}

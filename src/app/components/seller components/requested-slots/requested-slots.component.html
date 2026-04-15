@@ -1,175 +1,116 @@
 <div class="ct_edit_profile_bg profile-edit-box">
     <div class="slot-req-tabs">
-        <!-- Tabs -->
         <ul class="nav nav-tabs mb-4">
+            @for (filter of filters; track filter.key) {
             <li class="nav-item">
-                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#all">
-                    All
+                <button class="nav-link" type="button" [class.active]="activeFilter === filter.key"
+                    (click)="setFilter(filter.key)">
+                    {{ filter.label | translate }}
                 </button>
             </li>
-            <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#approved">
-                    Approved
-                </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#pending">
-                    Pending
-                </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#rejected">
-                    Rejected
-                </button>
-            </li>
+            }
         </ul>
 
-        <!-- Tab Content -->
+        @if(filteredRequests.length){
         <div class="tab-content">
-            <!-- ALL -->
-            <div class="tab-pane fade show active" id="all">
+            <div class="tab-pane fade show active">
+                @for (item of filteredRequests; track item.id) {
                 <div class="slot-card ct_schedule_box mb-3 d-sm-flex justify-content-between align-items-center">
                     <div>
-                        <div class="d-flex gap-3 align-items-center">
+                        <div class="d-flex gap-3 align-items-center flex-wrap">
                             <div>
-                                <h5 class="ct_fs_18 ct_fw_600">
-                                    Slot - 25 Listings
+                                <h5 class="ct_fs_18 ct_fw_600 mb-0">
+                                    {{ getSlotTitle(item) }}
                                 </h5>
                             </div>
-                            <div>
-                                <span class="dot approved"></span>
-                                <div class="status approved">Approved</div>
+                            <div class="d-flex align-items-center gap-2">
+                                <!-- <span class="dot" [ngClass]="getStatusClass(item.status)"></span> -->
+                                <div class="status" [ngClass]="getStatusClass(item.status)">
+                                    {{ getStatusKey(item.status) | translate }}
+                                </div>
                             </div>
                         </div>
 
                         <small class="text-muted d-block mt-1 fst-italic">
-                            Requested Date: 02 Sept 2025
+                            {{ 'listing.requestedDate' | translate }}: {{ item.created_at | date:'mediumDate' }}
                         </small>
                     </div>
-                    <button class="btn-red-transparent py-2 px-3 mt-sm-0 mt-3">
-                        View Details
+                    <button class="btn-red-transparent py-2 px-3 mt-sm-0 mt-3" type="button"
+                        (click)="openDetails(item)">
+                        {{ 'common.viewDetails' | translate }}
                     </button>
                 </div>
+                }
+            </div>
+        </div>
+        } @else {
+        <div class="d-flex flex-column align-items-center justify-content-center text-center bg-white rounded-4 p-5 position-relative overflow-hidden"
+            style="min-height: 45vh;">
+            <div class="position-absolute top-0 start-0 w-100 h-100"
+                style="background: radial-gradient(circle at top, rgba(220,53,69,0.05), transparent); z-index:0;">
+            </div>
 
-                <div class="slot-card ct_schedule_box mb-3 d-sm-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="d-flex gap-3 align-items-center">
-                            <div>
-                                <h5 class="ct_fs_18 ct_fw_600">
-                                    Slot - 25 Listings
-                                </h5>
-                            </div>
-                            <div>
-                                <span class="dot pending"></span>
-                                <div class="status pending">Pending</div>
-                            </div>
-                        </div>
+            <div class="d-flex align-items-center justify-content-center rounded-circle mb-4 position-relative"
+                style="width: 100px; height: 100px; background: linear-gradient(135deg, #ffccd1, #fff); z-index:1;">
+                <i class="bi bi-folder2-open text-danger fs-1"></i>
+                <span
+                    class="position-absolute top-0 start-0 w-100 h-100 rounded-circle border border-3 border-danger opacity-25"></span>
+            </div>
 
-                        <small class="text-muted d-block mt-1 fst-italic">
-                            Requested Date: 02 Sept 2025
-                        </small>
-                    </div>
-                    <button class="btn-red-transparent py-2 px-3 mt-sm-0 mt-3">
-                        View Details
-                    </button>
-                </div>
+            <h4 class="fw-semibold text-dark mb-2">{{ 'listing.noSlotRequestsFound' | translate }}</h4>
+            <p class="text-muted mb-0">{{ emptyStateMessageKey | translate }}</p>
+        </div>
+        }
+    </div>
+</div>
 
-                <div class="slot-card ct_schedule_box mb-3 d-sm-flex justify-content-between align-items-center">
-                    <div class="d-flex gap-3 align-items-center">
-                        <div>
-                            <h5 class="ct_fs_18 ct_fw_600">
-                                Slot - 25 Listings
-                            </h5>
-                        </div>
-                        <div>
-                            <span class="dot rejected"></span>
-                            <div class="status rejected">Rejected</div>
-                        </div>
-                    </div>
-
-                    <button class="btn-red-transparent py-2 px-3 mt-sm-0 mt-3">
-                        View Details
-                    </button>
+@if(selectedRequest){
+<div class="requested-slot-modal-backdrop" (click)="closeDetails()"></div>
+<div class="requested-slot-modal">
+    <div class="requested-slot-modal-card">
+        <div class="d-flex justify-content-between align-items-start gap-3 mb-4">
+            <div>
+                <h4 class="ct_fs_24 ct_fw_600 mb-1">{{ getSlotTitle(selectedRequest) }}</h4>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="dot" [ngClass]="getStatusClass(selectedRequest.status)"></span>
+                    <span class="status" [ngClass]="getStatusClass(selectedRequest.status)">
+                        {{ getStatusKey(selectedRequest.status) | translate }}
+                    </span>
                 </div>
             </div>
 
-            <!-- APPROVED -->
-            <div class="tab-pane fade" id="approved">
-                <div class="slot-card ct_schedule_box mb-3 d-sm-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="d-flex gap-3 align-items-center">
-                            <div>
-                                <h5 class="ct_fs_18 ct_fw_600">
-                                    Slot - 25 Listings
-                                </h5>
-                            </div>
-                            <div>
-                                <span class="dot approved"></span>
-                                <div class="status approved">Approved</div>
-                            </div>
-                        </div>
+            <button class="requested-slot-close" type="button" (click)="closeDetails()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
 
-                        <small class="text-muted d-block mt-1 fst-italic">
-                            Requested Date: 02 Sept 2025
-                        </small>
-                    </div>
-                    <button class="btn-red-transparent py-2 px-3 mt-sm-0 mt-3">
-                        View Details
-                    </button>
-                </div>
+        <div class="requested-slot-detail-grid">
+            <div class="requested-slot-detail-item">
+                <span class="requested-slot-detail-label">{{ 'listing.numberOfAdditionalSlots' | translate }}</span>
+                <strong>{{ selectedRequest.requested_slots }}</strong>
             </div>
-
-            <!-- PENDING -->
-            <div class="tab-pane fade" id="pending">
-                <div class="slot-card ct_schedule_box mb-3 d-sm-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="d-flex gap-3 align-items-center">
-                            <div>
-                                <h5 class="ct_fs_18 ct_fw_600">
-                                    Slot - 25 Listings
-                                </h5>
-                            </div>
-                            <div>
-                                <span class="dot pending"></span>
-                                <div class="status pending">Pending</div>
-                            </div>
-                        </div>
-
-                        <small class="text-muted d-block mt-1 fst-italic">
-                            Requested Date: 02 Sept 2025
-                        </small>
-                    </div>
-                    <button class="btn-red-transparent py-2 px-3 mt-sm-0 mt-3">
-                        View Details
-                    </button>
-                </div>
+            <div class="requested-slot-detail-item">
+                <span class="requested-slot-detail-label">{{ 'listing.requestedDate' | translate }}</span>
+                <strong>{{ selectedRequest.created_at | date: 'medium' }}</strong>
             </div>
-
-            <!-- REJECTED -->
-            <div class="tab-pane fade" id="rejected">
-                <div class="slot-card ct_schedule_box mb-3 d-sm-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="d-flex gap-3 align-items-center">
-                            <div>
-                                <h5 class="ct_fs_18 ct_fw_600">
-                                    Slot - 25 Listings
-                                </h5>
-                            </div>
-                            <div>
-                                <span class="dot rejected"></span>
-                                <div class="status rejected">Rejected</div>
-                            </div>
-                        </div>
-
-                        <small class="text-muted d-block mt-1 fst-italic">
-                            Requested Date: 02 Sept 2025
-                        </small>
-                    </div>
-                    <button class="btn-red-transparent py-2 px-3 mt-sm-0 mt-3">
-                        View Details
-                    </button>
-                </div>
+            <div class="requested-slot-detail-item">
+                <span class="requested-slot-detail-label">{{ 'chat.messageToAdmin' | translate }}</span>
+                <strong>{{ selectedRequest.message || ('common.notAvailable' | translate) }}</strong>
+            </div>
+            <div class="requested-slot-detail-item">
+                <span class="requested-slot-detail-label">{{ 'listing.adminResponse' | translate }}</span>
+                <strong>{{ selectedRequest.admin_message || ('common.notAvailable' | translate) }}</strong>
+            </div>
+            <div class="requested-slot-detail-item">
+                <span class="requested-slot-detail-label">{{ 'payment.offeredPrice' | translate }}</span>
+                <strong>{{ (selectedRequest.approved_price | chfFormat) || ('common.notAvailable' | translate)
+                    }}</strong>
+            </div>
+            <div class="requested-slot-detail-item">
+                <span class="requested-slot-detail-label">{{ 'status.status' | translate }}</span>
+                <strong>{{ getStatusKey(selectedRequest.status) | translate }}</strong>
             </div>
         </div>
     </div>
 </div>
+}
