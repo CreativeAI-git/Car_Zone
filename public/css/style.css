@@ -1796,15 +1796,17 @@ input {
       rgba(0, 0, 0, 0.5) 100%);
   z-index: 1;
   pointer-events: none;
+  border-radius: 10px;
 }
 
 /* Bottom text overlay */
 .reel-card-description {
   position: absolute;
   bottom: 0;
-  padding: 24px;
+  padding: 15px;
   z-index: 2;
   color: #fff;
+  background-color: #0000009c;
 }
 
 

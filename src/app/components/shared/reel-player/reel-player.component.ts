@@ -37,7 +37,7 @@ export class ReelPlayerComponent {
     const endpoint = this.token
       ? `user/fetchAllCarReels`
       : `user/asGuestUsersfetchAllCarReels`;
-    this.service.get(endpoint)
+    this.service.get(endpoint + `?car_id=${this.reelId}`)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         this.carReels = res.data.data;

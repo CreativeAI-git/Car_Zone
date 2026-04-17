@@ -118,9 +118,9 @@
                                                                   </li>
                                                                   <li class="d-flex gap-1 align-items-start">
                                                                         <img src="img/icons/power-brown.png" />
-                                                                        <span> {{item?.braked_towing_capacity_kg ||
+                                                                        <span> {{item?.powerOutput ||
                                                                               'N/A'}}
-                                                                              kg </span>
+                                                                        </span>
                                                                   </li>
                                                                   <li class="d-flex gap-1 align-items-start">
                                                                         <img src="img/icons/transmission-brown.png" />
@@ -128,7 +128,8 @@
                                                                   </li>
                                                                   <li class="d-flex gap-1 align-items-start">
                                                                         <img src="img/icons/calendar-brown.png" />
-                                                                        <span> {{item.registration_year || 'N/A'}}
+                                                                        <span> {{(item.first_registration_date |
+                                                                              date:'yyyy-MM') || 'N/A'}}
                                                                         </span>
                                                                   </li>
                                                             </ul>

@@ -20,3 +20,13 @@
       object-fit: cover;
       background-color: #e6e6e6;
 }
+
+.seller-image {
+      height: 70px;
+      width: 70px;
+      border-radius: 50%;
+}
+
+.fa-bookmark {
+      font-size: 20px;
+}

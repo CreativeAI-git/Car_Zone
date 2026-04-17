@@ -997,8 +997,8 @@
                                                       </li>
                                                       <li class="d-flex gap-1 align-items-start">
                                                             <img src="img/icons/power-brown.png" />
-                                                            <span> {{item?.braked_towing_capacity_kg || 'N/A'}}
-                                                                  kg </span>
+                                                            <span> {{item?.powerOutput || 'N/A'}}
+                                                            </span>
                                                       </li>
                                                       <li class="d-flex gap-1 align-items-start">
                                                             <img src="img/icons/transmission-brown.png" />
@@ -1013,7 +1013,7 @@
                                           </div>
                                           <div class="col-sm-7">
                                                 <div class="mt-md-0 mt-3">
-                                                      <img [src]="item.sellerDetails.profileImage"
+                                                      <img [src]="item.sellerDetails.profileImage || 'img/icons/user-circle-img.png'"
                                                             class="seller-image" />
                                                       <h4 class="ct_fs_20 ct_fw_500 mt-2">
                                                             {{item.sellerDetails.fullName}}</h4>

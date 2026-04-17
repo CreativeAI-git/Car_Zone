@@ -2,14 +2,14 @@ import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonService } from '../../services/common.service';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LoaderService } from '../../services/loader.service';
 import { AuthService } from '../../services/auth.service';
 import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-reels',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './reels.component.html',
   styleUrl: './reels.component.css'
 })

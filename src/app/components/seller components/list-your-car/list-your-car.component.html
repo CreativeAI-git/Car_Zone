@@ -875,7 +875,7 @@
                                                                         'vehicle.warranty'| translate),
                                                                         carFormOne.get("mfk_warrenty_id"))}}</small>
                                                             </div>
-
+                                                            @if(carFormOne.get('mfk_warrenty_id')?.value !== 1){
                                                             <div class="col-sm-6 mt-3">
                                                                   <div>
                                                                         <h5 class="ct_fs_15 ct_fw_400 mb-2">{{
@@ -925,6 +925,7 @@
                                                                         }
                                                                   </nz-select>
                                                             </div>
+                                                            }
                                                             <div class="col-12 mt-3">
                                                                   <div>
                                                                         <h5 class="ct_fs_15 ct_fw_400 mb-2">

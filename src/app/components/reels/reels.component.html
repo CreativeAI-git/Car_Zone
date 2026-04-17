@@ -1,4 +1,4 @@
-<section class="ct_py_70">
+<!-- <section class="ct_py_70">
       <div class="container">
             <div class="row">
                   @for (item of carReels; track $index) {
@@ -26,4 +26,107 @@
                   }
             </div>
       </div>
-</section>
+</section> -->
+
+<div class="ct_mt_100 ct_mb_100">
+      <div class="container">
+            @for (item of carReels; track $index) {
+            <div class="row align-items-end pt-3 pb-4">
+                  <div class="col-lg-4 col-md-6">
+                        <div class="ct_reels_card position-relative">
+                              <!-- YouTube Video -->
+                              <div class="" (click)="openReel(item)">
+                                    <div class="mobile-frame">
+                                          <video [src]="item.carReel" [poster]="item.reelThumbnails"
+                                                class="videoPreview" autoplay [volume]="0"></video>
+                                    </div>
+                              </div>
+
+                              <!-- Gradient Overlay -->
+                              <div class="ct_reels_overlay"></div>
+
+                              <!-- Bottom Content -->
+                              <div
+                                    class="d-flex align-items-center justify-content-between w-100 reel-card-description">
+                                    <div>
+                                          <p class="mb-0 ct_fw_600 ct_fs_18 text-white">
+                                                {{item.fullModel}}
+                                          </p>
+                                          <p class="mb-0 ct_fw_600" style="color: #ff062a;">
+                                                {{item.carReelInfo}}
+                                          </p>
+                                    </div>
+                                    <div>
+                                          <i class="fa-bookmark"
+                                                [ngClass]="item.isSavedReel ? 'fa-solid' : 'fa-regular'"
+                                                (click)="item.isSavedReel ? removeFromSaved(item) : saveReel(item)"></i>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-lg-8 col-md-6">
+                        <div class="row mt-4">
+                              <div class="col-sm-5">
+                                    <ul class="p-0 car-content-right-list">
+                                          <li>
+                                                <img src="img/icons/calendar-brown.png" />
+                                                <span> {{(item.firstRegistration | date:'yyyy-MM') || 'N/A'}} </span>
+                                          </li>
+                                          <li>
+                                                <img src="img/icons/km-brown.png" />
+                                                <span> {{item.mileage || 'N/A'}} </span>
+                                          </li>
+                                          <li>
+                                                <img src="img/icons/fuel-brown.png" />
+                                                <span> {{item.fuelType || 'N/A'}} </span>
+                                          </li>
+                                          <li>
+                                                <img src="img/icons/power-brown.png" />
+                                                <span> {{item.power || 'N/A'}} </span>
+                                          </li>
+                                          <li>
+                                                <img src="img/icons/transmission-brown.png" />
+                                                <span> {{item.transmission || 'N/A'}} </span>
+                                          </li>
+                                          <li>
+                                                <img src="img/icons/calendar-brown.png" />
+                                                <span> 7.0 L / 100 Km </span>
+                                          </li>
+                                    </ul>
+                              </div>
+                              <div class="col-sm-7">
+                                    <div class="mt-md-0 mt-3">
+                                          <img [src]="item.sellerLogo || 'img/icons/user-circle-img.png'"
+                                                class="seller-image" />
+                                          <h4 class="ct_fs_20 ct_fw_500 mt-2">{{item.sellerName}}</h4>
+                                          <div class="d-flex align-items-center mt-3">
+                                                <img src="img/icons/ep_location.png" class="loc-img me-2" />
+                                                <p class="ct_fs_16 ct_fw_300 mb-0">
+                                                      {{item.sellerAddress}}
+                                                </p>
+                                          </div>
+
+                                          <div class="mt-2">
+                                                <img src="img/icons/google.png" class="me-2" />
+                                                4.5
+                                                <img src="img/icons/rating.png" />
+                                                <img src="img/icons/rating.png" />
+                                                <img src="img/icons/rating.png" />
+                                                <img src="img/icons/rating.png" />
+                                                <img src="img/icons/rating.png" />
+                                          </div>
+
+                                          <div class="mt-4">
+                                                <a routerLink="/car-detail" [queryParams]="{id: item.id}"
+                                                      class="btn-red-transparent w-auto">View
+                                                      More Detail</a>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+            }
+      </div>
+</div>

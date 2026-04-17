@@ -249,7 +249,8 @@
                                                                   <ul class="car-specs">
                                                                         <li>
                                                                               <img src="img/icons/petrol.svg" />
-                                                                              {{item.registration_year || 'N/A'}}
+                                                                              {{(item.first_registration_date |
+                                                                              date:'yyyy-MM') || 'N/A'}}
                                                                         </li>
                                                                         <li>
                                                                               <img src="img/icons/automatic.svg" />

@@ -83,7 +83,8 @@
                                     <ul class="p-0 car-content-detail-list">
                                           <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/calendar-brown.png" />
-                                                <span> {{carData?.vehicle.registration_year || ('common.notAvailable' |
+                                                <span> {{(carData?.vehicle.first_registration_date | date:'yyyy-MM') ||
+                                                      ('common.notAvailable' |
                                                       translate)}} </span>
                                           </li>
                                           <li class="d-flex gap-1 align-items-start">
@@ -114,19 +115,15 @@
                                           </li>
                                           <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/power-brown.png" />
-                                                <span> {{carData?.vehicle.braked_towing_capacity_kg ||
-                                                      ('common.notAvailable' | translate)}} kg
+                                                <span> {{carData?.vehicle.power ||
+                                                      ('common.notAvailable' | translate)}}
                                                 </span>
                                           </li>
 
                                           <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/km-blackn.png" />
                                                 <span>
-                                                      @if(carData?.vehicle.consumption){
-                                                      {{carData?.vehicle.consumption}} l/100km
-                                                      }@else {
-                                                      {{ 'common.notAvailable' | translate }}
-                                                      }
+                                                      {{carData?.vehicle.consumption || 70}} L / 100km
                                                 </span>
                                           </li>
                                     </ul>
