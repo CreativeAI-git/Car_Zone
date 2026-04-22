@@ -15,7 +15,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 export class SavedReelsComponent {
   private destroy$ = new Subject<void>();
   savedReels: any = []
-  constructor(private service: CommonService, private loader: LoaderService, private router: Router, private translate:TranslateService) { 
+  constructor(private service: CommonService, private loader: LoaderService, private router: Router, private translate: TranslateService) {
     this.translate.use(localStorage.getItem('lang') || 'en')
   }
 
@@ -42,7 +42,7 @@ export class SavedReelsComponent {
   }
 
   openReel(item: any) {
-    this.router.navigate(['reel-player'], { queryParams: { id: item.id } });
+    this.router.navigate(['reel-player'], { queryParams: { id: item.carId } });
   }
   ngOnDestroy(): void {
     this.destroy$.next();

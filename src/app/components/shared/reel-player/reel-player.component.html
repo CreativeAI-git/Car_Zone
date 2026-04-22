@@ -4,7 +4,7 @@
       </div>
       <div class="mySwiper swiper">
             <div class="swiper-wrapper">
-                  @for (item of carReels; track $index) {
+                  @for (item of carReels; track item.id) {
                   @if(item.carReel){
                   <div class="swiper-slide">
                         <div class="mobile-frame">

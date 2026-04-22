@@ -22,6 +22,10 @@ export class ReelPlayerComponent {
   currentIndex: number = 0
   token: any
   isPlaying: boolean = true
+  page: number = 1;
+  hasMore: boolean = true;
+  isLoadingMore: boolean = false;
+  readonly preloadThreshold: number = 2;
   constructor(private service: CommonService, private authService: AuthService, private route: ActivatedRoute, public location: Location, private modalService: ModalService) {
     this.route.queryParamMap.subscribe(params => {
       this.reelId = params.get('id')
@@ -30,21 +34,60 @@ export class ReelPlayerComponent {
 
   ngOnInit(): void {
     this.token = this.authService.getToken();
-    this.getReels()
+    this.getReels(true)
   }
 
-  getReels() {
+  getReels(isInitialLoad: boolean = false) {
+    if (this.isLoadingMore || (!isInitialLoad && !this.hasMore)) {
+      return;
+    }
+
+    this.isLoadingMore = true;
     const endpoint = this.token
       ? `user/fetchAllCarReels`
       : `user/asGuestUsersfetchAllCarReels`;
-    this.service.get(endpoint + `?car_id=${this.reelId}`)
+
+    const queryParams = isInitialLoad
+      ? `?car_id=${this.reelId}`
+      : `?page=${this.page}`;
+
+    this.service.get(endpoint + queryParams)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res: any) => {
-        this.carReels = res.data.data;
-        this.currentIndex = res.data.data.findIndex((item: any) => item.id == this.reelId);
-        setTimeout(() => {
-          this.initSwiper();
-        }, 100);
+      .subscribe({
+        next: (res: any) => {
+          const reels = res?.data?.data ?? [];
+          const currentPage = Number(res?.data?.currentPage ?? this.page);
+          const totalPages = Number(res?.data?.totalPages ?? currentPage);
+
+          if (isInitialLoad) {
+            this.carReels = reels;
+            this.currentIndex = this.carReels.findIndex((item: any) => item.id == this.reelId);
+            this.currentIndex = this.currentIndex >= 0 ? this.currentIndex : 0;
+            this.page = currentPage + 1;
+
+            setTimeout(() => {
+              this.initSwiper();
+            }, 100);
+          } else {
+            const existingIds = new Set(this.carReels.map((item: any) => item.id));
+            const newReels = reels.filter((item: any) => !existingIds.has(item.id));
+
+            if (newReels.length) {
+              this.carReels = [...this.carReels, ...newReels];
+              setTimeout(() => {
+                this.swiper?.update();
+              }, 50);
+            }
+
+            this.page = currentPage + 1;
+          }
+
+          this.hasMore = currentPage < totalPages;
+          this.isLoadingMore = false;
+        },
+        error: () => {
+          this.isLoadingMore = false;
+        }
       });
   }
 
@@ -57,7 +100,7 @@ export class ReelPlayerComponent {
     setTimeout(() => {
       this.swiper = new Swiper('.mySwiper', {
         direction: 'vertical',
-        loop: true,
+        loop: false,
         currrentIndex: 4,
         mousewheel: {
           forceToAxis: true,
@@ -81,11 +124,30 @@ export class ReelPlayerComponent {
           },
           slideChangeTransitionEnd: () => {
             console.log('Slide change ended');
+            this.handleSlideChange();
             this.handleVideoPlay();
           },
         },
       });
     }, 100);
+  }
+
+  private handleSlideChange() {
+    if (!this.swiper) {
+      return;
+    }
+
+    const activeIndex = this.swiper.activeIndex ?? 0;
+    this.currentIndex = activeIndex;
+
+    const shouldLoadMore =
+      this.hasMore &&
+      !this.isLoadingMore &&
+      activeIndex >= this.carReels.length - this.preloadThreshold;
+
+    if (shouldLoadMore) {
+      this.getReels();
+    }
   }
 
   handleVideoPlay() {
