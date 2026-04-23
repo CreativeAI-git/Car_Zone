@@ -1,5 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { ChfFormatPipe } from '../../../../pipes/chf-format.pipe';
 import { TranslateModule } from '@ngx-translate/core';
@@ -10,34 +19,77 @@ declare var Swiper: any;
   templateUrl: './car-preview.component.html',
   styleUrl: './car-preview.component.css'
 })
-export class CarPreviewComponent {
+export class CarPreviewComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() carData: any;
+  @ViewChild('mainSwiperRef') mainSwiperRef?: ElementRef<HTMLElement>;
+  @ViewChild('thumbsSwiperRef') thumbsSwiperRef?: ElementRef<HTMLElement>;
+
+  private mainSwiper: any;
+  private thumbsSwiper: any;
+  private viewInitialized = false;
 
 
   ngAfterViewInit(): void {
-    this.loadSweper()
+    this.viewInitialized = true;
+    this.loadSweper();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.viewInitialized || !changes['carData']) {
+      return;
+    }
+
+    this.loadSweper();
+  }
+
+  ngOnDestroy(): void {
+    this.destroySwipers();
   }
 
   loadSweper() {
     setTimeout(() => {
-      const thumbs = new Swiper(`.mySwiperThumbs`, {
+      const images = this.carData?.carImages ?? [];
+      const mainElement = this.mainSwiperRef?.nativeElement;
+      const thumbsElement = this.thumbsSwiperRef?.nativeElement;
+
+      if (!mainElement || !thumbsElement || !images.length || typeof Swiper === 'undefined') {
+        this.destroySwipers();
+        return;
+      }
+
+      this.destroySwipers();
+
+      this.thumbsSwiper = new Swiper(thumbsElement, {
         slidesPerView: 6,
         spaceBetween: 10,
         watchSlidesProgress: true,
       });
 
-      new Swiper(`.mySwiperMain`, {
+      this.mainSwiper = new Swiper(mainElement, {
         slidesPerView: 1,
         spaceBetween: 10,
         pagination: {
-          el: ".swiper-pagination",
+          el: mainElement.querySelector('.swiper-pagination'),
           type: "fraction",
         },
         thumbs: {
-          swiper: thumbs
+          swiper: this.thumbsSwiper
         }
       });
     });
+  }
+
+  private destroySwipers() {
+    if (this.mainSwiper?.destroy) {
+      this.mainSwiper.destroy(true, true);
+    }
+
+    if (this.thumbsSwiper?.destroy) {
+      this.thumbsSwiper.destroy(true, true);
+    }
+
+    this.mainSwiper = null;
+    this.thumbsSwiper = null;
   }
 
   trackByImage(index: number, img: any) {

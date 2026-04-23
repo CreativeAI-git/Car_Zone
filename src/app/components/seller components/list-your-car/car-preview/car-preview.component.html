@@ -6,7 +6,7 @@
                     @if(carData?.carImages?.length > 0){
                     <div class="">
                         <nz-image-group>
-                            <div class="swiper mySwiperMain">
+                            <div class="swiper mySwiperMain" #mainSwiperRef>
                                 <div class="swiper-wrapper">
                                     <div class="swiper-slide"
                                         *ngFor="let img of carData.carImages; trackBy: trackByImage">
@@ -17,7 +17,7 @@
                             </div>
                         </nz-image-group>
 
-                        <div class="swiper mySwiperThumbs mySwiperThumbs mt-2">
+                        <div class="swiper mySwiperThumbs mt-2" #thumbsSwiperRef>
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide" *ngFor="let img of carData.carImages; trackBy: trackByImage">
                                     <img [src]="img?.url || 'img/placeholder.png'">
