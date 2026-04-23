@@ -149,7 +149,7 @@
                   </div>
 
                   <div class="d-flex align-items-center gap-4 justify-content-center mt-5">
-                        <button class="btn-red-transparent px-5">{{ 'common.cancel' | translate }}</button>
+                        <button (click)="backClicked()" class="btn-red-transparent px-5">{{ 'common.cancel' | translate }}</button>
                         <!-- <button [disabled]="!selectedPlan" (click)="purchasePlan()" class="btn-red px-5">Continue
                         </button> -->
                         <app-submit-button [isLoading]="Loading" [class]="'btn-red px-5'" (click)="purchasePlan()"

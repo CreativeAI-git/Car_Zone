@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonService } from '../../../services/common.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SubmitButtonComponent } from '../../shared/submit-button/submit-button.component';
@@ -34,7 +34,7 @@ export class ChooseListingPlanComponent {
   isUsed: boolean = false;
   Loading: boolean = false;
 
-  constructor(private service: CommonService, private message: NzMessageService, private translate: TranslateService) {
+  constructor(private service: CommonService, private message: NzMessageService, private translate: TranslateService, private location: Location,) {
     this.translate.use(localStorage.getItem('lang') || 'en');
   }
 
@@ -47,6 +47,10 @@ export class ChooseListingPlanComponent {
       this.isUsed = res.alreadyUsed == 1 ? true : false;
       this.planList = res.plans || [];
     });
+  }
+
+  backClicked() {
+    this.location.back();
   }
 
   get featuredPlans(): ListingPlan[] {

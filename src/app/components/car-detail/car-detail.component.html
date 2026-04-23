@@ -576,8 +576,8 @@
                                                       <tbody>
                                                             <tr *ngFor="let time of carData?.open_timmings">
                                                                   <td class="text-capitalize">{{time.day}}</td>
-                                                                  @if(time.open_time != '00:00:00' &&
-                                                                  time.close_time != '00:00:00'){
+                                                                  @if(time.open_time != '00:00' &&
+                                                                  time.close_time != '00:00'){
                                                                   <td>{{time.open_time}}</td>
                                                                   <td>{{time.close_time}}</td>
                                                                   }
