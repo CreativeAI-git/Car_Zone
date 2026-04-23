@@ -136,9 +136,9 @@ body.theme-dark .text-dark {
   color: #fff !important;
 }
 
-body.theme-dark .select-car-tabs.nav-tabs .nav-link {
+/* body.theme-dark .select-car-tabs.nav-tabs .nav-link {
   color: #fff;
-}
+} */
 
 body.theme-dark .car-card {
   border: 1px solid #555;
@@ -152,8 +152,10 @@ body.theme-dark .btn-close,
 body.theme-dark .body-type-img-o,
 body.theme-dark .body-type-img,
 body.theme-dark .breadcrumb-item a img,
-body.theme-dark .loc-img,
-body.theme-dark .select-car-tabs li img {
+body.theme-dark .loc-img
+
+/* body.theme-dark .select-car-tabs li img */
+ {
   /* filter: invert(1); */
   filter: brightness(0) invert(1);
 }
@@ -391,4 +393,26 @@ body.theme-dark .main-header-section.transparent-header .logo-default {
 
 body.theme-dark .main-header-section.transparent-header .logo-sticky {
   display: block;
+}
+
+
+
+body.theme-dark .opening-timing-table td {
+  background-color: #111;
+  color: #fff;
+  
+}
+
+
+body.theme-dark .all-filter-main-wrapper{
+    background-color: #000;
+  }
+
+body.theme-dark .bg-wrapper{
+  background-color: #111;
+}
+
+
+.my-listing-all-box{
+  width: 100px;
 }
