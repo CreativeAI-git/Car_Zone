@@ -250,11 +250,11 @@
                                                                         <li>
                                                                               <img src="img/icons/petrol.svg" />
                                                                               {{(item.first_registration_date |
-                                                                              date:'yyyy-MM') || 'N/A'}}
+                                                                              date:'yyyy-MM') || '-'}}
                                                                         </li>
                                                                         <li>
                                                                               <img src="img/icons/automatic.svg" />
-                                                                              {{item.transmission_value || 'N/A'}}
+                                                                              {{item.transmission_value || '-'}}
                                                                         </li>
                                                                   </ul>
                                                             </div>
@@ -264,7 +264,7 @@
                                                                         <li>
                                                                               <img src="img/icons/calendar.svg" />
 
-                                                                              {{item.fuel_type_value || 'N/A'}}
+                                                                              {{item.fuel_type_value || '-'}}
                                                                         </li>
                                                                         <li><img src="img/icons/road.svg" />
                                                                               {{item.carMileage}} km</li>
