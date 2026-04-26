@@ -901,7 +901,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer">{{ 'vehicle.reset' |
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
+                                        (click)="onResetPowerOutput()">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
@@ -932,7 +933,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer">{{ 'vehicle.reset' |
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
+                                        (click)="onResetPowerOutput()">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
@@ -1134,22 +1136,43 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer">{{ 'vehicle.reset' |
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
+                                        (click)="onResetPowerOutput()">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'common.ps' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'common.ps' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="powerOutputRange[0]"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [attr.aria-label]="'common.from' | translate">
+                                        @for (option of psOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' PS'"></nz-option>
+                                        }
+                                    </nz-select>
+                                    @if (showPowerOutputFromError) {
+                                    <p class="text-danger ct_fs_13 mb-0 mt-1">
+                                        From capacity cannot be greater than To capacity
+                                    </p>
+                                    }
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'common.ps' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'common.ps' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="powerOutputRange[1]"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [attr.aria-label]="'common.to' | translate">
+                                        @for (option of psOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' PS'"></nz-option>
+                                        }
+                                    </nz-select>
+                                    @if (showPowerOutputToError) {
+                                    <p class="text-danger ct_fs_13 mb-0 mt-1">
+                                        To capacity cannot be less than From capacity
+                                    </p>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -1165,22 +1188,45 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer">{{ 'vehicle.reset' |
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
+                                        (click)="onResetCubicCapacity()">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'filters.kwh' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'cm3'"
+                                        [nzShowSearch]="true" [nzAllowClear]="true"
+                                        [(ngModel)]="cubicCapacityRange[0]"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [attr.aria-label]="'common.from' | translate">
+                                        @for (option of cubicCapacityOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' cm3'"></nz-option>
+                                        }
+                                    </nz-select>
+                                    @if (showCubicCapacityFromError) {
+                                    <p class="text-danger ct_fs_13 mb-0 mt-1">
+                                        From capacity cannot be greater than To capacity
+                                    </p>
+                                    }
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'filters.kwh' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'cm3'"
+                                        [nzShowSearch]="true" [nzAllowClear]="true"
+                                        [(ngModel)]="cubicCapacityRange[1]"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [attr.aria-label]="'common.to' | translate">
+                                        @for (option of cubicCapacityOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' cm3'"></nz-option>
+                                        }
+                                    </nz-select>
+                                    @if (showCubicCapacityToError) {
+                                    <p class="text-danger ct_fs_13 mb-0 mt-1">
+                                        To capacity cannot be less than From capacity
+                                    </p>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -1195,22 +1241,45 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
+                                        (click)="onResetCylinders()">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'vehicle.cylinders' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true"
+                                        [(ngModel)]="cylindersRange[0]"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [attr.aria-label]="'common.from' | translate">
+                                        @for (option of cylinderOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option"></nz-option>
+                                        }
+                                    </nz-select>
+                                    @if (showCylindersFromError) {
+                                    <p class="text-danger ct_fs_13 mb-0 mt-1">
+                                        From capacity cannot be greater than To capacity
+                                    </p>
+                                    }
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'vehicle.cylinders' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true"
+                                        [(ngModel)]="cylindersRange[1]"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [attr.aria-label]="'common.to' | translate">
+                                        @for (option of cylinderOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option"></nz-option>
+                                        }
+                                    </nz-select>
+                                    @if (showCylindersToError) {
+                                    <p class="text-danger ct_fs_13 mb-0 mt-1">
+                                        To capacity cannot be less than From capacity
+                                    </p>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -1259,22 +1328,45 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
+                                        (click)="onResetBatteryCapacity()">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'filters.kwh' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'filters.kwh' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true"
+                                        [(ngModel)]="batteryCapacityRange[0]"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [attr.aria-label]="'common.from' | translate">
+                                        @for (option of batteryCapacityOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' kWh'"></nz-option>
+                                        }
+                                    </nz-select>
+                                    @if (showBatteryCapacityFromError) {
+                                    <p class="text-danger ct_fs_13 mb-0 mt-1">
+                                        From capacity cannot be greater than To capacity
+                                    </p>
+                                    }
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'filters.kwh' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'filters.kwh' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true"
+                                        [(ngModel)]="batteryCapacityRange[1]"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [attr.aria-label]="'common.to' | translate">
+                                        @for (option of batteryCapacityOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' kWh'"></nz-option>
+                                        }
+                                    </nz-select>
+                                    @if (showBatteryCapacityToError) {
+                                    <p class="text-danger ct_fs_13 mb-0 mt-1">
+                                        To capacity cannot be less than From capacity
+                                    </p>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -1290,22 +1382,45 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
+                                        (click)="onResetTowCapacity()">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true"
+                                        [(ngModel)]="towCapacityRange[0]"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [attr.aria-label]="'common.from' | translate">
+                                        @for (option of towCapacityOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
+                                        }
+                                    </nz-select>
+                                    @if (showTowCapacityFromError) {
+                                    <p class="text-danger ct_fs_13 mb-0 mt-1">
+                                        From capacity cannot be greater than To capacity
+                                    </p>
+                                    }
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true"
+                                        [(ngModel)]="towCapacityRange[1]"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [attr.aria-label]="'common.to' | translate">
+                                        @for (option of towCapacityOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
+                                        }
+                                    </nz-select>
+                                    @if (showTowCapacityToError) {
+                                    <p class="text-danger ct_fs_13 mb-0 mt-1">
+                                        To capacity cannot be less than From capacity
+                                    </p>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -1323,22 +1438,45 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
+                                        (click)="onResetTotalWeight()">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true"
+                                        [(ngModel)]="totalWeightRange[0]"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [attr.aria-label]="'common.from' | translate">
+                                        @for (option of weightOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
+                                        }
+                                    </nz-select>
+                                    @if (showTotalWeightFromError) {
+                                    <p class="text-danger ct_fs_13 mb-0 mt-1">
+                                        From capacity cannot be greater than To capacity
+                                    </p>
+                                    }
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true"
+                                        [(ngModel)]="totalWeightRange[1]"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [attr.aria-label]="'common.to' | translate">
+                                        @for (option of weightOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
+                                        }
+                                    </nz-select>
+                                    @if (showTotalWeightToError) {
+                                    <p class="text-danger ct_fs_13 mb-0 mt-1">
+                                        To capacity cannot be less than From capacity
+                                    </p>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -1352,22 +1490,45 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
+                                        (click)="onResetEmptyWeight()">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true"
+                                        [(ngModel)]="emptyWeightRange[0]"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [attr.aria-label]="'common.from' | translate">
+                                        @for (option of weightOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
+                                        }
+                                    </nz-select>
+                                    @if (showEmptyWeightFromError) {
+                                    <p class="text-danger ct_fs_13 mb-0 mt-1">
+                                        From capacity cannot be greater than To capacity
+                                    </p>
+                                    }
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'common.kg' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true"
+                                        [(ngModel)]="emptyWeightRange[1]"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [attr.aria-label]="'common.to' | translate">
+                                        @for (option of weightOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
+                                        }
+                                    </nz-select>
+                                    @if (showEmptyWeightToError) {
+                                    <p class="text-danger ct_fs_13 mb-0 mt-1">
+                                        To capacity cannot be less than From capacity
+                                    </p>
+                                    }
                                 </div>
                             </div>
                         </div>

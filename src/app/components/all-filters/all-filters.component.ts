@@ -42,6 +42,19 @@ export class AllFiltersComponent {
   leasePriceRange: [number, number] = [0, 100000];
   seatRange: [number, number] = [0, 25];
   doorRange: [number, number] = [0, 10];
+  powerOutputRange: [number | null, number | null] = [null, null];
+  cubicCapacityRange: [number | null, number | null] = [null, null];
+  cylindersRange: [number | null, number | null] = [null, null];
+  batteryCapacityRange: [number | null, number | null] = [null, null];
+  towCapacityRange: [number | null, number | null] = [null, null];
+  totalWeightRange: [number | null, number | null] = [null, null];
+  emptyWeightRange: [number | null, number | null] = [null, null];
+  psOptions: number[] = [];
+  cubicCapacityOptions: number[] = [];
+  cylinderOptions: number[] = [];
+  batteryCapacityOptions: number[] = [];
+  towCapacityOptions: number[] = [];
+  weightOptions: number[] = [];
   seats: FilterOption[] = [];
   doors: FilterOption[] = [];
   sellerType: FilterOption[] = [];
@@ -65,6 +78,13 @@ export class AllFiltersComponent {
     for (let year = currentYear; year >= 1990; year--) {
       this.years.push(year);
     }
+
+    this.psOptions = Array.from({ length: 150 }, (_, index) => (index + 1) * 10);
+    this.cubicCapacityOptions = Array.from({ length: 99 }, (_, index) => (index + 2) * 100);
+    this.cylinderOptions = Array.from({ length: 16 }, (_, index) => index + 1);
+    this.batteryCapacityOptions = Array.from({ length: 59 }, (_, index) => 10 + (index * 5));
+    this.towCapacityOptions = Array.from({ length: 50 }, (_, index) => (index + 1) * 100);
+    this.weightOptions = Array.from({ length: 50 }, (_, index) => (index + 1) * 100);
 
     this.filterService.beginEditing();
 
@@ -141,10 +161,108 @@ export class AllFiltersComponent {
     this.doorRangeChange$.next();
   }
 
+  get isPowerOutputRangeInvalid(): boolean {
+    const [from, to] = this.powerOutputRange;
+    return from !== null && to !== null && to < from;
+  }
+
+  get showPowerOutputFromError(): boolean {
+    return this.isPowerOutputRangeInvalid;
+  }
+
+  get showPowerOutputToError(): boolean {
+    return this.isPowerOutputRangeInvalid;
+  }
+
+  get isCubicCapacityRangeInvalid(): boolean {
+    const [from, to] = this.cubicCapacityRange;
+    return from !== null && to !== null && to < from;
+  }
+
+  get showCubicCapacityFromError(): boolean {
+    return this.isCubicCapacityRangeInvalid;
+  }
+
+  get showCubicCapacityToError(): boolean {
+    return this.isCubicCapacityRangeInvalid;
+  }
+
+  get isCylindersRangeInvalid(): boolean {
+    const [from, to] = this.cylindersRange;
+    return from !== null && to !== null && to < from;
+  }
+
+  get showCylindersFromError(): boolean {
+    return this.isCylindersRangeInvalid;
+  }
+
+  get showCylindersToError(): boolean {
+    return this.isCylindersRangeInvalid;
+  }
+
+  get isBatteryCapacityRangeInvalid(): boolean {
+    const [from, to] = this.batteryCapacityRange;
+    return from !== null && to !== null && to < from;
+  }
+
+  get showBatteryCapacityFromError(): boolean {
+    return this.isBatteryCapacityRangeInvalid;
+  }
+
+  get showBatteryCapacityToError(): boolean {
+    return this.isBatteryCapacityRangeInvalid;
+  }
+
+  get isTowCapacityRangeInvalid(): boolean {
+    const [from, to] = this.towCapacityRange;
+    return from !== null && to !== null && to < from;
+  }
+
+  get showTowCapacityFromError(): boolean {
+    return this.isTowCapacityRangeInvalid;
+  }
+
+  get showTowCapacityToError(): boolean {
+    return this.isTowCapacityRangeInvalid;
+  }
+
+  get isTotalWeightRangeInvalid(): boolean {
+    const [from, to] = this.totalWeightRange;
+    return from !== null && to !== null && to < from;
+  }
+
+  get showTotalWeightFromError(): boolean {
+    return this.isTotalWeightRangeInvalid;
+  }
+
+  get showTotalWeightToError(): boolean {
+    return this.isTotalWeightRangeInvalid;
+  }
+
+  get isEmptyWeightRangeInvalid(): boolean {
+    const [from, to] = this.emptyWeightRange;
+    return from !== null && to !== null && to < from;
+  }
+
+  get showEmptyWeightFromError(): boolean {
+    return this.isEmptyWeightRangeInvalid;
+  }
+
+  get showEmptyWeightToError(): boolean {
+    return this.isEmptyWeightRangeInvalid;
+  }
+
   onResetFilters() {
     this.filterService.beginEditing();
     const defaults = this.filterService.getDefaultPayload();
     this.syncStateFromPayload(defaults);
+    this.powerOutputRange = [null, null];
+    this.cubicCapacityRange = [null, null];
+    this.cylindersRange = [null, null];
+    this.batteryCapacityRange = [null, null];
+    this.towCapacityRange = [null, null];
+    this.totalWeightRange = [null, null];
+    this.emptyWeightRange = [null, null];
     this.filterService.patchDraft(defaults);
     this.getFiltersData();
   }
@@ -237,6 +355,34 @@ export class AllFiltersComponent {
       defaults.door_range.max_door ?? 10
     ];
     this.getFiltersData();
+  }
+
+  onResetPowerOutput() {
+    this.powerOutputRange = [null, null];
+  }
+
+  onResetCubicCapacity() {
+    this.cubicCapacityRange = [null, null];
+  }
+
+  onResetCylinders() {
+    this.cylindersRange = [null, null];
+  }
+
+  onResetBatteryCapacity() {
+    this.batteryCapacityRange = [null, null];
+  }
+
+  onResetTowCapacity() {
+    this.towCapacityRange = [null, null];
+  }
+
+  onResetTotalWeight() {
+    this.totalWeightRange = [null, null];
+  }
+
+  onResetEmptyWeight() {
+    this.emptyWeightRange = [null, null];
   }
 
   onSellerTypeChange(type: string, event: Event) {
@@ -358,6 +504,13 @@ export class AllFiltersComponent {
       payload.door_range?.min_door ?? 0,
       payload.door_range?.max_door ?? 10
     ];
+    this.powerOutputRange = [null, null];
+    this.cubicCapacityRange = [null, null];
+    this.cylindersRange = [null, null];
+    this.batteryCapacityRange = [null, null];
+    this.towCapacityRange = [null, null];
+    this.totalWeightRange = [null, null];
+    this.emptyWeightRange = [null, null];
   }
 
   private buildDraftPayload(): Partial<FilterPayload> {
