@@ -263,6 +263,7 @@
     "annualCar": "Annual Car",
     "defectiveNoMfk": "Defective / No MFK",
     "accidentVehicle": "Accident vehicle",
+    "freshFromService": "Fresh From Service",
     "exportVehicle": "Export vehicle",
     "newCarDescription": "Brand-new, never registered.",
     "demoVehicleDescription": "Dealer-owned demo or test car, low mileage",

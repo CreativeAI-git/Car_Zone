@@ -141,6 +141,7 @@ export class ListYourCarComponent {
       is_metallic: [false],
       is_swiss_vehicle: [false],
       is_accident_vehicle: [false],
+      is_fresh_from_service: [false],
       height_mm: [''],
       length_mm: [''],
       width_mm: [''],

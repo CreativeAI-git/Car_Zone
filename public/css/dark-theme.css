@@ -264,7 +264,7 @@ body.theme-dark .filter-preview-box.active div img {
 }
 
 
-body.theme-dark .quality-img img {
+body.theme-dark .quality-img img , body.theme-dark .opening_time_img {
   filter: brightness(0) invert(1);
 }
 
@@ -398,7 +398,7 @@ body.theme-dark .main-header-section.transparent-header .logo-sticky {
 
 
 body.theme-dark .opening-timing-table td {
-  background-color: #111;
+  background-color: #222;
   color: #fff;
   
 }
