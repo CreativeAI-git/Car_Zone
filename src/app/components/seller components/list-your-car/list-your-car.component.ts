@@ -438,6 +438,11 @@ export class ListYourCarComponent {
         }
         const totalSteps = this.getTotalSteps();
         if (this.currentFormStep < totalSteps) {
+          if (this.currentFormStep === 5) {
+            this.carImages = [];
+            this.selectedReel = null;
+            this.reelThumbnail = null;
+          }
           this.goToStep(this.currentFormStep + 1);
           this.getLastInsertedData();
         }
@@ -514,6 +519,11 @@ export class ListYourCarComponent {
             last_mfk_date: this.lastIntertedData.last_mfk_date ? this.formatDate(this.lastIntertedData.last_mfk_date) : ''
           });
 
+          // Draft media now lives on the server, so clear any stale local files
+          // to avoid re-sending removed or already-uploaded images on the next submit.
+          this.carImages = [];
+          this.selectedReel = null;
+          this.reelThumbnail = null;
           this.carImagePreviews = (this.lastIntertedData.carImages || []).map((img: any) => ({
             file: null,
             url: img.url,
