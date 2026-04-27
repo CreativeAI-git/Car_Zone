@@ -413,6 +413,15 @@ body.theme-dark .bg-wrapper{
 }
 
 
+
+
+body.theme-dark .ant-select{
+      background-color: #222;
+    color: #e5e7eb;
+    border-color: #334155;
+}
+
 .my-listing-all-box{
   width: 100px;
 }
+
