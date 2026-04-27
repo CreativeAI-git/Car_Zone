@@ -28,6 +28,8 @@ export class AllFiltersComponent {
   bodyTypes: FilterOption[] = [];
   carColors: FilterOption[] = [];
   carColorColumns: FilterOption[][] = [];
+  interiorColors: FilterOption[] = [];
+  interiorColorColumns: FilterOption[][] = [];
   carState: FilterOption[] = [];
   warrantyList: FilterOption[] = [];
   energyEfficiencyOptions: FilterOption[] = [];
@@ -458,6 +460,8 @@ export class AllFiltersComponent {
     this.bodyTypes = viewModel.bodyTypes;
     this.carColors = viewModel.carColors;
     this.carColorColumns = viewModel.carColorColumns;
+    this.interiorColors = viewModel.interiorColors;
+    this.interiorColorColumns = viewModel.interiorColorColumns;
     this.carState = viewModel.carState;
     this.warrantyList = viewModel.warrantyList;
     this.energyEfficiencyOptions = viewModel.energyEfficiencyOptions;

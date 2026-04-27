@@ -68,6 +68,8 @@ export type FilterViewModel = {
   bodyTypes: FilterOption[];
   carColors: FilterOption[];
   carColorColumns: FilterOption[][];
+  interiorColors: FilterOption[];
+  interiorColorColumns: FilterOption[][];
   carState: FilterOption[];
   warrantyList: FilterOption[];
   energyEfficiencyOptions: FilterOption[];
@@ -116,6 +118,8 @@ const DEFAULT_VIEW_MODEL: FilterViewModel = {
   bodyTypes: [],
   carColors: [],
   carColorColumns: [],
+  interiorColors: [],
+  interiorColorColumns: [],
   carState: [],
   warrantyList: [],
   energyEfficiencyOptions: [],
@@ -292,6 +296,26 @@ export class FilterService {
       metadataData?.color ??
       [];
 
+    const interiorColorsData =
+      metadataData?.interior_color ??
+      metadataData?.interior_colors ??
+      metadataData?.interiorColor ??
+      metadataData?.interiorColors ??
+      [];
+
+    const mappedExteriorColors = this.mapOptions(this.normalizeItems(colorsData), 'name', 'id', (item: any) => ({
+      color: item?.hex_code
+    }));
+
+    const mappedInteriorColors = this.mapOptions(
+      this.normalizeItems(interiorColorsData),
+      'name',
+      'id',
+      (item: any) => ({
+        color: item?.hex_code
+      })
+    );
+
     const transmissions = this.mapOptions(
       this.normalizeItems(metadataData?.transmission ?? metadataData?.transmissions ?? {}),
       'name',
@@ -335,15 +359,10 @@ export class FilterService {
         'id'
       ),
       bodyTypes,
-      carColors: this.mapOptions(this.normalizeItems(colorsData), 'name', 'id', (item: any) => ({
-        color: item?.hex_code
-      })),
-      carColorColumns: this.splitIntoColumns(
-        this.mapOptions(this.normalizeItems(colorsData), 'name', 'id', (item: any) => ({
-          color: item?.hex_code
-        })),
-        3
-      ),
+      carColors: mappedExteriorColors,
+      carColorColumns: this.splitIntoColumns(mappedExteriorColors, 3),
+      interiorColors: mappedInteriorColors,
+      interiorColorColumns: this.splitIntoColumns(mappedInteriorColors, 3),
       carState: this.mapOptions(
         this.normalizeItems(metadataData?.vehicle_state ?? metadataData?.car_state ?? metadataData?.state ?? {}),
         'name',
