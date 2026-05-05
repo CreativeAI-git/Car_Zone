@@ -1,7 +1,7 @@
 import { Component, effect } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonService } from '../../services/common.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LoaderService } from '../../services/loader.service';
@@ -9,10 +9,25 @@ import { AuthService } from '../../services/auth.service';
 import { ChfFormatPipe } from '../../pipes/chf-format.pipe';
 import { ModalService } from '../../services/modal.service';
 import { NzImage, NzImageService } from 'ng-zorro-antd/image';
+import { FormsModule } from '@angular/forms';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { FilterGroup, FilterOption, FilterPayload, FilterService } from '../../services/filter.service';
 declare var Swiper: any;
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, CommonModule, TranslateModule, ChfFormatPipe],
+  imports: [
+    RouterLink,
+    CommonModule,
+    TranslateModule,
+    ChfFormatPipe,
+    FormsModule,
+    NzPopoverModule,
+    NzSliderModule,
+    NzSelectModule,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
   providers: [NzImageService],
@@ -20,10 +35,75 @@ declare var Swiper: any;
 export class HomeComponent {
   userData: any
   private destroy$ = new Subject<void>();
+  private priceRangeChange$ = new Subject<void>();
+  private kmRangeChange$ = new Subject<void>();
+  private featuredCarsSwiper: any = null;
+  private cardImageSwipers: any[] = [];
   carsList: any[] = []
+  visible = false;
+  bodyTypeVisible = false;
+  YearVisible = false;
+  PriceVisible = false;
+  MilageVisible = false;
+  FuelVisible = false;
+  TransmissionVisible = false;
+  PowerVisible = false;
+  selectedBrandsModal: any[] = [];
+  bodyTypes: FilterOption[] = [];
+  homeBodyTypeCards = [
+    { label: 'Wagon', icon: 'img/icons/car1.png' },
+    { label: 'Convertible', icon: 'img/icons/car2.png' },
+    { label: 'Sedan', icon: 'img/icons/car3.png' },
+    { label: 'SUV / Off-road', icon: 'img/icons/car4.png' },
+    { label: 'Coupe', icon: 'img/icons/car5.png' },
+    { label: 'Pick-up', icon: 'img/icons/car6.png' },
+    { label: 'Van', icon: 'img/icons/car7.png' },
+    { label: 'Compact car', icon: 'img/icons/car8.png' },
+  ];
+  priceRangeAnalytics: any = { matching_vehicles: 0 };
+  yearRangeAnalytics: any = {
+    total_cars_all_years: 0,
+    selected_range: { total_cars: 0 },
+    breakdown: {
+      older_models: { count: 0 },
+      newer_models: { count: 0 }
+    }
+  };
+  kmRangeAnalytics: any = {
+    total_cars_all_mileage: 0,
+    selected_range: { total_cars: 0 },
+    breakdown: {
+      higher_mileage: { count: 0 },
+      lower_mileage: { count: 0 }
+    }
+  };
+  matchingProgress = 0;
+  priceRange: [number, number] = [0, 1000000];
+  leasePriceRange: [number, number] = [0, 100000];
+  yearRange: [number, number] = [1990, new Date().getFullYear()];
+  years: number[] = [];
+  kmRange: [number, number] = [0, 4000000];
+  priceType: 'Purchase' | 'Lease' = 'Purchase';
+  transmissions: FilterOption[] = [];
+  transmissionId: number[] = [];
+  fuelTypeGroups: FilterGroup[] = [];
+  fuelTypeId: number[] = [];
+  bodyTypeId: number[] = [];
+  totalCars = 0;
+  appliedFilters: FilterPayload;
   token: any;
-  constructor(private commonService: CommonService, private router: Router, private translate: TranslateService, private loader: LoaderService, public authService: AuthService, public modal: ModalService, private nzImageService: NzImageService) {
+  constructor(
+    private commonService: CommonService,
+    private router: Router,
+    private translate: TranslateService,
+    private loader: LoaderService,
+    public authService: AuthService,
+    public modal: ModalService,
+    private nzImageService: NzImageService,
+    public filterService: FilterService
+  ) {
     this.translate.use(localStorage.getItem('lang') || 'en');
+    this.appliedFilters = this.filterService.getDefaultPayload();
     effect(() => {
       this.userData = this.commonService.userData
     })
@@ -32,6 +112,122 @@ export class HomeComponent {
   ngOnInit(): void {
     this.token = this.authService.getToken();
     this.getCars();
+
+    const currentYear = new Date().getFullYear();
+    this.yearRange = [currentYear - 35, currentYear];
+    for (let year = currentYear; year >= 1990; year--) {
+      this.years.push(year);
+    }
+
+    this.filterService.appliedFilters$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((payload) => {
+        this.appliedFilters = payload;
+        this.syncStateFromPayload(payload);
+      });
+
+    this.filterService.viewModel$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((viewModel) => {
+        this.bodyTypes = viewModel.bodyTypes || [];
+        this.priceRangeAnalytics = viewModel.priceRangeAnalytics || this.priceRangeAnalytics;
+        this.yearRangeAnalytics = viewModel.yearRangeAnalytics || this.yearRangeAnalytics;
+        this.kmRangeAnalytics = viewModel.kilometersRangeAnalytics || this.kmRangeAnalytics;
+        this.transmissions = viewModel.transmissions || [];
+        this.fuelTypeGroups = viewModel.fuelTypeGroups || [];
+        this.totalCars = viewModel.totalCars || 0;
+        this.updateMatchingProgress();
+      });
+
+    this.priceRangeChange$
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe(() => {
+        const activePriceRange = this.priceType === 'Lease' ? this.leasePriceRange : this.priceRange;
+        this.applyFilters({
+          price_type: this.priceType,
+          price_range: {
+            min_price: activePriceRange[0],
+            max_price: activePriceRange[1]
+          }
+        });
+      });
+
+    this.kmRangeChange$
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe(() =>
+        this.applyFilters({
+          kilometers_range: {
+            min_km: this.kmRange[0],
+            max_km: this.kmRange[1]
+          }
+        })
+      );
+
+    this.filterService.loadAppliedMetadata().pipe(takeUntil(this.destroy$)).subscribe({
+      error: () => undefined
+    });
+  }
+
+  get bodyTypeButtonLabel(): string {
+    return this.getSelectedLabels(this.bodyTypeId, this.bodyTypes);
+  }
+
+  get priceButtonLabel(): string {
+    const activePriceRange = this.priceType === 'Lease' ? this.leasePriceRange : this.priceRange;
+    if (!this.hasRangeChanged(activePriceRange, [0, 1000000])) {
+      return '';
+    }
+
+    return `${activePriceRange[0]} - ${activePriceRange[1]}`;
+  }
+
+  get yearButtonLabel(): string {
+    const currentYear = new Date().getFullYear();
+    if (!this.hasRangeChanged(this.yearRange, [currentYear - 35, currentYear])) {
+      return '';
+    }
+
+    return `${this.yearRange[0]} - ${this.yearRange[1]}`;
+  }
+
+  get kmButtonLabel(): string {
+    if (!this.hasRangeChanged(this.kmRange, [0, 4000000])) {
+      return '';
+    }
+
+    return `${this.kmRange[0]} - ${this.kmRange[1]} km`;
+  }
+
+  get transmissionButtonLabel(): string {
+    return this.getSelectedLabels(this.transmissionId, this.transmissions);
+  }
+
+  get fuelButtonLabel(): string {
+    return this.getSelectedLabels(this.fuelTypeId, this.flattenGroupedOptions(this.fuelTypeGroups));
+  }
+
+  get extraFiltersCount(): number {
+    const payload = this.appliedFilters;
+    const defaults = this.filterService.getDefaultPayload();
+
+    let count = 0;
+    count += payload.seller_type.length;
+    count += payload.state_id.length;
+    count += payload.drive_type.length;
+    count += payload.accident_vehicle.length;
+    count += payload.exterior_color.length;
+    count += payload.interior_color.length;
+    count += payload.energy_efficiency.length;
+
+    if (this.hasRangeObjectChanged(payload.seat_range, defaults.seat_range)) {
+      count += 1;
+    }
+
+    if (this.hasRangeObjectChanged(payload.door_range, defaults.door_range)) {
+      count += 1;
+    }
+
+    return count;
   }
 
   listCar() {
@@ -52,56 +248,43 @@ export class HomeComponent {
     this.modal.openLoginModal();
   }
 
-  loadSwipers(): void {
-    new Swiper('.mySwiper', {
-      direction: 'horizontal',
-      slidesPerView: 6,
-      spaceBetween: 10,
-      loop: true,
-      autoplay: {
-        delay: 2000,
-        disableOnInteraction: false
-      },
-      mousewheel: false,
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      breakpoints: {
-        640: {
-          slidesPerView: 3,
-        },
-        768: {
-          slidesPerView: 5,
-        },
-        1024: {
-          slidesPerView: 6,
-        },
-      },
+  searchCars() {
+    this.filterService.applyDraft(true).pipe(takeUntil(this.destroy$)).subscribe({
+      error: (error) => console.error('Error applying home filters:', error)
     });
+  }
 
-    new Swiper('.CarSwiper', {
-      direction: 'horizontal',
-      slidesPerView: 3,
-      spaceBetween: 10,
-      loop: true,
-      mousewheel: false,
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      breakpoints: {
-        640: {
-          slidesPerView: 1,
+  loadSwipers(): void {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    if (this.featuredCarsSwiper?.destroy) {
+      this.featuredCarsSwiper.destroy(true, true);
+      this.featuredCarsSwiper = null;
+    }
+
+    if (document.querySelector('.CarSwiper')) {
+      this.featuredCarsSwiper = new Swiper('.CarSwiper', {
+        direction: 'horizontal',
+        slidesPerView: 3,
+        spaceBetween: 24,
+        loop: true,
+        grabCursor: true,
+        mousewheel: false,
+        breakpoints: {
+          0: {
+            slidesPerView: 1,
+          },
+          768: {
+            slidesPerView: 2,
+          },
+          1200: {
+            slidesPerView: 3,
+          },
         },
-        768: {
-          slidesPerView: 2,
-        },
-        1024: {
-          slidesPerView: 3,
-        },
-      },
-    });
+      });
+    }
 
   }
 
@@ -110,8 +293,8 @@ export class HomeComponent {
     this.loader.show()
     this.commonService.get(this.token ? 'user/fetchOtherSellerCarsList' : 'user/asGuestUserFetchSellerCarsList').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       this.carsList = res.data
-      this.loadSwipers()
       setTimeout(() => {
+        this.loadSwipers()
         this.loadSwiper()
       }, 100);
       this.loader.hide()
@@ -143,23 +326,166 @@ export class HomeComponent {
     })
   }
 
+  onBodyTypeToggle(id: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.bodyTypeId = this.toggleSelection(this.bodyTypeId, id, input.checked);
+    this.applyFilters({
+      body_type_id: [...this.bodyTypeId]
+    });
+  }
+
+  onPriceTypeChange() {
+    this.onPriceRangeChange();
+  }
+
+  onPriceRangeChange() {
+    this.priceRangeChange$.next();
+  }
+
+  onYearRangeChange() {
+    this.applyFilters({
+      year_range: {
+        min_year: this.yearRange[0],
+        max_year: this.yearRange[1]
+      }
+    });
+  }
+
+  onKmRangeChange() {
+    this.kmRangeChange$.next();
+  }
+
+  onTransmissionToggle(id: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.transmissionId = this.toggleSelection(this.transmissionId, id, input.checked);
+    this.applyFilters({
+      transmission: [...this.transmissionId]
+    });
+  }
+
+  onFuelToggle(id: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.fuelTypeId = this.toggleSelection(this.fuelTypeId, id, input.checked);
+    this.applyFilters({
+      fuel_type_id: [...this.fuelTypeId]
+    });
+  }
+
+  closePopup(popup: 'make' | 'body' | 'price' | 'year' | 'km' | 'transmission' | 'power' | 'fuel') {
+    switch (popup) {
+      case 'make':
+        this.visible = false;
+        break;
+      case 'body':
+        this.bodyTypeVisible = false;
+        break;
+      case 'price':
+        this.PriceVisible = false;
+        break;
+      case 'year':
+        this.YearVisible = false;
+        break;
+      case 'km':
+        this.MilageVisible = false;
+        break;
+      case 'transmission':
+        this.TransmissionVisible = false;
+        break;
+      case 'power':
+        this.PowerVisible = false;
+        break;
+      case 'fuel':
+        this.FuelVisible = false;
+        break;
+    }
+  }
+
+  onResetBodyType() {
+    this.bodyTypeId = [];
+    this.applyFilters({ body_type_id: [] });
+  }
+
+  onResetPrice() {
+    const defaults = this.filterService.getDefaultPayload();
+    this.priceType = defaults.price_type;
+    this.priceRange = [defaults.price_range.min_price ?? 0, defaults.price_range.max_price ?? 1000000];
+    this.leasePriceRange = [defaults.price_range.min_price ?? 0, defaults.price_range.max_price ?? 100000];
+    this.applyFilters({
+      price_type: defaults.price_type,
+      price_range: { ...defaults.price_range }
+    });
+  }
+
+  onResetYear() {
+    const defaults = this.filterService.getDefaultPayload();
+    this.yearRange = [defaults.year_range.min_year ?? 1990, defaults.year_range.max_year ?? new Date().getFullYear()];
+    this.applyFilters({
+      year_range: { ...defaults.year_range }
+    });
+  }
+
+  onResetKm() {
+    const defaults = this.filterService.getDefaultPayload();
+    this.kmRange = [defaults.kilometers_range.min_km ?? 0, defaults.kilometers_range.max_km ?? 4000000];
+    this.applyFilters({
+      kilometers_range: { ...defaults.kilometers_range }
+    });
+  }
+
+  onResetTransmission() {
+    this.transmissionId = [];
+    this.applyFilters({ transmission: [] });
+  }
+
+  onResetFuel() {
+    this.fuelTypeId = [];
+    this.applyFilters({ fuel_type_id: [] });
+  }
+
+  onResetFilters() {
+    this.visible = false;
+    this.bodyTypeVisible = false;
+    this.YearVisible = false;
+    this.PriceVisible = false;
+    this.MilageVisible = false;
+    this.FuelVisible = false;
+    this.TransmissionVisible = false;
+    this.PowerVisible = false;
+    this.filterService.resetFilters();
+    this.appliedFilters = this.filterService.getDefaultPayload();
+    this.syncStateFromPayload(this.appliedFilters);
+    this.filterService.loadAppliedMetadata().pipe(takeUntil(this.destroy$)).subscribe({
+      error: () => undefined
+    });
+  }
+
   loadSwiper(): void {
+    this.cardImageSwipers.forEach((swiper) => swiper?.destroy?.(true, true));
+    this.cardImageSwipers = [];
+
     this.carsList.forEach((_, i) => {
-      new Swiper(`.mySwiperMain-${i}`, {
+      const swiper = new Swiper(`.mySwiperMain-${i}`, {
         slidesPerView: 1,
+        spaceBetween: 0,
+        loop: true,
         pagination: {
-          el: ".swiper-pagination",
+          el: `.home-card-pagination-${i}`,
           type: "fraction",
         },
         navigation: {
-          nextEl: `.swiper-button-next`,
-          prevEl: `.swiper-button-prev`,
+          nextEl: `.home-card-next-${i}`,
+          prevEl: `.home-card-prev-${i}`,
         },
       });
+      this.cardImageSwipers.push(swiper);
     });
   }
 
   previewImage(item: any) {
+    if (!Array.isArray(item) || !item.length) {
+      return;
+    }
+
     let images: NzImage[] = [];
     item.forEach((_e: any) => {
       images.push({
@@ -169,7 +495,86 @@ export class HomeComponent {
     this.nzImageService.preview(images);
   }
 
+  private syncStateFromPayload(payload: FilterPayload) {
+    const currentYear = new Date().getFullYear();
+    this.priceType = payload.price_type ?? 'Purchase';
+    this.priceRange = [
+      payload.price_range?.min_price ?? 0,
+      payload.price_range?.max_price ?? 1000000
+    ];
+    this.leasePriceRange = [...this.priceRange] as [number, number];
+    this.yearRange = [
+      payload.year_range?.min_year ?? currentYear - 35,
+      payload.year_range?.max_year ?? currentYear
+    ];
+    this.kmRange = [
+      payload.kilometers_range?.min_km ?? 0,
+      payload.kilometers_range?.max_km ?? 4000000
+    ];
+    this.transmissionId = [...(payload.transmission || [])];
+    this.fuelTypeId = [...(payload.fuel_type_id || [])];
+    this.bodyTypeId = [...(payload.body_type_id || [])];
+  }
+
+  private applyFilters(patch: Partial<FilterPayload>) {
+    this.filterService.patchAppliedAndDraft({
+      lang: localStorage.getItem('lang') || this.translate.currentLang || 'en',
+      page: 1,
+      ...patch
+    });
+
+    this.filterService.loadAppliedMetadata().pipe(takeUntil(this.destroy$)).subscribe({
+      error: (error) => console.error('Error loading home filter metadata:', error)
+    });
+  }
+
+  private updateMatchingProgress() {
+    const matchingVehicles = Number(this.priceRangeAnalytics?.matching_vehicles || 0);
+    const base = Math.max(this.totalCars, matchingVehicles, 1);
+    this.matchingProgress = Math.max(10, Math.min(100, Math.round((matchingVehicles / base) * 100)));
+  }
+
+  private getSelectedLabels(selectedValues: any[], options: FilterOption[]): string {
+    if (!selectedValues.length) {
+      return '';
+    }
+
+    const labels = options
+      .filter((option) => selectedValues.includes(option.value))
+      .map((option) => option.label)
+      .filter(Boolean);
+
+    return labels.join(', ');
+  }
+
+  private flattenGroupedOptions(groups: FilterGroup[]): FilterOption[] {
+    return groups.flatMap((group) => group.options || []);
+  }
+
+  private hasRangeChanged(current: [number, number], initial: [number, number]): boolean {
+    return current[0] !== initial[0] || current[1] !== initial[1];
+  }
+
+  private hasRangeObjectChanged(
+    current: { [key: string]: number | null },
+    initial: { [key: string]: number | null }
+  ): boolean {
+    return Object.keys(current).some((key) => current[key] !== initial[key]);
+  }
+
+  private toggleSelection<T>(list: T[], value: T, checked: boolean): T[] {
+    if (checked) {
+      return list.includes(value) ? list : [...list, value];
+    }
+
+    return list.filter((item) => item !== value);
+  }
+
   ngOnDestroy(): void {
+    this.featuredCarsSwiper?.destroy?.(true, true);
+    this.cardImageSwipers.forEach((swiper) => swiper?.destroy?.(true, true));
+    this.kmRangeChange$.complete();
+    this.priceRangeChange$.complete();
     this.destroy$.next();
     this.destroy$.complete();
   }
