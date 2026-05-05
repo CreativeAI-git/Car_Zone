@@ -6,14 +6,14 @@
                     <div class="ct_right_box p-3 d-flex justify-content-between align-items-center">
                         <div>
                             <h3 class="ct_fs_16 mb-0">
-                                {{ isSellerMode ? ('header.roleSwitcher.switchToBuyerMode' | translate) :
-                                ('profile.switchToSellerMode' | translate) }}
+                                {{ isCompanyType ? 'Switch To Private User Type' :
+                                'Switch To Company User Type' }}
                             </h3>
                         </div>
                         <div>
                             <label class="toggle-switch">
-                                <input type="checkbox" [checked]="isSellerMode" [disabled]="loading"
-                                    (change)="onRoleToggle($event)" />
+                                <input type="checkbox" [checked]="isCompanyType" [disabled]="loading"
+                                    (change)="onUserTypeToggle($event)" />
                                 <div class="toggle-switch-background">
                                     <div class="toggle-switch-handle"></div>
                                 </div>
@@ -22,8 +22,9 @@
                     </div>
 
                     <p class="ct_fs_18 mt-4">
-                        {{ isSellerMode ? ('header.roleSwitcher.switchToBuyerDescription' | translate) :
-                        ('header.roleSwitcher.switchToSellerDescription' | translate) }}
+                        {{ isCompanyType ?
+                        'Use a private account to manage your personal profile, saved items, chats, and listings as an individual user.' :
+                        'Use a company account to manage your business profile, company details, listings, and showroom information in one place.' }}
                     </p>
                 </div>
             </div>

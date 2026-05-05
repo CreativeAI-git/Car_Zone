@@ -12,24 +12,24 @@
                                     </div>
 
                                     <h5 class="login-popup__title mb-4 ct_fs_32 text-center">
-                                          {{ 'auth.chooseYourRole' | translate }}
+                                          Choose your user type to continue
                                     </h5>
                               </div>
 
                               <div class="login-popup__roles">
                                     <label class="login-popup__role">
-                                          <input type="radio" (change)="switchRole($event)" name="role" [value]="'common.buyer' | translate"
-                                                [checked]="role() === 'buyer'" />
+                                          <input type="radio" (change)="switchUserType($event)" name="userType" value="private"
+                                                [checked]="userType() === 'private'" />
                                           <span class="login-popup__text">
                                                 <img src="img/icons/buyer-login.png" class="me-2" />
-                                                {{ 'common.iAmABuyer' | translate }}</span>
+                                                I am a Private user</span>
                                     </label>
 
                                     <label class="login-popup__role">
-                                          <input type="radio" (change)="switchRole($event)" name="role" [value]="'common.seller' | translate"
-                                                [checked]="role() === 'seller'" />
+                                          <input type="radio" (change)="switchUserType($event)" name="userType" value="company"
+                                                [checked]="userType() === 'company'" />
                                           <img src="img/icons/seller.png" class="me-2" />
-                                          <span class="login-popup__text">{{ 'common.iAmASeller' | translate }}</span>
+                                          <span class="login-popup__text">I am a Company user</span>
                                     </label>
                               </div>
 
@@ -58,7 +58,7 @@
       </div>
 </div>
 
-<div class="modal fade login-popup" id="buyerSignUpModal" tabindex="-1">
+<div class="modal fade login-popup" id="privateSignUpModal" tabindex="-1">
       <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content border-0 rounded-4 overflow-hidden p-5 position-relative">
                   <div class="close-btn" data-bs-dismiss="modal">
@@ -69,7 +69,7 @@
       </div>
 </div>
 
-<div class="modal fade login-popup" id="sellerSignUpModal" tabindex="-1">
+<div class="modal fade login-popup" id="companySignUpModal" tabindex="-1">
       <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content border-0 rounded-4 overflow-hidden p-5 position-relative">
                   <div class="close-btn" data-bs-dismiss="modal">

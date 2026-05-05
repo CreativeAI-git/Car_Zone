@@ -1,6 +1,5 @@
 import { Component, effect } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { RoleDirective } from '../../directives/role.directive';
 import { CommonService } from '../../services/common.service';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -8,13 +7,12 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LoaderService } from '../../services/loader.service';
 import { AuthService } from '../../services/auth.service';
 import { ChfFormatPipe } from '../../pipes/chf-format.pipe';
-import { RoleService } from '../../services/role.service';
 import { ModalService } from '../../services/modal.service';
 import { NzImage, NzImageService } from 'ng-zorro-antd/image';
 declare var Swiper: any;
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, CommonModule, RoleDirective, TranslateModule, ChfFormatPipe],
+  imports: [RouterLink, CommonModule, TranslateModule, ChfFormatPipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
   providers: [NzImageService],
@@ -24,28 +22,34 @@ export class HomeComponent {
   private destroy$ = new Subject<void>();
   carsList: any[] = []
   token: any;
-  constructor(private commonService: CommonService, private router: Router, private translate: TranslateService, private loader: LoaderService, public authService: AuthService, private roleService: RoleService, public modal: ModalService, private nzImageService: NzImageService) {
+  constructor(private commonService: CommonService, private router: Router, private translate: TranslateService, private loader: LoaderService, public authService: AuthService, public modal: ModalService, private nzImageService: NzImageService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     effect(() => {
       this.userData = this.commonService.userData
-      this.roleService.getLoggedInRole()
-      if (this.roleService.getLoggedInRole() === 'buyer') {
-        this.getCars();
-      }
     })
   }
 
   ngOnInit(): void {
     this.token = this.authService.getToken();
+    this.getCars();
   }
 
   listCar() {
+    if (!this.authService.isLogedIn()) {
+      this.modal.openLoginModal();
+      return;
+    }
+
     if (this.userData().slotAvailable) {
       this.router.navigate(['/list-your-car'])
     } else {
       this.router.navigate(['/choose-listing-plan'])
     }
     // this.router.navigate(['/list-your-car'])
+  }
+
+  openCreateAccount() {
+    this.modal.openLoginModal();
   }
 
   loadSwipers(): void {

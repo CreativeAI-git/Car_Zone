@@ -7,7 +7,7 @@ import { Router, RouterLink } from '@angular/router';
 import { SubmitButtonComponent } from '../shared/submit-button/submit-button.component';
 import { CommonService } from '../../services/common.service';
 import { Subject, takeUntil } from 'rxjs';
-import { RoleService, UserRole } from '../../services/role.service';
+import { RoleService } from '../../services/role.service';
 import { AuthService } from '../../services/auth.service';
 import { Auth } from '@angular/fire/auth';
 import { browserPopupRedirectResolver, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
@@ -27,7 +27,7 @@ export class LogInComponent {
   loading: boolean = false
   private destroy$ = new Subject<void>();
   private roleService = inject(RoleService);
-  role = this.roleService.currentRole;
+  userType = this.roleService.currentUserType;
   constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private authService: AuthService, private router: Router, private translate: TranslateService, public modal: ModalService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.Form = this.fb.group({
@@ -49,7 +49,7 @@ export class LogInComponent {
       email: this.Form.value.email,
       password: this.Form.value.password,
       fcmToken: localStorage.getItem('fcm_token') || '',
-      isSeller: this.role() === 'seller' ? 1 : 0
+      userType: this.userType()
     }
 
     this.loading = true
@@ -58,8 +58,10 @@ export class LogInComponent {
         this.loading = false
         this.toastr.success(res.message)
         this.authService.setValues(res.data.jwt_token, res.data.userId)
-        this.roleService.setLoggedInRole(res.data.role)
-        localStorage.setItem('loggedInRole', res.data.role)
+        const userType = this.roleService.normalizeUserType(res.data.userType || res.data.role);
+        this.roleService.setUserType(userType)
+        this.roleService.setLoggedInUserType(userType)
+        localStorage.removeItem('loggedInRole')
         this.modal.closeLoginModal()
         this.commonService.getProfile()
       },
@@ -94,19 +96,17 @@ export class LogInComponent {
     let formData = {
       email: userDet.email,
       fullName: fullName,
-      isSeller: this.role() == 'seller' ? 1 : 0
+      userType: this.userType()
     }
     this.commonService.post('user/socialLogin', formData).subscribe({
       next: (res: any) => {
         this.loading = false;
         this.toastr.success(res.message);
         this.authService.setValues(res.token, res.user.id);
-        // this.userService.handleAddOrUpdateUser(res.user.id, fullName, '')
-        if (this.role() == 'buyer') {
-          this.router.navigate(['/']);
-        } else {
-          this.router.navigate(['/home']);
-        }
+        const userType = this.roleService.normalizeUserType(res.user?.userType || res.user?.role);
+        this.roleService.setUserType(userType);
+        this.roleService.setLoggedInUserType(userType);
+        this.router.navigate(['/']);
       },
       error: (error) => {
         this.loading = false;
@@ -116,10 +116,10 @@ export class LogInComponent {
   }
 
   openModal() {
-    if (this.role() == 'buyer') {
-      this.modal.openBuyerSignUpModal()
+    if (this.userType() === 'private') {
+      this.modal.openPrivateSignUpModal()
     } else {
-      this.modal.openSellerSignUpModal()
+      this.modal.openCompanySignUpModal()
     }
   }
 }

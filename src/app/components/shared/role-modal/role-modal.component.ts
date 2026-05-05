@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RoleService, UserRole } from '../../../services/role.service';
+import { RoleService, UserType } from '../../../services/role.service';
 import { LogInComponent } from "../../log-in/log-in.component";
 import { ModalService } from '../../../services/modal.service';
 import { SignUpComponent } from "../../sign-up/sign-up.component";
@@ -18,13 +18,12 @@ import { TranslateModule } from '@ngx-translate/core';
 export class RoleModalComponent {
 
   private roleService = inject(RoleService);
-  role = this.roleService.currentRole;
+  userType = this.roleService.currentUserType;
 
   constructor(public modal: ModalService) { }
 
-  switchRole(event: Event) {
-    const role = (event.target as HTMLInputElement).value;
-    const newRole: UserRole = role as UserRole;
-    this.roleService.setRole(newRole);
+  switchUserType(event: Event) {
+    const value = (event.target as HTMLInputElement).value as UserType;
+    this.roleService.setUserType(value);
   }
 }

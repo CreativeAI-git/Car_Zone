@@ -1,39 +1,61 @@
 // role.service.ts
 import { Injectable, signal } from '@angular/core';
 
-export type UserRole = 'buyer' | 'seller';
+export type UserType = 'private' | 'company';
 
 @Injectable({
       providedIn: 'root',
 })
 export class RoleService {
-      private role = signal<UserRole>('buyer');
-      currentRole = this.role.asReadonly();
+      private userType = signal<UserType>('private');
+      currentUserType = this.userType.asReadonly();
 
-      private loggedInRole = signal<UserRole>('buyer');
-      currentLoggedInRole = this.loggedInRole.asReadonly();
+      private loggedInUserType = signal<UserType>('private');
+      currentLoggedInUserType = this.loggedInUserType.asReadonly();
 
 
       constructor() {
-            const role = localStorage.getItem('loggedInRole')
-            if (role) {
-                  this.setLoggedInRole(role as UserRole)
+            const selectedUserType = localStorage.getItem('selectedUserType');
+            const loggedInUserType = localStorage.getItem('loggedInUserType') || localStorage.getItem('loggedInRole');
+
+            if (selectedUserType) {
+                  this.setUserType(this.normalizeUserType(selectedUserType));
+            }
+
+            if (loggedInUserType) {
+                  this.setLoggedInUserType(this.normalizeUserType(loggedInUserType));
             }
       }
 
-      setRole(role: UserRole) {
-            this.role.set(role);
+      normalizeUserType(value: string | null | undefined): UserType {
+            switch ((value || '').toLowerCase()) {
+                  case 'company':
+                  case 'seller':
+                  case 'business':
+                        return 'company';
+                  case 'private':
+                  case 'buyer':
+                  case 'personal':
+                  default:
+                        return 'private';
+            }
       }
 
-      getRole(): UserRole {
-            return this.role();
+      setUserType(userType: UserType) {
+            this.userType.set(userType);
+            localStorage.setItem('selectedUserType', userType);
       }
 
-      setLoggedInRole(role: UserRole) {
-            this.loggedInRole.set(role);
+      getUserType(): UserType {
+            return this.userType();
       }
 
-      getLoggedInRole(): UserRole {
-            return this.loggedInRole();
+      setLoggedInUserType(userType: UserType) {
+            this.loggedInUserType.set(userType);
+            localStorage.setItem('loggedInUserType', userType);
+      }
+
+      getLoggedInUserType(): UserType {
+            return this.loggedInUserType();
       }
 }

@@ -1,55 +1,32 @@
-<header class="main-header-section" [class.transparent-header]="role() === 'buyer'">
+<header class="main-header-section" [class.transparent-header]="userType() === 'private'">
       <nav #navbar class="navbar navbar-expand-lg fixed-top navbar-dark">
             <div class="container">
                   <a class="navbar-brand fw-bold main-logo" routerLink="/">
                         <img src="img/black-logo.png" alt="" class="logo-default" />
                         <img src="img/logo.png" class="logo-sticky " [alt]="'common.stickyLogo' | translate" />
                   </a>
-                  <ng-container *appRole="'buyer'">
-                        <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex">
-                              <ul class="navbar-nav gap-4" id="mainMenu">
-                                    <li class="nav-item">
-                                          <a class="nav-link ct_fs_16 ct_fw_600" routerLinkActive="active"
-                                                routerLink="/browse-cars">{{ 'vehicle.browseCars' | translate }}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                          <a class="nav-link ct_fs_16 ct_fw_600" routerLinkActive="active"
-                                                routerLink="/reels">{{ 'media.reels' | translate }}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                          <a class="nav-link ct_fs_16 ct_fw_600" rou routerLink="/chats">{{ 'chat.chat'
-                                                | translate }}</a>
-                                    </li>
-                              </ul>
-                        </div>
-                  </ng-container>
-                  <ng-container *appRole="'seller'">
-                        <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex">
-                              <ul class="navbar-nav gap-4">
-                                    <!-- <li class="nav-item">
-                                          <a class="nav-link nav-link ct_fs_18 ct_fw_400"
-                                                routerLink="choose-listing-plan" routerLinkActive="active">List your
-                                                car</a>
-                                    </li> -->
-                                    <li class="nav-item">
-                                          <a class="nav-link nav-link ct_fs_18 ct_fw_400" routerLinkActive="active"
-                                                routerLink="/my-listings">{{ 'listing.myListings' | translate }}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                          <a class="nav-link nav-link ct_fs_18 ct_fw_400" routerLinkActive="active"
-                                                routerLink="/chats">{{ 'chat.chat' | translate }}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                          <a class="nav-link nav-link ct_fs_18 ct_fw_400" routerLinkActive="active"
-                                                routerLink="/calendar">{{ 'common.calendar' | translate }}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                          <a class="nav-link nav-link ct_fs_18 ct_fw_400" routerLinkActive="active"
-                                                routerLink="/schedule-request">{{ 'common.scheduleRequest' | translate }}</a>
-                                    </li>
-                              </ul>
-                        </div>
-                  </ng-container>
+                  <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex">
+                        <ul class="navbar-nav gap-4" id="mainMenu">
+                              <li class="nav-item">
+                                    <a class="nav-link ct_fs_16 ct_fw_600" routerLinkActive="active"
+                                          routerLink="/browse-cars">{{ 'vehicle.browseCars' | translate }}</a>
+                              </li>
+                              <li class="nav-item">
+                                    <a class="nav-link ct_fs_16 ct_fw_600" routerLinkActive="active"
+                                          routerLink="/reels">{{ 'media.reels' | translate }}</a>
+                              </li>
+                              <li class="nav-item">
+                                    <a class="nav-link ct_fs_16 ct_fw_600" routerLink="/chats">{{ 'chat.chat' |
+                                          translate }}</a>
+                              </li>
+                              @if(authService.isLogedIn()){
+                              <li class="nav-item">
+                                    <a class="nav-link ct_fs_16 ct_fw_600" routerLinkActive="active"
+                                          routerLink="/my-listings">{{ 'listing.myListings' | translate }}</a>
+                              </li>
+                              }
+                        </ul>
+                  </div>
                   <div class="d-flex gap-3">
                         <div class="">
                               <div class="d-flex align-items-center gap-3">
@@ -164,9 +141,7 @@
                                                 <div>
                                                       <h5 class="ct_fs_15 ct_fw_400 mb-0">{{userData?.fullName}}</h5>
                                                       <h5 class="ct_fs_12 ct_fw_400 mb-0 ct_color_grey">
-                                                            {{ role() === 'buyer' ?
-                                                            ('auth.buyer' | translate) : ('auth.seller' | translate)
-                                                            }}
+                                                            {{ userType() === 'private' ? 'Private' : 'Company' }}
                                                       </h5>
                                                 </div>
                                           </a>

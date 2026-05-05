@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { QuillModule } from 'ngx-quill';
@@ -30,19 +29,7 @@ export class SellerSignUpComponent {
   loading: boolean = false
   isShowPassword: boolean = false
   isShowConfirmPassword: boolean = false
-  sellerTypes: any[] = [{
-    label: 'profile.privateSeller',
-    label2: 'profile.forIndividualSellers',
-    value: 'personal'
-  }, {
-    label: 'profile.officialSeller',
-    label2: 'profile.forBusinesses',
-    value: 'business'
-  }];
-
   submitted: boolean = false;
-
-  selectedSellerType: string = 'personal';
   constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private translate: TranslateService, public modal: ModalService) {
     // this.translate.use(localStorage.getItem('lang') || 'en');
     this.Form = this.fb.group({
@@ -51,13 +38,11 @@ export class SellerSignUpComponent {
       phoneNumber: ['', [Validators.required]],
       isWhatsappSameAsPhone: [false],
       whatsappNumber: ['', [Validators.required]],
-      typeOfSeller: ['personal', [Validators.required]],
       password: ['', [Validators.required]],
       confirmPassword: ['', [Validators.required]],
-      address: ['', [Validators.required, NoWhitespaceDirective.validate]],
-      legalForm: ['Sole Proprietorship'],
-      companyName: [''],
-      companyAddress: [''],
+      legalForm: ['Sole Proprietorship', [Validators.required]],
+      companyName: ['', [Validators.required, NoWhitespaceDirective.validate]],
+      companyAddress: ['', [Validators.required, NoWhitespaceDirective.validate]],
       city: ['', [Validators.required, NoWhitespaceDirective.validate]],
       pincode: ['', [Validators.required, NoWhitespaceDirective.validate]],
       vat: [''],
@@ -72,23 +57,6 @@ export class SellerSignUpComponent {
   }
 
   ngOnInit(): void {
-    this.Form.get('typeOfSeller')?.valueChanges.subscribe((value) => {
-      if (value === 'business') {
-        this.Form.get('companyName')?.setValidators([Validators.required, NoWhitespaceDirective.validate]);
-        this.Form.get('companyAddress')?.setValidators([Validators.required, NoWhitespaceDirective.validate]);
-        this.Form.get('companyName')?.updateValueAndValidity();
-        this.Form.get('companyAddress')?.updateValueAndValidity();
-        this.Form.get('address')?.clearValidators();
-        this.Form.get('address')?.updateValueAndValidity();
-      } else {
-        this.Form.get('companyName')?.clearValidators();
-        this.Form.get('companyAddress')?.clearValidators();
-        this.Form.get('companyName')?.updateValueAndValidity();
-        this.Form.get('companyAddress')?.updateValueAndValidity();
-        this.Form.get('address')?.setValidators([Validators.required, NoWhitespaceDirective.validate]);
-        this.Form.get('address')?.updateValueAndValidity();
-      }
-    })
     this.Form.get('isWhatsappSameAsPhone')?.valueChanges.subscribe((value) => {
       if (value) {
         this.Form.get('phoneNumber')?.setValue(this.Form.get('whatsappNumber')?.value);
@@ -127,11 +95,10 @@ export class SellerSignUpComponent {
       fullName: this.Form.value.fullName,
       email: this.Form.value.email,
       phoneNumber: this.Form.value.phoneNumber.number,
-      typeOfSeller: this.Form.value.typeOfSeller,
       whatsappNumber: this.Form.value.whatsappNumber.number,
       isWhatsappSameAsPhone: this.Form.value.isWhatsappSameAsPhone,
       password: this.Form.value.password,
-      fullAddress: this.Form.value.address,
+      fullAddress: this.Form.value.companyAddress,
       legalForm: this.Form.value.legalForm,
       companyName: this.Form.value.companyName,
       companyAddress: this.Form.value.companyAddress,
@@ -141,7 +108,7 @@ export class SellerSignUpComponent {
       countryCode: this.Form.value.phoneNumber.dialCode,
       whatsappCountryCode: this.Form.value.whatsappNumber.dialCode,
       language: 'en',
-      isSeller: 1
+      userType: 'company'
     }
 
     this.commonService.post('user/signUp', formData).pipe(takeUntil(this.destroy$)).subscribe({

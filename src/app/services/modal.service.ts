@@ -67,20 +67,28 @@ export class ModalService {
             this.currentModal.show();
       }
 
-      async openBuyerSignUpModal(): Promise<void> {
+      async openPrivateSignUpModal(): Promise<void> {
             await this.closeCurrentModal();
-            const el = document.getElementById('buyerSignUpModal');
+            const el = document.getElementById('privateSignUpModal');
             if (!el) return;
             this.currentModal = new bootstrap.Modal(el);
             this.currentModal.show();
       }
 
-      async openSellerSignUpModal(): Promise<void> {
+      async openCompanySignUpModal(): Promise<void> {
             await this.closeCurrentModal();
-            const el = document.getElementById('sellerSignUpModal');
+            const el = document.getElementById('companySignUpModal');
             if (!el) return;
             this.currentModal = new bootstrap.Modal(el);
             this.currentModal.show();
+      }
+
+      async openBuyerSignUpModal(): Promise<void> {
+            return this.openPrivateSignUpModal();
+      }
+
+      async openSellerSignUpModal(): Promise<void> {
+            return this.openCompanySignUpModal();
       }
 
       async openForgotPasswordModal(): Promise<void> {

@@ -3,13 +3,12 @@ import { RouterLink, RouterOutlet, RouterLinkActive, Router } from '@angular/rou
 import { AuthService } from '../services/auth.service';
 import { CommonService } from '../services/common.service';
 import { RoleService } from '../services/role.service';
-import { RoleDirective } from '../directives/role.directive';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-my-profile',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, RoleDirective, CommonModule, TranslateModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule, TranslateModule],
   templateUrl: './my-profile.component.html',
   styleUrl: './my-profile.component.css'
 })
@@ -18,11 +17,11 @@ export class MyProfileComponent {
   @ViewChild('profileOverlay') profileOverlay!: ElementRef;
   @ViewChild('close') close: ElementRef | undefined;
   userData: any
-  role: any
+  userType: any
   constructor(private renderer: Renderer2, private authService: AuthService, private router: Router, private commonService: CommonService, private roleService: RoleService) {
     effect(() => {
       this.userData = this.commonService.userData()
-      this.role = this.roleService.currentLoggedInRole()
+      this.userType = this.roleService.currentLoggedInUserType()
     })
   }
 

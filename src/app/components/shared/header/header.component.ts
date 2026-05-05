@@ -9,30 +9,27 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../services/modal.service';
 import { RoleModalComponent } from '../role-modal/role-modal.component';
-import { RoleDirective } from '../../../directives/role.directive';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, TranslateModule, CommonModule, RoleModalComponent, RoleDirective],
+  imports: [RouterLink, RouterLinkActive, TranslateModule, CommonModule, RoleModalComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
   private roleService = inject(RoleService);
-  role = this.roleService.currentLoggedInRole;
+  userType = this.roleService.currentLoggedInUserType;
   @ViewChild('close') close: ElementRef | undefined;
   @ViewChild('navbar', { static: true }) navbar!: ElementRef;
   userData: any
   destroy$ = new Subject<void>();
   selectedLang: string = 'en'
-  userRole: any;
   token: any
   constructor(private router: Router, public authService: AuthService, private commonService: CommonService, private toster: NzMessageService, private translate: TranslateService, public modalService: ModalService, private renderer: Renderer2) {
     this.translate.setDefaultLang('en');
     this.token = this.authService.getToken();
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.selectedLang = localStorage.getItem('lang') || 'en';
-    this.userRole = localStorage.getItem('loggedInRole');
 
     if (this.authService.isLogedIn()) {
       this.commonService.getProfile()

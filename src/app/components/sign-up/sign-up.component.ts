@@ -100,7 +100,7 @@ export class SignUpComponent {
       countryCode: this.Form.value.phoneNumber.dialCode,
       whatsappCountryCode: this.Form.value.whatsappNumber.dialCode,
       language: 'en',
-      isSeller: 0
+      userType: 'private'
     }
 
     this.commonService.post('user/signUp', formData).pipe(takeUntil(this.destroy$)).subscribe({

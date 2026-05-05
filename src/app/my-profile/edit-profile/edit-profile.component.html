@@ -72,34 +72,7 @@
                                     | translate | titlecase), Form.get("phoneNumber"))}}</small>
                         </div>
                   </div>
-                  <ng-container *appRole="'seller'">
-                        <div class="col-lg-12">
-                              <div class="form-group mb-4">
-                                    <label class="ct_fs_16 ct_fw_500 mb-2">
-                                          {{ 'profile.selectEntity' | translate }} <span
-                                                class="ct_color_8f0c1f">*</span>
-                                    </label>
-                                    <nz-select class="form-control" [nzPlaceHolder]="'profile.selectEntity' | translate"
-                                          [nzShowSearch]="true" formControlName="typeOfSeller">
-                                          @for (item of sellerTypes; track $index) {
-                                          <nz-option nzCustomContent [nzLabel]="item.label | translate"
-                                                [nzValue]="item.value" class="ct_custom_select">
-                                                <div class="d-flex align-items-center justify-content-between">
-                                                      <div>
-                                                            <p class="m-0">
-                                                                  {{item.label | translate}}
-                                                            </p>
-                                                            <span>{{item.label2 | translate}}</span>
-                                                      </div>
-                                                      <input type="radio" class="cutom_radio_input"
-                                                            [checked]="Form.get('typeOfSeller')?.value?.includes(item.value)" />
-                                                </div>
-                                          </nz-option>
-                                          }
-                                    </nz-select>
-                              </div>
-                        </div>
-                        @if(Form.get('typeOfSeller')?.value === 'business') {
+                  @if(isCompanyUserType) {
                         <div class="col-lg-6">
                               <div class="form-group mb-4">
                                     <label for="" class="ct_fs_16 ct_fw_500 mb-2">{{'profile.legalEntity' |
@@ -201,7 +174,7 @@
                                           | translate), Form.get("companyAddress"))}}</small>
                               </div>
                         </div>
-                        }@else {
+                  } @else {
                         <div class="col-lg-12">
                               <div class="form-group mb-4">
                                     <label class="ct_fs_16 ct_fw_500 mb-2">
@@ -215,24 +188,7 @@
                                           | translate), Form.get("address"))}}</small>
                               </div>
                         </div>
-                        }
-                  </ng-container>
-
-                  <ng-container *appRole="'buyer'">
-                        <div class="col-lg-12">
-                              <div class="form-group mb-4">
-                                    <label class="ct_fs_16 ct_fw_500 mb-2">
-                                          {{ 'profile.address' | translate }} <span class="ct_color_8f0c1f">*</span>
-                                    </label>
-                                    <input type="text" class="form-control"
-                                          [placeholder]="'auth.enterAddress' | translate"
-                                          [attr.aria-label]="'filters.username' | translate"
-                                          aria-describedby="basic-addon1" formControlName="address" />
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.address'
-                                          | translate), Form.get("address"))}}</small>
-                              </div>
-                        </div>
-                  </ng-container>
+                  }
                   <div class="col-lg-6">
                         <div class="form-group mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2"> {{ 'profile.city' | translate }} </label>
@@ -259,8 +215,7 @@
                   </div>
 
 
-                  <ng-container *appRole="'seller'">
-                        @if(Form.get('typeOfSeller')?.value === 'business') {
+                  @if(isCompanyUserType) {
                         <div class="col-lg-6">
                               <div class="mb-4">
                                     <label class="ct_fs_16 ct_fw_500 mb-2">{{ 'profile.showroomCoverImage' | translate
@@ -517,8 +472,7 @@
                                     }
                               </div>
                         </div>
-                        }
-                  </ng-container>
+                  }
                   <div class="d-flex justify-content-end mt-5">
                         <app-submit-button [text]="'common.saveChanges'" [class]="'btn-red'"
                               [isLoading]="loading"></app-submit-button>

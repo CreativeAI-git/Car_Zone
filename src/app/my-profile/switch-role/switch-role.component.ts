@@ -6,7 +6,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { CommonService } from '../../services/common.service';
-import { RoleService, UserRole } from '../../services/role.service';
+import { RoleService, UserType } from '../../services/role.service';
 
 declare global {
   interface Window {
@@ -23,8 +23,8 @@ declare global {
 export class SwitchRoleComponent {
   private destroy$ = new Subject<void>();
   private roleService = inject(RoleService);
-  protected readonly currentLoggedInRole = this.roleService.currentLoggedInRole;
-  protected readonly currentRole = this.roleService.currentRole;
+  protected readonly currentLoggedInUserType = this.roleService.currentLoggedInUserType;
+  protected readonly currentUserType = this.roleService.currentUserType;
   loading = false;
 
   constructor(
@@ -37,34 +37,34 @@ export class SwitchRoleComponent {
     this.translate.use(localStorage.getItem('lang') || 'en');
   }
 
-  get isSellerMode(): boolean {
-    const role = this.authService.isLogedIn() ? this.currentLoggedInRole() : this.currentRole();
-    return role === 'seller';
+  get isCompanyType(): boolean {
+    const userType = this.authService.isLogedIn() ? this.currentLoggedInUserType() : this.currentUserType();
+    return userType === 'company';
   }
 
-  onRoleToggle(event: Event) {
+  onUserTypeToggle(event: Event) {
     const isChecked = (event.target as HTMLInputElement).checked;
-    this.switchRole(isChecked ? 'seller' : 'buyer');
+    this.switchUserType(isChecked ? 'company' : 'private');
   }
 
-  switchRole(role: UserRole) {
-    if (!role) {
+  switchUserType(userType: UserType) {
+    if (!userType) {
       return;
     }
 
     if (!this.authService.isLogedIn()) {
-      this.persistRole(role);
+      this.persistUserType(userType);
       this.router.navigate(['/login']);
       return;
     }
 
     this.loading = true;
-    this.commonService.post('user/changeMode', { isSeller: role === 'seller' ? 1 : 0 })
+    this.commonService.post('user/changeMode', { userType })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
           if (res?.success) {
-            this.persistRole(role);
+            this.persistUserType(userType);
             window.initMainUi?.();
             this.commonService.getProfile();
             this.toster.success(res.message || this.translate.instant('common.saveChanges'));
@@ -83,10 +83,10 @@ export class SwitchRoleComponent {
       });
   }
 
-  private persistRole(role: UserRole) {
-    this.roleService.setRole(role);
-    this.roleService.setLoggedInRole(role);
-    localStorage.setItem('loggedInRole', role);
+  private persistUserType(userType: UserType) {
+    this.roleService.setUserType(userType);
+    this.roleService.setLoggedInUserType(userType);
+    localStorage.removeItem('loggedInRole');
   }
 
   ngOnDestroy(): void {

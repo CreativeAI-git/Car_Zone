@@ -77,6 +77,10 @@ export const routes: Routes = [
                                     loadComponent: () => import('./my-profile/switch-role/switch-role.component').then(m => m.SwitchRoleComponent)
                               },
                               {
+                                    path: 'switch-user-type',
+                                    loadComponent: () => import('./my-profile/switch-role/switch-role.component').then(m => m.SwitchRoleComponent)
+                              },
+                              {
                                     path: 'requested-slots',
                                     loadComponent: () => import('./components/seller components/requested-slots/requested-slots.component').then(m => m.RequestedSlotsComponent)
                               }
@@ -147,6 +151,10 @@ export const routes: Routes = [
       },
       {
             path: 'seller-signup',
+            loadComponent: () => import('./components/seller-sign-up/seller-sign-up.component').then(m => m.SellerSignUpComponent)
+      },
+      {
+            path: 'company-signup',
             loadComponent: () => import('./components/seller-sign-up/seller-sign-up.component').then(m => m.SellerSignUpComponent)
       },
       {

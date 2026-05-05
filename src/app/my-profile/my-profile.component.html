@@ -30,32 +30,28 @@
                                     <img src="img/menu-icons/edit-profile.png" alt="" class="me-2" />{{
                                     'profile.editProfile' | translate }}</a>
                             </li>
-                            <ng-container *appRole="'buyer'">
-                                <li>
-                                    <a routerLink="saved-reels" routerLinkActive="active">
-                                        <img src="img/menu-icons/saved.png" alt="" class="me-2" />
-                                        {{ 'media.savedCarReel' | translate }}</a>
-                                </li>
-                                <li>
-                                    <a routerLink="wishlist" routerLinkActive="active">
-                                        <img src="img/menu-icons/wishlist.png" alt="" class="me-2" />
-                                        {{ 'common.wishlist' | translate }}</a>
-                                </li>
-                            </ng-container>
-                            <ng-container *appRole="'seller'">
-                                <li>
-                                    <a routerLink="requested-slots" routerLinkActive="active">
-                                        <img src="img/menu-icons/slot-req.png" alt="" class="me-2" />
-                                        {{ 'listing.requestSlot' | translate }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a routerLink="listing-slot-plan" routerLinkActive="active">
-                                        <img src="img/menu-icons/listing-slot.png" alt="" class="me-2" />
-                                        {{ 'profile.myListingSlot' | translate }}
-                                    </a>
-                                </li>
-                            </ng-container>
+                            <li>
+                                <a routerLink="saved-reels" routerLinkActive="active">
+                                    <img src="img/menu-icons/saved.png" alt="" class="me-2" />
+                                    {{ 'media.savedCarReel' | translate }}</a>
+                            </li>
+                            <li>
+                                <a routerLink="wishlist" routerLinkActive="active">
+                                    <img src="img/menu-icons/wishlist.png" alt="" class="me-2" />
+                                    {{ 'common.wishlist' | translate }}</a>
+                            </li>
+                            <li>
+                                <a routerLink="requested-slots" routerLinkActive="active">
+                                    <img src="img/menu-icons/slot-req.png" alt="" class="me-2" />
+                                    {{ 'listing.requestSlot' | translate }}
+                                </a>
+                            </li>
+                            <li>
+                                <a routerLink="listing-slot-plan" routerLinkActive="active">
+                                    <img src="img/menu-icons/listing-slot.png" alt="" class="me-2" />
+                                    {{ 'profile.myListingSlot' | translate }}
+                                </a>
+                            </li>
                             <li>
                                 <a routerLink="change-password" routerLinkActive="active">
                                     <img src="img/menu-icons/change-password.png" alt="" class="me-2" />
@@ -72,12 +68,8 @@
                             <li>
                                 <a routerLink="switch-role" routerLinkActive="active">
                                     <img src="img/menu-icons/switch.png" alt="" class="me-2" />
-                                    <ng-container *appRole="'buyer'">
-                                        {{ 'profile.switchToSellerMode' | translate }}
-                                    </ng-container>
-                                    <ng-container *appRole="'seller'">
-                                        {{ 'header.roleSwitcher.switchToBuyerMode' | translate }}
-                                    </ng-container>
+                                    {{ userType === 'company' ? 'Switch To Private User Type' :
+                                    'Switch To Company User Type' }}
                                 </a>
                             </li>
                             <li>

@@ -1,6 +1,5 @@
 import { Component, effect, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { RoleDirective } from '../../directives/role.directive';
 import { CommonService } from '../../services/common.service';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
@@ -17,7 +16,7 @@ import { SubmitButtonComponent } from "../../components/shared/submit-button/sub
 declare var bootstrap: any;
 @Component({
   selector: 'app-edit-profile',
-  imports: [FormsModule, ReactiveFormsModule, NgxIntlTelInputModule, CommonModule, NzSelectModule, TranslateModule, ImageCropperComponent, SubmitButtonComponent, RoleDirective],
+  imports: [FormsModule, ReactiveFormsModule, NgxIntlTelInputModule, CommonModule, NzSelectModule, TranslateModule, ImageCropperComponent, SubmitButtonComponent],
   templateUrl: './edit-profile.component.html',
   styleUrl: './edit-profile.component.css'
 })
@@ -32,19 +31,9 @@ export class EditProfileComponent {
   loading: boolean = false
   profileImage: any
   imagePreview: any
-  role: any
   NoOfDays: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   defaultServices: string[] = ['profile.defaultServiceLeasingAndFinancing', 'profile.defaultServiceFairTradeInPrices', 'profile.defaultServiceWarrantyAndServicePackages']
   defaultAdvantages: string[] = ['profile.defaultAdvantageFlexibleFinancingOptions', 'profile.defaultAdvantageCertifiedVehicles', 'profile.defaultAdvantageWarrantyAndServicePackages']
-  sellerTypes: any[] = [{
-    label: 'profile.privateSeller',
-    label2: 'profile.forIndividualSellers',
-    value: 'personal'
-  }, {
-    label: 'profile.officialSeller',
-    label2: 'profile.forBusinesses',
-    value: 'business'
-  }];
   imageChangedEvent: any = '';
   croppedImage: any = '';
   croppedImageBlob: any = '';
@@ -65,7 +54,7 @@ export class EditProfileComponent {
       phoneNumber: ['', [Validators.required]],
       isWhatsappSameAsPhone: [false],
       whatsappNumber: ['', [Validators.required]],
-      typeOfSeller: ['personal', [Validators.required]],
+      userType: ['private', [Validators.required]],
       address: ['', [Validators.required, NoWhitespaceDirective.validate]],
       legalForm: ['Sole Proprietorship'],
       companyName: [''],
@@ -86,8 +75,8 @@ export class EditProfileComponent {
 
     effect(() => {
       this.userData = this.commonService.userData()
-      this.role = this.roleService.currentLoggedInRole()
       if (this.userData) {
+        const userType = this.resolveUserType(this.userData);
         this.Form.patchValue({
           fullName: this.userData.fullName,
           phoneNumber: this.userData.countryCode + this.userData.phoneNumber,
@@ -105,7 +94,7 @@ export class EditProfileComponent {
           companyAddress: this.userData.companyAddress,
           vat: this.userData.vat,
           legalForm: this.userData.legalForm,
-          typeOfSeller: this.userData.roleData.filter((role: any) => role.role === 'seller')[0]?.seller_type || 'personal',
+          userType,
         })
         this.imagePreview = this.userData.profileImage
         this.patchServices(this.userData.services);
@@ -179,8 +168,8 @@ export class EditProfileComponent {
   }
 
   ngOnInit(): void {
-    this.Form.get('typeOfSeller')?.valueChanges.subscribe((value) => {
-      if (value === 'business') {
+    this.Form.get('userType')?.valueChanges.subscribe((value) => {
+      if (value === 'company') {
         this.Form.get('companyName')?.setValidators([Validators.required, NoWhitespaceDirective.validate]);
         this.Form.get('companyAddress')?.setValidators([Validators.required, NoWhitespaceDirective.validate]);
         this.Form.get('companyName')?.updateValueAndValidity();
@@ -297,7 +286,7 @@ export class EditProfileComponent {
     this.appendIfExists(formData, 'city', this.Form.value.city);
     this.appendIfExists(formData, 'pincode', this.Form.value.pincode);
     this.appendIfExists(formData, 'vat', this.Form.value.vat);
-    this.appendIfExists(formData, 'seller_type', this.Form.value.typeOfSeller);
+    this.appendIfExists(formData, 'userType', this.Form.value.userType);
     this.appendIfExists(formData, 'tagline', this.Form.value.tagline);
     this.appendIfExists(formData, 'websiteUrl', this.Form.value.websiteUrl);
     this.appendIfExists(formData, 'description', this.Form.value.description);
@@ -389,6 +378,24 @@ export class EditProfileComponent {
 
   get teamMembers() {
     return this.Form.get('teamMembers') as FormArray;
+  }
+
+  get isCompanyUserType(): boolean {
+    return this.Form.get('userType')?.value === 'company';
+  }
+
+  private resolveUserType(userData: any): 'private' | 'company' {
+    const normalizedType = this.roleService.normalizeUserType(
+      userData?.userType ||
+      userData?.role ||
+      userData?.roleData?.find((item: any) => item?.role === 'seller')?.seller_type
+    );
+
+    if (normalizedType === 'company') {
+      return 'company';
+    }
+
+    return userData?.companyName || userData?.companyAddress ? 'company' : 'private';
   }
 
   addDefaultRows() {

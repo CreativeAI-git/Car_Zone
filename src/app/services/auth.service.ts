@@ -28,7 +28,8 @@ export class AuthService {
             localStorage.removeItem('CarZoneToken');
             localStorage.removeItem('userInfo');
             localStorage.removeItem('loggedInRole');
-            this.roleService.setRole('buyer');
-            this.roleService.setLoggedInRole('buyer');
+            localStorage.removeItem('loggedInUserType');
+            this.roleService.setUserType('private');
+            this.roleService.setLoggedInUserType('private');
       };
 }

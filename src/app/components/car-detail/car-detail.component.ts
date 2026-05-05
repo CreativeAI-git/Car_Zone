@@ -1,6 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { RoleDirective } from '../../directives/role.directive';
 import { CommonService } from '../../services/common.service';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonModule, Location } from '@angular/common';
