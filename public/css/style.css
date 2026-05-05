@@ -599,7 +599,7 @@ body {
 
 /* Hero Section */
 .hero-section {
-  background: url("../img/hero-section.png");
+  background: url("../img/hero-sec11.png");
   background-size: cover;
   background-position: center;
   min-height: 600px;
@@ -1181,10 +1181,11 @@ span.navbar-toggler-icon i {
   width: 100%;
 
   /* padding: 4rem 0; */
-  background-color: red;
-  background: linear-gradient(rgba(209, 23, 24, 0.9), rgba(209, 23, 24, 0.9)),
-    url("../img/cta-buy.png");
-  background-size: cover;
+  background-color: #700101;
+  background: linear-gradient(rgba(112, 1, 1, 0.8)),
+    url("../img/cta-buy.jpg");
+  background-size: contain;
+  
   /* background-position: right; */
 
 
@@ -1201,7 +1202,8 @@ span.navbar-toggler-icon i {
 }
 
 .cta-sell {
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+  background: 
+  /* linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), */
     url("../img/cta-sell.png");
   background-position: center;
   background-size: cover;
@@ -1465,7 +1467,9 @@ span.navbar-toggler-icon i {
   margin-bottom: 30px;
 }
 
-
+.ct_mb_32{
+  margin-bottom: 32px;
+}
 
 
 

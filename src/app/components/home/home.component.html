@@ -28,13 +28,13 @@
                         <div class="col-lg-10">
                               <div class="search-box">
                                     <h5 class="mb-2">Carzone - You don't search, you discover.</h5>
-                                    <p class="mb-30">
+                                    <p class="ct_mb_32">
                                           Find your dream car effortlessly through inspiring reels and stories.
                                           Experience cars instead of just looking at them.
                                     </p>
-                                    <section class="mt-5">
+                                    <section class="">
                                           <div class="container">
-                                                <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex justify-content-end align-items-center">
                                                       <div>
                                                             <a class="ct_color_8f0c1f ct_fs_18 ct_fw_500"
                                                                   (click)="onResetFilters()">{{ 'vehicle.reset' |
@@ -42,7 +42,7 @@
                                                       </div>
                                                 </div>
 
-                                                <div class="filter-preview mt-4">
+                                                <div class="filter-preview mt-1">
                                                       <div class="ct_package_select_custom">
                                                             <button nz-button nzType="primary" nz-popover
                                                                   [(nzPopoverVisible)]="visible"
@@ -1201,7 +1201,7 @@
 
                                                 <button type="button" class="favorite-icon"
                                                       [attr.aria-label]="item.isWishlist ? 'Remove from wishlist' : 'Add to wishlist'">
-                                                      <i class="fa-heart ct_fs_25"
+                                                      <i class="fa-heart custom-wishlist-icon"
                                                             [ngClass]="item.isWishlist ? 'fa-solid ct_text_red' : 'fa-regular'"
                                                             (click)="item.isWishlist ? removeFromWishlist(item) : addToWishlist(item)"></i>
                                                 </button>
@@ -1343,14 +1343,74 @@
                         </div>
                   </div>
                   <div class="row g-4">
-                        @for (bodyType of homeBodyTypeCards; track bodyType.label) {
+                        <!-- @for (bodyType of homeBodyTypeCards; track bodyType.label) { -->
                         <div class="col-lg-3 col-md-4 col-sm-6">
-                              <div class="filter-preview-box home-body-type-card w-100">
-                                    <img [src]="bodyType.icon" [alt]="bodyType.label" class="body-type-img-o" />
-                                    <p>{{ bodyType.label }}</p>
+                              <div class=" home-body-type-card w-100">
+                                    <img src="img/Wagon-1.png" alt="" class="body-type-img-o" />
+                                    <p>Wagon</p>
                               </div>
+                              
                         </div>
-                        }
+
+
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                              <div class=" home-body-type-card w-100">
+                                    <img src="img/Convertible-2.png" alt="" class="body-type-img-o" />
+                                    <p>Convertible</p>
+                              </div>
+                        
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                              <div class=" home-body-type-card w-100">
+                                    <img src="img/Sedan-1.png" alt="" class="body-type-img-o" />
+                                    <p>Sedan</p>
+                              </div>
+                        
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                              <div class=" home-body-type-card w-100">
+                                    <img src="img/SUV-1.png" alt="" class="body-type-img-o" />
+                                    <p>SUV / Off-road</p>
+                              </div>
+                        
+                        </div>
+
+
+
+
+
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                              <div class=" home-body-type-card w-100">
+                                    <img src="img/Coupé-1.png" alt="" class="body-type-img-o" />
+                                    <p>Coupé</p>
+                              </div>
+                        
+                        </div>
+                        
+                        
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                              <div class=" home-body-type-card w-100">
+                                    <img src="img/Pickup-1.png" alt="" class="body-type-img-o" />
+                                    <p>Pick-up
+</p>
+                              </div>
+                        
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                              <div class=" home-body-type-card w-100">
+                                    <img src="img/Van-1.png" alt="" class="body-type-img-o" />
+                                    <p>Van</p>
+                              </div>
+                        
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                              <div class=" home-body-type-card w-100">
+                                    <img src="img/Compact car-1.png" alt="" class="body-type-img-o" />
+                                    <p>Compact car</p>
+                              </div>
+                        
+                        </div>
+                        <!-- } -->
                   </div>
             </div>
       </section>
