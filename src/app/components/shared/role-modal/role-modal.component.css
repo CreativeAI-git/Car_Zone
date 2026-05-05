@@ -5,3 +5,297 @@
     font-size: 18px;
     cursor: pointer;
 }
+
+#ct_login_modal .modal-dialog {
+    max-width: min(1120px, calc(100vw - 56px));
+    margin: 24px auto;
+}
+
+#ct_login_modal .modal-content {
+    max-height: calc(100vh - 48px);
+    overflow: hidden;
+}
+
+.role-modal-shell {
+    border-radius: 0 !important;
+    background: linear-gradient(180deg, #8F0C1F 0%, #290309 100%);
+    padding: 22px !important;
+}
+
+.role-modal-close {
+    top: 18px;
+    right: 22px;
+    z-index: 3;
+    color: #fff;
+}
+
+.role-modal-layout {
+    height: min(610px, calc(100vh - 110px));
+    background: #fff;
+}
+
+.role-modal-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 28px 24px;
+    background: #fff;
+}
+
+.role-modal-panel__inner {
+    width: 100%;
+    max-width: 430px;
+}
+
+.role-modal-panel__brand {
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.role-modal-logo {
+    width: 132px;
+    max-width: 100%;
+}
+
+.role-modal-title {
+    margin: 0 0 20px;
+    color: #111;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.role-modal-options {
+    display: grid;
+    gap: 14px;
+}
+
+.role-option {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 66px;
+    padding: 12px 15px;
+    border: 1.5px solid #cfd6de;
+    border-radius: 12px;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.role-option input {
+    display: none;
+}
+
+.role-option--active {
+    border-color: #a10d21;
+    box-shadow: 0 0 0 1px rgba(161, 13, 33, 0.08);
+}
+
+.role-option__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #f5f5f5;
+    flex: 0 0 auto;
+}
+
+.role-option__icon img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+.role-option--active .role-option__icon img {
+    filter: sepia(1) saturate(7) hue-rotate(320deg) brightness(0.75);
+}
+
+.role-option__text {
+    color: #666;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.role-option--active .role-option__text {
+    color: #a10d21;
+}
+
+.role-modal-continue {
+    width: 100%;
+    margin-top: 22px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    background: #a10d21;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.role-modal-continue:hover {
+    background: #8d0b1c;
+    color: #fff;
+}
+
+.role-modal-visual {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+
+.role-modal-visual__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.role-modal-quote {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    left: 16%;
+    padding: 18px 22px;
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(22, 28, 36, 0.16) 0%, rgba(22, 28, 36, 0.45) 100%);
+    color: #fff;
+    backdrop-filter: blur(6px);
+}
+
+.role-modal-quote__text {
+    margin: 0 0 14px;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.role-modal-quote__author,
+.role-modal-quote__meta,
+.role-modal-quote__rating {
+    margin: 0;
+}
+
+.role-modal-quote__author {
+    font-size: 14px;
+    font-style: italic;
+    margin-bottom: 4px;
+}
+
+.role-modal-quote__meta {
+    font-size: 13px;
+    font-style: italic;
+}
+
+.role-modal-quote__rating {
+    margin-top: 6px;
+    text-align: right;
+    font-size: 15px;
+    letter-spacing: 2px;
+}
+
+@media only screen and (max-width: 1399.98px) {
+    .role-modal-shell {
+        padding: 18px !important;
+    }
+
+    .role-modal-layout {
+        height: min(580px, calc(100vh - 96px));
+    }
+
+    .role-modal-title {
+        font-size: 22px;
+        margin-bottom: 18px;
+    }
+
+    .role-option {
+        min-height: 62px;
+    }
+
+    .role-option__text {
+        font-size: 14px;
+    }
+
+    .role-modal-continue {
+        margin-top: 20px;
+    }
+}
+
+@media only screen and (max-width: 1199.98px) {
+    #ct_login_modal .modal-dialog {
+        max-width: min(720px, calc(100vw - 32px));
+        margin: 16px auto;
+    }
+
+    #ct_login_modal .modal-content {
+        max-height: calc(100vh - 32px);
+    }
+
+    .role-modal-shell {
+        padding: 18px !important;
+    }
+
+    .role-modal-layout {
+        height: auto;
+    }
+
+    .role-modal-panel {
+        min-height: unset;
+        padding: 34px 24px;
+    }
+}
+
+@media only screen and (max-width: 575.98px) {
+    #ct_login_modal .modal-dialog {
+        max-width: calc(100vw - 20px);
+        margin: 10px auto;
+    }
+
+    #ct_login_modal .modal-content {
+        max-height: calc(100vh - 20px);
+    }
+
+    .role-modal-shell {
+        padding: 12px !important;
+    }
+
+    .role-modal-close {
+        top: 12px;
+        right: 14px;
+    }
+
+    .role-modal-panel {
+        padding: 24px 16px;
+    }
+
+    .role-modal-title {
+        font-size: 28px;
+        margin-bottom: 22px;
+    }
+
+    .role-modal-options {
+        gap: 16px;
+    }
+
+    .role-option {
+        min-height: 74px;
+        padding: 14px 16px;
+        border-radius: 14px;
+    }
+
+    .role-option__icon {
+        width: 38px;
+        height: 38px;
+    }
+
+    .role-option__text {
+        font-size: 17px;
+    }
+
+    .role-modal-continue {
+        margin-top: 22px;
+        padding: 14px 20px;
+    }
+}
