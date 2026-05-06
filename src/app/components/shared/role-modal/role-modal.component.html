@@ -9,25 +9,45 @@
                               <div class="role-modal-panel__inner">
                                     <div class="role-modal-panel__brand">
                                           <img src="img/black-logo.png" class="role-modal-logo" alt="CarZone" />
+                                          <img src="img/logo.png" class="role-modal-logo d-none" alt="CarZone" />
                                     </div>
 
                                     <h2 class="role-modal-title">Choose Your Role</h2>
 
                                     <div class="role-modal-options">
-                                          <label class="role-option" [class.role-option--active]="userType() === 'private'">
-                                                <input type="radio" (change)="switchUserType($event)" name="userType" value="private"
-                                                      [checked]="userType() === 'private'" />
+                                          <label class="role-option"
+                                                [class.role-option--active]="userType() === 'private'">
+                                                <input type="radio" (change)="switchUserType($event)" name="userType"
+                                                      value="private" [checked]="userType() === 'private'" />
                                                 <span class="role-option__icon">
-                                                      <img src="img/icons/buyer-login.png" alt="Private Individual" />
+                                                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                  d="M12 13C14.396 13 16.575 13.694 18.178 14.672C18.978 15.16 19.662 15.736 20.156 16.362C20.642 16.977 21 17.713 21 18.5C21 19.345 20.589 20.011 19.997 20.486C19.437 20.936 18.698 21.234 17.913 21.442C16.335 21.859 14.229 22 12 22C9.771 22 7.665 21.86 6.087 21.442C5.302 21.234 4.563 20.936 4.003 20.486C3.41 20.01 3 19.345 3 18.5C3 17.713 3.358 16.977 3.844 16.361C4.338 15.736 5.021 15.161 5.822 14.671C7.425 13.695 9.605 13 12 13ZM12 15C9.977 15 8.157 15.59 6.864 16.379C6.217 16.773 5.729 17.201 5.414 17.601C5.09 18.011 5 18.321 5 18.5C5 18.622 5.037 18.751 5.255 18.926C5.504 19.126 5.937 19.333 6.599 19.508C7.917 19.858 9.811 20 12 20C14.19 20 16.083 19.857 17.4 19.508C18.063 19.333 18.496 19.126 18.745 18.926C18.963 18.751 19 18.622 19 18.5C19 18.32 18.91 18.011 18.587 17.601C18.271 17.201 17.783 16.773 17.136 16.379C15.843 15.589 14.023 15 12 15ZM12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7C17 8.32608 16.4732 9.59785 15.5355 10.5355C14.5979 11.4732 13.3261 12 12 12C10.6739 12 9.40215 11.4732 8.46447 10.5355C7.52678 9.59785 7 8.32608 7 7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2ZM12 4C11.606 4 11.2159 4.0776 10.8519 4.22836C10.488 4.37913 10.1573 4.6001 9.87868 4.87868C9.6001 5.15726 9.37913 5.48797 9.22836 5.85195C9.0776 6.21593 9 6.60603 9 7C9 7.39397 9.0776 7.78407 9.22836 8.14805C9.37913 8.51203 9.6001 8.84274 9.87868 9.12132C10.1573 9.3999 10.488 9.62087 10.8519 9.77164C11.2159 9.9224 11.606 10 12 10C12.7956 10 13.5587 9.68393 14.1213 9.12132C14.6839 8.55871 15 7.79565 15 7C15 6.20435 14.6839 5.44129 14.1213 4.87868C13.5587 4.31607 12.7956 4 12 4Z"
+                                                                  fill="#919EAB" />
+                                                      </svg>
+
                                                 </span>
                                                 <span class="role-option__text">Private Individual</span>
                                           </label>
 
-                                          <label class="role-option" [class.role-option--active]="userType() === 'company'">
-                                                <input type="radio" (change)="switchUserType($event)" name="userType" value="company"
-                                                      [checked]="userType() === 'company'" />
+                                          <label class="role-option"
+                                                [class.role-option--active]="userType() === 'company'">
+                                                <input type="radio" (change)="switchUserType($event)" name="userType"
+                                                      value="company" [checked]="userType() === 'company'" />
                                                 <span class="role-option__icon">
-                                                      <img src="img/icons/seller.png" alt="Company" />
+                                                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M6.11125 13.255C6.29625 13.085 6.38825 13 6.50025 13C6.61225 13 6.70425 13.085 6.88925 13.255L7.60225 13.912C7.68825 13.991 7.73125 14.031 7.78425 14.05C7.83825 14.07 7.89625 14.068 8.01425 14.063L8.97625 14.025C9.22425 14.015 9.34825 14.011 9.43325 14.082C9.51825 14.153 9.53525 14.276 9.56825 14.522L9.70025 15.508C9.71625 15.622 9.72325 15.678 9.75125 15.728C9.77925 15.776 9.82425 15.811 9.91425 15.882L10.6903 16.492C10.8823 16.644 10.9783 16.719 10.9973 16.827C11.0163 16.935 10.9513 17.039 10.8223 17.247L10.2973 18.094C10.2373 18.191 10.2073 18.24 10.1973 18.294C10.1873 18.348 10.1993 18.405 10.2233 18.517L10.4313 19.495C10.4833 19.735 10.5083 19.855 10.4533 19.951C10.3983 20.047 10.2813 20.085 10.0483 20.161L9.12225 20.462C9.01225 20.498 8.95725 20.516 8.91325 20.552C8.87025 20.589 8.84325 20.641 8.79025 20.744L8.33825 21.615C8.22325 21.838 8.16525 21.949 8.06025 21.987C7.95525 22.025 7.84025 21.977 7.60825 21.881L6.72025 21.513C6.61125 21.468 6.55725 21.445 6.50025 21.445C6.44325 21.445 6.38925 21.468 6.28025 21.513L5.39225 21.881C5.16025 21.977 5.04525 22.025 4.94025 21.987C4.83525 21.949 4.77725 21.837 4.66225 21.615L4.21025 20.744C4.15625 20.641 4.13025 20.589 4.08725 20.553C4.04425 20.517 3.98825 20.498 3.87825 20.463L2.95225 20.161C2.71925 20.085 2.60225 20.047 2.54725 19.951C2.49225 19.855 2.51725 19.736 2.56925 19.495L2.77725 18.517C2.80125 18.405 2.81325 18.349 2.80325 18.295C2.78275 18.2227 2.74883 18.1548 2.70325 18.095L2.17725 17.247C2.04925 17.039 1.98425 16.935 2.00325 16.827C2.02225 16.719 2.11825 16.644 2.31025 16.493L3.08625 15.883C3.17625 15.811 3.22125 15.776 3.24925 15.727C3.27725 15.678 3.28425 15.622 3.29925 15.507L3.43225 14.522C3.46525 14.277 3.48225 14.153 3.56725 14.082C3.65225 14.011 3.77625 14.015 4.02425 14.025L4.98725 14.063C5.10425 14.068 5.16225 14.07 5.21625 14.05C5.26925 14.03 5.31225 13.991 5.39825 13.912L6.11125 13.255Z"
+                                                                  stroke="#919EAB" stroke-width="1.5" />
+                                                            <path d="M6.5 9H5.5M10.5 9H9.5M6.5 6H5.5M10.5 6H9.5M18.5 15H17.5M18.5 11H17.5"
+                                                                  stroke="#919EAB" stroke-width="1.5"
+                                                                  stroke-linecap="round" />
+                                                            <path d="M14 8V22H18C19.886 22 20.828 22 21.414 21.414C22 20.828 22 19.886 22 18V12C22 10.114 22 9.172 21.414 8.586C20.828 8 19.886 8 18 8H14ZM14 8C14 5.172 14 3.757 13.121 2.879C12.243 2 10.828 2 8 2C5.172 2 3.757 2 2.879 2.879C2 3.757 2 5.172 2 8V11"
+                                                                  stroke="#919EAB" stroke-width="1.5"
+                                                                  stroke-linecap="round" stroke-linejoin="round" />
+                                                      </svg>
+
                                                 </span>
                                                 <span class="role-option__text">Company</span>
                                           </label>
@@ -43,7 +63,8 @@
                               <img src="img/login-img.jpg" class="role-modal-visual__image" alt="Seller testimonial" />
                               <div class="role-modal-quote">
                                     <p class="role-modal-quote__text">
-                                          “Listing and managing cars on CarZone helped us connect with serious buyers faster.”
+                                          “Listing and managing cars on CarZone helped us connect with serious buyers
+                                          faster.”
                                     </p>
                                     <p class="role-modal-quote__author">AutoHaus Keller</p>
                                     <p class="role-modal-quote__meta">Professional Seller · Basel</p>
@@ -91,8 +112,8 @@
 
 <div class="modal fade login-popup" id="ForgotPassword" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content border-0 rounded-4 overflow-hidden p-5 position-relative">
-                  <div class="close-btn" data-bs-dismiss="modal">
+            <div class="modal-content border-0 rounded-4 overflow-hidden p-5 role-modal-shell position-relative">
+                  <div class="close-btn role-modal-close" data-bs-dismiss="modal">
                         <i class="fa-solid fa-xmark"></i>
                   </div>
                   <app-forgot-password />

@@ -12,7 +12,7 @@
             <form [formGroup]="Form" (ngSubmit)="onSubmit()">
                   <div class="login-popup__roles">
                         <div class="">
-                              <label class="mt-3 ct_fs_16 ct_fw_500 mb-2"> {{ 'auth.email' | translate }} </label>
+                              <label class=" ct_fs_16 ct_fw_500 mb-2"> {{ 'auth.email' | translate }} </label>
                               <input type="text" class="form-control"
                                     [placeholder]="'auth.enterYourEmailAddress' | translate"
                                     [attr.aria-label]="'filters.username' | translate" aria-describedby="basic-addon1"
@@ -47,10 +47,10 @@
 
                   <app-submit-button [isLoading]="loading"
                         [text]="userType() === 'private' ? 'Login As Private User' : 'Login As Company User'"
-                        [class]="'btn login-popup__btn mt-4'">
+                        [class]="'btn login-popup__btn mt-2'">
                   </app-submit-button>
             </form>
-            <p class="ct_fs_16 ct_fw_500 mt-3 text-center">
+            <p class="ct_fs_16 ct_fw_500 mt-3 mb-0 text-center">
                   {{ 'auth.donHaveAccount' | translate }}
                   <a class="ct_fs_16 ct_fw_600 ct_color_8f0c1f" (click)="openModal()">
                         {{ 'auth.signUp' | translate }}
@@ -60,7 +60,7 @@
 
       <!-- RIGHT IMAGE -->
       <div class="col-lg-7 d-none d-xl-block login-popup__right position-relative">
-            <img src="img/create-acc.jpg" />
+            <img src="img/login-img.jpg" />
 
             <div class="login-img-text">
                   <div>

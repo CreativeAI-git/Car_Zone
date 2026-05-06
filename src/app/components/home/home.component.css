@@ -44,14 +44,14 @@
   /* background:
     linear-gradient(90deg, rgba(16, 16, 14, 0.76) 0%, rgba(16, 16, 14, 0.48) 36%, rgba(16, 16, 14, 0.22) 100%),
     url('/img/hero-section1'); */
-      background: url("/img/hero-sec11.png");
+  background: url("/img/hero-sec11.png");
   background-size: cover;
   background-position: center;
   min-height: 641px;
   padding: 120px 0 80px;
 }
 
-.favorite-icon .custom-wishlist-icon{
+.favorite-icon .custom-wishlist-icon {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -101,22 +101,31 @@
 
 .home-body-type-card {
   min-height: 100%;
-  padding: 24px 16px;
+  padding: 35px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  background-color: #fff;
+  box-shadow: 0px 0px 28px 0px rgba(34, 34, 34, 0.11);
+  border-radius: 10px;
+}
+
+.home-body-type-card img {
+  height: 50px;
+  object-fit: contain;
 }
 
 .home-body-type-card p {
   margin-bottom: 0;
   font-size: 18px;
-  font-weight: 300;
+  font-weight: 400;
+  opacity: 0.6;
 }
 
-.home-app-section {
+/* .home-app-section {
   overflow: hidden;
-}
+} */
 
 .home-app-phone {
   max-width: 280px;

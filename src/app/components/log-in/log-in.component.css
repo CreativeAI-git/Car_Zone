@@ -10,6 +10,7 @@
 .popup-main {
       height: min(610px, calc(100vh - 110px));
       background: #fff;
+      align-items: center;
 }
 
 .login-popup__left {

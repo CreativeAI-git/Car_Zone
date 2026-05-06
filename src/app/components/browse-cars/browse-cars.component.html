@@ -74,7 +74,7 @@
                         <button nz-button nzType="primary" nz-popover [(nzPopoverVisible)]="visible"
                               nzPopoverTrigger="click" [nzPopoverContent]="contentTemplate" nzPopoverPlacement="bottom"
                               class="filter-preview-box w-100 ">
-                              <img src="img/icons/make-model.png" style="filter: invert(1); height: 50px;" />
+                              <img src="img/icons/make-model.png" />
                               @if(selectedBrandsModal.length > 0){
                               @for (item of selectedBrandsModal; track $index) {
                               {{item.brand}}({{item.modals.join(', ')}})@if($index !==

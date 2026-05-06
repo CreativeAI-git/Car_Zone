@@ -31,6 +31,23 @@ body.theme-dark {
   color: #e5e7eb;
 }
 
+.theme-dark button.filter-preview-box img {
+  filter: invert(1);
+}
+
+.theme-dark .home-body-type-card {
+  background-color: #1f1f1f !important;
+  color: #e5e7eb;
+}
+
+.theme-dark .home-body-type-card img {
+  filter: invert(1);
+}
+
+.theme-dark .car-specs li {
+  color: #fff;
+}
+
 body.theme-dark .card,
 body.theme-dark .modal-content {
   background: #222;
@@ -155,7 +172,7 @@ body.theme-dark .breadcrumb-item a img,
 body.theme-dark .loc-img
 
 /* body.theme-dark .select-car-tabs li img */
- {
+  {
   /* filter: invert(1); */
   filter: brightness(0) invert(1);
 }
@@ -264,7 +281,8 @@ body.theme-dark .filter-preview-box.active div img {
 }
 
 
-body.theme-dark .quality-img img , body.theme-dark .opening_time_img {
+body.theme-dark .quality-img img,
+body.theme-dark .opening_time_img {
   filter: brightness(0) invert(1);
 }
 
@@ -277,10 +295,36 @@ body.theme-dark .wishlist-svg path {
 
 
 body.theme-dark .main-header-section .navbar {
-  background: #000;
+  background: transparent;
   border-color: #555;
 }
 
+body.theme-dark .role-modal-panel {
+  background-color: #111;
+  color: #fff;
+}
+
+body.theme-dark .role-modal-title,
+body.theme-dark .login-popup__title {
+  color: #fff;
+}
+
+body.theme-dark nav.navbar.navbar-expand-lg.fixed-top.navbar-dark.scrolled {
+  background-color: #111;
+}
+
+body.theme-dark .role-modal-panel__brand img:first-child {
+  display: none;
+}
+
+body.theme-dark .role-modal-panel__brand img:last-child {
+  display: flex !important;
+  margin: auto;
+}
+
+body.theme-dark .popup-main {
+  background-color: #111;
+}
 
 
 body.theme-dark .main-logo svg path {
@@ -400,28 +444,27 @@ body.theme-dark .main-header-section.transparent-header .logo-sticky {
 body.theme-dark .opening-timing-table td {
   background-color: #222;
   color: #fff;
-  
+
 }
 
 
-body.theme-dark .all-filter-main-wrapper{
-    background-color: #000;
-  }
+body.theme-dark .all-filter-main-wrapper {
+  background-color: #000;
+}
 
-body.theme-dark .bg-wrapper{
+body.theme-dark .bg-wrapper {
   background-color: #111;
 }
 
 
 
 
-body.theme-dark .ant-select{
-      background-color: #222;
-    color: #e5e7eb;
-    border-color: #334155;
+body.theme-dark .ant-select {
+  background-color: #222;
+  color: #e5e7eb;
+  border-color: #334155;
 }
 
-.my-listing-all-box{
+.my-listing-all-box {
   width: 100px;
 }
-
