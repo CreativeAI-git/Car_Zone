@@ -150,14 +150,6 @@ export const routes: Routes = [
             loadComponent: () => import('./components/sign-up/sign-up.component').then(m => m.SignUpComponent)
       },
       {
-            path: 'seller-signup',
-            loadComponent: () => import('./components/seller-sign-up/seller-sign-up.component').then(m => m.SellerSignUpComponent)
-      },
-      {
-            path: 'company-signup',
-            loadComponent: () => import('./components/seller-sign-up/seller-sign-up.component').then(m => m.SellerSignUpComponent)
-      },
-      {
             path: 'forgot-password',
             loadComponent: () => import('./components/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent),
       },

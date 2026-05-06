@@ -75,22 +75,6 @@ export class ModalService {
             this.currentModal.show();
       }
 
-      async openCompanySignUpModal(): Promise<void> {
-            await this.closeCurrentModal();
-            const el = document.getElementById('companySignUpModal');
-            if (!el) return;
-            this.currentModal = new bootstrap.Modal(el);
-            this.currentModal.show();
-      }
-
-      async openBuyerSignUpModal(): Promise<void> {
-            return this.openPrivateSignUpModal();
-      }
-
-      async openSellerSignUpModal(): Promise<void> {
-            return this.openCompanySignUpModal();
-      }
-
       async openForgotPasswordModal(): Promise<void> {
             await this.closeCurrentModal();
             const el = document.getElementById('ForgotPassword');

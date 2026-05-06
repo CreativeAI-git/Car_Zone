@@ -3,7 +3,6 @@ import { RoleService, UserType } from '../../../services/role.service';
 import { LogInComponent } from "../../log-in/log-in.component";
 import { ModalService } from '../../../services/modal.service';
 import { SignUpComponent } from "../../sign-up/sign-up.component";
-import { SellerSignUpComponent } from "../../seller-sign-up/seller-sign-up.component";
 import { ForgotPasswordComponent } from "../../forgot-password/forgot-password.component";
 import { OtpVerificationComponent } from "../../otp-verification/otp-verification.component";
 import { ResetPasswordComponent } from "../../reset-password/reset-password.component";
@@ -11,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-role-modal',
-  imports: [LogInComponent, SignUpComponent, SellerSignUpComponent, ForgotPasswordComponent, OtpVerificationComponent, ResetPasswordComponent, TranslateModule],
+  imports: [LogInComponent, SignUpComponent, ForgotPasswordComponent, OtpVerificationComponent, ResetPasswordComponent, TranslateModule],
   templateUrl: './role-modal.component.html',
   styleUrl: './role-modal.component.css'
 })

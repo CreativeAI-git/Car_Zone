@@ -116,11 +116,7 @@ export class LogInComponent {
   }
 
   openModal() {
-    if (this.userType() === 'private') {
-      this.modal.openPrivateSignUpModal()
-    } else {
-      this.modal.openCompanySignUpModal()
-    }
+    this.modal.openPrivateSignUpModal()
   }
 }
 
