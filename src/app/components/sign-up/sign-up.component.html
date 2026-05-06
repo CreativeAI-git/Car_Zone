@@ -14,9 +14,11 @@
             <form [formGroup]="Form" (ngSubmit)="onSubmit()">
                   @if(formStep === 1){
                   <div class="login-popup__roles">
+                        @if(userType() === 'private') {
                         <div class="">
                               <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
                                     {{'profile.fullName' | translate | titlecase}}
+                                    <span class="ct_color_8f0c1f">*</span>
                               </label>
                               <input type="text" class="form-control"
                                     placeholder="{{'common.enter' | translate}} {{'profile.fullName' | translate}}"
@@ -25,9 +27,35 @@
                               <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.fullName'
                                     | translate), Form.get("fullName"))}}</small>
                         </div>
+                        } @else {
+                        <div class="">
+                              <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
+                                    {{ 'profile.companyName' | translate }}
+                                    <span class="ct_color_8f0c1f">*</span>
+                              </label>
+                              <input type="text" class="form-control"
+                                    [placeholder]="'profile.enterCompanyName' | translate"
+                                    [attr.aria-label]="'profile.companyName' | translate"
+                                    aria-describedby="basic-addon1" formControlName="companyName" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.companyName'
+                                    | translate), Form.get("companyName"))}}</small>
+                        </div>
+                        <div class="">
+                              <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
+                                    {{ 'profile.vat' | translate }}
+                              </label>
+                              <input type="text" class="form-control"
+                                    [placeholder]="'profile.enterBusinessNumber' | translate"
+                                    [attr.aria-label]="'profile.vat' | translate" aria-describedby="basic-addon1"
+                                    formControlName="commercialRegisterNumber" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.vat'
+                                    | translate), Form.get("commercialRegisterNumber"))}}</small>
+                        </div>
+                        }
                         <div class="">
                               <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
                                     {{'auth.email' | translate | titlecase}}
+                                    <span class="ct_color_8f0c1f">*</span>
                               </label>
                               <input type="text" class="form-control"
                                     placeholder="{{'common.enter' | translate}} {{'auth.email' | translate | lowercase}}"
@@ -35,6 +63,38 @@
                                     formControlName="email" />
                               <small class="text-danger">{{validationErrorService.getErrorMessage(('auth.email'
                                     | translate), Form.get("email"))}}</small>
+                        </div>
+                        @if(userType() === 'company') {
+                        <div class="">
+                              <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
+                                    Business Phone Number
+                                    <span class="ct_color_8f0c1f">*</span>
+                              </label>
+                              <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
+                                    [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
+                                    [searchCountryFlag]="true"
+                                    [customPlaceholder]="('common.enter' | translate) + ' ' + ('profile.phoneNumber' | translate)"
+                                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                    [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
+                                    [phoneValidation]="true" formControlName="businessPhone">
+                              </ngx-intl-tel-input>
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.phoneNumber'
+                                    | translate), Form.get("businessPhone"))}}</small>
+                        </div>
+                        <div class="">
+                              <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
+                                    Mobile Number
+                              </label>
+                              <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
+                                    [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
+                                    [searchCountryFlag]="true"
+                                    [customPlaceholder]="('common.enter' | translate) + ' Mobile Phone'"
+                                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                    [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
+                                    [phoneValidation]="true" formControlName="mobilePhone">
+                              </ngx-intl-tel-input>
+                              <small class="text-danger">{{validationErrorService.getErrorMessage('Mobile Phone',
+                                    Form.get("mobilePhone"))}}</small>
                         </div>
                         <div class="">
                               <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
@@ -50,30 +110,12 @@
                               </ngx-intl-tel-input>
                               <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.whatsAppNumber'
                                     | translate), Form.get("whatsappNumber"))}}</small>
-                              <div class="form-check ct_custom_check mt-3 d-flex gap-2 align-items-center">
-                                    <input class="form-check-input" type="checkbox"
-                                          formControlName="isWhatsappSameAsPhone" id="flexCheckDefault" />
-                                    <label for="flexCheckDefault">{{ 'auth.alsoPhoneNumber' | translate }} </label>
-                              </div>
                         </div>
-                        <div class="">
-                              <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
-                                    {{'profile.phoneNumber' | translate | titlecase}}
-                              </label>
-                              <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
-                                    [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
-                                    [searchCountryFlag]="true"
-                                    [customPlaceholder]="('common.enter' | translate) + ' ' + ('profile.phoneNumber' | translate)"
-                                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
-                                    [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
-                                    [phoneValidation]="true" formControlName="phoneNumber">
-                              </ngx-intl-tel-input>
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.phoneNumber'
-                                    | translate | titlecase), Form.get("phoneNumber"))}}</small>
-                        </div>
+                        }
                         <div class="">
                               <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
                                     {{'auth.password' | translate | titlecase}}
+                                    <span class="ct_color_8f0c1f">*</span>
                               </label>
                               <div class="position-relative">
                                     <input [type]="isShowPassword ? 'text' : 'password'" class="form-control"
@@ -89,6 +131,7 @@
                         <div class="">
                               <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
                                     {{'auth.confirmPassword' | translate | titlecase}}
+                                    <span class="ct_color_8f0c1f">*</span>
                               </label>
                               <div class="position-relative">
                                     <input [type]="isShowConfirmPassword ? 'text' : 'password'" class="form-control"
@@ -104,29 +147,48 @@
                                     class="text-danger">{{'auth.passwordNotMatch' |
                                     translate}}</small>
                         </div>
+                        @if(userType() === 'private') {
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                              <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="wagon"
+                                          formControlName="termsAndConditions" />
+                                    <label for="wagon">{{ 'auth.iAgreeToTheTermsAndConditions' | translate }}</label>
+                              </div>
+                        </div>
+                        @if(Form.get('termsAndConditions')?.value === false && submitted) {
+                        <div class="text-danger">
+                              {{ 'vehicle.termAndConditionError' | translate }}
+                        </div>
+                        }
+                        }
                   </div>
 
+                  @if(userType() === 'company') {
                   <button class="btn login-popup__btn mt-4" type="button" (click)="nextStep()">
                         {{ 'common.continue' | translate }}
                   </button>
+                  } @else {
+                  <app-submit-button [text]="'auth.signUp' | translate" [class]="'btn login-popup__btn mt-4 w-100'"
+                        [isLoading]="loading"></app-submit-button>
+                  }
                   }@else {
                   <div class="login-popup__roles">
                         <div class="row">
+                              @if(userType() === 'company') {
                               <div class="col-lg-12">
                                     <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
-                                          {{ 'profile.address' | translate }}
+                                          Company Address
                                           <span class="ct_color_8f0c1f">*</span>
                                     </label>
                                     <input type="text" class="form-control"
-                                          [placeholder]="'auth.enterAddress' | translate"
+                                          [placeholder]="('common.enter' | translate) + ' Company Address'"
                                           [attr.aria-label]="'filters.username' | translate"
-                                          aria-describedby="basic-addon1" formControlName="address" />
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.address'
-                                          | translate), Form.get("address"))}}</small>
+                                          aria-describedby="basic-addon1" formControlName="companyAddress" />
+                                    <small class="text-danger">{{validationErrorService.getErrorMessage('Company Address',
+                                          Form.get("companyAddress"))}}</small>
                               </div>
                               <div class="col-lg-6">
                                     <label class="mt-3 ct_fs_16 ct_fw_500 mb-2"> {{ 'profile.city' | translate }}
-                                          <span class="ct_color_8f0c1f">*</span>
                                     </label>
                                     <input type="text" class="form-control"
                                           [placeholder]="'auth.enterYourCity' | translate"
@@ -137,15 +199,15 @@
                               </div>
                               <div class="col-lg-6">
                                     <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">{{ 'profile.postalCode' | translate }}
-                                          <span class="ct_color_8f0c1f">*</span>
                                     </label>
                                     <input type="text" class="form-control"
                                           [placeholder]="'profile.enterPostalCode' | translate"
                                           [attr.aria-label]="'filters.username' | translate"
-                                          aria-describedby="basic-addon1" formControlName="pincode" />
+                                          aria-describedby="basic-addon1" formControlName="postalCode" />
                                     <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.postalCode'
-                                          | translate), Form.get("pincode"))}}</small>
+                                          | translate), Form.get("postalCode"))}}</small>
                               </div>
+                              }
                               <div class="d-flex justify-content-between align-items-center mt-3">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                           <input class="form-check-input" type="checkbox" id="wagon"
@@ -162,8 +224,10 @@
                         }
                   </div>
                   <div class="d-flex align-items-center gap-3 mt-4">
+                        @if(userType() === 'company') {
                         <button type="button" class="btn-red-transparent w-100" (click)="formStep= formStep-1">{{
                               'vehicle.previous' | translate }}</button>
+                        }
                         <app-submit-button [text]="'auth.signUp' | translate" [class]="'btn login-popup__btn w-100'"
                               [isLoading]="loading"></app-submit-button>
                   </div>

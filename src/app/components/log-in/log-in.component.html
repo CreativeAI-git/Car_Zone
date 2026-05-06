@@ -45,8 +45,7 @@
                         </p>
                   </div>
 
-                  <app-submit-button [isLoading]="loading"
-                        [text]="userType() === 'private' ? 'Login As Private User' : 'Login As Company User'"
+                  <app-submit-button [isLoading]="loading" [text]="'auth.logIn' | translate"
                         [class]="'btn login-popup__btn mt-2'">
                   </app-submit-button>
             </form>

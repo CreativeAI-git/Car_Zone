@@ -1,50 +1,3 @@
-<!-- <section class="ct_login_main_bg">
-      <div class="container">
-            <div class="row">
-                  <div class="col-xxl-6 col-xl-7 col-lg-8 mx-auto">
-                        <div class="ct_login_white_bg ct_custom_scroll">
-                              <img src="img/carzone_logo_black.png" alt="">
-                              <h4 class="ct_fw_700 ct_fs_28 text-white text-center mb-0">{{'auth.otpVerification' |
-                                    translate}}</h4>
-                              <p class="mb-0 ct_text_op_5 text-white text-center mb-3">{{'auth.enterOtpCode' | translate}}
-                                    {{email}}</p>
-                              <form (ngSubmit)="verifyOtp()">
-                                    <div class="form-group mb-4 d-flex justify-content-center">
-                                          <nz-input-otp [nzLength]="4" [(ngModel)]="otp"
-                                                [ngModelOptions]="{standalone: true}"
-                                                (keypress)="restrictToNumbers($event)" #otpInput="ngModel">
-                                          </nz-input-otp>
-                                          <div *ngIf="otpInput.touched && otpInput.invalid"
-                                                class="text-danger ct_fs_14 mt-1 d-block">
-                                                <div *ngIf="otpInput.errors?.['required']">
-                                                      {{'auth.otpError' | translate}}.
-                                                </div>
-                                          </div>
-                                    </div>
-
-                                    <div>
-                                          <p class="mb-0 text-white text-center mt-3">
-                                                {{'auth.didReceiveTheOtp' | translate}}
-                                                <a class="ct_text_red ct_fs_14 ct_fw_600"
-                                                      (click)="isResendDisabled ? null : resendOtp()"
-                                                      [class.disabled]="isResendDisabled">
-                                                      {{'auth.resend' | translate}} OTP
-                                                </a>
-                                                <span *ngIf="isResendDisabled">({{ countdown
-                                                      }}s)</span>
-                                          </p>
-                                    </div>
-                                    <div class="text-center mt-4">
-                                          <app-submit-button [isLoading]="loading" [text]="'auth.verifyNow' | translate"
-                                                [class]="'ct_red_btn px-5'"></app-submit-button>
-                                    </div>
-                              </form>
-                        </div>
-                  </div>
-            </div>
-      </div>
-</section> -->
-
 <div class="row g-0 popup-main">
       <!-- LEFT -->
       <div class="col-xl-5 login-popup__left ct_custom_scroll p-5">
@@ -93,7 +46,7 @@
 
       <!-- RIGHT IMAGE -->
       <div class="col-lg-7 d-none d-xl-block login-popup__right position-relative">
-            <img src="img/create-acc.jpg" />
+            <img src="img/login-img.jpg" />
 
             <div class="login-img-text">
                   <div>
