@@ -99,6 +99,26 @@ export class ModalService {
             this.currentModal.show();
       }
 
+      async openAccountVerifiedModal(): Promise<void> {
+            await this.closeCurrentModal();
+            const el = document.getElementById('AccountVerifiedModal');
+            if (!el) return;
+            this.currentModal = new bootstrap.Modal(el);
+            this.currentModal.show();
+      }
+
+      async openVerificationSubmittedModal(): Promise<void> {
+            await this.closeCurrentModal();
+            const el = document.getElementById('VerificationSubmittedModal');
+            if (!el) return;
+            this.currentModal = new bootstrap.Modal(el);
+            this.currentModal.show();
+      }
+
+      async closeActiveModal(): Promise<void> {
+            await this.closeCurrentModal();
+      }
+
       closeLoginModal() {
             this.closeCurrentModal();
       }

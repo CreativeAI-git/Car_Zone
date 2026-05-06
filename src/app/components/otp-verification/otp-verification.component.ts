@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzInputOtpComponent } from 'ng-zorro-antd/input';
 import { SubmitButtonComponent } from '../shared/submit-button/submit-button.component';
@@ -9,6 +9,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../services/user.service';
 import { ModalService } from '../../services/modal.service';
+import { RoleService } from '../../services/role.service';
 
 @Component({
   selector: 'app-otp-verification',
@@ -18,6 +19,7 @@ import { ModalService } from '../../services/modal.service';
 })
 export class OtpVerificationComponent {
   private destroy$ = new Subject<void>();
+  private roleService = inject(RoleService);
   isResendDisabled: boolean = false;
   countdown: number = 60;
   interval: any;
@@ -89,7 +91,11 @@ export class OtpVerificationComponent {
         if (this.isForgotPassword === '1') {
           this.modal.openResetPasswordModal()
         } else {
-          this.modal.openSignInModal()
+          if (this.roleService.getUserType() === 'company') {
+            this.modal.openVerificationSubmittedModal()
+          } else {
+            this.modal.openAccountVerifiedModal()
+          }
         }
       },
       error: (error) => {

@@ -1,0 +1,25 @@
+<div class="verification-status">
+      <div class="verification-status__art" [class.verification-status__art--company]="type === 'company'">
+            @if(type === 'private') {
+            <div class="verification-status__confetti verification-status__confetti--one"></div>
+            <div class="verification-status__confetti verification-status__confetti--two"></div>
+            <div class="verification-status__confetti verification-status__confetti--three"></div>
+            <div class="verification-status__confetti verification-status__confetti--four"></div>
+            <div class="verification-status__confetti verification-status__confetti--five"></div>
+            <div class="verification-status__confetti verification-status__confetti--six"></div>
+            }
+            <div class="verification-status__ring verification-status__ring--outer"></div>
+            <div class="verification-status__ring verification-status__ring--middle"></div>
+            <div class="verification-status__ring verification-status__ring--inner"></div>
+            <div class="verification-status__check">
+                  <i class="fa-solid fa-check"></i>
+            </div>
+      </div>
+
+      <h3 class="verification-status__title">{{ title }}</h3>
+      <p class="verification-status__description">{{ description }}</p>
+
+      <button type="button" class="verification-status__button" (click)="continueToApp()">
+            {{ actionLabel }}
+      </button>
+</div>

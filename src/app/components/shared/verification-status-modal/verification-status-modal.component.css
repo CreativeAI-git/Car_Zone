@@ -1,0 +1,197 @@
+:host {
+    display: block;
+}
+
+.verification-status {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 56px 26px 34px;
+    text-align: center;
+}
+
+.verification-status__art {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 18px;
+}
+
+.verification-status__ring,
+.verification-status__check {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.verification-status__ring--outer {
+    width: 132px;
+    height: 132px;
+    background: rgba(255, 221, 87, 0.10);
+}
+
+.verification-status__ring--middle {
+    width: 96px;
+    height: 96px;
+    background: rgba(255, 221, 87, 0.16);
+}
+
+.verification-status__ring--inner {
+    width: 66px;
+    height: 66px;
+    background: #fff2b7;
+}
+
+.verification-status__check {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    color: #f2bc00;
+    font-size: 24px;
+    z-index: 2;
+}
+
+.verification-status__title {
+    margin: 0 0 10px;
+    color: #111;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.verification-status__description {
+    max-width: 310px;
+    margin: 0 auto;
+    color: #6e6e73;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.verification-status__button {
+    width: 100%;
+    margin-top: 34px;
+    padding: 14px 20px;
+    border: 0;
+    border-radius: 10px;
+    background: #a10d21;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.verification-status__button:hover {
+    background: #8d0b1c;
+}
+
+.verification-status__art:not(.verification-status__art--company) .verification-status__ring--outer {
+    background: rgba(127, 233, 121, 0.14);
+}
+
+.verification-status__art:not(.verification-status__art--company) .verification-status__ring--middle {
+    background: rgba(127, 233, 121, 0.2);
+}
+
+.verification-status__art:not(.verification-status__art--company) .verification-status__ring--inner {
+    background: #d8ffd3;
+}
+
+.verification-status__art:not(.verification-status__art--company) .verification-status__check {
+    color: #18b821;
+}
+
+.verification-status__confetti {
+    position: absolute;
+    border-radius: 999px;
+    opacity: 0.9;
+}
+
+.verification-status__confetti--one {
+    top: 18px;
+    left: 28px;
+    width: 16px;
+    height: 5px;
+    background: #d9b4ff;
+    transform: rotate(36deg);
+}
+
+.verification-status__confetti--two {
+    top: 24px;
+    right: 34px;
+    width: 5px;
+    height: 16px;
+    background: #9ed8ff;
+    transform: rotate(18deg);
+}
+
+.verification-status__confetti--three {
+    right: 14px;
+    top: 76px;
+    width: 18px;
+    height: 5px;
+    background: #b3ef93;
+    transform: rotate(-20deg);
+}
+
+.verification-status__confetti--four {
+    bottom: 42px;
+    right: 34px;
+    width: 14px;
+    height: 5px;
+    background: #ffcf7d;
+    transform: rotate(44deg);
+}
+
+.verification-status__confetti--five {
+    bottom: 18px;
+    left: 38px;
+    width: 6px;
+    height: 18px;
+    background: #ffb6c1;
+    transform: rotate(-26deg);
+}
+
+.verification-status__confetti--six {
+    left: 10px;
+    top: 86px;
+    width: 18px;
+    height: 5px;
+    background: #c7b8ff;
+    transform: rotate(-36deg);
+}
+
+@media only screen and (max-width: 575.98px) {
+    .verification-status {
+        padding: 44px 12px 24px;
+    }
+
+    .verification-status__art {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 12px;
+    }
+
+    .verification-status__ring--outer {
+        width: 112px;
+        height: 112px;
+    }
+
+    .verification-status__ring--middle {
+        width: 82px;
+        height: 82px;
+    }
+
+    .verification-status__ring--inner {
+        width: 58px;
+        height: 58px;
+    }
+
+    .verification-status__title {
+        font-size: 20px;
+    }
+
+    .verification-status__description {
+        font-size: 15px;
+    }
+}

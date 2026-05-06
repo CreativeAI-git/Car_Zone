@@ -7,10 +7,11 @@ import { ForgotPasswordComponent } from "../../forgot-password/forgot-password.c
 import { OtpVerificationComponent } from "../../otp-verification/otp-verification.component";
 import { ResetPasswordComponent } from "../../reset-password/reset-password.component";
 import { TranslateModule } from '@ngx-translate/core';
+import { VerificationStatusModalComponent } from "../verification-status-modal/verification-status-modal.component";
 
 @Component({
   selector: 'app-role-modal',
-  imports: [LogInComponent, SignUpComponent, ForgotPasswordComponent, OtpVerificationComponent, ResetPasswordComponent, TranslateModule],
+  imports: [LogInComponent, SignUpComponent, ForgotPasswordComponent, OtpVerificationComponent, ResetPasswordComponent, TranslateModule, VerificationStatusModalComponent],
   templateUrl: './role-modal.component.html',
   styleUrl: './role-modal.component.css'
 })

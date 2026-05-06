@@ -21,8 +21,10 @@
                               </li>
                               @if(authService.isLogedIn()){
                               <li class="nav-item">
-                                    <a class="nav-link ct_fs_16 ct_fw_600" routerLinkActive="active"
-                                          routerLink="/my-listings">{{ 'listing.myListings' | translate }}</a>
+                                    <a class="nav-link ct_fs_16 ct_fw_600" routerLink="/list-your-car">Sell</a>
+                              </li>
+                              <li class="nav-item">
+                                    <a class="nav-link ct_fs_16 ct_fw_600">Schedule request</a>
                               </li>
                               }
                         </ul>
@@ -44,51 +46,61 @@
                                                       <p class="ct_fs_20 ct_fw_700 text-black">
                                                             {{ 'notifications.notifications' | translate }} (4)
                                                       </p>
-                                                      <a class="ct_fs_14 ct_fs_600 ct_color_8f0c1f">{{ 'notifications.markReadAll' | translate }}</a>
+                                                      <a class="ct_fs_14 ct_fs_600 ct_color_8f0c1f">{{
+                                                            'notifications.markReadAll' | translate }}</a>
                                                 </div>
                                                 <!-- Notification Item -->
                                                 <a class="dropdown-item notification-item">
                                                       <div>
                                                             <strong>{{ 'common.newBuyerMessage' | translate }}</strong>
                                                             <div class="text-muted small">
-                                                                  {{ 'header.notifications.newBuyerMessageBody' | translate }}
+                                                                  {{ 'header.notifications.newBuyerMessageBody' |
+                                                                  translate }}
                                                             </div>
                                                       </div>
                                                       <div class="text-end">
-                                                            <span class="time">{{ 'header.notifications.threeMinutes' | translate }}</span> <span class="dot"></span>
+                                                            <span class="time">{{ 'header.notifications.threeMinutes' |
+                                                                  translate }}</span> <span class="dot"></span>
                                                       </div>
                                                 </a>
                                                 <a class="dropdown-item notification-item">
                                                       <div>
-                                                            <strong>{{ 'common.listingExpiryWarning' | translate }}</strong>
+                                                            <strong>{{ 'common.listingExpiryWarning' | translate
+                                                                  }}</strong>
                                                             <div class="text-muted small">
-                                                                  {{ 'header.notifications.listingExpiryBody' | translate }}
+                                                                  {{ 'header.notifications.listingExpiryBody' |
+                                                                  translate }}
                                                             </div>
                                                       </div>
                                                       <div class="text-end">
-                                                            <span class="time">{{ 'common.12m' | translate }}</span> <span class="dot"></span>
-                                                      </div>
-                                                </a>
-                                                <a class="dropdown-item notification-item">
-                                                      <div>
-                                                            <strong>{{ 'common.newBuyerMessage' | translate }}</strong>
-                                                            <div class="text-muted small">
-                                                                  {{ 'header.notifications.newBuyerMessageBody' | translate }}
-                                                            </div>
-                                                      </div>
-                                                      <div class="text-end">
-                                                            <span class="time">{{ 'header.notifications.threeMinutes' | translate }}</span> <span class="dot"></span>
+                                                            <span class="time">{{ 'common.12m' | translate }}</span>
+                                                            <span class="dot"></span>
                                                       </div>
                                                 </a>
                                                 <a class="dropdown-item notification-item">
                                                       <div>
                                                             <strong>{{ 'common.newBuyerMessage' | translate }}</strong>
                                                             <div class="text-muted small">
-                                                                  {{ 'header.notifications.newBuyerMessageBody' | translate }}
+                                                                  {{ 'header.notifications.newBuyerMessageBody' |
+                                                                  translate }}
                                                             </div>
                                                       </div>
                                                       <div class="text-end">
-                                                            <span class="time">{{ 'header.notifications.threeMinutes' | translate }}</span> <span class="dot"></span>
+                                                            <span class="time">{{ 'header.notifications.threeMinutes' |
+                                                                  translate }}</span> <span class="dot"></span>
+                                                      </div>
+                                                </a>
+                                                <a class="dropdown-item notification-item">
+                                                      <div>
+                                                            <strong>{{ 'common.newBuyerMessage' | translate }}</strong>
+                                                            <div class="text-muted small">
+                                                                  {{ 'header.notifications.newBuyerMessageBody' |
+                                                                  translate }}
+                                                            </div>
+                                                      </div>
+                                                      <div class="text-end">
+                                                            <span class="time">{{ 'header.notifications.threeMinutes' |
+                                                                  translate }}</span> <span class="dot"></span>
                                                       </div>
                                                 </a>
                                           </div>

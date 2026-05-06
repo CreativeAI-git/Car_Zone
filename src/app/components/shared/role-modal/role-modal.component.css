@@ -207,6 +207,15 @@
     letter-spacing: 2px;
 }
 
+.verification-status-dialog {
+    max-width: min(500px, calc(100vw - 28px));
+}
+
+.verification-status-shell {
+    border-radius: 16px !important;
+    background: #fff;
+}
+
 @media only screen and (max-width: 1399.98px) {
     .role-modal-shell {
         padding: 18px !important;
