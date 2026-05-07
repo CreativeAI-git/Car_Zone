@@ -85,8 +85,6 @@ export class SwitchRoleComponent {
 
   private persistUserType(userType: UserType) {
     this.roleService.setUserType(userType);
-    this.roleService.setLoggedInUserType(userType);
-    localStorage.removeItem('loggedInRole');
   }
 
   ngOnDestroy(): void {

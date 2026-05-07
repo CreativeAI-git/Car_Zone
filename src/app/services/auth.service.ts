@@ -29,7 +29,8 @@ export class AuthService {
             localStorage.removeItem('userInfo');
             localStorage.removeItem('loggedInRole');
             localStorage.removeItem('loggedInUserType');
+            localStorage.removeItem('selectedUserType');
+            localStorage.removeItem('userType');
             this.roleService.setUserType('private');
-            this.roleService.setLoggedInUserType('private');
       };
 }

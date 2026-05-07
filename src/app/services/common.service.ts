@@ -44,6 +44,14 @@ export class CommonService {
 
   getProfile() {
     this.get('user/web/getUserProfile').subscribe((res: any) => {
+      const userType = this.roleService.normalizeUserType(
+        res?.data?.account_type ||
+        res?.data?.userType ||
+        res?.data?.role ||
+        res?.data?.sellerType
+      );
+
+      this.roleService.setUserType(userType);
       this.userData.set(res.data)
     })
   }

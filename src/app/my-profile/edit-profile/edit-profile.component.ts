@@ -426,6 +426,7 @@ export class EditProfileComponent {
 
   private resolveUserType(userData: any): 'private' | 'company' {
     const normalizedType = this.roleService.normalizeUserType(
+      userData?.account_type ||
       userData?.userType ||
       userData?.role ||
       userData?.roleData?.find((item: any) => item?.role === 'seller')?.seller_type

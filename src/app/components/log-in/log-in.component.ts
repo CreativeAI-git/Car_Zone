@@ -58,10 +58,10 @@ export class LogInComponent {
         this.loading = false
         this.toastr.success(res.message)
         this.authService.setValues(res.data.jwt_token, res.data.userId)
-        const userType = this.roleService.normalizeUserType(res.data.userType || res.data.role);
+        const userType = this.roleService.normalizeUserType(
+          res.data.account_type || res.data.userType || res.data.role
+        );
         this.roleService.setUserType(userType)
-        this.roleService.setLoggedInUserType(userType)
-        localStorage.removeItem('loggedInRole')
         this.modal.closeLoginModal()
         this.commonService.getProfile()
       },
@@ -103,9 +103,10 @@ export class LogInComponent {
         this.loading = false;
         this.toastr.success(res.message);
         this.authService.setValues(res.token, res.user.id);
-        const userType = this.roleService.normalizeUserType(res.user?.userType || res.user?.role);
+        const userType = this.roleService.normalizeUserType(
+          res.user?.account_type || res.user?.userType || res.user?.role
+        );
         this.roleService.setUserType(userType);
-        this.roleService.setLoggedInUserType(userType);
         this.router.navigate(['/']);
       },
       error: (error) => {

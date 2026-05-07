@@ -7,23 +7,20 @@ export type UserType = 'private' | 'company';
       providedIn: 'root',
 })
 export class RoleService {
+      private readonly storageKey = 'userType';
       private userType = signal<UserType>('private');
       currentUserType = this.userType.asReadonly();
-
-      private loggedInUserType = signal<UserType>('private');
-      currentLoggedInUserType = this.loggedInUserType.asReadonly();
-
+      currentLoggedInUserType = this.userType.asReadonly();
 
       constructor() {
-            const selectedUserType = localStorage.getItem('selectedUserType');
-            const loggedInUserType = localStorage.getItem('loggedInUserType') || localStorage.getItem('loggedInRole');
+            const storedUserType =
+                  localStorage.getItem(this.storageKey) ||
+                  localStorage.getItem('loggedInUserType') ||
+                  localStorage.getItem('selectedUserType') ||
+                  localStorage.getItem('loggedInRole');
 
-            if (selectedUserType) {
-                  this.setUserType(this.normalizeUserType(selectedUserType));
-            }
-
-            if (loggedInUserType) {
-                  this.setLoggedInUserType(this.normalizeUserType(loggedInUserType));
+            if (storedUserType) {
+                  this.setUserType(this.normalizeUserType(storedUserType));
             }
       }
 
@@ -42,8 +39,12 @@ export class RoleService {
       }
 
       setUserType(userType: UserType) {
-            this.userType.set(userType);
-            localStorage.setItem('selectedUserType', userType);
+            const normalizedUserType = this.normalizeUserType(userType);
+            this.userType.set(normalizedUserType);
+            localStorage.setItem(this.storageKey, normalizedUserType);
+            localStorage.removeItem('selectedUserType');
+            localStorage.removeItem('loggedInUserType');
+            localStorage.removeItem('loggedInRole');
       }
 
       getUserType(): UserType {
@@ -51,11 +52,10 @@ export class RoleService {
       }
 
       setLoggedInUserType(userType: UserType) {
-            this.loggedInUserType.set(userType);
-            localStorage.setItem('loggedInUserType', userType);
+            this.setUserType(userType);
       }
 
       getLoggedInUserType(): UserType {
-            return this.loggedInUserType();
+            return this.userType();
       }
 }
