@@ -3,7 +3,9 @@
       <div class="col-xl-5 login-popup__left ct_custom_scroll p-5">
             <div>
                   <div class="login-popup__brand mb-4">
-                        <img src="img/black-logo.png" class="main-logo" />
+                        <img src="img/black-logo.png" class="main-logo auth-theme-logo" alt="CarZone" />
+                        <img src="img/logo.png" class="main-logo auth-theme-logo d-none" alt="CarZone" />
+                        
                   </div>
 
                   <h5 class="login-popup__title mb-3 ct_fs_32 text-center ct_font_cairo">
@@ -184,7 +186,8 @@
                                           [placeholder]="('common.enter' | translate) + ' Company Address'"
                                           [attr.aria-label]="'filters.username' | translate"
                                           aria-describedby="basic-addon1" formControlName="companyAddress" />
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage('Company Address',
+                                    <small class="text-danger">{{validationErrorService.getErrorMessage('Company
+                                          Address',
                                           Form.get("companyAddress"))}}</small>
                               </div>
                               <div class="col-lg-6">
