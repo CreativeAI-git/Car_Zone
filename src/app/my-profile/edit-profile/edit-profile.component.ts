@@ -51,8 +51,8 @@ export class EditProfileComponent {
     this.Form = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20), NoWhitespaceDirective.validate]],
       email: ['', [Validators.required, Validators.email]],
+      businessPhone: [''],
       phoneNumber: [''],
-      isWhatsappSameAsPhone: [false],
       whatsappNumber: [''],
       userType: ['private', [Validators.required]],
       address: [''],
@@ -80,9 +80,9 @@ export class EditProfileComponent {
         this.Form.patchValue({
           fullName: this.userData.fullName,
           email: this.userData.email,
-          phoneNumber: this.userData.countryCode + this.userData.phoneNumber,
-          whatsappNumber: this.userData.whatsappCountryCode + this.userData.whatsappNumber,
-          isWhatsappSameAsPhone: this.userData.isWhatsappSameAsPhone,
+          businessPhone: this.userData.businessPhone,
+          phoneNumber: this.userData.phoneNumber,
+          whatsappNumber: this.userData.whatsappNumber,
           address: this.userData.fullAddress,
           city: this.userData.city,
           pincode: this.userData.pincode,
@@ -173,16 +173,6 @@ export class EditProfileComponent {
     this.Form.get('userType')?.valueChanges.subscribe((value) => {
       this.applyUserTypeValidators(value);
     })
-    this.Form.get('isWhatsappSameAsPhone')?.valueChanges.subscribe((value) => {
-      if (value) {
-        this.Form.get('whatsappNumber')?.setValue(this.Form.get('phoneNumber')?.value);
-      }
-    })
-    this.Form.get('phoneNumber')?.valueChanges.subscribe((value) => {
-      if (this.Form.get('isWhatsappSameAsPhone')?.value) {
-        this.Form.get('whatsappNumber')?.setValue(value, { emitEvent: false });
-      }
-    });
     this.applyUserTypeValidators(this.Form.get('userType')?.value);
   }
 
@@ -266,20 +256,10 @@ export class EditProfileComponent {
       return;
     }
 
-    if (this.Form.value.phoneNumber?.e164Number) {
-      const phone = this.Form.value.phoneNumber.e164Number
-        .slice(this.Form.value.phoneNumber.dialCode.length);
-
-      this.appendIfExists(formData, 'phoneNumber', phone);
-      this.appendIfExists(formData, 'countryCode', this.Form.value.phoneNumber.dialCode);
-    }
-    if (this.Form.value.whatsappNumber?.e164Number) {
-      const phone = this.Form.value.whatsappNumber.e164Number
-        .slice(this.Form.value.whatsappNumber.dialCode.length);
-
-      this.appendIfExists(formData, 'whatsappNumber', phone);
-      this.appendIfExists(formData, 'whatsappCountryCode', this.Form.value.whatsappNumber.dialCode);
-    }
+    this.appendIfExists(formData, 'businessPhone', this.getPhoneValue(this.Form.value.businessPhone));
+    this.appendIfExists(formData, 'business_phone', this.getPhoneValue(this.Form.value.businessPhone));
+    this.appendIfExists(formData, 'phoneNumber', this.getPhoneValue(this.Form.value.phoneNumber));
+    this.appendIfExists(formData, 'whatsappNumber', this.getPhoneValue(this.Form.value.whatsappNumber));
 
     if (this.profileImage) {
       formData.append('profileImage', this.profileImage);
@@ -394,22 +374,28 @@ export class EditProfileComponent {
   }
 
   private applyUserTypeValidators(userType: 'private' | 'company') {
-    const companyOnlyRequiredControls = ['phoneNumber', 'whatsappNumber', 'city', 'pincode', 'companyName', 'companyAddress'];
+    const companyOnlyRequiredControls = ['businessPhone', 'city', 'pincode', 'companyName', 'companyAddress'];
+    const companyOptionalPhoneControls = ['phoneNumber', 'whatsappNumber'];
     const optionalCompanyControls = ['legalForm', 'vat', 'websiteUrl', 'tagline', 'description', 'address'];
 
     if (userType === 'company') {
-      this.setControlValidators('phoneNumber', [Validators.required]);
-      this.setControlValidators('whatsappNumber', [Validators.required]);
+      this.setControlValidators('businessPhone', [Validators.required]);
       this.setControlValidators('city', [Validators.required, NoWhitespaceDirective.validate]);
       this.setControlValidators('pincode', [Validators.required, NoWhitespaceDirective.validate]);
       this.setControlValidators('companyName', [Validators.required, NoWhitespaceDirective.validate]);
       this.setControlValidators('companyAddress', [Validators.required, NoWhitespaceDirective.validate]);
+      companyOptionalPhoneControls.forEach((controlName) => this.clearControlValidators(controlName));
       optionalCompanyControls.forEach((controlName) => this.clearControlValidators(controlName));
       return;
     }
 
     companyOnlyRequiredControls.forEach((controlName) => this.clearControlValidators(controlName));
+    companyOptionalPhoneControls.forEach((controlName) => this.clearControlValidators(controlName));
     optionalCompanyControls.forEach((controlName) => this.clearControlValidators(controlName));
+  }
+
+  private getPhoneValue(phone: any): string {
+    return phone?.e164Number || phone?.internationalNumber || phone?.number || phone || '';
   }
 
   private setControlValidators(controlName: string, validators: any[]) {

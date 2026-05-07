@@ -21,7 +21,8 @@
                   <div class="col-lg-4">
                         <div class="form-group mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2">
-                                    {{'profile.fullName' | translate | titlecase}}
+                                    {{'profile.fullName' | translate | titlecase}} <span
+                                          class="ct_color_8f0c1f">*</span>
                               </label>
                               <input type="text" class="form-control"
                                     placeholder="{{'common.enter' | translate}} {{'profile.fullName' | translate}}"
@@ -35,7 +36,7 @@
                   <div class="col-lg-4">
                         <div class="form-group mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2">
-                                    {{'auth.email' | translate | titlecase}}
+                                    {{'auth.email' | translate | titlecase}} <span class="ct_color_8f0c1f">*</span>
                               </label>
                               <input type="email" class="form-control"
                                     placeholder="{{'common.enter' | translate}} {{'auth.email' | translate | lowercase}}"
@@ -47,7 +48,9 @@
 
                   <div class="col-lg-4">
                         <div class="form-group mb-4">
-                              <label class="ct_fs_16 ct_fw_500 mb-2">Account Type</label>
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    Account Type <span class="ct_color_8f0c1f">*</span>
+                              </label>
                               <nz-select class="form-control" nzPlaceHolder="Account Type" formControlName="userType">
                                     <nz-option nzLabel="Private" nzValue="private"></nz-option>
                                     <nz-option nzLabel="Company" nzValue="company"></nz-option>
@@ -66,37 +69,48 @@
                   }
 
                   @if (isCompanyUserType) {
-                  <div class="col-lg-6">
+                  <div class="col-lg-4">
                         <div class="form-group mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2">
-                                    {{'profile.phoneNumber' | translate | titlecase}}
+                                    Business Phone Number <span class="ct_color_8f0c1f">*</span>
                               </label>
                               <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
                                     [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
                                     [searchCountryFlag]="true"
-                                    [customPlaceholder]="('common.enter' | translate) + ' ' + ('profile.phoneNumber' | translate)"
+                                    [customPlaceholder]="('common.enter' | translate) + ' Business Phone Number'"
+                                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                    [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
+                                    [phoneValidation]="true" formControlName="businessPhone">
+                              </ngx-intl-tel-input>
+                              <small class="text-danger">{{validationErrorService.getErrorMessage('Business Phone
+                                    Number',
+                                    Form.get("businessPhone"))}}</small>
+                        </div>
+                  </div>
+
+                  <div class="col-lg-4">
+                        <div class="form-group mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    Mobile Number
+                              </label>
+                              <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
+                                    [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
+                                    [searchCountryFlag]="true"
+                                    [customPlaceholder]="('common.enter' | translate) + ' Mobile Number'"
                                     [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
                                     [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
                                     [phoneValidation]="true" formControlName="phoneNumber">
                               </ngx-intl-tel-input>
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.phoneNumber'
-                                    | translate | titlecase), Form.get("phoneNumber"))}}</small>
+                              <small class="text-danger">{{validationErrorService.getErrorMessage('Mobile Number',
+                                    Form.get("phoneNumber"))}}</small>
                         </div>
                   </div>
 
-                  <div class="col-lg-6">
+                  <div class="col-lg-4">
                         <div class="form-group mb-4">
-                              <div class="d-flex justify-content-between align-items-center">
-                                    <label class="ct_fs_16 ct_fw_500 mb-2">
-                                          {{'profile.whatsAppNumber' | translate | titlecase}}
-                                    </label>
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                          <input class="form-check-input" type="checkbox"
-                                                formControlName="isWhatsappSameAsPhone" id="flexCheckDefault" />
-                                          <label for="flexCheckDefault">{{ 'auth.alsoPhoneNumber' | translate }}
-                                          </label>
-                                    </div>
-                              </div>
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    {{'profile.whatsAppNumber' | translate | titlecase}}
+                              </label>
                               <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
                                     [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
                                     [searchCountryFlag]="true"
@@ -113,7 +127,7 @@
                   <div class="col-lg-6">
                         <div class="form-group mb-4">
                               <label for="" class="ct_fs_16 ct_fw_500 mb-2">{{'profile.legalEntity' |
-                                    translate}} <span class="ct_color_8f0c1f">*</span></label>
+                                    translate}}</label>
                               <nz-select class="form-control" [nzPlaceHolder]="'profile.selectLegalEntity' | translate"
                                     [nzShowSearch]="true" formControlName="legalForm">
                                     <nz-option nzCustomContent [nzLabel]="'profile.soleProprietorship' | translate"
@@ -212,7 +226,7 @@
 
                   <div class="col-lg-6">
                         <div class="form-group mb-4">
-                              <label class="ct_fs_16 ct_fw_500 mb-2"> {{ 'profile.city' | translate }} </label>
+                              <label class="ct_fs_16 ct_fw_500 mb-2"> {{ 'profile.city' | translate }} <span class="ct_color_8f0c1f">*</span></label>
                               <input type="text" class="form-control"
                                     [placeholder]="'profile.enterYourCity' | translate"
                                     [attr.aria-label]="'filters.username' | translate" aria-describedby="basic-addon1"
