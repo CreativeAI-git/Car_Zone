@@ -1,168 +1,106 @@
-<section class="ct_mt_100">
-      <div class="container">
-            <div class="row">
-                  <div class="col-md-12">
-                        <div class="collections-header">
-                              <h3 class="ct_fs_35 ct_fw_600 ct_font_cairo text-start mb-3">{{ 'listing.myListings' |
-                                    translate }}</h3>
-                              <div class="d-flex gap-3">
-                                    <div class="position-relative w-100 ">
-                                          <input type="text"
-                                                class="form-control ct_input ct_input_ps_40 ct_input_h_40 ct_border_op_10 shadow-sm"
-                                                [placeholder]="'filters.search' | translate" />
-                                          <i class="fa-solid fa-search ct_input_icon_left"></i>
-                                    </div>
-                                    <div class="my-listing-all-box ">
-                                          <select class="form-select"
-                                                [attr.aria-label]="'filters.defaultSelectExample' | translate">
-                                                <option selected>{{ 'common.allAlt' | translate }} </option>
-                                                <option value="1">{{ 'filters.one' | translate }}</option>
-                                                <option value="2">{{ 'filters.two' | translate }}</option>
-                                                <option value="3">{{ 'filters.three' | translate }}</option>
-                                          </select>
-                                    </div>
-                              </div>
-                              <div class="ct_right_main_box mt-5">
-                                    @if(carList.length == 0){
-                                    <div class="d-flex flex-column align-items-center justify-content-center text-center bg-white rounded-4 p-5 position-relative overflow-hidden"
-                                          style="min-height: 60vh;">
-
-                                          <!-- Subtle background effect -->
-                                          <div class="position-absolute top-0 start-0 w-100 h-100"
-                                                style="background: radial-gradient(circle at top, rgba(220,53,69,0.05), transparent); z-index:0;">
-                                          </div>
-
-                                          <!-- Icon with gradient ring -->
-                                          <div class="d-flex align-items-center justify-content-center rounded-circle mb-4 position-relative"
-                                                style="width: 120px; height: 120px; background: linear-gradient(135deg, #ffccd1, #fff); z-index:1;">
-                                                <i class="bi bi-car-front text-danger fs-1"></i>
-                                                <span
-                                                      class="position-absolute top-0 start-0 w-100 h-100 rounded-circle border border-3 border-danger opacity-25"></span>
-                                          </div>
-
-                                          <!-- Message -->
-                                          <h2 class="fw-bold text-dark" style="z-index:1;">{{'vehicle.noCarsFound' |
-                                                translate}}
-                                          </h2>
-                                          <p class="text-muted mt-2 mb-4" style="max-width: 400px; z-index:1;">
-                                                {{'vehicle.noCarsFoundDescription' | translate}} <br>
-                                          </p>
-
-                                          <!-- Decorative line -->
-                                          <div class="w-50 border-top border-danger opacity-50 mb-3" style="z-index:1;">
-                                          </div>
-                                    </div>
-                                    }
-                                    @for (item of carList; track $index ; let last = $last) {
-                                    <div class="my-listing-car">
-                                          <div class="card my-listing-card border-0 position-relative">
-                                                <div class="d-flex w-100">
-                                                      <div class="d-md-flex gap-4 w-100">
-                                                            <!-- Image -->
-                                                            <div class="mb-md-0 mt-md-0 mt-2 mb-3 ">
-                                                                  <img [src]="item.carImages[0]"
-                                                                        class="img-fluid  my-listing-img"
-                                                                        [alt]="'vehicle.car' | translate">
-                                                            </div>
-
-                                                            <div class="w-100">
-                                                                  <div class="d-flex justify-content-between">
-                                                                        <h5
-                                                                              class="mb-2 text-start ct_font_cairo ct_fs_24 ct_fw_600">
-                                                                              {{item.brandName}}
-                                                                              {{item.carModel}}</h5>
-                                                                        <p class="text-end mb-0"> <span
-                                                                                    class="badge fst_italic"
-                                                                                    [ngClass]="{'status-badge-success': item.is_active, 'status-badge-danger': !item.is_active}">●
-                                                                                    {{item.is_active ? ('status.active'
-                                                                                    |
-                                                                                    translate)
-                                                                                    : ('status.expired' |
-                                                                                    translate)}}</span>
-                                                                        </p>
-                                                                  </div>
-                                                                  <div
-                                                                        class="text-start ct_fs_28 ct_fw_600 ct_font_cairo ct_color_8f0c1f">
-                                                                        {{item?.selling_price | chfFormat}}
-                                                                  </div>
-                                                                  <p class="text-start ct_fs_18 ct_fw_400 mb-1">
-                                                                        {{item.transmission_value}} &nbsp;•&nbsp;
-                                                                        {{item.body_type_value}} &nbsp;•&nbsp;
-                                                                        {{item.fuel_type_value}}
-                                                                  </p>
-
-                                                                  <p class="text-start ct_fs_18 ct_fw_400 mb-3">
-                                                                        {{item.drive_type_value}}
-                                                                  </p>
-
-                                                                  <p class="text-start ct_fs_14 ct_fw_500">Listed on :
-                                                                        <span class="text-muted">{{item.createdAt |
-                                                                              date}}</span>
-                                                                  </p>
-
-                                                                  <div class="d-flex justify-content-between">
-                                                                        <div
-                                                                              class="text-start ct_fs_28 ct_fw_600 ct_font_cairo ct_color ct_color_8f0c1f">
-                                                                              {{item.totalPrice
-                                                                              | chfFormat}}</div>
-
-                                                                        <div>
-                                                                              <a routerLink="/car-detail"
-                                                                                    [queryParams]="{id: item.id}"
-                                                                                    class="btn-red ct_border_10">View
-                                                                                    Details</a>
-                                                                        </div>
-                                                                  </div>
-                                                            </div>
-                                                      </div>
-                                                </div>
-                                          </div>
-                                    </div>
-                                    <hr *ngIf="!last" class="my-4">
-                                    }
-                                    <!-- <div
-                                          class="my-listing-pagination d-flex justify-content-between align-items-center flex-wrap gap-3">
-                                          <div class="pagination-info ct_fs_16 ct_fw_400">
-                                                Showing 1–10
-                                          </div>
-
-                                          <nav>
-                                                <ul class="pagination mb-0 align-items-center">
-
-                                                      <li class="page-item">
-                                                            <a class="page-link prev-next me-2" href="#">
-                                                                  &lsaquo;
-                                                            </a>
-                                                      </li>
-
-                                                      <li class="page-item active">
-                                                            <span class="page-link">1</span>
-                                                      </li>
-                                                      <li class="page-item">
-                                                            <a class="page-link" href="#">2</a>
-                                                      </li>
-                                                      <li class="page-item">
-                                                            <a class="page-link" href="#">3</a>
-                                                      </li>
-
-                                                      <li class="page-item disabled">
-                                                            <span class="page-link dots">....</span>
-                                                      </li>
-
-                                                      <li class="page-item">
-                                                            <a class="page-link" href="#">10</a>
-                                                      </li>
-
-                                                      <li class="page-item">
-                                                            <a class="page-link prev-next" href="#">
-                                                                  &rsaquo;
-                                                            </a>
-                                                      </li>
-                                                </ul>
-                                          </nav>
-                                    </div> -->
-                              </div>
+<section class="my-listings-page">
+      <div class="container p-0">
+            <div class="my-listings-shell">
+                  <div class="my-listings-toolbar">
+                        <div class="my-listings-search">
+                              <i class="fa-solid fa-magnifying-glass"></i>
+                              <input type="text" [(ngModel)]="searchTerm"
+                                    [placeholder]="'filters.search' | translate" />
                         </div>
+
+                        <div class="my-listings-toolbar-actions">
+                              <div class="my-listings-filter">
+                                    <i class="fa-solid fa-filter"></i>
+                                    <select [(ngModel)]="statusFilter"
+                                          [attr.aria-label]="'filters.defaultSelectExample' | translate">
+                                          <option value="all">{{ 'common.allAlt' | translate }}</option>
+                                          <option value="active">{{ 'status.active' | translate }}</option>
+                                          <option value="expired">{{ 'status.expired' | translate }}</option>
+                                    </select>
+                              </div>
+
+                              <a routerLink="/list-your-car" class="btn-red my-listings-add-btn">
+                                    Add New Vehicle
+                              </a>
+                        </div>
+                  </div>
+
+                  <div class="my-listings-content">
+                        @if (filteredCars.length === 0) {
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center bg-white rounded-4 shadow-sm p-5 position-relative overflow-hidden"
+                              style="min-height: 65vh;">
+
+                              <div class="position-absolute top-0 start-0 w-100 h-100"
+                                    style="background: radial-gradient(circle at top, rgba(220,53,69,0.05), transparent); z-index:0;">
+                              </div>
+
+                              <div class="d-flex align-items-center justify-content-center rounded-circle mb-4 position-relative"
+                                    style="width: 120px; height: 120px; background: linear-gradient(135deg, #ffccd1, #fff); z-index:1;">
+                                    <i class="bi bi-heart text-danger fs-1"></i>
+                                    <span
+                                          class="position-absolute top-0 start-0 w-100 h-100 rounded-circle border border-3 border-danger opacity-25"></span>
+                              </div>
+
+                              <h2 class="fw-bold text-dark mb-3" style="z-index:1;">
+                                    {{'vehicle.noCarsFound'
+                                    | translate}}
+                              </h2>
+                              <p>
+                                    @if (carList.length === 0) {
+                                    {{ 'vehicle.noCarsFoundDescription' | translate }}
+                                    } @else {
+                                    No listings match your current search or filter.
+                                    }
+                              </p>
+                        </div>
+                        } @else {
+                        <div class="my-listings-results-count">{{ listingCountLabel }}</div>
+
+                        @for (item of filteredCars; track item?.id || $index; let last = $last) {
+                        <article class="my-listing-row">
+                              <div class="my-listing-row__media">
+                                    <img [src]="getPrimaryImage(item)" [alt]="getListingTitle(item)" />
+                              </div>
+
+                              <div class="my-listing-row__content">
+                                    <div class="my-listing-row__head">
+                                          <div>
+                                                <h3 class="my-listing-row__title">{{ getListingTitle(item) }}</h3>
+
+                                                <div class="my-listing-row__specs">
+                                                      @for (spec of getSpecs(item); track spec) {
+                                                      <span>{{ spec }}</span>
+                                                      }
+                                                </div>
+
+                                                <p class="my-listing-row__date mb-0">
+                                                      Listed On: {{ item.createdAt | date:'d MMMM y' }}
+                                                </p>
+                                          </div>
+
+                                          <span class="my-listing-row__status"
+                                                [ngClass]="item.is_active ? 'my-listing-row__status--active' : 'my-listing-row__status--expired'">
+                                                {{ item.is_active ? ('status.active' | translate) : ('status.expired' |
+                                                translate) }}
+                                          </span>
+                                    </div>
+
+                                    <div class="my-listing-row__footer">
+                                          <div class="my-listing-row__price">
+                                                {{ getListingPrice(item) | chfFormat }}
+                                          </div>
+
+                                          <a routerLink="/car-detail" [queryParams]="{id: item.id}"
+                                                class="btn-red my-listing-row__cta">
+                                                View Details
+                                          </a>
+                                    </div>
+                              </div>
+                        </article>
+
+                        <hr *ngIf="!last" class="my-listings-divider">
+                        }
+                        }
                   </div>
             </div>
       </div>
