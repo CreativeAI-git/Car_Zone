@@ -1,0 +1,95 @@
+.profile-notifications-card {
+      background: #fff;
+      border: 1px solid #e9eaee;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 6px 18px rgba(16, 24, 40, 0.04);
+}
+
+.profile-notifications-toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      border: 1px solid #ececf2;
+      border-radius: 14px;
+      margin-bottom: 18px;
+}
+
+.profile-notifications-title {
+      font-size: 22px;
+      line-height: 1.2;
+      font-weight: 500;
+      color: #252b37;
+      margin: 0;
+}
+
+.profile-notifications-copy {
+      max-width: 860px;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #6b7280;
+}
+
+.profile-notifications-switch {
+      position: relative;
+      display: inline-flex;
+      width: 54px;
+      height: 30px;
+      flex-shrink: 0;
+      cursor: pointer;
+}
+
+.profile-notifications-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+}
+
+.profile-notifications-slider {
+      position: absolute;
+      inset: 0;
+      background: #d1d5db;
+      border-radius: 999px;
+      transition: background 0.2s ease;
+}
+
+.profile-notifications-slider::before {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      left: 4px;
+      top: 4px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
+      transition: transform 0.2s ease;
+}
+
+.profile-notifications-switch input:checked+.profile-notifications-slider {
+      background: #111827;
+}
+
+.profile-notifications-switch input:checked+.profile-notifications-slider::before {
+      transform: translateX(24px);
+}
+
+@media (max-width: 991px) {
+      .profile-notifications-card {
+            padding: 18px;
+      }
+
+      .profile-notifications-toggle-row {
+            padding: 14px;
+      }
+
+      .profile-notifications-title {
+            font-size: 20px;
+      }
+
+      .profile-notifications-copy {
+            font-size: 15px;
+      }
+}

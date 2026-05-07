@@ -86,7 +86,7 @@ export class OtpVerificationComponent {
     this.commonService.post('user/otpVerified', formData).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.loading = false
-        this.toster.success(res.message)
+        // this.toster.success(res.message)
         this.otp = ''
         if (this.isForgotPassword === '1') {
           this.modal.openResetPasswordModal()

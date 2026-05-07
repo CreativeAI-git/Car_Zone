@@ -1,5 +1,4 @@
 import { Component, effect, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { CommonService } from '../../services/common.service';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
@@ -47,21 +46,22 @@ export class EditProfileComponent {
   coverPreview: any;
   currentImageType!: 'profile' | 'cover' | 'member';
   currentMemberIndex!: number | null;
-  constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private router: Router, private roleService: RoleService, private translate: TranslateService) {
+  constructor(private fb: FormBuilder, public validationErrorService: ValidationErrorService, private toastr: NzMessageService, private commonService: CommonService, private roleService: RoleService, private translate: TranslateService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.Form = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20), NoWhitespaceDirective.validate]],
-      phoneNumber: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: [''],
       isWhatsappSameAsPhone: [false],
-      whatsappNumber: ['', [Validators.required]],
+      whatsappNumber: [''],
       userType: ['private', [Validators.required]],
-      address: ['', [Validators.required, NoWhitespaceDirective.validate]],
+      address: [''],
       legalForm: ['Sole Proprietorship'],
       companyName: [''],
       companyAddress: [''],
       vat: [''],
-      city: ['', [Validators.required, NoWhitespaceDirective.validate]],
-      pincode: ['', [Validators.required, NoWhitespaceDirective.validate]],
+      city: [''],
+      pincode: [''],
       websiteUrl: [''],
       tagline: [''],
       description: [''],
@@ -79,6 +79,7 @@ export class EditProfileComponent {
         const userType = this.resolveUserType(this.userData);
         this.Form.patchValue({
           fullName: this.userData.fullName,
+          email: this.userData.email,
           phoneNumber: this.userData.countryCode + this.userData.phoneNumber,
           whatsappNumber: this.userData.whatsappCountryCode + this.userData.whatsappNumber,
           isWhatsappSameAsPhone: this.userData.isWhatsappSameAsPhone,
@@ -96,6 +97,7 @@ export class EditProfileComponent {
           legalForm: this.userData.legalForm,
           userType,
         })
+        this.applyUserTypeValidators(userType);
         this.imagePreview = this.userData.profileImage
         this.patchServices(this.userData.services);
         this.patchAdvantages(this.userData.advantages);
@@ -169,27 +171,19 @@ export class EditProfileComponent {
 
   ngOnInit(): void {
     this.Form.get('userType')?.valueChanges.subscribe((value) => {
-      if (value === 'company') {
-        this.Form.get('companyName')?.setValidators([Validators.required, NoWhitespaceDirective.validate]);
-        this.Form.get('companyAddress')?.setValidators([Validators.required, NoWhitespaceDirective.validate]);
-        this.Form.get('companyName')?.updateValueAndValidity();
-        this.Form.get('companyAddress')?.updateValueAndValidity();
-        this.Form.get('address')?.clearValidators();
-        this.Form.get('address')?.updateValueAndValidity();
-      } else {
-        this.Form.get('companyName')?.clearValidators();
-        this.Form.get('companyAddress')?.clearValidators();
-        this.Form.get('companyName')?.updateValueAndValidity();
-        this.Form.get('companyAddress')?.updateValueAndValidity();
-        this.Form.get('address')?.setValidators([Validators.required, NoWhitespaceDirective.validate]);
-        this.Form.get('address')?.updateValueAndValidity();
-      }
+      this.applyUserTypeValidators(value);
     })
     this.Form.get('isWhatsappSameAsPhone')?.valueChanges.subscribe((value) => {
       if (value) {
-        this.Form.get('phoneNumber')?.setValue(this.Form.get('whatsappNumber')?.value);
+        this.Form.get('whatsappNumber')?.setValue(this.Form.get('phoneNumber')?.value);
       }
     })
+    this.Form.get('phoneNumber')?.valueChanges.subscribe((value) => {
+      if (this.Form.get('isWhatsappSameAsPhone')?.value) {
+        this.Form.get('whatsappNumber')?.setValue(value, { emitEvent: false });
+      }
+    });
+    this.applyUserTypeValidators(this.Form.get('userType')?.value);
   }
 
   onProfileImage(event: any): void {
@@ -259,6 +253,18 @@ export class EditProfileComponent {
     let formData = new FormData();
 
     this.appendIfExists(formData, 'fullName', this.Form.value.fullName);
+    this.appendIfExists(formData, 'email', this.Form.value.email);
+    this.appendIfExists(formData, 'userType', this.Form.value.userType);
+    this.appendIfExists(formData, 'account_type', this.Form.value.userType);
+
+    if (!this.isCompanyUserType) {
+      if (this.profileImage) {
+        formData.append('profileImage', this.profileImage);
+      }
+
+      this.submitProfileUpdate(formData);
+      return;
+    }
 
     if (this.Form.value.phoneNumber?.e164Number) {
       const phone = this.Form.value.phoneNumber.e164Number
@@ -286,7 +292,6 @@ export class EditProfileComponent {
     this.appendIfExists(formData, 'city', this.Form.value.city);
     this.appendIfExists(formData, 'pincode', this.Form.value.pincode);
     this.appendIfExists(formData, 'vat', this.Form.value.vat);
-    this.appendIfExists(formData, 'userType', this.Form.value.userType);
     this.appendIfExists(formData, 'tagline', this.Form.value.tagline);
     this.appendIfExists(formData, 'websiteUrl', this.Form.value.websiteUrl);
     this.appendIfExists(formData, 'description', this.Form.value.description);
@@ -340,6 +345,10 @@ export class EditProfileComponent {
       formData.append('teamMembers', JSON.stringify(teamMembers));
     }
 
+    this.submitProfileUpdate(formData);
+  }
+
+  submitProfileUpdate(formData: FormData) {
     this.commonService.post('user/editProfile', formData).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.loading = false
@@ -382,6 +391,37 @@ export class EditProfileComponent {
 
   get isCompanyUserType(): boolean {
     return this.Form.get('userType')?.value === 'company';
+  }
+
+  private applyUserTypeValidators(userType: 'private' | 'company') {
+    const companyOnlyRequiredControls = ['phoneNumber', 'whatsappNumber', 'city', 'pincode', 'companyName', 'companyAddress'];
+    const optionalCompanyControls = ['legalForm', 'vat', 'websiteUrl', 'tagline', 'description', 'address'];
+
+    if (userType === 'company') {
+      this.setControlValidators('phoneNumber', [Validators.required]);
+      this.setControlValidators('whatsappNumber', [Validators.required]);
+      this.setControlValidators('city', [Validators.required, NoWhitespaceDirective.validate]);
+      this.setControlValidators('pincode', [Validators.required, NoWhitespaceDirective.validate]);
+      this.setControlValidators('companyName', [Validators.required, NoWhitespaceDirective.validate]);
+      this.setControlValidators('companyAddress', [Validators.required, NoWhitespaceDirective.validate]);
+      optionalCompanyControls.forEach((controlName) => this.clearControlValidators(controlName));
+      return;
+    }
+
+    companyOnlyRequiredControls.forEach((controlName) => this.clearControlValidators(controlName));
+    optionalCompanyControls.forEach((controlName) => this.clearControlValidators(controlName));
+  }
+
+  private setControlValidators(controlName: string, validators: any[]) {
+    const control = this.Form.get(controlName);
+    control?.setValidators(validators);
+    control?.updateValueAndValidity({ emitEvent: false });
+  }
+
+  private clearControlValidators(controlName: string) {
+    const control = this.Form.get(controlName);
+    control?.clearValidators();
+    control?.updateValueAndValidity({ emitEvent: false });
   }
 
   private resolveUserType(userData: any): 'private' | 'company' {

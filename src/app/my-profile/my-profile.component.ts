@@ -2,7 +2,6 @@ import { Component, effect, ElementRef, Renderer2, ViewChild } from '@angular/co
 import { RouterLink, RouterOutlet, RouterLinkActive, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CommonService } from '../services/common.service';
-import { RoleService } from '../services/role.service';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -17,11 +16,9 @@ export class MyProfileComponent {
   @ViewChild('profileOverlay') profileOverlay!: ElementRef;
   @ViewChild('close') close: ElementRef | undefined;
   userData: any
-  userType: any
-  constructor(private renderer: Renderer2, private authService: AuthService, private router: Router, private commonService: CommonService, private roleService: RoleService) {
+  constructor(private renderer: Renderer2, private authService: AuthService, private router: Router, private commonService: CommonService) {
     effect(() => {
       this.userData = this.commonService.userData()
-      this.userType = this.roleService.currentLoggedInUserType()
     })
   }
 

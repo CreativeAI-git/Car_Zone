@@ -152,3 +152,20 @@ body.profile-no-scroll {
       align-items: center;
       justify-content: center;
 }
+
+.ct_private_profile_note {
+      padding: 18px 20px;
+      border: 1px solid #f1d6db;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #fff8f9 0%, #fff 100%);
+}
+
+.ct_private_profile_note h6 {
+      color: #8f0c1f;
+      font-weight: 600;
+}
+
+.ct_private_profile_note p {
+      color: #5f6470;
+      line-height: 1.5;
+}

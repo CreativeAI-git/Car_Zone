@@ -1,66 +1,19 @@
-<section class="ct_py_70">
-      <div class="container">
-            <div class="row">
-                  <div class="col-md-12">
-                        <div>
-                              <div
-                                    class="pb-3 ct_light_blue_outline d-flex align-items-center gap-3 justify-content-between border-bottom">
-                                    <p class="mb-0 ct_fw_600">{{'common.allAlt' | translate}}</p>
-                                    <p class="mb-0 ct_red_text ct_fw_500 ct_text_red">
-                                          <i class="fa-solid fa-trash-can me-1"></i>
-                                          {{'notifications.deleteAll' | translate}}
-                                    </p>
-                              </div>
-                              <ul class="mt-3 ct_notifications_scroll ct_custom_scroll p-0">
-                                    <li class="d-flex align-items-center gap-4 justify-content-between">
-                                          <div>
-                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">{{ 'profile.bookingConfirmed' |
-                                                      translate }}</h5>
-                                                <p class="mb-0 ct_text_op_6">
-                                                      Your payment was successful, and your apartment has been booked. A
-                                                      confirmation email has been
-                                                      sent with all the details. You can view your booking under "My
-                                                      Bookings".
-                                                </p>
-                                          </div>
-                                          <p class="mb-0 ct_white_nowrap">
-                                                <span class="ct_circle_dot_8"></span>
-                                                2 hours ago
-                                          </p>
-                                    </li>
-                                    <li class="d-flex align-items-center gap-4  justify-content-between mt-4">
-                                          <div>
-                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">{{ 'profile.waitingForAReply' |
-                                                      translate }}</h5>
-                                                <p class="mb-0 ct_text_op_6">
-                                                      We’ve notified the host about your message. Most hosts reply
-                                                      within a few hours. Hang tight —
-                                                      we’ll alert you as soon as they respond.
-                                                </p>
-                                          </div>
-                                          <p class="mb-0 ct_white_nowrap">
-                                                <span class="ct_circle_dot_8"></span>
-                                                2 hours ago
-                                          </p>
-                                    </li>
-                                    <li class="d-flex align-items-center gap-4  justify-content-between mt-4">
-                                          <div>
-                                                <h5 class="ct_fs_18 ct_fw_600 mb-1">{{ 'profile.getReadyForYourStay' |
-                                                      translate }}</h5>
-                                                <p class="mb-0 ct_text_op_6">
-                                                      Your check-in date is approaching! Don’t forget to contact the
-                                                      host for check-in instructions and
-                                                      prepare any required documents.
-                                                </p>
-                                          </div>
-                                          <p class="mb-0 ct_white_nowrap">
-                                                <span class="ct_circle_dot_8"></span>
-                                                2 hours ago
-                                          </p>
-                                    </li>
-                              </ul>
-                        </div>
-                  </div>
+<section class="profile-notifications-page">
+      <div class="profile-notifications-card">
+            <div class="profile-notifications-toggle-row">
+                  <h3 class="profile-notifications-title">Turn on notifications</h3>
+
+                  <label class="profile-notifications-switch" aria-label="Turn on notifications">
+                        <input type="checkbox" [checked]="notificationsEnabled"
+                              (change)="onToggleNotifications($event)" />
+                        <span class="profile-notifications-slider"></span>
+                  </label>
             </div>
+
+            <p class="profile-notifications-copy mb-0">
+                  Keep your notifications on to stay updated on your car search. Get alerts for new messages from
+                  sellers, visit confirmations, car availability updates, and important account activity. You can turn
+                  notifications off anytime if you prefer a quieter experience.
+            </p>
       </div>
 </section>

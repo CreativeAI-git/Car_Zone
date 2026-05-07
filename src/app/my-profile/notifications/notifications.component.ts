@@ -13,8 +13,10 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 export class NotificationsComponent {
   private destroy$ = new Subject<void>();
   notifications: any
+  notificationsEnabled = true;
   constructor(private service: CommonService, private message: NzMessageService, public translate: TranslateService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
+    this.notificationsEnabled = localStorage.getItem('notificationsEnabled') !== 'false';
   }
 
   ngOnInit(): void {
@@ -25,6 +27,12 @@ export class NotificationsComponent {
     this.service.post('user/readAllNotifications', {}).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       this.notifications = res.data
     })
+  }
+
+  onToggleNotifications(event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+    this.notificationsEnabled = checked;
+    localStorage.setItem('notificationsEnabled', String(checked));
   }
 
   ngOnDestroy(): void {

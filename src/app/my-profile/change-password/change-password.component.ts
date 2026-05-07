@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonService } from '../../services/common.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { passwordMatchValidator, passwordMismatchValidator, strongPasswordValidator } from '../../helper/validators';
+import { passwordMatchValidator, passwordMismatchValidator } from '../../helper/validators';
 import { CommonModule } from '@angular/common';
 import { ValidationErrorService } from '../../services/validation-error.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';

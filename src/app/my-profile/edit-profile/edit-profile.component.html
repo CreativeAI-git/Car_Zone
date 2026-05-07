@@ -14,10 +14,11 @@
             <p class="ct_fs_14 mb-0">{{userData?.email}}</p>
       </div>
 </div>
+
 <form [formGroup]="Form" (ngSubmit)="onSubmit()">
       <div class="ct_edit_profile_bg profile-edit-box mt-4">
             <div class="row">
-                  <div class="col-12">
+                  <div class="col-lg-4">
                         <div class="form-group mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2">
                                     {{'profile.fullName' | translate | titlecase}}
@@ -30,6 +31,59 @@
                                     | translate), Form.get("fullName"))}}</small>
                         </div>
                   </div>
+
+                  <div class="col-lg-4">
+                        <div class="form-group mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    {{'auth.email' | translate | titlecase}}
+                              </label>
+                              <input type="email" class="form-control"
+                                    placeholder="{{'common.enter' | translate}} {{'auth.email' | translate | lowercase}}"
+                                    [attr.aria-label]="'auth.email' | translate" formControlName="email" readonly />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('auth.email'
+                                    | translate), Form.get("email"))}}</small>
+                        </div>
+                  </div>
+
+                  <div class="col-lg-4">
+                        <div class="form-group mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">Account Type</label>
+                              <nz-select class="form-control" nzPlaceHolder="Account Type" formControlName="userType">
+                                    <nz-option nzLabel="Private" nzValue="private"></nz-option>
+                                    <nz-option nzLabel="Company" nzValue="company"></nz-option>
+                              </nz-select>
+                        </div>
+                  </div>
+
+                  @if (!isCompanyUserType) {
+                  <div class="col-12">
+                        <div class="ct_private_profile_note mb-4">
+                              <h6 class="mb-2">Private profile</h6>
+                              <p class="mb-0">Only name, profile picture, and account type are editable for private
+                                    users. Switch to company to add business details.</p>
+                        </div>
+                  </div>
+                  }
+
+                  @if (isCompanyUserType) {
+                  <div class="col-lg-6">
+                        <div class="form-group mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    {{'profile.phoneNumber' | translate | titlecase}}
+                              </label>
+                              <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
+                                    [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
+                                    [searchCountryFlag]="true"
+                                    [customPlaceholder]="('common.enter' | translate) + ' ' + ('profile.phoneNumber' | translate)"
+                                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                    [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
+                                    [phoneValidation]="true" formControlName="phoneNumber">
+                              </ngx-intl-tel-input>
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.phoneNumber'
+                                    | translate | titlecase), Form.get("phoneNumber"))}}</small>
+                        </div>
+                  </div>
+
                   <div class="col-lg-6">
                         <div class="form-group mb-4">
                               <div class="d-flex justify-content-between align-items-center">
@@ -55,140 +109,107 @@
                                     | translate), Form.get("whatsappNumber"))}}</small>
                         </div>
                   </div>
+
+                  <div class="col-lg-6">
+                        <div class="form-group mb-4">
+                              <label for="" class="ct_fs_16 ct_fw_500 mb-2">{{'profile.legalEntity' |
+                                    translate}} <span class="ct_color_8f0c1f">*</span></label>
+                              <nz-select class="form-control" [nzPlaceHolder]="'profile.selectLegalEntity' | translate"
+                                    [nzShowSearch]="true" formControlName="legalForm">
+                                    <nz-option nzCustomContent [nzLabel]="'profile.soleProprietorship' | translate"
+                                          [nzValue]="'Sole Proprietorship'" class="ct_custom_select">
+                                          <div class="d-flex align-items-center justify-content-between">
+                                                <div>
+                                                      <p class="m-0">
+                                                            {{'profile.soleProprietorship' | translate}}
+                                                      </p>
+                                                </div>
+                                                <input type="radio" class="cutom_radio_input"
+                                                      [checked]="Form.get('legalForm')?.value?.includes('Sole Proprietorship')" />
+                                          </div>
+                                    </nz-option>
+                                    <nz-option nzCustomContent [nzLabel]="'profile.limitedLiabilityCompany' | translate"
+                                          [nzValue]="'Limited Liability Company (GmbH)'" class="ct_custom_select">
+                                          <div class="d-flex align-items-center justify-content-between">
+                                                <div>
+                                                      <p class="m-0">
+                                                            {{'profile.limitedLiabilityCompany' | translate}}
+                                                      </p>
+                                                </div>
+                                                <input type="radio" class="cutom_radio_input"
+                                                      [checked]="Form.get('legalForm')?.value?.includes('Limited Liability Company (GmbH)')" />
+                                          </div>
+                                    </nz-option>
+                                    <nz-option nzCustomContent [nzLabel]="'profile.corporation' | translate"
+                                          [nzValue]="'Corporation (AG)'" class="ct_custom_select">
+                                          <div class="d-flex align-items-center justify-content-between">
+                                                <div>
+                                                      <p class="m-0">
+                                                            {{'profile.corporation' | translate}}
+                                                      </p>
+                                                </div>
+                                                <input type="radio" class="cutom_radio_input"
+                                                      [checked]="Form.get('legalForm')?.value?.includes('Corporation (AG)')" />
+                                          </div>
+                                    </nz-option>
+                              </nz-select>
+                        </div>
+                  </div>
+
                   <div class="col-lg-6">
                         <div class="form-group mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2">
-                                    {{'profile.phoneNumber' | translate | titlecase}}
+                                    {{ 'profile.companyName' | translate }} <span class="ct_color_8f0c1f">*</span>
                               </label>
-                              <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
-                                    [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
-                                    [searchCountryFlag]="true"
-                                    [customPlaceholder]="('common.enter' | translate) + ' ' + ('profile.phoneNumber' | translate)"
-                                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
-                                    [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
-                                    [phoneValidation]="true" formControlName="phoneNumber">
-                              </ngx-intl-tel-input>
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.phoneNumber'
-                                    | translate | titlecase), Form.get("phoneNumber"))}}</small>
+                              <input type="text" class="form-control"
+                                    [placeholder]="'profile.enterCompanyName' | translate"
+                                    [attr.aria-label]="'filters.username' | translate" aria-describedby="basic-addon1"
+                                    formControlName="companyName" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.companyName'
+                                    | translate), Form.get("companyName"))}}</small>
                         </div>
                   </div>
-                  @if(isCompanyUserType) {
-                        <div class="col-lg-6">
-                              <div class="form-group mb-4">
-                                    <label for="" class="ct_fs_16 ct_fw_500 mb-2">{{'profile.legalEntity' |
-                                          translate}} <span class="ct_color_8f0c1f">*</span></label>
-                                    <nz-select class="form-control"
-                                          [nzPlaceHolder]="'profile.selectLegalEntity' | translate"
-                                          [nzShowSearch]="true" formControlName="legalForm">
-                                          <nz-option nzCustomContent
-                                                [nzLabel]="'profile.soleProprietorship' | translate"
-                                                [nzValue]="'Sole Proprietorship'" class="ct_custom_select">
-                                                <div class="d-flex align-items-center justify-content-between">
-                                                      <div>
-                                                            <p class="m-0">
-                                                                  {{'profile.soleProprietorship' | translate}}
-                                                            </p>
-                                                      </div>
-                                                      <input type="radio" class="cutom_radio_input"
-                                                            [checked]="Form.get('legalForm')?.value?.includes('Sole Proprietorship')" />
-                                                </div>
-                                          </nz-option>
-                                          <nz-option nzCustomContent
-                                                [nzLabel]="'profile.limitedLiabilityCompany' | translate"
-                                                [nzValue]="'Limited Liability Company (GmbH)'" class="ct_custom_select">
-                                                <div class="d-flex align-items-center justify-content-between">
-                                                      <div>
-                                                            <p class="m-0">
-                                                                  {{'profile.limitedLiabilityCompany' | translate}}
-                                                            </p>
-                                                      </div>
-                                                      <input type="radio" class="cutom_radio_input"
-                                                            [checked]="Form.get('legalForm')?.value?.includes('Limited Liability Company (GmbH)')" />
-                                                </div>
-                                          </nz-option>
-                                          <nz-option nzCustomContent [nzLabel]="'profile.corporation' | translate"
-                                                [nzValue]="'Corporation (AG)'" class="ct_custom_select">
-                                                <div class="d-flex align-items-center justify-content-between">
-                                                      <div>
-                                                            <p class="m-0">
-                                                                  {{'profile.corporation' | translate}}
-                                                            </p>
-                                                      </div>
-                                                      <input type="radio" class="cutom_radio_input"
-                                                            [checked]="Form.get('legalForm')?.value?.includes('Corporation (AG)')" />
-                                                </div>
-                                          </nz-option>
-                                    </nz-select>
-                              </div>
-                        </div>
 
-                        <div class="col-lg-6">
-                              <div class="form-group mb-4">
-                                    <label class="ct_fs_16 ct_fw_500 mb-2">
-                                          {{ 'profile.companyName' | translate }} <span class="ct_color_8f0c1f">*</span>
-                                    </label>
-                                    <input type="text" class="form-control"
-                                          [placeholder]="'profile.enterCompanyName' | translate"
-                                          [attr.aria-label]="'filters.username' | translate"
-                                          aria-describedby="basic-addon1" formControlName="companyName" />
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.companyName'
-                                          | translate), Form.get("companyName"))}}</small>
-                              </div>
+                  <div class="col-lg-6">
+                        <div class="form-group mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    {{ 'profile.websiteUrl' | translate }}
+                              </label>
+                              <input type="text" class="form-control"
+                                    [placeholder]="'profile.enterWebsiteUrl' | translate"
+                                    [attr.aria-label]="'filters.username' | translate" aria-describedby="basic-addon1"
+                                    formControlName="websiteUrl" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.websiteUrl'
+                                    | translate), Form.get("websiteUrl"))}}</small>
                         </div>
-                        <div class="col-lg-6">
-                              <div class="form-group mb-4">
-                                    <label class="ct_fs_16 ct_fw_500 mb-2">
-                                          {{ 'profile.websiteUrl' | translate }}
-                                    </label>
-                                    <input type="text" class="form-control"
-                                          [placeholder]="'profile.enterWebsiteUrl' | translate"
-                                          [attr.aria-label]="'filters.username' | translate"
-                                          aria-describedby="basic-addon1" formControlName="websiteUrl" />
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.websiteUrl'
-                                          | translate), Form.get("websiteUrl"))}}</small>
-                              </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                        <div class="form-group mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    {{ 'profile.vat' | translate }}
+                              </label>
+                              <input type="text" class="form-control"
+                                    [placeholder]="'profile.enterBusinessNumber' | translate"
+                                    [attr.aria-label]="'filters.username' | translate" formControlName="vat"
+                                    aria-describedby="basic-addon1" />
                         </div>
-                        <div class="col-lg-6">
-                              <div class="form-group mb-4">
-                                    <label class="ct_fs_16 ct_fw_500 mb-2">
-                                          {{ 'profile.vat' | translate }}
-                                    </label>
-                                    <input type="text" class="form-control"
-                                          [placeholder]="'profile.enterBusinessNumber' | translate"
-                                          [attr.aria-label]="'filters.username' | translate" formControlName="vat"
-                                          aria-describedby="basic-addon1" />
-                              </div>
+                  </div>
+
+                  <div class="col-lg-12">
+                        <div class="form-group mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    {{ 'profile.companyAddress' | translate }} <span class="ct_color_8f0c1f">*</span>
+                              </label>
+                              <input type="text" class="form-control"
+                                    [placeholder]="'auth.enterCompanyAddress' | translate"
+                                    [attr.aria-label]="'filters.username' | translate" aria-describedby="basic-addon1"
+                                    formControlName="companyAddress" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.companyAddress'
+                                    | translate), Form.get("companyAddress"))}}</small>
                         </div>
-                        <div class="col-lg-12">
-                              <div class="form-group mb-4">
-                                    <label class="ct_fs_16 ct_fw_500 mb-2">
-                                          {{ 'profile.companyAddress' | translate }} <span
-                                                class="ct_color_8f0c1f">*</span>
-                                    </label>
-                                    <input type="text" class="form-control"
-                                          [placeholder]="'auth.enterCompanyAddress' | translate"
-                                          [attr.aria-label]="'filters.username' | translate"
-                                          aria-describedby="basic-addon1" formControlName="companyAddress" />
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                          'profile.companyAddress'
-                                          | translate), Form.get("companyAddress"))}}</small>
-                              </div>
-                        </div>
-                  } @else {
-                        <div class="col-lg-12">
-                              <div class="form-group mb-4">
-                                    <label class="ct_fs_16 ct_fw_500 mb-2">
-                                          {{ 'profile.address' | translate }} <span class="ct_color_8f0c1f">*</span>
-                                    </label>
-                                    <input type="text" class="form-control"
-                                          [placeholder]="'auth.enterAddress' | translate"
-                                          [attr.aria-label]="'filters.username' | translate"
-                                          aria-describedby="basic-addon1" formControlName="address" />
-                                    <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.address'
-                                          | translate), Form.get("address"))}}</small>
-                              </div>
-                        </div>
-                  }
+                  </div>
+
                   <div class="col-lg-6">
                         <div class="form-group mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2"> {{ 'profile.city' | translate }} </label>
@@ -200,10 +221,11 @@
                                     | translate), Form.get("city"))}}</small>
                         </div>
                   </div>
+
                   <div class="col-lg-6">
                         <div class="form-group mb-4">
-                              <label class="ct_fs_16 ct_fw_500 mb-2">{{ 'profile.postalCode' | translate }} <span
-                                          class="ct_color_8f0c1f">*</span>
+                              <label class="ct_fs_16 ct_fw_500 mb-2">{{ 'profile.postalCode' | translate }}
+                                    <span class="ct_color_8f0c1f">*</span>
                               </label>
                               <input type="text" class="form-control"
                                     [placeholder]="'profile.enterPostalCode' | translate"
@@ -214,265 +236,257 @@
                         </div>
                   </div>
 
-
-                  @if(isCompanyUserType) {
-                        <div class="col-lg-6">
-                              <div class="mb-4">
-                                    <label class="ct_fs_16 ct_fw_500 mb-2">{{ 'profile.showroomCoverImage' | translate
-                                          }}</label>
-                                    @if(!coverPreview){
-                                    <div (click)="coverImageInput.click()">
-                                          <div class="upload-box text-center">
-                                                <img src="img/icons/camera.png" [alt]="'vehicle.camera' | translate" />
-                                                <div>
-                                                      {{ 'profile.tapToUploadCover' | translate }}
-                                                </div>
-                                                <input #coverImageInput type="file" id="fileInput" accept="image/*"
-                                                      hidden (change)="onCoverImageChange($event)" />
-                                          </div>
-                                    </div>
-                                    }@else{
-                                    <div class="upload-imgs cover-img-box ct_custom_scroll mt-0">
-                                          <div class="cover-img position-relative">
-                                                <img [src]="coverPreview" alt="" />
-                                                <button type="button" [title]="'profile.removeCoverImage' | translate"
-                                                      class="img-remove" (click)="removeCoverImage()">
-                                                      <i class="fa-solid fa-trash"></i>
-                                                </button>
-                                          </div>
-                                    </div>
-                                    }
-                              </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                              <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                          <h5 class="ct_fs_16 ct_fw_500 mb-2">{{ 'profile.openingTiming' | translate }}
-                                          </h5>
-                                    </div>
-                              </div>
-
-                              <div class="mt-2 border-123" formArrayName="openingTimes">
-                                    <div *ngFor="let t of openingTimes.controls; let i=index" [formGroupName]="i"
-                                          class="d-flex justify-content-between align-items-center mb-2">
-                                          <div class="ct_fs_18 ct_fw_400">{{ ('vehicle.' + NoOfDays[i].toLowerCase()) |
-                                                translate }}.</div>
-                                          <!-- <input type="text" class="form-control" formControlName="day" /> -->
-                                          <div class="d-flex gap-2 align-items-center">
-                                                <input type="time" class="form-control" formControlName="open_time" />
-                                                <span> -</span>
-                                                <input type="time" class="form-control" formControlName="close_time" />
-                                          </div>
-                                    </div>
-                              </div>
-                        </div>
-
-                        <div class="col-lg-12">
-                              <div class="form-group mb-4">
-                                    <label for="" class="ct_fs_16 ct_fw_500 mb-2">
-                                          {{ 'profile.tagline' | translate }}
-                                    </label>
-                                    <input type="text" class="form-control ct_input"
-                                          [placeholder]="'profile.enterTagline' | translate"
-                                          formControlName="tagline" />
-                              </div>
-                        </div>
-
-                        <div class="col-12">
-                              <label class="ct_fs_16 ct_fw_500 mb-2">{{ 'common.description' | translate }}</label>
-                              <textarea class="form-control mt-0" id="exampleFormControlTextarea1" rows="3"
-                                    [placeholder]="'common.description' | translate"
-                                    formControlName="description"></textarea>
-                        </div>
-
-                        <div class="col-lg-12">
-                              <div class="mt-4">
-                                    <label class="ct_fs_16 ct_fw_500 mb-2">
-                                          {{ 'media.uploadImage' | translate }}
-                                    </label>
-                                    <div class="upload-box text-center py-5" (click)="showroomImagesInput.click()">
+                  <div class="col-lg-6">
+                        <div class="mb-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">{{ 'profile.showroomCoverImage' | translate
+                                    }}</label>
+                              @if(!coverPreview){
+                              <div (click)="coverImageInput.click()">
+                                    <div class="upload-box text-center">
                                           <img src="img/icons/camera.png" [alt]="'vehicle.camera' | translate" />
                                           <div>
-                                                {{ 'profile.tapToUploadImages' | translate }}
+                                                {{ 'profile.tapToUploadCover' | translate }}
                                           </div>
-                                          <input #showroomImagesInput type="file" id="fileInput" accept="image/*"
-                                                multiple hidden (change)="onShowroomImagesChange($event)" />
+                                          <input #coverImageInput type="file" id="fileInput" accept="image/*" hidden
+                                                (change)="onCoverImageChange($event)" />
                                     </div>
+                              </div>
+                              } @else {
+                              <div class="upload-imgs cover-img-box ct_custom_scroll mt-0">
+                                    <div class="cover-img position-relative">
+                                          <img [src]="coverPreview" alt="" />
+                                          <button type="button" [title]="'profile.removeCoverImage' | translate"
+                                                class="img-remove" (click)="removeCoverImage()">
+                                                <i class="fa-solid fa-trash"></i>
+                                          </button>
+                                    </div>
+                              </div>
+                              }
+                        </div>
+                  </div>
 
-                                    <div class="upload-imgs ct_custom_scroll">
-                                          <div class="img-item" *ngFor="let img of showroomPreviews; let i=index">
-                                                <img [src]="img" alt="" />
-                                                <button type="button" (click)="removeShowroomImage(i)"
-                                                      class="img-remove">
+                  <div class="col-lg-6">
+                        <div class="d-flex justify-content-between align-items-center">
+                              <div>
+                                    <h5 class="ct_fs_16 ct_fw_500 mb-2">{{ 'profile.openingTiming' | translate }}
+                                    </h5>
+                              </div>
+                        </div>
+
+                        <div class="mt-2 border-123" formArrayName="openingTimes">
+                              <div *ngFor="let t of openingTimes.controls; let i=index" [formGroupName]="i"
+                                    class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="ct_fs_18 ct_fw_400">{{ ('vehicle.' + NoOfDays[i].toLowerCase()) |
+                                          translate }}.</div>
+                                    <div class="d-flex gap-2 align-items-center">
+                                          <input type="time" class="form-control" formControlName="open_time" />
+                                          <span> -</span>
+                                          <input type="time" class="form-control" formControlName="close_time" />
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-lg-12">
+                        <div class="form-group mb-4">
+                              <label for="" class="ct_fs_16 ct_fw_500 mb-2">
+                                    {{ 'profile.tagline' | translate }}
+                              </label>
+                              <input type="text" class="form-control ct_input"
+                                    [placeholder]="'profile.enterTagline' | translate" formControlName="tagline" />
+                        </div>
+                  </div>
+
+                  <div class="col-12">
+                        <label class="ct_fs_16 ct_fw_500 mb-2">{{ 'common.description' | translate }}</label>
+                        <textarea class="form-control mt-0" id="exampleFormControlTextarea1" rows="3"
+                              [placeholder]="'common.description' | translate" formControlName="description"></textarea>
+                  </div>
+
+                  <div class="col-lg-12">
+                        <div class="mt-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    {{ 'media.uploadImage' | translate }}
+                              </label>
+                              <div class="upload-box text-center py-5" (click)="showroomImagesInput.click()">
+                                    <img src="img/icons/camera.png" [alt]="'vehicle.camera' | translate" />
+                                    <div>
+                                          {{ 'profile.tapToUploadImages' | translate }}
+                                    </div>
+                                    <input #showroomImagesInput type="file" id="fileInput" accept="image/*" multiple
+                                          hidden (change)="onShowroomImagesChange($event)" />
+                              </div>
+
+                              <div class="upload-imgs ct_custom_scroll">
+                                    <div class="img-item" *ngFor="let img of showroomPreviews; let i=index">
+                                          <img [src]="img" alt="" />
+                                          <button type="button" (click)="removeShowroomImage(i)" class="img-remove">
+                                                <i class="fa-solid fa-trash"></i>
+                                          </button>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                        <div class="mt-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    {{ 'profile.advantagesAndHighlights' | translate }}
+                              </label>
+
+                              <div class="border-123" formArrayName="advantages">
+                                    <div *ngFor="let a of advantages.controls; let i=index" [formGroupName]="i"
+                                          class="d-flex align-items-center gap-3 mb-3">
+                                          <div class="w-100 ct_grey_input">
+                                                <input type="text" class="form-control ct_input"
+                                                      [placeholder]="'profile.enterAdvantagesAndHighlights' | translate"
+                                                      formControlName="advantage" />
+                                          </div>
+                                          <a (click)="removeAdvantage(i)">
+                                                <img src="img/icons/cross.png" />
+                                          </a>
+                                    </div>
+                              </div>
+
+                              <div class="mt-3">
+                                    <button type="button" class="btn-red-transparent w-100 text-center ct_fs_16"
+                                          (click)="addAdvantage()">
+                                          {{ advantages.controls.length > 0 ? ('profile.addMoreAdvantage' |
+                                          translate) : ('profile.addAdvantage' | translate) }}</button>
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                        <div class="mt-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    {{ 'profile.ourServices' | translate }}
+                              </label>
+                              <div class="border-123" formArrayName="services">
+                                    <div *ngFor="let s of services.controls; let i = index" [formGroupName]="i"
+                                          class="d-flex align-items-center gap-3 mb-3 ct_custom_check">
+                                          <input class="form-check-input" type="checkbox" formControlName="isActive"
+                                                id="serviceCheck{{i}}" />
+                                          <label for="serviceCheck{{i}}" class="w-100 ct_grey_input">
+                                                <input type="text" class="form-control ct_input"
+                                                      [placeholder]="'profile.enterServices' | translate"
+                                                      formControlName="service_name" />
+                                          </label>
+                                          <a (click)="removeService(i)">
+                                                <img src="img/icons/cross.png" />
+                                          </a>
+                                    </div>
+                              </div>
+                              <div class="mt-3">
+                                    <button type="button" class="btn-red-transparent w-100 text-center ct_fs_16"
+                                          (click)="addService()">
+                                          {{ services.controls.length > 0 ? ('profile.addMoreService' | translate)
+                                          : ('profile.addService' | translate) }}</button>
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="col-lg-12 mt-4">
+                        <label class="ct_fs_16 ct_fw_500 mb-2">
+                              {{ 'profile.teamMembers' | translate }}
+                        </label>
+
+                        <div class="row" formArrayName="teamMembers">
+                              <div *ngFor="let m of teamMembers.controls; let i = index" [formGroupName]="i"
+                                    class="col-lg-6 mb-3">
+                                    <div class="border-123">
+                                          <div class="d-flex align-items-center gap-3 mb-3">
+                                                <div class="member-profile">
+                                                      <img [src]="memberPreviews[m.value.tempKey] || 'img/icons/user-circle-img.png'"
+                                                            alt="" class="main" />
+                                                      <label for="member_profile_update_{{i}}">
+                                                            <input type="file" class="d-none"
+                                                                  id="member_profile_update_{{i}}" accept="image/*"
+                                                                  (change)="onMemberProfileChange($event, i)" />
+                                                            <div class="ct_upload_icon">
+                                                                  <img src="img/Camera.png" alt="" />
+                                                            </div>
+                                                      </label>
+                                                </div>
+                                                <div class="w-100 ct_grey_input">
+                                                      <input type="text" class="form-control ct_input mb-2"
+                                                            [placeholder]="'profile.fullName2' | translate"
+                                                            formControlName="fullName" />
+                                                      <input type="text" class="form-control ct_input"
+                                                            [placeholder]="'profile.roleEGSalesManager' | translate"
+                                                            formControlName="role" />
+                                                </div>
+                                          </div>
+
+                                          <div class="w-100 ct_grey_input mb-2">
+                                                <input type="number" class="form-control ct_input"
+                                                      [placeholder]="'profile.phoneNumber' | translate"
+                                                      formControlName="phoneNumber" />
+                                          </div>
+
+                                          <div class="w-100 ct_grey_input mb-2">
+                                                <input type="text" class="form-control ct_input"
+                                                      [placeholder]="'auth.emailAddress' | translate"
+                                                      formControlName="email" />
+                                          </div>
+                                          <div class="w-100 ct_grey_input">
+                                                <input type="text" class="form-control ct_input"
+                                                      [placeholder]="'profile.languagesEGEnglishSwedish' | translate"
+                                                      formControlName="languages" />
+                                          </div>
+
+                                          <a (click)="removeTeamMember(i)"
+                                                class="text-danger d-flex align-items-center justify-content-center mt-3 cursor-pointer">
+                                                <i class="fa-solid fa-trash me-2"></i>
+                                                {{ 'profile.removeMember' | translate }}
+                                          </a>
+                                    </div>
+                              </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                              <button type="button" class="btn-red-transparent w-100 text-center ct_fs_16"
+                                    (click)="addTeamMember()">
+                                    {{ 'profile.addTeamMember' | translate }}</button>
+                        </div>
+                  </div>
+
+                  <div class="col-lg-12">
+                        <div class="mt-4">
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    {{ 'profile.showroomVideo' | translate }}
+                              </label>
+                              @if(!videoPreview){
+                              <div class="upload-box text-center py-5" id="videoUploadBox" (click)="videoInput.click()">
+                                    <img src="img/icons/video-grey.png" [alt]="'vehicle.video' | translate" />
+                                    <div>
+                                          {{ 'profile.uploadShowroomTourVideo' | translate }}
+                                          <small class="ct_fs_12 d-block">
+                                                {{ 'profile.showroomVideoFormats' | translate }}
+                                          </small>
+                                    </div>
+                                    <input #videoInput type="file" id="videoInput" accept="video/mp4,video/quicktime"
+                                          hidden (change)="onFileSelected($event)" />
+                              </div>
+                              } @else {
+                              <div class="upload-videos mt-3">
+                                    <div class="ct_single_uploaded_img mt-2 py-2">
+                                          <div class="mobile-frame">
+                                                <video [src]="videoPreview" autoplay controls playsinline
+                                                      class="videoPreview"></video>
+                                                <button type="button" [title]="'common.remove' | translate"
+                                                      (click)="removeFile()"
+                                                      class="video-remove btn text-danger btn-sm position-absolute top-0 end-0">
                                                       <i class="fa-solid fa-trash"></i>
                                                 </button>
                                           </div>
                                     </div>
                               </div>
+                              }
                         </div>
-
-                        <div class="col-lg-6">
-                              <div class="mt-4">
-                                    <label class="ct_fs_16 ct_fw_500 mb-2">
-                                          {{ 'profile.advantagesAndHighlights' | translate }}
-                                    </label>
-
-                                    <div class="border-123" formArrayName="advantages">
-                                          <div *ngFor="let a of advantages.controls; let i=index" [formGroupName]="i"
-                                                class="d-flex align-items-center gap-3 mb-3">
-                                                <div class="w-100 ct_grey_input">
-                                                      <input type="text" class="form-control ct_input"
-                                                            [placeholder]="'profile.enterAdvantagesAndHighlights' | translate"
-                                                            formControlName="advantage" />
-                                                </div>
-                                                <a (click)="removeAdvantage(i)">
-                                                      <img src="img/icons/cross.png" />
-                                                </a>
-                                          </div>
-                                    </div>
-
-                                    <div class="mt-3">
-                                          <button type="button" class="btn-red-transparent w-100 text-center ct_fs_16"
-                                                (click)="addAdvantage()">
-                                                {{ advantages.controls.length > 0 ? ('profile.addMoreAdvantage' |
-                                                translate) : ('profile.addAdvantage' | translate) }}</button>
-                                    </div>
-                              </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                              <div class="mt-4">
-                                    <label class="ct_fs_16 ct_fw_500 mb-2">
-                                          {{ 'profile.ourServices' | translate }}
-                                    </label>
-                                    <div class="border-123" formArrayName="services">
-                                          <div *ngFor="let s of services.controls; let i = index" [formGroupName]="i"
-                                                class="d-flex align-items-center gap-3 mb-3 ct_custom_check">
-                                                <input class="form-check-input" type="checkbox"
-                                                      formControlName="isActive" id="serviceCheck{{i}}" />
-                                                <label for="serviceCheck{{i}}" class="w-100 ct_grey_input">
-                                                      <input type="text" class="form-control ct_input"
-                                                            [placeholder]="'profile.enterServices' | translate"
-                                                            formControlName="service_name" />
-                                                </label>
-                                                <a (click)="removeService(i)">
-                                                      <img src="img/icons/cross.png" />
-                                                </a>
-                                          </div>
-                                    </div>
-                                    <div class="mt-3">
-                                          <button type="button" class="btn-red-transparent w-100 text-center ct_fs_16"
-                                                (click)="addService()">
-                                                {{ services.controls.length > 0 ? ('profile.addMoreService' | translate)
-                                                : ('profile.addService' | translate) }}</button>
-                                    </div>
-                              </div>
-                        </div>
-
-                        <div class="col-lg-12 mt-4">
-                              <label class="ct_fs_16 ct_fw_500 mb-2">
-                                    {{ 'profile.teamMembers' | translate }}
-                              </label>
-
-                              <div class="row" formArrayName="teamMembers">
-                                    <div *ngFor="let m of teamMembers.controls; let i = index" [formGroupName]="i"
-                                          class="col-lg-6 mb-3">
-                                          <div class="border-123">
-                                                <div class="d-flex align-items-center gap-3 mb-3">
-                                                      <div class="member-profile">
-                                                            <img [src]="memberPreviews[m.value.tempKey] || 'img/icons/user-circle-img.png'"
-                                                                  alt="" class="main" />
-                                                            <label for="member_profile_update_{{i}}">
-                                                                  <input type="file" class="d-none"
-                                                                        id="member_profile_update_{{i}}"
-                                                                        accept="image/*"
-                                                                        (change)="onMemberProfileChange($event, i)" />
-                                                                  <div class="ct_upload_icon">
-                                                                        <img src="img/Camera.png" alt="" />
-                                                                  </div>
-                                                            </label>
-                                                      </div>
-                                                      <div class="w-100 ct_grey_input">
-                                                            <input type="text" class="form-control ct_input mb-2"
-                                                                  [placeholder]="'profile.fullName2' | translate"
-                                                                  formControlName="fullName" />
-                                                            <input type="text" class="form-control ct_input"
-                                                                  [placeholder]="'profile.roleEGSalesManager' | translate"
-                                                                  formControlName="role" />
-                                                      </div>
-                                                </div>
-
-                                                <div class="w-100 ct_grey_input mb-2">
-                                                      <input type="number" class="form-control ct_input"
-                                                            [placeholder]="'profile.phoneNumber' | translate"
-                                                            formControlName="phoneNumber" />
-                                                </div>
-
-                                                <div class="w-100 ct_grey_input mb-2">
-                                                      <input type="text" class="form-control ct_input"
-                                                            [placeholder]="'auth.emailAddress' | translate"
-                                                            formControlName="email" />
-                                                </div>
-                                                <div class="w-100 ct_grey_input">
-                                                      <input type="text" class="form-control ct_input"
-                                                            [placeholder]="'profile.languagesEGEnglishSwedish' | translate"
-                                                            formControlName="languages" />
-                                                </div>
-
-                                                <a (click)="removeTeamMember(i)"
-                                                      class="text-danger d-flex align-items-center justify-content-center mt-3 cursor-pointer">
-                                                      <i class="fa-solid fa-trash me-2"></i>
-                                                      {{ 'profile.removeMember' | translate }}
-                                                </a>
-                                          </div>
-                                    </div>
-                              </div>
-
-                              <div class="col-lg-6">
-                                    <button type="button" class="btn-red-transparent w-100 text-center ct_fs_16"
-                                          (click)="addTeamMember()">
-                                          {{ 'profile.addTeamMember' | translate }}</button>
-                              </div>
-                        </div>
-
-                        <div class="col-lg-12">
-                              <div class="mt-4">
-                                    <label class="ct_fs_16 ct_fw_500 mb-2">
-                                          {{ 'profile.showroomVideo' | translate }}
-                                    </label>
-                                    @if(!videoPreview){
-                                    <div class="upload-box text-center py-5" id="videoUploadBox"
-                                          (click)="videoInput.click()">
-                                          <img src="img/icons/video-grey.png" [alt]="'vehicle.video' | translate" />
-                                          <div>
-                                                {{ 'profile.uploadShowroomTourVideo' | translate }}
-                                                <small class="ct_fs_12 d-block">
-                                                      {{ 'profile.showroomVideoFormats' | translate }}
-                                                </small>
-                                          </div>
-                                          <input #videoInput type="file" id="videoInput"
-                                                accept="video/mp4,video/quicktime" hidden
-                                                (change)="onFileSelected($event)" />
-                                    </div>
-                                    }@else{
-                                    <div class="upload-videos mt-3">
-                                          <div class="ct_single_uploaded_img mt-2 py-2">
-                                                <div class="mobile-frame">
-                                                      <video [src]="videoPreview" autoplay controls playsinline
-                                                            class="videoPreview"></video>
-                                                      <button type="button" [title]="'common.remove' | translate"
-                                                            (click)="removeFile()"
-                                                            class="video-remove btn text-danger btn-sm position-absolute top-0 end-0">
-                                                            <i class="fa-solid fa-trash"></i>
-                                                      </button>
-                                                </div>
-                                          </div>
-                                    </div>
-                                    }
-                              </div>
-                        </div>
+                  </div>
                   }
+
                   <div class="d-flex justify-content-end mt-5">
                         <app-submit-button [text]="'common.saveChanges'" [class]="'btn-red'"
                               [isLoading]="loading"></app-submit-button>
@@ -481,6 +495,7 @@
             </div>
       </div>
 </form>
+
 <div class="modal fade modal-lg" id="ct_feedback_detail_modal" tabindex="-1"
       aria-labelledby="ct_feedback_detail_modalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -493,9 +508,7 @@
                   </div>
                   <div class="modal-footer">
                         <button type="button" class="btn-grey-transparent" data-bs-dismiss="modal"
-                              #closeBtn>{{'common.cancel'
-                              |
-                              translate}}</button>
+                              #closeBtn>{{'common.cancel' | translate}}</button>
                         <button type="button" class="btn-red" (click)="onDone()">{{'common.done' | translate}}</button>
                   </div>
             </div>
