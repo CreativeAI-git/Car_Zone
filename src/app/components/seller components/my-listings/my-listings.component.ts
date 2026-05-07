@@ -40,6 +40,11 @@ export class MyListingsComponent {
       return;
     }
 
+    if (!this.service.isApprovedCompany(this.userData)) {
+      this.modalService.openCompanyApprovalPendingModal();
+      return;
+    }
+
     if (this.userData.slotAvailable) {
       this.router.navigate(['/list-your-car'])
     } else {

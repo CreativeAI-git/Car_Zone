@@ -193,4 +193,24 @@
       <img id="themeLightIcon" src="img/icons/light.png" [alt]="'common.lightMode' | translate" />
       <img id="themeDarkIcon" src="img/icons/dark.png" [alt]="'common.darkMode' | translate" />
 </button>
+
+<div class="modal fade" id="CompanyApprovalPendingModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <h5 class="modal-title">Application Under Review</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                    <div class="modal-body">
+                          <p class="mb-0">
+                                Your company account is currently being reviewed by our team. Once your application is approved, you will be able to access this feature and continue with listing your vehicles.
+                          </p>
+                    </div>
+                  <div class="modal-footer border-0 pt-0">
+                        <button type="button" class="btn-red" data-bs-dismiss="modal">OK</button>
+                  </div>
+            </div>
+      </div>
+</div>
+
 <app-role-modal />

@@ -55,4 +55,24 @@ export class CommonService {
       this.userData.set(res.data)
     })
   }
+
+  isApprovedCompany(userData: any): boolean {
+    const accountType = this.roleService.normalizeUserType(
+      userData?.account_type ||
+      userData?.userType ||
+      userData?.role ||
+      userData?.sellerType
+    );
+
+    if (accountType !== 'company') {
+      return true;
+    }
+
+    const companyApprovalStatus = String(
+      userData?.companyApprovalStatus
+
+    );
+
+    return companyApprovalStatus === '1' || companyApprovalStatus === 'approved';
+  }
 }

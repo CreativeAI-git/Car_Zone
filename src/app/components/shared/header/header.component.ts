@@ -4,7 +4,6 @@ import { RoleService } from '../../../services/role.service';
 import { AuthService } from '../../../services/auth.service';
 import { CommonService } from '../../../services/common.service';
 import { Subject, takeUntil } from 'rxjs';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../services/modal.service';
@@ -25,7 +24,7 @@ export class HeaderComponent {
   destroy$ = new Subject<void>();
   selectedLang: string = 'en'
   token: any
-  constructor(private router: Router, public authService: AuthService, private commonService: CommonService, private toster: NzMessageService, private translate: TranslateService, public modalService: ModalService, private renderer: Renderer2) {
+  constructor(private router: Router, public authService: AuthService, private commonService: CommonService, private translate: TranslateService, public modalService: ModalService, private renderer: Renderer2) {
     this.translate.setDefaultLang('en');
     this.token = this.authService.getToken();
     this.translate.use(localStorage.getItem('lang') || 'en');
@@ -42,6 +41,11 @@ export class HeaderComponent {
   listCar() {
     if (!this.authService.isLogedIn()) {
       this.modalService.openLoginModal();
+      return;
+    }
+
+    if (!this.commonService.isApprovedCompany(this.userData)) {
+      this.modalService.openCompanyApprovalPendingModal();
       return;
     }
 

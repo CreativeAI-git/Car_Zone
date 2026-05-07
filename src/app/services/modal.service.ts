@@ -115,6 +115,14 @@ export class ModalService {
             this.currentModal.show();
       }
 
+      async openCompanyApprovalPendingModal(): Promise<void> {
+            await this.closeCurrentModal();
+            const el = document.getElementById('CompanyApprovalPendingModal');
+            if (!el) return;
+            this.currentModal = new bootstrap.Modal(el);
+            this.currentModal.show();
+      }
+
       async closeActiveModal(): Promise<void> {
             await this.closeCurrentModal();
       }

@@ -236,7 +236,13 @@ export class HomeComponent {
       return;
     }
 
-    if (this.userData().slotAvailable) {
+    const profile = this.userData?.();
+    if (!this.commonService.isApprovedCompany(profile)) {
+      this.modal.openCompanyApprovalPendingModal();
+      return;
+    }
+
+    if (profile?.slotAvailable) {
       this.router.navigate(['/list-your-car'])
     } else {
       this.router.navigate(['/choose-listing-plan'])
