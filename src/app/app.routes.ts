@@ -83,7 +83,11 @@ export const routes: Routes = [
                               {
                                     path: 'requested-slots',
                                     loadComponent: () => import('./components/seller components/requested-slots/requested-slots.component').then(m => m.RequestedSlotsComponent)
-                              }
+                              },
+                              {
+                                    path: 'my-listings',
+                                    loadComponent: () => import('./components/seller components/my-listings/my-listings.component').then(m => m.MyListingsComponent)
+                              },
                         ]
                   },
                   {
@@ -113,10 +117,6 @@ export const routes: Routes = [
                   {
                         path: 'list-your-car',
                         loadComponent: () => import('./components/seller components/list-your-car/list-your-car.component').then(m => m.ListYourCarComponent)
-                  },
-                  {
-                        path: 'my-listings',
-                        loadComponent: () => import('./components/seller components/my-listings/my-listings.component').then(m => m.MyListingsComponent)
                   },
                   {
                         path: 'payment-success',

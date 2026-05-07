@@ -242,7 +242,8 @@ export class EditProfileComponent {
 
     let formData = new FormData();
 
-    this.appendIfExists(formData, 'fullName', this.Form.value.fullName);
+    const displayName = this.isCompanyUserType ? this.Form.value.companyName : this.Form.value.fullName;
+    this.appendIfExists(formData, 'fullName', displayName);
     this.appendIfExists(formData, 'email', this.Form.value.email);
     this.appendIfExists(formData, 'userType', this.Form.value.userType);
     this.appendIfExists(formData, 'account_type', this.Form.value.userType);
@@ -373,12 +374,22 @@ export class EditProfileComponent {
     return this.Form.get('userType')?.value === 'company';
   }
 
+  get profileDisplayName(): string {
+    if (this.isCompanyUserType) {
+      return this.Form.get('companyName')?.value || this.userData?.companyName || this.userData?.fullName || '';
+    }
+
+    return this.Form.get('fullName')?.value || this.userData?.fullName || '';
+  }
+
   private applyUserTypeValidators(userType: 'private' | 'company') {
+    const privateOnlyRequiredControls = ['fullName'];
     const companyOnlyRequiredControls = ['businessPhone', 'city', 'pincode', 'companyName', 'companyAddress'];
     const companyOptionalPhoneControls = ['phoneNumber', 'whatsappNumber'];
     const optionalCompanyControls = ['legalForm', 'vat', 'websiteUrl', 'tagline', 'description', 'address'];
 
     if (userType === 'company') {
+      privateOnlyRequiredControls.forEach((controlName) => this.clearControlValidators(controlName));
       this.setControlValidators('businessPhone', [Validators.required]);
       this.setControlValidators('city', [Validators.required, NoWhitespaceDirective.validate]);
       this.setControlValidators('pincode', [Validators.required, NoWhitespaceDirective.validate]);
@@ -389,6 +400,7 @@ export class EditProfileComponent {
       return;
     }
 
+    this.setControlValidators('fullName', [Validators.required, Validators.minLength(3), Validators.maxLength(20), NoWhitespaceDirective.validate]);
     companyOnlyRequiredControls.forEach((controlName) => this.clearControlValidators(controlName));
     companyOptionalPhoneControls.forEach((controlName) => this.clearControlValidators(controlName));
     optionalCompanyControls.forEach((controlName) => this.clearControlValidators(controlName));

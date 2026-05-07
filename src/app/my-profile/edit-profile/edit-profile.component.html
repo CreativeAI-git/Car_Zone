@@ -10,7 +10,7 @@
             </label>
       </div>
       <div>
-            <h5 class="ct_fs_25 ct_fw_600 mb-1">{{userData?.fullName}}</h5>
+            <h5 class="ct_fs_25 ct_fw_600 mb-1">{{ profileDisplayName }}</h5>
             <p class="ct_fs_14 mb-0">{{userData?.email}}</p>
       </div>
 </div>
@@ -20,6 +20,17 @@
             <div class="row">
                   <div class="col-lg-4">
                         <div class="form-group mb-4">
+                              @if (isCompanyUserType) {
+                              <label class="ct_fs_16 ct_fw_500 mb-2">
+                                    {{ 'profile.companyName' | translate }} <span class="ct_color_8f0c1f">*</span>
+                              </label>
+                              <input type="text" class="form-control"
+                                    [placeholder]="'profile.enterCompanyName' | translate"
+                                    [attr.aria-label]="'profile.companyName' | translate"
+                                    aria-describedby="basic-addon1" formControlName="companyName" />
+                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.companyName'
+                                    | translate), Form.get("companyName"))}}</small>
+                              } @else {
                               <label class="ct_fs_16 ct_fw_500 mb-2">
                                     {{'profile.fullName' | translate | titlecase}} <span
                                           class="ct_color_8f0c1f">*</span>
@@ -30,6 +41,7 @@
                                     formControlName="fullName" />
                               <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.fullName'
                                     | translate), Form.get("fullName"))}}</small>
+                              }
                         </div>
                   </div>
 
@@ -52,8 +64,30 @@
                                     Account Type <span class="ct_color_8f0c1f">*</span>
                               </label>
                               <nz-select class="form-control" nzPlaceHolder="Account Type" formControlName="userType">
-                                    <nz-option nzLabel="Private" nzValue="private"></nz-option>
-                                    <nz-option nzLabel="Company" nzValue="company"></nz-option>
+                                    <nz-option nzCustomContent [nzLabel]="'Private' | translate" [nzValue]="'private'"
+                                          class="ct_custom_select">
+                                          <div class="d-flex align-items-center justify-content-between">
+                                                <div>
+                                                      <p class="m-0">
+                                                            {{'private' | translate}}
+                                                      </p>
+                                                </div>
+                                                <input type="radio" class="cutom_radio_input"
+                                                      [checked]="Form.get('userType')?.value?.includes('private')" />
+                                          </div>
+                                    </nz-option>
+                                    <nz-option nzCustomContent [nzLabel]="'Company' | translate" [nzValue]="'company'"
+                                          class="ct_custom_select">
+                                          <div class="d-flex align-items-center justify-content-between">
+                                                <div>
+                                                      <p class="m-0">
+                                                            {{'company' | translate}}
+                                                      </p>
+                                                </div>
+                                                <input type="radio" class="cutom_radio_input"
+                                                      [checked]="Form.get('userType')?.value?.includes('company')" />
+                                          </div>
+                                    </nz-option>
                               </nz-select>
                         </div>
                   </div>
@@ -69,7 +103,7 @@
                   }
 
                   @if (isCompanyUserType) {
-                  <div class="col-lg-4">
+                  <div class="col-lg-6">
                         <div class="form-group mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2">
                                     Business Phone Number <span class="ct_color_8f0c1f">*</span>
@@ -88,7 +122,7 @@
                         </div>
                   </div>
 
-                  <div class="col-lg-4">
+                  <div class="col-lg-6">
                         <div class="form-group mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2">
                                     Mobile Number
@@ -106,7 +140,7 @@
                         </div>
                   </div>
 
-                  <div class="col-lg-4">
+                  <div class="col-lg-6">
                         <div class="form-group mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2">
                                     {{'profile.whatsAppNumber' | translate | titlecase}}
@@ -173,20 +207,6 @@
                   <div class="col-lg-6">
                         <div class="form-group mb-4">
                               <label class="ct_fs_16 ct_fw_500 mb-2">
-                                    {{ 'profile.companyName' | translate }} <span class="ct_color_8f0c1f">*</span>
-                              </label>
-                              <input type="text" class="form-control"
-                                    [placeholder]="'profile.enterCompanyName' | translate"
-                                    [attr.aria-label]="'filters.username' | translate" aria-describedby="basic-addon1"
-                                    formControlName="companyName" />
-                              <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.companyName'
-                                    | translate), Form.get("companyName"))}}</small>
-                        </div>
-                  </div>
-
-                  <div class="col-lg-6">
-                        <div class="form-group mb-4">
-                              <label class="ct_fs_16 ct_fw_500 mb-2">
                                     {{ 'profile.websiteUrl' | translate }}
                               </label>
                               <input type="text" class="form-control"
@@ -226,7 +246,8 @@
 
                   <div class="col-lg-6">
                         <div class="form-group mb-4">
-                              <label class="ct_fs_16 ct_fw_500 mb-2"> {{ 'profile.city' | translate }} <span class="ct_color_8f0c1f">*</span></label>
+                              <label class="ct_fs_16 ct_fw_500 mb-2"> {{ 'profile.city' | translate }} <span
+                                          class="ct_color_8f0c1f">*</span></label>
                               <input type="text" class="form-control"
                                     [placeholder]="'profile.enterYourCity' | translate"
                                     [attr.aria-label]="'filters.username' | translate" aria-describedby="basic-addon1"
