@@ -82,6 +82,76 @@
     z-index: 9;
 }
 
-.ct_share_modal_buttons {
-    display: block;
+.ct_share_modal {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.ct_share_modal .modal-header {
+    padding: 18px 20px;
+}
+
+.ct_share_modal .modal-body {
+    padding: 20px;
+}
+
+.ct_share_modal_top {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.ct_share_modal_top .form-control {
+    height: 42px;
+    border: 1px solid #cfcfcf;
+    box-shadow: none;
+}
+
+.ct_share_copy_btn {
+    min-width: 140px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.ct_share_modal_links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.ct_share_action {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #8f0c1f;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.ct_share_action i {
+    font-size: 20px;
+}
+
+.ct_share_action:hover {
+    color: #6f0918;
+}
+
+@media only screen and (max-width: 575.98px) {
+    .ct_share_modal_top {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ct_share_copy_btn {
+        width: 100%;
+    }
 }

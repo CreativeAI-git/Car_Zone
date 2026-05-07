@@ -534,7 +534,7 @@
                                                       </a>
                                                 </div>
                                                 <div class="w-100">
-                                                      <button type="button" (click)="shareOnWhatsapp(carData)"
+                                                      <button type="button" (click)="shareListingByWhatsapp()"
                                                             class="btn-green-transparent w-100 text-center  ct_fw_400">
                                                             <i class="fa-brands fa-whatsapp me-2"></i>
                                                             {{ 'common.whatsapp' | translate }}
@@ -729,16 +729,33 @@
 <!--Report listing modal -->
 <div class="modal fade" id="shareModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+            <div class="modal-content ct_share_modal">
                   <div class="modal-header">
-                        <h5 class="modal-title">{{ 'vehicle.share' | translate }}</h5>
+                        <h5 class="modal-title">Share offer</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                   </div>
 
                   <div class="modal-body">
-                        <share-buttons class="ct_share_modal_buttons" [theme]="'circles-dark'"
-                              [include]="['facebook', 'x','linkedin','pinterest','reddit','mix','vk','telegram','messenger','whatsapp','xing','line','sms','email','copy']"
-                              [show]="9" [url]="shareUrl"></share-buttons>
+                        <div class="ct_share_modal_top">
+                              <input type="text" class="form-control" [value]="shareUrl" readonly />
+                              <button type="button" class="btn-red-transparent ct_share_copy_btn"
+                                    (click)="copyShareLink()">
+                                    <i class="fa-regular fa-copy"></i>
+                                    <span>Copy link</span>
+                              </button>
+                        </div>
+
+                        <div class="ct_share_modal_links">
+                              <button type="button" class="ct_share_action" (click)="shareListingByEmail()">
+                                    <i class="fa-regular fa-envelope"></i>
+                                    <span>E-Mail</span>
+                              </button>
+
+                              <button type="button" class="ct_share_action" (click)="shareListingByWhatsapp()">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                    <span>WhatsApp</span>
+                              </button>
+                        </div>
                   </div>
             </div>
       </div>

@@ -13,14 +13,13 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SubmitButtonComponent } from '../shared/submit-button/submit-button.component';
-import { ShareButtons } from 'ngx-sharebuttons/buttons';
 import { ValidationErrorService } from '../../services/validation-error.service';
 import { NoWhitespaceDirective } from '../../helper/validators';
 
 declare var Swiper: any;
 @Component({
   selector: 'app-car-detail',
-  imports: [CommonModule, ChfFormatPipe, TranslateModule, NzImageModule, FormsModule, ReactiveFormsModule, SubmitButtonComponent, RouterLink, ShareButtons],
+  imports: [CommonModule, ChfFormatPipe, TranslateModule, NzImageModule, FormsModule, ReactiveFormsModule, SubmitButtonComponent, RouterLink],
   templateUrl: './car-detail.component.html',
   styleUrl: './car-detail.component.css'
 })
@@ -223,10 +222,34 @@ export class CarDetailComponent {
     this.modalService.openLoginModal();
   }
 
-  shareOnWhatsapp(item: any) {
-    let whatsappUrl = `https://wa.me/?text=${encodeURIComponent(item.title)} ${encodeURIComponent(item.description)} ${encodeURIComponent(item.price)}`;
-    window.open(whatsappUrl, '_blank');
-    // this.message.success('Whatsapp message sent successfully')
+  async copyShareLink() {
+    if (!this.shareUrl) {
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(this.shareUrl);
+      this.message.success('Link copied');
+    } catch {
+      const input = document.createElement('input');
+      input.value = this.shareUrl;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      this.message.success('Link copied');
+    }
+  }
+
+  shareListingByEmail() {
+    const subject = `${this.carData?.vehicle?.brand || ''} ${this.carData?.vehicle?.model || ''}`.trim() || this.translate.instant('vehicle.share');
+    const body = this.shareUrl;
+    window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
+
+  shareListingByWhatsapp() {
+    const text = `${this.carData?.vehicle?.brand || ''} ${this.carData?.vehicle?.model || ''} ${this.shareUrl}`.trim();
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   }
 
   callSeller(phone: string) {
