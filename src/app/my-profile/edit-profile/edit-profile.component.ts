@@ -52,14 +52,14 @@ export class EditProfileComponent {
       fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20), NoWhitespaceDirective.validate]],
       email: ['', [Validators.required, Validators.email]],
       businessPhone: [''],
-      phoneNumber: [''],
+      mobilePhone: [''],
       whatsappNumber: [''],
       userType: ['private', [Validators.required]],
       address: [''],
       legalForm: ['Sole Proprietorship'],
       companyName: [''],
       companyAddress: [''],
-      vat: [''],
+      commercialRegisterNumber: [''],
       city: [''],
       pincode: [''],
       websiteUrl: [''],
@@ -81,7 +81,7 @@ export class EditProfileComponent {
           fullName: this.userData.fullName,
           email: this.userData.email,
           businessPhone: this.userData.businessPhone,
-          phoneNumber: this.userData.phoneNumber,
+          mobilePhone: this.userData.mobilePhone,
           whatsappNumber: this.userData.whatsappNumber,
           address: this.userData.fullAddress,
           city: this.userData.city,
@@ -93,9 +93,9 @@ export class EditProfileComponent {
           services: this.userData.services,
           companyName: this.userData.companyName,
           companyAddress: this.userData.companyAddress,
-          vat: this.userData.vat,
+          commercialRegisterNumber: this.userData.commercialRegisterNumber,
           legalForm: this.userData.legalForm,
-          userType,
+          userType: this.userData.account_type,
         })
         this.applyUserTypeValidators(userType);
         this.imagePreview = this.userData.profileImage
@@ -245,7 +245,6 @@ export class EditProfileComponent {
     const displayName = this.isCompanyUserType ? this.Form.value.companyName : this.Form.value.fullName;
     this.appendIfExists(formData, 'fullName', displayName);
     this.appendIfExists(formData, 'email', this.Form.value.email);
-    this.appendIfExists(formData, 'userType', this.Form.value.userType);
     this.appendIfExists(formData, 'account_type', this.Form.value.userType);
 
     if (!this.isCompanyUserType) {
@@ -258,8 +257,7 @@ export class EditProfileComponent {
     }
 
     this.appendIfExists(formData, 'businessPhone', this.getPhoneValue(this.Form.value.businessPhone));
-    this.appendIfExists(formData, 'business_phone', this.getPhoneValue(this.Form.value.businessPhone));
-    this.appendIfExists(formData, 'phoneNumber', this.getPhoneValue(this.Form.value.phoneNumber));
+    this.appendIfExists(formData, 'mobilePhone', this.getPhoneValue(this.Form.value.mobilePhone));
     this.appendIfExists(formData, 'whatsappNumber', this.getPhoneValue(this.Form.value.whatsappNumber));
 
     if (this.profileImage) {
@@ -272,7 +270,7 @@ export class EditProfileComponent {
     this.appendIfExists(formData, 'fullAddress', this.Form.value.address);
     this.appendIfExists(formData, 'city', this.Form.value.city);
     this.appendIfExists(formData, 'pincode', this.Form.value.pincode);
-    this.appendIfExists(formData, 'vat', this.Form.value.vat);
+    this.appendIfExists(formData, 'commercialRegisterNumber', this.Form.value.commercialRegisterNumber);
     this.appendIfExists(formData, 'tagline', this.Form.value.tagline);
     this.appendIfExists(formData, 'websiteUrl', this.Form.value.websiteUrl);
     this.appendIfExists(formData, 'description', this.Form.value.description);
@@ -385,7 +383,7 @@ export class EditProfileComponent {
   private applyUserTypeValidators(userType: 'private' | 'company') {
     const privateOnlyRequiredControls = ['fullName'];
     const companyOnlyRequiredControls = ['businessPhone', 'city', 'pincode', 'companyName', 'companyAddress'];
-    const companyOptionalPhoneControls = ['phoneNumber', 'whatsappNumber'];
+    const companyOptionalPhoneControls = ['mobilePhone', 'whatsappNumber'];
     const optionalCompanyControls = ['legalForm', 'vat', 'websiteUrl', 'tagline', 'description', 'address'];
 
     if (userType === 'company') {

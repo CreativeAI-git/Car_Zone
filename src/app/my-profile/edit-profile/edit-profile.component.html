@@ -133,10 +133,10 @@
                                     [customPlaceholder]="('common.enter' | translate) + ' Mobile Number'"
                                     [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
                                     [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
-                                    [phoneValidation]="true" formControlName="phoneNumber">
+                                    [phoneValidation]="true" formControlName="mobilePhone">
                               </ngx-intl-tel-input>
                               <small class="text-danger">{{validationErrorService.getErrorMessage('Mobile Number',
-                                    Form.get("phoneNumber"))}}</small>
+                                    Form.get("mobilePhone"))}}</small>
                         </div>
                   </div>
 
@@ -225,8 +225,8 @@
                               </label>
                               <input type="text" class="form-control"
                                     [placeholder]="'profile.enterBusinessNumber' | translate"
-                                    [attr.aria-label]="'filters.username' | translate" formControlName="vat"
-                                    aria-describedby="basic-addon1" />
+                                    [attr.aria-label]="'filters.username' | translate"
+                                    formControlName="commercialRegisterNumber" aria-describedby="basic-addon1" />
                         </div>
                   </div>
 

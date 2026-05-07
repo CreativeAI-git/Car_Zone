@@ -55,8 +55,8 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #ffffff9e;
-  color: #111;
+  background-color: #6264685e;
+  color: #fff;
   height: 35px;
   width: 35px;
   font-size: 18px;
@@ -72,7 +72,7 @@
   position: absolute;
   bottom: 10px;
   left: 10px;
-  background-color: #111111ae;
+  background-color: #888686;
   color: #fff;
   padding: 2px 8px;
   display: flex;
@@ -87,7 +87,7 @@
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background-color: #111111ae;
+  background-color: #888686;
   color: #fff;
   height: 30px;
   width: 30px;
