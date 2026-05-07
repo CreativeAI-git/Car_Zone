@@ -51,14 +51,14 @@ export class HomeComponent {
   selectedBrandsModal: any[] = [];
   bodyTypes: FilterOption[] = [];
   homeBodyTypeCards = [
-    { label: 'Wagon', icon: 'img/icons/car1.png' },
-    { label: 'Convertible', icon: 'img/icons/car2.png' },
-    { label: 'Sedan', icon: 'img/icons/car3.png' },
-    { label: 'SUV / Off-road', icon: 'img/icons/car4.png' },
-    { label: 'Coupe', icon: 'img/icons/car5.png' },
-    { label: 'Pick-up', icon: 'img/icons/car6.png' },
-    { label: 'Van', icon: 'img/icons/car7.png' },
-    { label: 'Compact car', icon: 'img/icons/car8.png' },
+    { label: 'Wagon', icon: 'img/Wagon-1.png', aliases: ['wagon'] },
+    { label: 'Convertible', icon: 'img/Convertible-2.png', aliases: ['convertible', 'cabriolet'] },
+    { label: 'Sedan', icon: 'img/Sedan-1.png', aliases: ['sedan', 'saloon'] },
+    { label: 'SUV / Off-road', icon: 'img/SUV-1.png', aliases: ['suv / off-road', 'suv/off-road', 'suv', 'off-road'] },
+    { label: 'Coupe', icon: 'img/Coupé-1.png', aliases: ['coupe', 'coupé'] },
+    { label: 'Pick-up', icon: 'img/Pickup-1.png', aliases: ['pick-up', 'pickup'] },
+    { label: 'Van', icon: 'img/Van-1.png', aliases: ['van'] },
+    { label: 'Compact car', icon: 'img/Compact car-1.png', aliases: ['compact car', 'city car', 'small car'] },
   ];
   priceRangeAnalytics: any = { matching_vehicles: 0 };
   yearRangeAnalytics: any = {
@@ -495,6 +495,32 @@ export class HomeComponent {
     this.nzImageService.preview(images);
   }
 
+  onHomeBodyTypeSelect(card: { label: string; aliases?: string[] }) {
+    const matchedBodyType = this.findHomeBodyTypeOption(card);
+
+    if (!matchedBodyType) {
+      return;
+    }
+
+    this.filterService.patchAppliedAndDraft({
+      lang: localStorage.getItem('lang') || this.translate.currentLang || 'en',
+      page: 1,
+      body_type_id: [matchedBodyType.value]
+    });
+
+    this.filterService.ensureAppliedLoaded().pipe(takeUntil(this.destroy$)).subscribe({
+      next: () => {
+        this.router.navigate(['/browse-cars']);
+      },
+      error: (error) => console.error('Error applying home body type filter:', error)
+    });
+  }
+
+  isHomeBodyTypeActive(card: { label: string; aliases?: string[] }): boolean {
+    const matchedBodyType = this.findHomeBodyTypeOption(card);
+    return !!matchedBodyType && this.bodyTypeId.includes(matchedBodyType.value);
+  }
+
   private syncStateFromPayload(payload: FilterPayload) {
     const currentYear = new Date().getFullYear();
     this.priceType = payload.price_type ?? 'Purchase';
@@ -568,6 +594,20 @@ export class HomeComponent {
     }
 
     return list.filter((item) => item !== value);
+  }
+
+  private findHomeBodyTypeOption(card: { label: string; aliases?: string[] }): FilterOption | undefined {
+    const candidateLabels = [card.label, ...(card.aliases || [])].map((value) => this.normalizeBodyTypeLabel(value));
+    return this.bodyTypes.find((option) => candidateLabels.includes(this.normalizeBodyTypeLabel(option.label)));
+  }
+
+  private normalizeBodyTypeLabel(value: string): string {
+    return (value || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-zA-Z0-9]+/g, ' ')
+      .trim()
+      .toLowerCase();
   }
 
   ngOnDestroy(): void {

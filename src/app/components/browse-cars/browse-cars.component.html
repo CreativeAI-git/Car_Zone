@@ -988,24 +988,29 @@
                                                                   <span> {{item.consumption }} </span>
                                                             </li> -->
                                                       <li class="d-flex gap-1 align-items-start">
-                                                            <img src="img/icons/km-brown.png" />
+                                                            <img src="img/icons/km.png" />
                                                             <span> {{item.carMileage}} km </span>
                                                       </li>
                                                       <li class="d-flex gap-1 align-items-start">
-                                                            <img src="img/icons/fuel-brown.png" />
+                                                            <img src="img/icons/fuel-type.png" />
                                                             <span> {{item.fuel_type_value}} </span>
                                                       </li>
                                                       <li class="d-flex gap-1 align-items-start">
-                                                            <img src="img/icons/power-brown.png" />
+                                                            <img src="img/icons/power-output.png" />
                                                             <span> {{item?.powerOutput || '-'}}
                                                             </span>
                                                       </li>
                                                       <li class="d-flex gap-1 align-items-start">
-                                                            <img src="img/icons/transmission-brown.png" />
+                                                            <img src="img/icons/transmision.png" />
                                                             <span> {{item.transmission_value}} </span>
                                                       </li>
                                                       <li class="d-flex gap-1 align-items-start">
-                                                            <img src="img/icons/calendar-brown.png" />
+                                                            <img src="img/icons/Hinterantrieb.png" />
+                                                            <span> {{item.drive_type_value ||
+                                                                  '-'}} </span>
+                                                      </li>
+                                                      <li class="d-flex gap-1 align-items-start">
+                                                            <img src="img/icons/year.png" />
                                                             <span> {{(item.first_registration_date | date:'yyyy-MM') ||
                                                                   '-'}} </span>
                                                       </li>

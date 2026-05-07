@@ -1341,7 +1341,20 @@
                               <h2 class="section-heading ct_fs_35 text-start mb-4">Vehicles by body type</h2>
                         </div>
                   </div>
-                  <div class="row g-4">
+                  <div class="row g-4 mb-0">
+                        @for (bodyType of homeBodyTypeCards; track bodyType.label) {
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                              <button type="button" class="home-body-type-card w-100"
+                                    [class.active]="isHomeBodyTypeActive(bodyType)"
+                                    [attr.aria-pressed]="isHomeBodyTypeActive(bodyType)"
+                                    (click)="onHomeBodyTypeSelect(bodyType)">
+                                    <img [src]="bodyType.icon" [alt]="bodyType.label" />
+                                    <p>{{ bodyType.label }}</p>
+                              </button>
+                        </div>
+                        }
+                  </div>
+                  <div class="row g-4 d-none">
                         <!-- @for (bodyType of homeBodyTypeCards; track bodyType.label) { -->
                         <div class="col-lg-3 col-md-4 col-sm-6">
                               <div class=" home-body-type-card w-100">
