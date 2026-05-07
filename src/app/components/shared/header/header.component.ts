@@ -39,6 +39,19 @@ export class HeaderComponent {
     })
   }
 
+  listCar() {
+    if (!this.authService.isLogedIn()) {
+      this.modalService.openLoginModal();
+      return;
+    }
+
+    if (this.userData.slotAvailable) {
+      this.router.navigate(['/list-your-car'])
+    } else {
+      this.router.navigate(['/choose-listing-plan'])
+    }
+  }
+
   logout() {
     this.close?.nativeElement.click();
     this.authService.logout();

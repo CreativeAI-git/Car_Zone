@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, effect } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonService } from '../../../services/common.service';
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,8 @@ import { ChfFormatPipe } from '../../../pipes/chf-format.pipe';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LoaderService } from '../../../services/loader.service';
 import { FormsModule } from '@angular/forms';
+import { ModalService } from '../../../services/modal.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-my-listings',
@@ -19,14 +21,30 @@ export class MyListingsComponent {
   carList: any[] = []
   searchTerm = '';
   statusFilter: 'all' | 'active' | 'expired' = 'all';
-
-  constructor(private service: CommonService, private loder: LoaderService, private translate: TranslateService) {
+  userData: any
+  constructor(private service: CommonService, private loder: LoaderService, private translate: TranslateService, private authService: AuthService, private router: Router, private modalService: ModalService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
+    effect(() => {
+      this.userData = this.service.userData()
+    })
   }
 
   ngOnInit(): void {
     this.loder.show()
     this.getMyCars()
+  }
+
+  listCar() {
+    if (!this.authService.isLogedIn()) {
+      this.modalService.openLoginModal();
+      return;
+    }
+
+    if (this.userData.slotAvailable) {
+      this.router.navigate(['/list-your-car'])
+    } else {
+      this.router.navigate(['/choose-listing-plan'])
+    }
   }
 
   getMyCars() {

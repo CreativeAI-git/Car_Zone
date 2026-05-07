@@ -21,7 +21,7 @@
                               </li>
                               @if(authService.isLogedIn()){
                               <li class="nav-item">
-                                    <a class="nav-link ct_fs_16 ct_fw_600" routerLink="/list-your-car">Sell</a>
+                                    <a class="nav-link ct_fs_16 ct_fw_600" (click)="listCar()">Sell</a>
                               </li>
                               <li class="nav-item">
                                     <a class="nav-link ct_fs_16 ct_fw_600">Schedule request</a>
@@ -106,7 +106,7 @@
                                           </div>
                                     </div>
                                     }
-                                    <div class="ct_language_select dropdown notranslate">
+                                    <!-- <div class="ct_language_select dropdown notranslate">
                                           <img [src]="getImage(selectedLang)" alt="" class="dropdown_img"
                                                 style="width: 20px; margin-right: 5px;">
                                           <button class="dropdown-toggle  py-2 mt-0" data-bs-toggle="dropdown"
@@ -141,7 +141,7 @@
                                                       </a>
                                                 </li>
                                           </ul>
-                                    </div>
+                                    </div> -->
                                     @if(authService.isLogedIn()){
                                     <div class="">
                                           <a routerLink="/my-profile/edit-profile"

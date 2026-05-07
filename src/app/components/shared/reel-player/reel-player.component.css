@@ -15,7 +15,9 @@
 
 
  ::ng-deep .ct_footer_bg,
- ::ng-deep header {
+ ::ng-deep header,
+ ::ng-deep .footer,
+ ::ng-deep .footer-bottom {
        display: none;
  }
 
