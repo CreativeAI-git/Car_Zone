@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import { ModalService } from '../../../services/modal.service';
 
 @Component({
@@ -13,7 +12,7 @@ import { ModalService } from '../../../services/modal.service';
 export class VerificationStatusModalComponent {
   @Input() type: 'private' | 'company' = 'private';
 
-  constructor(private router: Router, private modal: ModalService) { }
+  constructor(private modal: ModalService) { }
 
   get title(): string {
     return this.type === 'company'
@@ -32,10 +31,6 @@ export class VerificationStatusModalComponent {
   }
 
   async continueToApp() {
-    if (this.type === 'company') {
-      this.router.navigate(['/']);
-      return;
-    }
-    await this.modal.openSignInModal();
+    await this.modal.closeActiveModal();
   }
 }

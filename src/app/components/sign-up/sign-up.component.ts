@@ -128,6 +128,8 @@ export class SignUpComponent {
         this.toastr.success(res.message)
         let currentUser = {
           email: this.Form.value.email,
+          password: this.Form.value.password,
+          account_type: formData.account_type,
           isForgotPassword: '0'
         }
         sessionStorage.setItem('currentUser', JSON.stringify(currentUser))

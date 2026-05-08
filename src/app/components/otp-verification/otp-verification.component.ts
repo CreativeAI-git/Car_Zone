@@ -10,6 +10,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../services/user.service';
 import { ModalService } from '../../services/modal.service';
 import { RoleService } from '../../services/role.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-otp-verification',
@@ -27,16 +28,23 @@ export class OtpVerificationComponent {
   otp: string = '';
   loading: boolean = false
   isForgotPassword: string | undefined
-  constructor(private toster: NzMessageService, private commonService: CommonService, private translate: TranslateService, private userService: UserService, private modal: ModalService) {
+  password: string | undefined
+  accountType: string | undefined
+  constructor(
+    private toster: NzMessageService,
+    private commonService: CommonService,
+    private translate: TranslateService,
+    private userService: UserService,
+    private modal: ModalService,
+    private authService: AuthService
+  ) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     effect(() => {
-      if (this.commonService.currentUser()) {
-        this.email = this.commonService.currentUser()?.email
-        this.isForgotPassword = this.commonService.currentUser()?.isForgotPassword
-      } else {
-        this.email = JSON.parse(localStorage.getItem('currentUser') || '{}').email
-        this.isForgotPassword = JSON.parse(localStorage.getItem('currentUser') || '{}').isForgotPassword
-      }
+      const currentUser = this.getCurrentUserContext();
+      this.email = currentUser?.email
+      this.password = currentUser?.password
+      this.accountType = currentUser?.account_type
+      this.isForgotPassword = currentUser?.isForgotPassword
     })
   }
 
@@ -78,30 +86,79 @@ export class OtpVerificationComponent {
 
   verifyOtp() {
     this.loading = true
+    const signupUserType = this.roleService.normalizeUserType(
+      this.accountType || this.roleService.getUserType()
+    );
     let formData = {
       email: this.email,
       otp: this.otp,
       isForgotPasswordPage: Number(this.isForgotPassword)
     }
     this.commonService.post('user/otpVerified', formData).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res: any) => {
+      next: async (res: any) => {
         this.loading = false
-        // this.toster.success(res.message)
         this.otp = ''
+
         if (this.isForgotPassword === '1') {
           this.modal.openResetPasswordModal()
-        } else {
-          if (this.roleService.getUserType() === 'company') {
-            this.modal.openVerificationSubmittedModal()
-          } else {
-            this.modal.openAccountVerifiedModal()
-          }
+          return;
         }
+
+        const hasLoggedInFromVerifyResponse = await this.authService.handleAuthResponse(res);
+        if (hasLoggedInFromVerifyResponse) {
+          this.showPostVerificationSuccessModal(signupUserType);
+          return;
+        }
+
+        this.loginAfterOtpVerification(signupUserType);
       },
       error: (error) => {
         this.loading = false
         this.toster.error(error)
       }
     })
+  }
+
+  private getCurrentUserContext() {
+    return this.commonService.currentUser()
+      || JSON.parse(sessionStorage.getItem('currentUser') || 'null')
+      || JSON.parse(localStorage.getItem('currentUser') || 'null');
+  }
+
+
+
+  private loginAfterOtpVerification(signupUserType: 'private' | 'company') {
+    if (!this.email || !this.password) {
+      this.toster.error('Unable to complete login automatically. Please sign in manually.')
+      return;
+    }
+
+    const loginPayload = {
+      email: this.email,
+      password: this.password,
+      fcmToken: localStorage.getItem('fcm_token') || '',
+      userType: this.roleService.normalizeUserType(this.accountType || this.roleService.getUserType())
+    };
+
+    this.loading = true;
+    this.commonService.post('user/signIn', loginPayload).pipe(takeUntil(this.destroy$)).subscribe({
+      next: async (loginRes: any) => {
+        this.loading = false;
+        await this.authService.handleLoginSuccess(loginRes.data);
+        this.showPostVerificationSuccessModal(signupUserType);
+      },
+      error: (error) => {
+        this.loading = false;
+        this.toster.error(error)
+      }
+    });
+  }
+
+  private showPostVerificationSuccessModal(userType: 'private' | 'company') {
+    if (userType === 'company') {
+      this.modal.openVerificationSubmittedModal();
+    } else {
+      this.modal.openAccountVerifiedModal();
+    }
   }
 }

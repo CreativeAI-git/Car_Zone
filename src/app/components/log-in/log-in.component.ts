@@ -57,13 +57,9 @@ export class LogInComponent {
       next: (res: any) => {
         this.loading = false
         this.toastr.success(res.message)
-        this.authService.setValues(res.data.jwt_token, res.data.userId)
-        const userType = this.roleService.normalizeUserType(
-          res.data.account_type || res.data.userType || res.data.role
-        );
-        this.roleService.setUserType(userType)
-        this.modal.closeLoginModal()
-        this.commonService.getProfile()
+        this.authService.handleLoginSuccess(res.data).catch(() => {
+          this.toastr.error('Unable to complete login. Please try again.')
+        })
       },
       error: (error) => {
         this.loading = false
@@ -102,11 +98,12 @@ export class LogInComponent {
       next: (res: any) => {
         this.loading = false;
         this.toastr.success(res.message);
-        this.authService.setValues(res.token, res.user.id);
-        const userType = this.roleService.normalizeUserType(
-          res.user?.account_type || res.user?.userType || res.user?.role
-        );
-        this.roleService.setUserType(userType);
+        this.authService.handleLoginSuccess({
+          token: res.token,
+          user: res.user
+        }).catch(() => {
+          this.toastr.error('Unable to complete login. Please try again.')
+        });
         this.router.navigate(['/']);
       },
       error: (error) => {
