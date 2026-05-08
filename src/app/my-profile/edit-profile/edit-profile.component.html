@@ -29,7 +29,7 @@
                                     [attr.aria-label]="'profile.companyName' | translate"
                                     aria-describedby="basic-addon1" formControlName="companyName" />
                               <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.companyName'
-                                    | translate), Form.get("companyName"))}}</small>
+                                    | translate | titlecase), Form.get("companyName"))}}</small>
                               } @else {
                               <label class="ct_fs_16 ct_fw_500 mb-2">
                                     {{'profile.fullName' | translate | titlecase}} <span
@@ -40,7 +40,7 @@
                                     [attr.aria-label]="'filters.username' | translate" aria-describedby="basic-addon1"
                                     formControlName="fullName" />
                               <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.fullName'
-                                    | translate), Form.get("fullName"))}}</small>
+                                    | translate | titlecase), Form.get("fullName"))}}</small>
                               }
                         </div>
                   </div>
@@ -69,7 +69,7 @@
                                           <div class="d-flex align-items-center justify-content-between">
                                                 <div>
                                                       <p class="m-0">
-                                                            {{'private' | translate}}
+                                                            {{'Private' | translate}}
                                                       </p>
                                                 </div>
                                                 <input type="radio" class="cutom_radio_input"
@@ -81,7 +81,7 @@
                                           <div class="d-flex align-items-center justify-content-between">
                                                 <div>
                                                       <p class="m-0">
-                                                            {{'company' | translate}}
+                                                            {{'Company' | translate}}
                                                       </p>
                                                 </div>
                                                 <input type="radio" class="cutom_radio_input"

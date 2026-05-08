@@ -5,7 +5,7 @@
                   <div class="login-popup__brand mb-4">
                         <img src="img/black-logo.png" class="main-logo auth-theme-logo" alt="CarZone" />
                         <img src="img/logo.png" class="main-logo auth-theme-logo d-none" alt="CarZone" />
-                        
+
                   </div>
 
                   <h5 class="login-popup__title mb-3 ct_fs_32 text-center ct_font_cairo">
@@ -27,12 +27,12 @@
                                     [attr.aria-label]="'filters.username' | translate" aria-describedby="basic-addon1"
                                     formControlName="fullName" />
                               <small class="text-danger">{{validationErrorService.getErrorMessage(('profile.fullName'
-                                    | translate), Form.get("fullName"))}}</small>
+                                    | translate | titlecase), Form.get("fullName"))}}</small>
                         </div>
                         } @else {
                         <div class="">
                               <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
-                                    {{ 'profile.companyName' | translate }}
+                                    {{ 'profile.companyName' | translate | titlecase }}
                                     <span class="ct_color_8f0c1f">*</span>
                               </label>
                               <input type="text" class="form-control"
@@ -128,7 +128,7 @@
                                           (click)="isShowPassword = !isShowPassword"></i>
                               </div>
                               <small class="text-danger">{{validationErrorService.getErrorMessage(('auth.password'
-                                    | translate), Form.get("password"))}}</small>
+                                    | translate | titlecase), Form.get("password"))}}</small>
                         </div>
                         <div class="">
                               <label class="mt-3 ct_fs_16 ct_fw_500 mb-2">
@@ -144,7 +144,7 @@
                                           (click)="isShowConfirmPassword = !isShowConfirmPassword"></i>
                               </div>
                               <small class="text-danger">{{validationErrorService.getErrorMessage(('auth.confirmPassword'
-                                    | translate), Form.get("confirmPassword"))}}</small>
+                                    | translate | titlecase), Form.get("confirmPassword"))}}</small>
                               <small *ngIf="Form.errors?.['passwordMismatch'] && !Form.controls['confirmPassword'].errors?.['required']"
                                     class="text-danger">{{'auth.passwordNotMatch' |
                                     translate}}</small>

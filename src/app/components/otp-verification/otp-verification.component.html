@@ -35,7 +35,7 @@
                   <app-submit-button [isLoading]="loading" [text]="'auth.verifyNow' | translate"
                         [class]="'btn login-popup__btn mt-4'"></app-submit-button>
             </form>
-            <p class="ct_fs_16 ct_fw_500 mt-3 text-center">
+            <p class="ct_fs_16 ct_fw_500 mt-3 text-center mb-0">
                   {{'auth.didReceiveTheOtp' | translate}}
                   <a (click)="isResendDisabled ? null : resendOtp()" class="ct_fs_16 ct_fw_600 ct_color_8f0c1f"
                         [class.disabled]="isResendDisabled">

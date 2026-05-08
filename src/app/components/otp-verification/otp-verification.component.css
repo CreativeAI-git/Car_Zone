@@ -12,7 +12,7 @@ app-submit-button {
 }
 
 .popup-main {
-    height: min(610px, calc(100vh - 310px));
+    height: min(610px, calc(100vh - 280px));
     background: #fff;
     align-items: center;
 }
@@ -42,7 +42,7 @@ app-submit-button {
 }
 
 .login-popup__title {
-    margin-bottom: 20px !important;
+    margin-bottom: 5px !important;
     color: #111;
     font-size: 24px !important;
     font-weight: 500;

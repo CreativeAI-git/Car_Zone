@@ -28,7 +28,7 @@ export class VerificationStatusModalComponent {
   }
 
   get actionLabel(): string {
-    return this.type === 'company' ? 'Explore App' : 'Continue to App';
+    return this.type === 'company' ? 'Explore CarZone' : 'Continue';
   }
 
   async continueToApp() {
