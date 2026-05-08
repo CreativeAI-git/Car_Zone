@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonService } from '../../services/common.service';
 import { CommonModule } from '@angular/common';
@@ -18,7 +18,12 @@ export class WishlistComponent {
   private destroy$ = new Subject<void>();
   wishList: any
   loaded: boolean = false;
-  constructor(private service: CommonService, private loader: LoaderService, private translate: TranslateService) {
+  constructor(
+    private service: CommonService,
+    private loader: LoaderService,
+    private translate: TranslateService,
+    private router: Router
+  ) {
     this.translate.use(localStorage.getItem('lang') || 'en')
   }
 
@@ -68,6 +73,22 @@ export class WishlistComponent {
     this.service.delete('user/removeCarFromWishlist', { carId: item.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       this.wishList.splice(this.wishList.indexOf(item), 1)
     })
+  }
+
+  goToCarDetail(carId: string | number) {
+    this.router.navigate(['/car-detail'], { queryParams: { id: carId } });
+  }
+
+  handleWishlistIconClick(event: Event, item: any) {
+    event.stopPropagation();
+    this.removeFromWishlist(item);
+  }
+
+  handleCarDetailKeydown(event: KeyboardEvent, carId: string | number) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.goToCarDetail(carId);
+    }
   }
 
 

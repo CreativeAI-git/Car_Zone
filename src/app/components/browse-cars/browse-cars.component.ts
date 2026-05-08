@@ -1,5 +1,5 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ChfFormatPipe } from '../../pipes/chf-format.pipe';
@@ -96,7 +96,8 @@ export class BrowseCarsComponent {
     private authService: AuthService,
     private modalService: ModalService,
     private translate: TranslateService,
-    public filterService: FilterService
+    public filterService: FilterService,
+    private router: Router
   ) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.appliedFilters = this.filterService.getDefaultPayload();
@@ -348,6 +349,28 @@ export class BrowseCarsComponent {
       .delete('user/removeCarFromWishlist', { carId: item.id })
       .pipe(takeUntil(this.destroy$))
       .subscribe();
+  }
+
+  goToCarDetail(carId: string | number) {
+    this.router.navigate(['/car-detail'], { queryParams: { id: carId } });
+  }
+
+  handleWishlistIconClick(event: Event, item: any) {
+    event.stopPropagation();
+
+    if (item.isWishlist) {
+      this.removeFromWishlist(item);
+      return;
+    }
+
+    this.addToWishlist(item);
+  }
+
+  handleCarDetailKeydown(event: KeyboardEvent, carId: string | number) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.goToCarDetail(carId);
+    }
   }
 
   onBodyTypeToggle(id: number, event: Event) {

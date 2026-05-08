@@ -39,7 +39,7 @@
                                 </div>
                             </div>
 
-                            <div class="mt-2">
+                            <div class="">
                                 <h3 class="ct_fs_25 ct_fw_700 mb-0 ct_color_8f0c1f">
                                     {{carData?.new_price | chfFormat}} /
                                     <span class="mb-0 ct_fs_18 ct_fw_400 ct_color_3e1cff fst-italic">
@@ -94,14 +94,20 @@
                     <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.basicInfo' | translate }}</h4>
                     <div class="row">
                         <div class="col-md-6">
-                            <p class="mb-1">{{ 'common.brandName' | translate }}: {{carData?.brandName || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'vehicle.carModel' | translate }}: {{carData?.carModel || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'vehicle.version' | translate }}: {{carData?.version || ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'common.brandName' | translate }}: {{carData?.brandName ||
+                                ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.carModel' | translate }}: {{carData?.carModel ||
+                                ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.version' | translate }}: {{carData?.version ||
+                                ('common.notAvailable' | translate)}}</p>
                         </div>
                         <div class="col-md-6">
-                            <p class="mb-1">{{ 'vehicle.carCondition' | translate }}: {{carData?.condition_value || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'vehicle.carMileage' | translate }}: {{carData?.carMileage || '0'}} km</p>
-                            <p class="mb-1">{{ 'vehicle.energyEfficiency' | translate }}: {{carData?.energy_efficiency || ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.carCondition' | translate }}: {{carData?.condition_value ||
+                                ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.carMileage' | translate }}: {{carData?.carMileage || '0'}} km
+                            </p>
+                            <p class="mb-1">{{ 'vehicle.energyEfficiency' | translate }}: {{carData?.energy_efficiency
+                                || ('common.notAvailable' | translate)}}</p>
                         </div>
 
                     </div>
@@ -110,17 +116,22 @@
                     <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.registration' | translate }}</h4>
                     <div class="row">
                         <div class="col-md-6">
-                            <p class="mb-1">{{ 'vehicle.registrationMonth' | translate }}: {{carData?.registration_month || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'vehicle.registrationYear' | translate }}: {{carData?.registration_year || ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.registrationMonth' | translate }}: {{carData?.registration_month
+                                || ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.registrationYear' | translate }}: {{carData?.registration_year
+                                || ('common.notAvailable' | translate)}}</p>
                             <p class="mb-1">{{ 'vehicle.firstRegistrationDate' | translate }}:
                                 {{carData?.first_registration_date ? (carData?.first_registration_date |
                                 date:'dd.MM.yyyy') : ('common.notAvailable' | translate)}}
                             </p>
                         </div>
                         <div class="col-md-6">
-                            <p class="mb-1">{{ 'vehicle.vehicleIdentificationNumber' | translate }}: {{carData?.vin_number || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'vehicle.registrationMasterNumber' | translate }}: {{carData?.registration_master_number || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'vehicle.typeApproval' | translate }}: {{carData?.type_approval || ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.vehicleIdentificationNumber' | translate }}:
+                                {{carData?.vin_number || ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.registrationMasterNumber' | translate }}:
+                                {{carData?.registration_master_number || ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.typeApproval' | translate }}: {{carData?.type_approval ||
+                                ('common.notAvailable' | translate)}}</p>
                         </div>
                     </div>
 
@@ -128,12 +139,16 @@
                     <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.specifications' | translate }}</h4>
                     <div class="row">
                         <div class="col-md-6">
-                            <p class="mb-1">{{ 'vehicle.height' | translate }} (mm): {{carData?.height_mm || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'vehicle.width' | translate }} (mm): {{carData?.width_mm || ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.height' | translate }} (mm): {{carData?.height_mm ||
+                                ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.width' | translate }} (mm): {{carData?.width_mm ||
+                                ('common.notAvailable' | translate)}}</p>
                         </div>
                         <div class="col-md-6">
-                            <p class="mb-1">{{ 'vehicle.length' | translate }} (mm): {{carData?.length_mm || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'vehicle.brakedTowingCapacity' | translate }} (kg): {{carData?.braked_towing_capacity_kg || ('common.notAvailable' | translate)}}
+                            <p class="mb-1">{{ 'vehicle.length' | translate }} (mm): {{carData?.length_mm ||
+                                ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.brakedTowingCapacity' | translate }} (kg):
+                                {{carData?.braked_towing_capacity_kg || ('common.notAvailable' | translate)}}
                             </p>
                         </div>
                     </div>
@@ -141,13 +156,18 @@
                     <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.colorsAndFlags' | translate }}</h4>
                     <div class="row">
                         <div class="col-md-6">
-                            <p class="mb-1">{{ 'vehicle.exteriorColor' | translate }}: {{carData?.exterior_color_value || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'vehicle.interiorColor' | translate }}: {{carData?.interior_color_value || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'filters.metallic' | translate }}: {{carData?.is_metallic ? ('common.yes' | translate) : ('common.no' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.exteriorColor' | translate }}: {{carData?.exterior_color_value
+                                || ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.interiorColor' | translate }}: {{carData?.interior_color_value
+                                || ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'filters.metallic' | translate }}: {{carData?.is_metallic ? ('common.yes'
+                                | translate) : ('common.no' | translate)}}</p>
                         </div>
                         <div class="col-md-6">
-                            <p class="mb-1">{{ 'vehicle.swissVehicle' | translate }}: {{carData?.is_swiss_vehicle ? ('common.yes' | translate) : ('common.no' | translate)}}</p>
-                            <p class="mb-1">{{ 'vehicle.accidentVehicle' | translate }}: {{carData?.is_accident_vehicle ? ('common.yes' | translate) : ('common.no' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.swissVehicle' | translate }}: {{carData?.is_swiss_vehicle ?
+                                ('common.yes' | translate) : ('common.no' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.accidentVehicle' | translate }}: {{carData?.is_accident_vehicle
+                                ? ('common.yes' | translate) : ('common.no' | translate)}}</p>
                         </div>
                     </div>
 
@@ -187,8 +207,10 @@
 
                     <hr class="my-4" />
                     <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.warrantyAndReturns' | translate }}</h4>
-                    <p class="mb-1">{{ 'vehicle.warranty' | translate }}: {{carData?.warranty_value || ('common.notAvailable' | translate)}}</p>
-                    <p class="mb-1">{{ 'vehicle.warrantyType' | translate }}: {{carData?.warranty_type_value || ('common.notAvailable' | translate)}}</p>
+                    <p class="mb-1">{{ 'vehicle.warranty' | translate }}: {{carData?.warranty_value ||
+                        ('common.notAvailable' | translate)}}</p>
+                    <p class="mb-1">{{ 'vehicle.warrantyType' | translate }}: {{carData?.warranty_type_value ||
+                        ('common.notAvailable' | translate)}}</p>
                     <p class="mb-1" *ngIf="carData?.warranty_from && carData?.warranty_to">
                         {{ 'vehicle.warrantyPeriod' | translate }}: {{carData?.warranty_from | date:'dd.MM.yyyy'}} -
                         {{carData?.warranty_to | date:'dd.MM.yyyy'}}
@@ -199,12 +221,16 @@
                     @if(carData?.isLeasing){
                     <div class="row">
                         <div class="col-md-6">
-                            <p class="mb-1">{{ 'payment.leasingValue' | translate }}: CHF {{carData?.leasing_value || '0'}}</p>
-                            <p class="mb-1">{{ 'payment.annualInterestRate' | translate }}: {{carData?.annual_interest_rate || '0'}}%</p>
+                            <p class="mb-1">{{ 'payment.leasingValue' | translate }}: CHF {{carData?.leasing_value ||
+                                '0'}}</p>
+                            <p class="mb-1">{{ 'payment.annualInterestRate' | translate }}:
+                                {{carData?.annual_interest_rate || '0'}}%</p>
                         </div>
                         <div class="col-md-6">
-                            <p class="mb-1">{{ 'payment.residualValue' | translate }}: {{carData?.residual_value || '0'}}%</p>
-                            <p class="mb-1">{{ 'payment.bankingPartner' | translate }}: {{carData?.banking_partner || ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'payment.residualValue' | translate }}: {{carData?.residual_value ||
+                                '0'}}%</p>
+                            <p class="mb-1">{{ 'payment.bankingPartner' | translate }}: {{carData?.banking_partner ||
+                                ('common.notAvailable' | translate)}}</p>
                         </div>
                     </div>
                     }@else{
@@ -215,17 +241,26 @@
                     <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.contactDetails' | translate }}</h4>
                     <div class="row">
                         <div class="col-md-6">
-                            <p class="mb-1">{{ 'profile.firstName' | translate }}: {{carData?.first_name || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'profile.lastName' | translate }}: {{carData?.last_name || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'profile.phoneNumber' | translate }}: {{carData?.country_code || ''}}{{carData?.phone_number || ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'profile.firstName' | translate }}: {{carData?.first_name ||
+                                ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'profile.lastName' | translate }}: {{carData?.last_name ||
+                                ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'profile.phoneNumber' | translate }}: {{carData?.country_code ||
+                                ''}}{{carData?.phone_number || ('common.notAvailable' | translate)}}</p>
                         </div>
                         <div class="col-md-6">
-                            <p class="mb-1">{{ 'profile.street' | translate }}: {{carData?.street || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'profile.houseNumber' | translate }}: {{carData?.house_number || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'profile.postalCode' | translate }}: {{carData?.postal_code || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'profile.city' | translate }}: {{carData?.city || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'profile.poBox' | translate }}: {{carData?.po_box || ('common.notAvailable' | translate)}}</p>
-                            <p class="mb-1">{{ 'profile.country' | translate }}: {{carData?.country || ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'profile.street' | translate }}: {{carData?.street ||
+                                ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'profile.houseNumber' | translate }}: {{carData?.house_number ||
+                                ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'profile.postalCode' | translate }}: {{carData?.postal_code ||
+                                ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'profile.city' | translate }}: {{carData?.city || ('common.notAvailable'
+                                | translate)}}</p>
+                            <p class="mb-1">{{ 'profile.poBox' | translate }}: {{carData?.po_box ||
+                                ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'profile.country' | translate }}: {{carData?.country ||
+                                ('common.notAvailable' | translate)}}</p>
                         </div>
                     </div>
                 </div>

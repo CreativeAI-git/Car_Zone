@@ -63,7 +63,9 @@
                                                 </div>
                                           </div>
                                           <div class="col-lg-6">
-                                                <div class="car-content-right">
+                                                <div class="car-content-right cursor-pointer" role="link" tabindex="0"
+                                                      (click)="goToCarDetail(item.id)"
+                                                      (keydown)="handleCarDetailKeydown($event, item.id)">
                                                       <div class="d-flex justify-content-between align-items-center">
                                                             <div>
                                                                   <h3 class="ct_fs_25 ct_fw_600 mb-2">
@@ -78,11 +80,11 @@
                                                             <div>
                                                                   <i class="fa-heart ct_fs_25"
                                                                         [ngClass]="item.isWishlist ? 'fa-solid ct_text_red' : 'fa-regular'"
-                                                                        (click)="removeFromWishlist(item)"></i>
+                                                                        (click)="handleWishlistIconClick($event, item)"></i>
                                                             </div>
                                                       </div>
 
-                                                      <div class="mt-2">
+                                                      <div class="">
                                                             <h3 class="ct_fs_25 ct_fw_600 mb-0 ct_color_8f0c1f">
                                                                   {{item.selling_price | chfFormat}}
                                                             </h3>
@@ -99,74 +101,76 @@
                                                 <div class="box">{{ 'vehicle.leatherInterior' | translate }}</div>
                                                 <div class="box">{{ 'vehicle.adaptiveLedHeadlights' | translate }}</div>
                                           </div> -->
-                                                </div>
-
-                                                <div class="row mt-4">
-                                                      <div class="col-sm-5">
-                                                            <ul class="p-0 car-content-right-list">
-                                                                  <!-- <li class="d-flex gap-3 align-items-start">
+                                                      <div class="row mt-4">
+                                                            <div class="col-sm-5">
+                                                                  <ul class="p-0 car-content-right-list">
+                                                                        <!-- <li class="d-flex gap-3 align-items-start">
                                                                                                                               <img src="img/icons/speedometer_red.png" />
                                                                                                                               <span> {{item.consumption }} </span>
                                                                                                                         </li> -->
-                                                                  <li class="d-flex gap-1 align-items-start">
-                                                                        <img src="img/icons/km.png" />
-                                                                        <span> {{item.carMileage}} km </span>
-                                                                  </li>
-                                                                  <li class="d-flex gap-1 align-items-start">
-                                                                        <img src="img/icons/fuel-type.png" />
-                                                                        <span> {{item.fuel_type_value}} </span>
-                                                                  </li>
-                                                                  <li class="d-flex gap-1 align-items-start">
-                                                                        <img src="img/icons/power-output.png" />
-                                                                        <span> {{item?.powerOutput || '-'}}
-                                                                        </span>
-                                                                  </li>
-                                                                  <li class="d-flex gap-1 align-items-start">
-                                                                        <img src="img/icons/transmision.png" />
-                                                                        <span> {{item.transmission_value}} </span>
-                                                                  </li>
-                                                                  <li class="d-flex gap-1 align-items-start">
-                                                                        <img src="img/icons/Hinterantrieb.png" />
-                                                                        <span> {{item.drive_type_value ||
-                                                                              '-'}} </span>
-                                                                  </li>
-                                                                  <li class="d-flex gap-1 align-items-start">
-                                                                        <img src="img/icons/year.png" />
-                                                                        <span> {{(item.first_registration_date |
-                                                                              date:'yyyy-MM') ||
-                                                                              '-'}} </span>
-                                                                  </li>
-                                                            </ul>
-                                                      </div>
-                                                      <div class="col-sm-7">
-                                                            <div class="mt-md-0 mt-3">
-                                                                  <img [src]="item.sellerDetails.profileImage"
-                                                                        class="seller-image" />
-                                                                  <h4 class="ct_fs_20 ct_fw_500 mt-2">
-                                                                        {{item.sellerDetails.fullName}}</h4>
-                                                                  <div class="d-flex align-items-center mt-3">
-                                                                        <img src="img/icons/ep_location.png" />
-                                                                        <p class="ct_fs_16 ct_fw_300 mb-0">
-                                                                              {{item.sellerDetails.pincode}}
-                                                                              {{item.sellerDetails.city}}
-                                                                        </p>
-                                                                  </div>
+                                                                        <li class="d-flex gap-1 align-items-start">
+                                                                              <img src="img/icons/km.png" />
+                                                                              <span> {{item.carMileage}} km </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-1 align-items-start">
+                                                                              <img src="img/icons/fuel-type.png" />
+                                                                              <span> {{item.fuel_type_value}} </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-1 align-items-start">
+                                                                              <img src="img/icons/power-output.png" />
+                                                                              <span> {{item?.powerOutput || '-'}}
+                                                                              </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-1 align-items-start">
+                                                                              <img src="img/icons/transmision.png" />
+                                                                              <span> {{item.transmission_value}} </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-1 align-items-start">
+                                                                              <img src="img/icons/Hinterantrieb.png" />
+                                                                              <span> {{item.drive_type_value ||
+                                                                                    '-'}} </span>
+                                                                        </li>
+                                                                        <li class="d-flex gap-1 align-items-start">
+                                                                              <img src="img/icons/year.png" />
+                                                                              <span> {{(item.first_registration_date |
+                                                                                    date:'yyyy-MM') ||
+                                                                                    '-'}} </span>
+                                                                        </li>
+                                                                  </ul>
+                                                            </div>
+                                                            <div class="col-sm-7">
+                                                                  <div class="mt-md-0 mt-3">
+                                                                        <img [src]="item.sellerDetails.profileImage"
+                                                                              class="seller-image" />
+                                                                        <h4 class="ct_fs_20 ct_fw_500 mt-2">
+                                                                              {{item.sellerDetails.fullName}}</h4>
+                                                                        <div class="d-flex align-items-center mt-3">
+                                                                              <img src="img/icons/ep_location.png" />
+                                                                              <p class="ct_fs_16 ct_fw_300 mb-0">
+                                                                                    {{item.sellerDetails.pincode}}
+                                                                                    {{item.sellerDetails.city}}
+                                                                              </p>
+                                                                        </div>
 
-                                                                  <div class="mt-2">
-                                                                        <img src="img/icons/google.png" />
-                                                                        4.5
-                                                                        <img src="img/icons/rating.png" />
-                                                                        <img src="img/icons/rating.png" />
-                                                                        <img src="img/icons/rating.png" />
-                                                                        <img src="img/icons/rating.png" />
-                                                                        <img src="img/icons/rating.png" />
-                                                                  </div>
+                                                                        <div class="mt-2">
+                                                                              <img src="img/icons/google.png" />
+                                                                              4.5
+                                                                              <img src="img/icons/rating.png" />
+                                                                              <img src="img/icons/rating.png" />
+                                                                              <img src="img/icons/rating.png" />
+                                                                              <img src="img/icons/rating.png" />
+                                                                              <img src="img/icons/rating.png" />
+                                                                        </div>
 
-                                                                  <div class="mt-2">
-                                                                        <img src="img/icons/c-icon.png" class="me-2" />
-                                                                        <img src="img/icons/watsaap.png" class="me-2" />
-                                                                        <img src="img/icons/call.png" class="me-2" />
-                                                                        <img src="img/icons/formkit_email.png" />
+                                                                        <div class="mt-2">
+                                                                              <img src="img/icons/c-icon.png"
+                                                                                    class="me-2" />
+                                                                              <img src="img/icons/watsaap.png"
+                                                                                    class="me-2" />
+                                                                              <img src="img/icons/call.png"
+                                                                                    class="me-2" />
+                                                                              <img src="img/icons/formkit_email.png" />
+                                                                        </div>
                                                                   </div>
                                                             </div>
                                                       </div>

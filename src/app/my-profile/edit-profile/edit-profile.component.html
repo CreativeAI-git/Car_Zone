@@ -369,7 +369,7 @@
                                     {{ 'profile.advantagesAndHighlights' | translate }}
                               </label>
 
-                              <div class="border-123" formArrayName="advantages">
+                              <div [class.border-123]="advantages.controls.length > 0" formArrayName="advantages">
                                     <div *ngFor="let a of advantages.controls; let i=index" [formGroupName]="i"
                                           class="d-flex align-items-center gap-3 mb-3">
                                           <div class="w-100 ct_grey_input">
@@ -397,7 +397,7 @@
                               <label class="ct_fs_16 ct_fw_500 mb-2">
                                     {{ 'profile.ourServices' | translate }}
                               </label>
-                              <div class="border-123" formArrayName="services">
+                              <div [class.border-123]="services.controls.length > 0" formArrayName="services">
                                     <div *ngFor="let s of services.controls; let i = index" [formGroupName]="i"
                                           class="d-flex align-items-center gap-3 mb-3 ct_custom_check">
                                           <input class="form-check-input" type="checkbox" formControlName="isActive"
