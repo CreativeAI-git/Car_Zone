@@ -342,18 +342,26 @@
                                           </li>
                                     </ul>
 
-                                    <div class="mt-3">
+                                    <!-- <div class="mt-3">
                                           <a class="ct_color_3e1cff ct_fs_16"> {{ 'common.showMore' | translate }} </a>
-                                    </div>
+                                    </div> -->
                                     <hr class="my-4" />
 
                                     <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'common.description' | translate }}</h4>
-                                    <p>
-                                          {{carData?.vehicle.description}}
+                                    <p #descriptionContent class="car-description"
+                                          [class.car-description--expanded]="isDescriptionExpanded">
+                                          {{carData?.vehicle.description || ('vehicle.noDescriptionProvided' |
+                                          translate)}}
                                     </p>
+                                    @if(showDescriptionToggle){
                                     <div class="mt-3">
-                                          <a class="ct_color_3e1cff ct_fs_16"> {{ 'common.showMore' | translate }} </a>
+                                          <a class="ct_color_3e1cff ct_fs_16 ct_cursor_pointer"
+                                                (click)="toggleDescription()">
+                                                {{ isDescriptionExpanded ? ('common.showLess' | translate) :
+                                                ('common.showMore' | translate) }}
+                                          </a>
                                     </div>
+                                    }
                                     <hr class="my-4" />
 
                                     <h4 class="ct_fs_20 ct_fw_600 mb-3">

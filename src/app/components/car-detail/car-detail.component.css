@@ -145,6 +145,19 @@
     color: #6f0918;
 }
 
+.car-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.car-description--expanded {
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+}
+
 @media only screen and (max-width: 575.98px) {
     .ct_share_modal_top {
         flex-direction: column;

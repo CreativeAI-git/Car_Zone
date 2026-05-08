@@ -26,6 +26,7 @@ declare var Swiper: any;
 export class CarDetailComponent {
   @ViewChild('closeReportModal') closeReportModal!: ElementRef;
   @ViewChild('closeInquiryModal') closeInquiryModal!: ElementRef<HTMLButtonElement>;
+  @ViewChild('descriptionContent') descriptionContent?: ElementRef<HTMLElement>;
   private destroy$ = new Subject<void>();
   carData: any
   carId: any
@@ -35,6 +36,8 @@ export class CarDetailComponent {
   shareImage: string = '';
   conditions = carData.conditions
   ShoMore: boolean = false
+  isDescriptionExpanded: boolean = false;
+  showDescriptionToggle: boolean = false;
   reportReasons: any[] = []
   inquiryOptions = [
     { key: 'leasing' },
@@ -110,8 +113,10 @@ export class CarDetailComponent {
         next: (res: any) => {
           this.carData = res;
           this.shareImage = this.carData?.images?.[0] || '';
+          this.isDescriptionExpanded = false;
           this.loader.hide();
           this.loadSweper()
+          this.checkDescriptionOverflow();
         },
         error: (err) => {
           console.error('Failed to fetch car details:', err);
@@ -127,6 +132,7 @@ export class CarDetailComponent {
 
   ngAfterViewInit(): void {
     this.loadSweper()
+    this.checkDescriptionOverflow();
   }
 
   loadSweper() {
@@ -398,5 +404,31 @@ export class CarDetailComponent {
           this.loading = false
         }
       });
+  }
+
+  toggleDescription() {
+    this.isDescriptionExpanded = !this.isDescriptionExpanded;
+    this.checkDescriptionOverflow();
+  }
+
+  private checkDescriptionOverflow() {
+    setTimeout(() => {
+      const descriptionElement = this.descriptionContent?.nativeElement;
+      if (!descriptionElement) {
+        this.showDescriptionToggle = false;
+        return;
+      }
+
+      const computedStyle = window.getComputedStyle(descriptionElement);
+      const lineHeight = parseFloat(computedStyle.lineHeight || '0');
+
+      if (!lineHeight) {
+        this.showDescriptionToggle = false;
+        return;
+      }
+
+      const collapsedHeight = lineHeight * 3;
+      this.showDescriptionToggle = descriptionElement.scrollHeight > collapsedHeight + 1;
+    });
   }
 }
