@@ -27,12 +27,8 @@ export class RoleService {
       normalizeUserType(value: string | null | undefined): UserType {
             switch ((value || '').toLowerCase()) {
                   case 'company':
-                  case 'seller':
-                  case 'business':
                         return 'company';
                   case 'private':
-                  case 'buyer':
-                  case 'personal':
                   default:
                         return 'private';
             }

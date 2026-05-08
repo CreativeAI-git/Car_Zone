@@ -12,10 +12,11 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { SubmitButtonComponent } from "../../components/shared/submit-button/submit-button.component";
+import { VerificationStatusModalComponent } from "../../components/shared/verification-status-modal/verification-status-modal.component";
 declare var bootstrap: any;
 @Component({
   selector: 'app-edit-profile',
-  imports: [FormsModule, ReactiveFormsModule, NgxIntlTelInputModule, CommonModule, NzSelectModule, TranslateModule, ImageCropperComponent, SubmitButtonComponent],
+  imports: [FormsModule, ReactiveFormsModule, NgxIntlTelInputModule, CommonModule, NzSelectModule, TranslateModule, ImageCropperComponent, SubmitButtonComponent, VerificationStatusModalComponent],
   templateUrl: './edit-profile.component.html',
   styleUrl: './edit-profile.component.css'
 })
@@ -328,10 +329,16 @@ export class EditProfileComponent {
   }
 
   submitProfileUpdate(formData: FormData) {
+    const isFirstTimeCompanySwitch = this.isFirstTimeCompanySwitch();
+
     this.commonService.post('user/editProfile', formData).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.loading = false
-        this.toastr.success(res.message)
+        if (isFirstTimeCompanySwitch) {
+          this.openCompanyRequestSuccessModal();
+        } else {
+          this.toastr.success(res.message)
+        }
         this.commonService.getProfile()
       },
       error: (error) => {
@@ -422,17 +429,32 @@ export class EditProfileComponent {
 
   private resolveUserType(userData: any): 'private' | 'company' {
     const normalizedType = this.roleService.normalizeUserType(
-      userData?.account_type ||
-      userData?.userType ||
-      userData?.role ||
-      userData?.roleData?.find((item: any) => item?.role === 'seller')?.seller_type
+      userData?.account_type
     );
-
     if (normalizedType === 'company') {
       return 'company';
     }
-
     return userData?.companyName || userData?.companyAddress ? 'company' : 'private';
+  }
+
+  private isFirstTimeCompanySwitch(): boolean {
+    const previousUserType = this.resolveUserType(this.userData);
+    const selectedUserType = this.roleService.normalizeUserType(this.Form.get('userType')?.value);
+
+    return previousUserType === 'private' && selectedUserType === 'company';
+  }
+
+  private openCompanyRequestSuccessModal() {
+    const modalElement = document.getElementById('companyRequestSuccessModal');
+    if (!modalElement) {
+      return;
+    }
+
+    const modal = new bootstrap.Modal(modalElement, {
+      backdrop: 'static',
+      keyboard: false
+    });
+    modal.show();
   }
 
   addDefaultRows() {

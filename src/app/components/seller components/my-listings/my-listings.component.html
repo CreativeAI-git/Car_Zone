@@ -52,6 +52,11 @@
                                     No listings match your current search or filter.
                                     }
                               </p>
+                              @if (carList.length === 0) {
+                              <a (click)="listCar()" class="btn-red-transparent">
+                                    Start Listing
+                              </a>
+                              }
                         </div>
                         } @else {
                         <div class="my-listings-results-count">{{ listingCountLabel }}</div>
