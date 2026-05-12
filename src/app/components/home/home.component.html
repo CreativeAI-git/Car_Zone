@@ -51,15 +51,18 @@
                                                                   nzPopoverPlacement="bottom"
                                                                   class="filter-preview-box w-100 ">
                                                                   <img src="img/icons/make-model.png" />
-                                                                  @if(selectedBrandsModal.length > 0){
-                                                                  @for (item of selectedBrandsModal; track $index) {
-                                                                  {{item.brand}}({{item.modals.join(', ')}})@if($index
-                                                                  !==
-                                                                  selectedBrandsModal.length - 1){, }
-                                                                  }
-                                                                  }@else{
-                                                                  {{'vehicle.makeModel' | translate}}
-                                                                  }
+                                                                  <span class="filter-preview-box-label">
+                                                                        @if(selectedBrandsModal.length > 0){
+                                                                        @for (item of selectedBrandsModal; track
+                                                                        $index) {
+                                                                        {{item.brand}}({{item.modals.join(', ')}})@if($index
+                                                                        !==
+                                                                        selectedBrandsModal.length - 1){, }
+                                                                        }
+                                                                        }@else{
+                                                                        {{'vehicle.makeModel' | translate}}
+                                                                        }
+                                                                  </span>
                                                             </button>
                                                             <ng-template #contentTemplate>
                                                                   <div
@@ -351,11 +354,13 @@
                                                                   nzPopoverPlacement="bottom"
                                                                   class="filter-preview-box w-100 ">
                                                                   <img src="img/icons/body-type.png" />
-                                                                  @if(bodyTypeButtonLabel){
-                                                                  {{ bodyTypeButtonLabel }}
-                                                                  }@else{
-                                                                  {{'vehicle.bodyType' | translate}}
-                                                                  }
+                                                                  <span class="filter-preview-box-label">
+                                                                        @if(bodyTypeButtonLabel){
+                                                                        {{ bodyTypeButtonLabel }}
+                                                                        }@else{
+                                                                        {{'vehicle.bodyType' | translate}}
+                                                                        }
+                                                                  </span>
                                                             </button>
                                                             <ng-template #bodyTypecontentTemplate>
                                                                   <div
@@ -420,11 +425,13 @@
                                                                   nzPopoverPlacement="bottom"
                                                                   class="filter-preview-box w-100 ">
                                                                   <img src="img/icons/price-range.png" />
-                                                                  @if(priceButtonLabel){
-                                                                  {{ priceButtonLabel }}
-                                                                  }@else{
-                                                                  {{'filters.priceRange' | translate}}
-                                                                  }
+                                                                  <span class="filter-preview-box-label">
+                                                                        @if(priceButtonLabel){
+                                                                        {{ priceButtonLabel }}
+                                                                        }@else{
+                                                                        {{'filters.priceRange' | translate}}
+                                                                        }
+                                                                  </span>
                                                             </button>
                                                             <ng-template #priceContentTemplate>
                                                                   <div
@@ -590,11 +597,13 @@
                                                                   nzPopoverPlacement="bottom"
                                                                   class="filter-preview-box w-100 ">
                                                                   <img src="img/icons/year.png" />
-                                                                  @if(yearButtonLabel){
-                                                                  {{ yearButtonLabel }}
-                                                                  }@else{
-                                                                  {{'filters.yearRange' | translate}}
-                                                                  }
+                                                                  <span class="filter-preview-box-label">
+                                                                        @if(yearButtonLabel){
+                                                                        {{ yearButtonLabel }}
+                                                                        }@else{
+                                                                        {{'filters.yearRange' | translate}}
+                                                                        }
+                                                                  </span>
                                                             </button>
                                                             <ng-template #yearContentTemplate>
                                                                   <div
@@ -767,11 +776,13 @@
                                                                   nzPopoverPlacement="bottom"
                                                                   class="filter-preview-box w-100 ">
                                                                   <img src="img/icons/km.png" />
-                                                                  @if(kmButtonLabel){
-                                                                  {{ kmButtonLabel }}
-                                                                  }@else{
-                                                                  {{'vehicle.kilometers' | translate}} (km)
-                                                                  }
+                                                                  <span class="filter-preview-box-label">
+                                                                        @if(kmButtonLabel){
+                                                                        {{ kmButtonLabel }}
+                                                                        }@else{
+                                                                        {{'vehicle.kilometers' | translate}} (km)
+                                                                        }
+                                                                  </span>
                                                             </button>
                                                             <ng-template #KMContentTemplate>
                                                                   <div
@@ -897,11 +908,13 @@
                                                                   nzPopoverPlacement="bottom"
                                                                   class="filter-preview-box w-100 ">
                                                                   <img src="img/icons/transmision.png" />
-                                                                  @if(transmissionButtonLabel){
-                                                                  {{ transmissionButtonLabel }}
-                                                                  }@else{
-                                                                  {{'vehicle.transmission' | translate}}
-                                                                  }
+                                                                  <span class="filter-preview-box-label">
+                                                                        @if(transmissionButtonLabel){
+                                                                        {{ transmissionButtonLabel }}
+                                                                        }@else{
+                                                                        {{'vehicle.transmission' | translate}}
+                                                                        }
+                                                                  </span>
                                                             </button>
                                                             <ng-template #transmissionContentTemplate>
                                                                   <div
@@ -963,15 +976,18 @@
                                                                   nzPopoverPlacement="bottom"
                                                                   class="filter-preview-box w-100 ">
                                                                   <img src="img/icons/power-output.png" />
-                                                                  @if(selectedBrandsModal.length > 0){
-                                                                  @for (item of selectedBrandsModal; track $index) {
-                                                                  {{item.brand}}({{item.modals.join(', ')}})@if($index
-                                                                  !==
-                                                                  selectedBrandsModal.length - 1){, }
-                                                                  }
-                                                                  }@else{
-                                                                  {{'vehicle.powerOutput' | translate}}
-                                                                  }
+                                                                  <span class="filter-preview-box-label">
+                                                                        @if(selectedBrandsModal.length > 0){
+                                                                        @for (item of selectedBrandsModal; track
+                                                                        $index) {
+                                                                        {{item.brand}}({{item.modals.join(', ')}})@if($index
+                                                                        !==
+                                                                        selectedBrandsModal.length - 1){, }
+                                                                        }
+                                                                        }@else{
+                                                                        {{'vehicle.powerOutput' | translate}}
+                                                                        }
+                                                                  </span>
                                                             </button>
                                                             <ng-template #powerContentTemplate>
                                                                   <div
@@ -1061,11 +1077,13 @@
                                                                   nzPopoverPlacement="bottom"
                                                                   class="filter-preview-box w-100 ">
                                                                   <img src="img/icons/fuel-type.png" />
-                                                                  @if(fuelButtonLabel){
-                                                                  {{ fuelButtonLabel }}
-                                                                  }@else{
-                                                                  {{'vehicle.fuelType' | translate}}
-                                                                  }
+                                                                  <span class="filter-preview-box-label">
+                                                                        @if(fuelButtonLabel){
+                                                                        {{ fuelButtonLabel }}
+                                                                        }@else{
+                                                                        {{'vehicle.fuelType' | translate}}
+                                                                        }
+                                                                  </span>
                                                             </button>
                                                             <ng-template #fuelContentTemplate>
                                                                   <div
