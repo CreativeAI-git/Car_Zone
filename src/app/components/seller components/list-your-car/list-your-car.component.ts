@@ -12,6 +12,7 @@ import { ValidationErrorService } from '../../../services/validation-error.servi
 import { CarPreviewComponent } from './car-preview/car-preview.component';
 import { ChfFormatPipe } from '../../../pipes/chf-format.pipe';
 import { SearchCountryField, CountryISO, NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-your-car',
@@ -73,7 +74,8 @@ export class ListYourCarComponent {
     private message: NzMessageService,
     private fb: FormBuilder,
     private translate: TranslateService,
-    public validationErrorService: ValidationErrorService
+    public validationErrorService: ValidationErrorService,
+    private router: Router
   ) {
     this.initForm();
   }
@@ -446,6 +448,9 @@ export class ListYourCarComponent {
           }
           this.goToStep(this.currentFormStep + 1);
           this.getLastInsertedData();
+        }
+        if (this.currentFormStep === 6) {
+          this.router.navigate(['/my-profile/my-listings']);
         }
       },
       error: (error: any) => {

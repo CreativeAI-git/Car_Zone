@@ -1627,7 +1627,7 @@ span.navbar-toggler-icon i {
 }
 
 .select-car-tabs li img {
-  width: 30px;
+  /* width: 30px; */
   height: 30px;
   object-fit: cover;
 }
