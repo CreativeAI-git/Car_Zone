@@ -69,170 +69,416 @@
                                     <div class="ct_form_step" [class]="{ 'active': currentFormStep === 1 }"
                                           data-step="1">
                                           <div>
-                                                <!-- Tabs -->
                                                 <ul class="nav ct_find_vehicle_tabs mb-4" role="tablist">
-                                                      <li class="nav-item w-50 text-center">
-                                                            <button type="button" class="nav-link active"
-                                                                  data-bs-toggle="tab" data-bs-target="#rn">
-                                                                  {{ 'vehicle.newVehicleRn' | translate }}
+                                                      <li class="nav-item ct_step_one_tab_item">
+                                                            <button type="button" class="nav-link"
+                                                                  [class.active]="activeVehicleTab === 'make-models'"
+                                                                  (click)="setActiveVehicleTab('make-models')">
+                                                                  {{ 'vehicle.makeAndModel' | translate }}
                                                             </button>
                                                       </li>
-                                                      <li class="nav-item w-50 text-center">
-                                                            <button type="button" class="nav-link" data-bs-toggle="tab"
-                                                                  data-bs-target="#make">
-                                                                  {{ 'vehicle.makeAndModel' | translate }}
+                                                      <li class="nav-item ct_step_one_tab_item">
+                                                            <button type="button" class="nav-link"
+                                                                  [class.active]="activeVehicleTab === 'type-approval'"
+                                                                  (click)="setActiveVehicleTab('type-approval')">
+                                                                  {{ 'vehicle.typeApproval' | translate }}
+                                                            </button>
+                                                      </li>
+                                                      <li class="nav-item ct_step_one_tab_item">
+                                                            <button type="button" class="nav-link"
+                                                                  [class.active]="activeVehicleTab === 'serial-number'"
+                                                                  (click)="setActiveVehicleTab('serial-number')">
+                                                                  {{ 'vehicle.serialNumber' | translate }}
                                                             </button>
                                                       </li>
                                                 </ul>
 
-                                                <!-- Tab Content -->
+                                                @if (activeVehicleTab === 'make-models') {
                                                 <div class="tab-content">
-                                                      <!-- RN TAB -->
-                                                      <div class="tab-pane fade show active" id="rn">
-                                                            <div class="my-4">
-                                                                  <h6 class="ct_fw_600 ct_fs_19 mb-2">
-                                                                        {{ 'vehicle.withVehicleRegistrationNumber' |
-                                                                        translate }}
-                                                                  </h6>
-                                                                  <p class="ct_fs_15 ct_fs_400 ct_color_666666">
-                                                                        {{
-                                                                        'vehicle.vehicleRegistrationNumberAutoAddsDetails'
-                                                                        | translate }}
-                                                                  </p>
-                                                            </div>
+                                                      <div class="my-4">
+                                                            <h6 class="ct_fw_600 ct_fs_19 mb-2">{{
+                                                                  'vehicle.searchWithMakeAndModel' | translate }}</h6>
+                                                            <p class="ct_fs_15 ct_fs_400 ct_color_666666">{{
+                                                                  'vehicle.makeModelSearchDescription' | translate }}
+                                                            </p>
+                                                      </div>
 
-                                                            <div class="mb-4">
-                                                                  <label class="ct_fw_400 ct_fs_17 mb-2">
-                                                                        {{ 'vehicle.enterVehicleRegistrationNumber' |
-                                                                        translate }}
-                                                                  </label>
-                                                                  <input type="text" class="form-control"
-                                                                        [placeholder]="'vehicle.enterVrn2' | translate" />
+                                                      <div class="row mb-4">
+                                                            <label class="ct_fw_400 ct_fs_17 mb-2">
+                                                                  {{
+                                                                  'vehicle.monthAndYearOfManufacturingForFirstRegistration'
+                                                                  | translate }}
+                                                                  <span class="ct_color_8f0c1f">*</span>
+                                                            </label>
+                                                            <div class="col-md-6">
+                                                                  <nz-select class="form-select"
+                                                                        nzPlaceHolder="{{'common.select' | translate}}"
+                                                                        [nzShowSearch]="true"
+                                                                        formControlName="registration_month">
+                                                                        @for (item of months; track $index) {
+                                                                        <nz-option nzCustomContent
+                                                                              [nzLabel]="item.label"
+                                                                              [nzValue]="item.value"
+                                                                              class="ct_custom_select">
+                                                                              <div
+                                                                                    class="d-flex align-items-center justify-content-between">
+                                                                                    <p class="m-0">{{item.label}}</p>
+                                                                                    <input type="radio"
+                                                                                          class="cutom_radio_input"
+                                                                                          [checked]="item.value === carFormOne.get('registration_month')?.value" />
+                                                                              </div>
+                                                                        </nz-option>
+                                                                        }
+                                                                  </nz-select>
+                                                                  <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.registrationMonth'
+                                                                        | translate),
+                                                                        carFormOne.get("registration_month"))}}</small>
                                                             </div>
-
-                                                            <div class="row mb-4">
-                                                                  <label for="" class="ct_fw_400 ct_fs_17 mb-2">
-                                                                        {{
-                                                                        'vehicle.monthAndYearOfManufacturingForFirstRegistration'
-                                                                        | translate }}
-                                                                        <span class="ct_color_8f0c1f">*</span>
-                                                                  </label>
-                                                                  <div class="col-md-6">
-                                                                        <select class="form-select">
-                                                                              <option>{{ 'vehicle.selectMonth' |
-                                                                                    translate }}</option>
-                                                                        </select>
-                                                                  </div>
-                                                                  <div class="col-md-6 mt-3 mt-md-0">
-                                                                        <select class="form-select">
-                                                                              <option>{{ 'filters.selectYear' |
-                                                                                    translate }}</option>
-                                                                        </select>
-                                                                  </div>
+                                                            <div class="col-md-6 mt-3 mt-md-0">
+                                                                  <nz-select class="form-select"
+                                                                        nzPlaceHolder="{{'common.select' | translate}}"
+                                                                        [nzShowSearch]="true"
+                                                                        formControlName="registration_year">
+                                                                        @for (item of years; track $index) {
+                                                                        <nz-option nzCustomContent [nzLabel]="item"
+                                                                              [nzValue]="item" class="ct_custom_select">
+                                                                              <div
+                                                                                    class="d-flex align-items-center justify-content-between">
+                                                                                    <p class="m-0">{{item}}</p>
+                                                                                    <input type="radio"
+                                                                                          class="cutom_radio_input"
+                                                                                          [checked]="item == carFormOne.get('registration_year')?.value" />
+                                                                              </div>
+                                                                        </nz-option>
+                                                                        }
+                                                                  </nz-select>
+                                                                  <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.registrationYear'
+                                                                        | translate),
+                                                                        carFormOne.get("registration_year"))}}</small>
                                                             </div>
                                                       </div>
 
-                                                      <!-- MAKE & MODEL TAB -->
-                                                      <div class="tab-pane fade" id="make">
-                                                            <div class="my-4"></div>
-
-                                                            <div class="row mb-4">
-                                                                  <div class="col-lg-6">
-                                                                        <label class="ct_fw_400 ct_fs_17 mb-2">{{
-                                                                              'common.brandName' | translate }}
-                                                                              <span class="ct_color_8f0c1f">*</span>
-                                                                        </label>
-                                                                        <input type="text" class="form-control"
-                                                                              [placeholder]="'common.enterBrandName' | translate"
-                                                                              formControlName="brandName" />
-                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage(('common.brandName'
-                                                                              | translate),
-                                                                              carFormOne.get("brandName"))}}</small>
-                                                                  </div>
-                                                                  <div class="col-lg-6">
-                                                                        <label class="ct_fw_400 ct_fs_17 mb-2">
-                                                                              {{ 'vehicle.carModelVariant' | translate
-                                                                              }}
-                                                                              <span
-                                                                                    class="ct_color_8f0c1f">*</span></label>
-                                                                        <input type="text" class="form-control"
-                                                                              [placeholder]="'vehicle.enterModel2' | translate"
-                                                                              formControlName="carModel" />
-                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.carModel'
-                                                                              | translate),
-                                                                              carFormOne.get("carModel"))}}</small>
-                                                                  </div>
+                                                      <div class="row mb-4">
+                                                            <div class="col-md-6">
+                                                                  <label class="ct_fw_400 ct_fs_17 mb-2">{{
+                                                                        'common.brandName' | translate }} <span
+                                                                              class="ct_color_8f0c1f">*</span></label>
+                                                                  <nz-select class="form-select"
+                                                                        nzPlaceHolder="{{'vehicle.selectMake' | translate}}"
+                                                                        [nzShowSearch]="true"
+                                                                        [ngModel]="selectedBrandId"
+                                                                        (ngModelChange)="onBrandSelectionChange($event)"
+                                                                        [ngModelOptions]="{ standalone: true }"
+                                                                        [nzLoading]="loadingBrands">
+                                                                        @for (item of brandOptions; track item.value) {
+                                                                        <nz-option nzCustomContent
+                                                                              [nzLabel]="item.label"
+                                                                              [nzValue]="item.value"
+                                                                              class="ct_custom_select">
+                                                                              <div
+                                                                                    class="d-flex align-items-center justify-content-between">
+                                                                                    <p class="m-0">{{item.label}}</p>
+                                                                                    <input type="radio"
+                                                                                          class="cutom_radio_input"
+                                                                                          [checked]="item.value === selectedBrandId" />
+                                                                              </div>
+                                                                        </nz-option>
+                                                                        }
+                                                                  </nz-select>
+                                                                  <small class="text-danger">{{validationErrorService.getErrorMessage(('common.brandName'
+                                                                        | translate),
+                                                                        carFormOne.get("brandName"))}}</small>
                                                             </div>
-
-                                                            <div class="row mb-4">
-                                                                  <label for="" class="ct_fw_400 ct_fs_17 mb-2">
-                                                                        {{
-                                                                        'vehicle.monthAndYearOfManufacturingForFirstRegistration'
-                                                                        | translate }}
-                                                                        <span class="ct_color_8f0c1f">*</span>
-                                                                  </label>
-                                                                  <div class="col-md-6">
-                                                                        <nz-select class="form-select"
-                                                                              nzPlaceHolder="{{'common.select' | translate}}"
-                                                                              [nzShowSearch]="true"
-                                                                              formControlName="registration_month">
-                                                                              @for (item of months; track $index) {
-                                                                              <nz-option nzCustomContent
-                                                                                    [nzLabel]="item.label"
-                                                                                    [nzValue]="item.value"
-                                                                                    class="ct_custom_select">
-                                                                                    <div
-                                                                                          class="d-flex align-items-center justify-content-between">
-                                                                                          <div>
-                                                                                                <p class="m-0">
-                                                                                                      {{item.label}}
-                                                                                                </p>
-                                                                                          </div>
-                                                                                          <input type="radio"
-                                                                                                class="cutom_radio_input"
-                                                                                                [checked]="item.value === carFormOne.get('registration_month')?.value" />
-                                                                                    </div>
-                                                                              </nz-option>
-                                                                              }
-                                                                        </nz-select>
-                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                              'vehicle.registrationMonth'
-                                                                              | translate),
-                                                                              carFormOne.get("registration_month"))}}</small>
-                                                                  </div>
-                                                                  <div class="col-md-6 mt-3 mt-md-0">
-                                                                        <nz-select class="form-select"
-                                                                              nzPlaceHolder="{{'common.select' | translate}}"
-                                                                              [nzShowSearch]="true"
-                                                                              formControlName="registration_year">
-                                                                              @for (item of years; track $index) {
-                                                                              <nz-option nzCustomContent
-                                                                                    [nzLabel]="item" [nzValue]="item"
-                                                                                    class="ct_custom_select">
-                                                                                    <div
-                                                                                          class="d-flex align-items-center justify-content-between">
-                                                                                          <div>
-                                                                                                <p class="m-0">
-                                                                                                      {{item}}
-                                                                                                </p>
-                                                                                          </div>
-                                                                                          <input type="radio"
-                                                                                                class="cutom_radio_input"
-                                                                                                [checked]="item == carFormOne.get('registration_year')?.value" />
-                                                                                    </div>
-                                                                              </nz-option>
-                                                                              }
-                                                                        </nz-select>
-                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                              'vehicle.registrationYear'
-                                                                              | translate),
-                                                                              carFormOne.get("registration_year"))}}</small>
-                                                                  </div>
+                                                            <div class="col-md-6 mt-3 mt-md-0">
+                                                                  <label class="ct_fw_400 ct_fs_17 mb-2">{{
+                                                                        'vehicle.carModel' | translate }} <span
+                                                                              class="ct_color_8f0c1f">*</span></label>
+                                                                  <nz-select class="form-select"
+                                                                        nzPlaceHolder="{{'vehicle.selectModel' | translate}}"
+                                                                        [nzShowSearch]="true"
+                                                                        [ngModel]="selectedModelId"
+                                                                        (ngModelChange)="onModelSelectionChange($event)"
+                                                                        [ngModelOptions]="{ standalone: true }"
+                                                                        [nzDisabled]="!selectedBrandId"
+                                                                        [nzLoading]="loadingModels">
+                                                                        @for (item of modelOptions; track item.value) {
+                                                                        <nz-option nzCustomContent
+                                                                              [nzLabel]="item.label"
+                                                                              [nzValue]="item.value"
+                                                                              class="ct_custom_select">
+                                                                              <div
+                                                                                    class="d-flex align-items-center justify-content-between">
+                                                                                    <p class="m-0">{{item.label}}</p>
+                                                                                    <input type="radio"
+                                                                                          class="cutom_radio_input"
+                                                                                          [checked]="item.value === selectedModelId" />
+                                                                              </div>
+                                                                        </nz-option>
+                                                                        }
+                                                                  </nz-select>
+                                                                  <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.carModel'
+                                                                        | translate),
+                                                                        carFormOne.get("carModel"))}}</small>
                                                             </div>
                                                       </div>
                                                 </div>
+                                                }
+
+                                                @if (activeVehicleTab === 'type-approval' || activeVehicleTab ===
+                                                'serial-number') {
+                                                <div class="tab-content">
+                                                      @if (activeVehicleTab === 'type-approval') {
+                                                      <div class="mb-4">
+                                                            <h6 class="ct_fw_600 ct_fs_19 mb-2">{{
+                                                                  'vehicle.searchWithTypeApproval' | translate }}</h6>
+                                                            <p class="ct_fs_15 ct_fs_400 ct_color_666666">{{
+                                                                  'vehicle.typeApprovalSearchDescription' | translate }}
+                                                            </p>
+                                                      </div>
+                                                      <div class="mb-4">
+                                                            <label class="ct_fw_400 ct_fs_17 mb-2">{{
+                                                                  'vehicle.typeApproval' | translate }} <span
+                                                                        class="ct_color_8f0c1f">*</span></label>
+                                                            <input type="text" class="form-control"
+                                                                  [placeholder]="'vehicle.enterHere' | translate"
+                                                                  [ngModel]="typeApprovalSearch"
+                                                                  (ngModelChange)="typeApprovalSearch = $event; onVehicleIdentifierInput()"
+                                                                  [ngModelOptions]="{ standalone: true }" />
+                                                      </div>
+                                                      }
+
+                                                      @if (activeVehicleTab === 'serial-number') {
+                                                      <div class="mb-4">
+                                                            <h6 class="ct_fw_600 ct_fs_19 mb-2">{{
+                                                                  'vehicle.searchWithSerialNumber' | translate }}</h6>
+                                                            <p class="ct_fs_15 ct_fs_400 ct_color_666666">{{
+                                                                  'vehicle.serialNumberSearchDescription' | translate }}
+                                                            </p>
+                                                      </div>
+                                                      <div class="mb-4">
+                                                            <label class="ct_fw_400 ct_fs_17 mb-2">{{
+                                                                  'vehicle.serialNumber' | translate }} <span
+                                                                        class="ct_color_8f0c1f">*</span></label>
+                                                            <input type="text" class="form-control"
+                                                                  [placeholder]="'vehicle.enterHere' | translate"
+                                                                  [ngModel]="serialNumberSearch"
+                                                                  (ngModelChange)="serialNumberSearch = $event; onVehicleIdentifierInput()"
+                                                                  [ngModelOptions]="{ standalone: true }" />
+                                                      </div>
+                                                      }
+
+                                                      @if (stepOneIdentifierTouched && !activeIdentifierValue.trim()) {
+                                                      <small class="text-danger d-block mb-3">{{
+                                                            'vehicle.identifierValueRequired' | translate }}</small>
+                                                      }
+
+                                                      <div class="row mb-4">
+                                                            <label class="ct_fw_400 ct_fs_17 mb-2">
+                                                                  {{
+                                                                  'vehicle.monthAndYearOfManufacturingForFirstRegistration'
+                                                                  | translate }}
+                                                                  <span class="ct_color_8f0c1f">*</span>
+                                                            </label>
+                                                            <div class="col-md-6">
+                                                                  <nz-select class="form-select"
+                                                                        nzPlaceHolder="{{'common.select' | translate}}"
+                                                                        [nzShowSearch]="true"
+                                                                        formControlName="registration_month">
+                                                                        @for (item of months; track $index) {
+                                                                        <nz-option nzCustomContent
+                                                                              [nzLabel]="item.label"
+                                                                              [nzValue]="item.value"
+                                                                              class="ct_custom_select">
+                                                                              <div
+                                                                                    class="d-flex align-items-center justify-content-between">
+                                                                                    <p class="m-0">{{item.label}}</p>
+                                                                                    <input type="radio"
+                                                                                          class="cutom_radio_input"
+                                                                                          [checked]="item.value === carFormOne.get('registration_month')?.value" />
+                                                                              </div>
+                                                                        </nz-option>
+                                                                        }
+                                                                  </nz-select>
+                                                                  <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.registrationMonth'
+                                                                        | translate),
+                                                                        carFormOne.get("registration_month"))}}</small>
+                                                            </div>
+                                                            <div class="col-md-6 mt-3 mt-md-0">
+                                                                  <nz-select class="form-select"
+                                                                        nzPlaceHolder="{{'common.select' | translate}}"
+                                                                        [nzShowSearch]="true"
+                                                                        formControlName="registration_year">
+                                                                        @for (item of years; track $index) {
+                                                                        <nz-option nzCustomContent [nzLabel]="item"
+                                                                              [nzValue]="item" class="ct_custom_select">
+                                                                              <div
+                                                                                    class="d-flex align-items-center justify-content-between">
+                                                                                    <p class="m-0">{{item}}</p>
+                                                                                    <input type="radio"
+                                                                                          class="cutom_radio_input"
+                                                                                          [checked]="item == carFormOne.get('registration_year')?.value" />
+                                                                              </div>
+                                                                        </nz-option>
+                                                                        }
+                                                                  </nz-select>
+                                                                  <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.registrationYear'
+                                                                        | translate),
+                                                                        carFormOne.get("registration_year"))}}</small>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                }
                                           </div>
-                                          <div class="d-none">
+                                          @if (stepOneSearchError) {
+                                          <div class="alert alert-danger mt-4 mb-0">{{ stepOneSearchError }}</div>
+                                          }
+
+                                          @if (stepOneSearchMessage) {
+                                          <div class="ct_step_one_empty_state mt-4">{{ stepOneSearchMessage }}</div>
+                                          }
+
+                                          @if (activeVehicleTab === 'make-models' && matchedVehicles.length) {
+                                          <div class="ct_vehicle_result_list mt-4">
+                                                @for (vehicle of matchedVehicles; track vehicle.id) {
+                                                <button type="button" class="ct_vehicle_result_card"
+                                                      (click)="selectMatchedVehicle(vehicle)">
+                                                      <div class="d-flex justify-content-between gap-3 flex-wrap w-100">
+                                                            <div class="text-start">
+                                                                  <h5 class="ct_fs_22 ct_fw_600 mb-2">{{ vehicle.title
+                                                                        }}</h5>
+                                                                  @if (vehicle.subtitle) {
+                                                                  <p class="ct_fs_16 ct_color_666666 mb-1">{{
+                                                                        vehicle.subtitle }}</p>
+                                                                  }
+                                                                  @if (vehicle.engine) {
+                                                                  <p class="ct_fs_16 ct_color_666666 mb-1">Engine: {{
+                                                                        vehicle.engine }}</p>
+                                                                  }
+                                                                  @if (vehicle.transmission) {
+                                                                  <p class="ct_fs_16 ct_color_666666 mb-1">{{
+                                                                        'vehicle.transmission' | translate }}: {{
+                                                                        vehicle.transmission }}</p>
+                                                                  }
+                                                                  @if (vehicle.fuel) {
+                                                                  <p class="ct_fs_16 ct_color_666666 mb-0">{{
+                                                                        'vehicle.fuelType' | translate }}: {{
+                                                                        vehicle.fuel }}</p>
+                                                                  }
+                                                            </div>
+                                                            <div class="text-start text-md-end">
+                                                                  @if (vehicle.dateRange) {
+                                                                  <p class="ct_fs_16 ct_color_666666 mb-1">{{
+                                                                        vehicle.dateRange }}</p>
+                                                                  }
+                                                                  @if (vehicle.doors) {
+                                                                  <p class="ct_fs_16 ct_color_666666 mb-1">{{
+                                                                        'vehicle.doors' | translate }}: {{ vehicle.doors
+                                                                        }}</p>
+                                                                  }
+                                                                  @if (vehicle.seats) {
+                                                                  <p class="ct_fs_16 ct_color_666666 mb-0">{{
+                                                                        'filters.seats' | translate }}: {{ vehicle.seats
+                                                                        }}</p>
+                                                                  }
+                                                            </div>
+                                                      </div>
+                                                </button>
+                                                }
+                                          </div>
+                                          }
+
+                                          @if (makeModelSelectionTouched && activeVehicleTab === 'make-models') {
+                                          <small class="text-danger d-block mt-3">{{ 'vehicle.selectVehicleFromList' |
+                                                translate }}</small>
+                                          }
+
+                                          @if (canShowVehicleDetails) {
+                                          <div class="ct_step_one_vehicle_details mt-4">
+                                                <div class="d-flex flex-wrap justify-content-between gap-3">
+                                                      <div>
+                                                            <div class="vehicle-title ct_fs_22">{{
+                                                                  selectedVehicleDetails?.title }}</div>
+                                                            <div class="vehicle-subtitle ct_fs_16">{{
+                                                                  selectedVehicleDetails?.subtitle }}</div>
+                                                      </div>
+                                                      <button type="button" class="ct_step_one_edit_link"
+                                                            (click)="editVehicleData()">
+                                                            {{ 'vehicle.notYourVehicleEditData' | translate }}
+                                                            <i class="fa-solid fa-chevron-right ms-2 ct_fs_14"></i>
+                                                      </button>
+                                                </div>
+
+                                                <div
+                                                      class="d-flex justify-content-between mt-4 ct_step_one_vehicle_detail_grid">
+                                                      <div class="w-100">
+                                                            <div class="row gy-4">
+                                                                  @for (detail of selectedVehicleDetails?.leftItems ||
+                                                                  []; track $index) {
+                                                                  <div class="col-md-6">
+                                                                        <div
+                                                                              class="spec-label ct_fs_14 ct_color_666666">
+                                                                              {{ detail.label }}</div>
+                                                                        <div class="spec-value ct_fs_16">{{ detail.value
+                                                                              }}</div>
+                                                                  </div>
+                                                                  }
+                                                            </div>
+                                                      </div>
+
+                                                      <div class="pe-4 d-none d-lg-flex justify-content-center">
+                                                            <div class="ct_divider"></div>
+                                                      </div>
+
+                                                      <div class="w-100">
+                                                            <div class="row gy-4">
+                                                                  @for (detail of selectedVehicleDetails?.rightItems ||
+                                                                  []; track $index) {
+                                                                  <div class="col-md-6">
+                                                                        <div
+                                                                              class="spec-label ct_fs_14 ct_color_666666">
+                                                                              {{ detail.label }}</div>
+                                                                        <div class="spec-value ct_fs_16">{{ detail.value
+                                                                              }}</div>
+                                                                  </div>
+                                                                  }
+                                                            </div>
+
+                                                            @if ((selectedVehicleDetails?.equipmentCount || 0) > 0) {
+                                                            <hr />
+                                                            <div
+                                                                  class="equipment-box d-flex justify-content-between mt-2 align-items-center flex-wrap gap-3">
+                                                                  <div class="equipment-text ct_fs_14 ct_color_666666">
+                                                                        {{ 'vehicle.standardEquipmentIdentified' |
+                                                                        translate:{ count:
+                                                                        selectedVehicleDetails?.equipmentCount } }}
+                                                                  </div>
+                                                                  <button type="button"
+                                                                        class="btn btn-outline-primary view-btn"
+                                                                        (click)="toggleEquipment()">
+                                                                        {{ 'common.viewAll' | translate }}
+                                                                  </button>
+                                                            </div>
+
+                                                            @if (equipmentExpanded && (selectedVehicleDetails?.equipment
+                                                            || []).length) {
+                                                            <ul class="px-0 equipment-list mt-3">
+                                                                  @for (equipment of selectedVehicleDetails?.equipment
+                                                                  || []; track $index) {
+                                                                  <li>
+                                                                        <img src="img/icons/list-chk.png" />
+                                                                        {{ equipment }}
+                                                                  </li>
+                                                                  }
+                                                            </ul>
+                                                            }
+                                                            }
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          }
+
+                                          @if (false) {
+                                          <div class="">
                                                 <div>
                                                       <div class="vehicle-title ct_fs_22">
                                                             {{ 'vehicle.sampleVehicleTitle' | translate }}
@@ -409,6 +655,7 @@
                                                       </div>
                                                 </div>
                                           </div>
+                                          }
                                     </div>
 
                                     <!-- STEP 2 -->

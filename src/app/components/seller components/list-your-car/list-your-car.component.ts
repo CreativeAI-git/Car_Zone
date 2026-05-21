@@ -14,6 +14,42 @@ import { ChfFormatPipe } from '../../../pipes/chf-format.pipe';
 import { SearchCountryField, CountryISO, NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
 import { Router } from '@angular/router';
 
+type StepOneTabKey = 'make-models' | 'type-approval' | 'serial-number';
+
+interface StepOneSelectOption {
+  label: string;
+  value: string | number;
+  raw: any;
+}
+
+interface StepOneVehicleCard {
+  id: string | number;
+  title: string;
+  subtitle: string;
+  engine: string;
+  transmission: string;
+  fuel: string;
+  dateRange: string;
+  doors: string;
+  seats: string;
+  raw: any;
+}
+
+interface VehicleDetailItem {
+  label: string;
+  value: string;
+}
+
+interface VehicleDetailsView {
+  title: string;
+  subtitle: string;
+  leftItems: VehicleDetailItem[];
+  rightItems: VehicleDetailItem[];
+  equipmentCount: number;
+  equipment: string[];
+  raw: any;
+}
+
 @Component({
   selector: 'app-list-your-car',
   imports: [FormsModule, NzSelectModule, ReactiveFormsModule, NgxIntlTelInputModule, CommonModule, ChfFormatPipe, TranslateModule, CarPreviewComponent],
@@ -54,6 +90,30 @@ export class ListYourCarComponent {
   years = Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i)
   private nextBtnListener?: (event: Event) => void;
   private submitInProgress = false;
+  activeVehicleTab: StepOneTabKey = 'make-models';
+  brandOptions: StepOneSelectOption[] = [];
+  modelOptions: StepOneSelectOption[] = [];
+  versionOptions: StepOneSelectOption[] = [];
+  selectedBrandId: string | number | null = null;
+  selectedModelId: string | number | null = null;
+  stepOneSearchError: string | null = null;
+  stepOneSearchMessage: string | null = null;
+  stepOneIdentifierTouched = false;
+  makeModelSelectionTouched = false;
+  hasAttemptedMakeModelSearch = false;
+  rnNumber = '';
+  typeApprovalSearch = '';
+  serialNumberSearch = '';
+  matchedVehicles: StepOneVehicleCard[] = [];
+  selectedVehicleDetails: VehicleDetailsView | null = null;
+  equipmentExpanded = false;
+  loadingBrands = false;
+  loadingModels = false;
+  loadingVersions = false;
+  stepOneLookupLoading = false;
+  private brandsLoaded = false;
+  private modelOptionsCache = new Map<string | number, StepOneSelectOption[]>();
+  private versionOptionsCache = new Map<string | number, StepOneSelectOption[]>();
   currentFormStep: number = 1;
   lastIntertedData: any = null;
   showPreview: boolean = false;
@@ -84,6 +144,16 @@ export class ListYourCarComponent {
     return localStorage.getItem('lang') || this.translate.currentLang || 'en';
   }
 
+  get activeIdentifierValue(): string {
+    return this.activeVehicleTab === 'type-approval'
+      ? this.typeApprovalSearch
+      : this.serialNumberSearch;
+  }
+
+  get canShowVehicleDetails(): boolean {
+    return !!this.selectedVehicleDetails;
+  }
+
   ngOnInit(): void {
     this.loadScript();
     this.getFuelTypes();
@@ -97,6 +167,215 @@ export class ListYourCarComponent {
     this.getCarColors();
     this.getEnergyEfficiency();
     this.getLastInsertedData();
+    if (this.activeVehicleTab === 'make-models') {
+      this.ensureBrandsLoaded();
+    }
+    this.carFormOne.get('registration_month')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.onRegistrationContextChange();
+    });
+    this.carFormOne.get('registration_year')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.onRegistrationContextChange();
+    });
+  }
+
+  setActiveVehicleTab(tab: StepOneTabKey): void {
+    if (this.activeVehicleTab === tab) return;
+    this.activeVehicleTab = tab;
+    this.stepOneSearchError = null;
+    this.stepOneSearchMessage = null;
+    this.stepOneIdentifierTouched = false;
+    this.makeModelSelectionTouched = false;
+    this.resetStepOneResults();
+
+    if (tab === 'make-models') {
+      this.ensureBrandsLoaded();
+    }
+  }
+
+  ensureBrandsLoaded(): void {
+    if (this.brandsLoaded || this.loadingBrands) return;
+
+    this.loadingBrands = true;
+    this.service.getBrandsList().pipe(
+      finalize(() => {
+        this.loadingBrands = false;
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (res: any) => {
+        this.brandOptions = this.normalizeSelectOptions(res, [
+          'brands',
+          'data',
+          'results',
+          'items'
+        ], [
+          'id',
+          'brand_id',
+          'make_id'
+        ], [
+          'label',
+          'name',
+          'title',
+          'brand_name',
+          'make_display',
+          'make'
+        ]);
+        this.brandsLoaded = this.brandOptions.length > 0;
+      },
+      error: () => {
+        this.brandOptions = [];
+        this.message.error(this.translate.instant('vehicle.failedToLoadBrands'));
+      }
+    });
+  }
+
+  onBrandSelectionChange(brandId: string | number | null): void {
+    this.selectedBrandId = brandId;
+    this.selectedModelId = null;
+    this.modelOptions = [];
+    this.versionOptions = [];
+    this.hasAttemptedMakeModelSearch = false;
+    this.makeModelSelectionTouched = false;
+    this.resetStepOneResults();
+
+    const selectedBrand = this.findOptionByValue(this.brandOptions, brandId);
+    this.carFormOne.patchValue({
+      brandName: selectedBrand?.label || '',
+      carModel: '',
+      version: ''
+    });
+
+    if (!brandId) return;
+
+    const cachedModels = this.modelOptionsCache.get(brandId);
+    if (cachedModels) {
+      this.modelOptions = cachedModels;
+      return;
+    }
+
+    this.loadingModels = true;
+    this.service.getModelsList(brandId).pipe(
+      finalize(() => {
+        this.loadingModels = false;
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (res: any) => {
+        const options = this.normalizeSelectOptions(res, [
+          'models',
+          'data',
+          'results',
+          'items'
+        ], [
+          'id',
+          'model_id'
+        ], [
+          'label',
+          'name',
+          'title',
+          'model_name',
+          'model'
+        ]);
+        this.modelOptions = options;
+        this.modelOptionsCache.set(brandId, options);
+      },
+      error: () => {
+        this.modelOptions = [];
+        this.message.error(this.translate.instant('vehicle.failedToLoadModels'));
+      }
+    });
+  }
+
+  onModelSelectionChange(modelId: string | number | null): void {
+    this.selectedModelId = modelId;
+    this.versionOptions = [];
+    this.hasAttemptedMakeModelSearch = false;
+    this.makeModelSelectionTouched = false;
+    this.resetStepOneResults();
+
+    const selectedModel = this.findOptionByValue(this.modelOptions, modelId);
+    this.carFormOne.patchValue({ carModel: selectedModel?.label || '', version: '' });
+
+    if (!modelId) return;
+
+    const cachedVersions = this.versionOptionsCache.get(modelId);
+    if (cachedVersions) {
+      this.versionOptions = cachedVersions;
+      return;
+    }
+
+    this.loadingVersions = true;
+    this.service.getVersionsList(modelId).pipe(
+      finalize(() => {
+        this.loadingVersions = false;
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (res: any) => {
+        const options = this.normalizeSelectOptions(res, [
+          'versions',
+          'data',
+          'results',
+          'items'
+        ], [
+          'id',
+          'version_id'
+        ], [
+          'label',
+          'name',
+          'title',
+          'version_name',
+          'version'
+        ]);
+        this.versionOptions = options;
+        this.versionOptionsCache.set(modelId, options);
+      },
+      error: () => {
+        this.versionOptions = [];
+        this.message.error(this.translate.instant('vehicle.failedToLoadVersions'));
+      }
+    });
+  }
+
+  onVehicleIdentifierInput(): void {
+    this.stepOneIdentifierTouched = false;
+    this.stepOneSearchError = null;
+    this.stepOneSearchMessage = null;
+    this.selectedVehicleDetails = null;
+    this.equipmentExpanded = false;
+  }
+
+  onRegistrationContextChange(): void {
+    this.stepOneSearchError = null;
+    this.stepOneSearchMessage = null;
+
+    if (this.activeVehicleTab === 'make-models') {
+      this.hasAttemptedMakeModelSearch = false;
+      this.makeModelSelectionTouched = false;
+      this.resetStepOneResults();
+      return;
+    }
+
+    this.selectedVehicleDetails = null;
+    this.equipmentExpanded = false;
+  }
+
+  selectMatchedVehicle(vehicle: StepOneVehicleCard): void {
+    this.makeModelSelectionTouched = false;
+    this.selectedVehicleDetails = this.buildVehicleDetailsView(vehicle.raw);
+    this.patchVehicleDataToForm(vehicle.raw);
+    this.submitFormStep();
+  }
+
+  toggleEquipment(): void {
+    this.equipmentExpanded = !this.equipmentExpanded;
+  }
+
+  editVehicleData(): void {
+    this.stepOneSearchError = null;
+    this.stepOneSearchMessage = null;
+    this.selectedVehicleDetails = null;
+    this.equipmentExpanded = false;
   }
 
   ngAfterViewInit(): void {
@@ -109,6 +388,8 @@ export class ListYourCarComponent {
       nextBtn?.removeEventListener('click', this.nextBtnListener, true);
     }
     this.cleanupAllPreviews();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private initForm(): void {
@@ -228,6 +509,9 @@ export class ListYourCarComponent {
   }
 
   private getStepControlNames(step: number): string[] {
+    if (step === 1) {
+      return this.getStepOneControlNames();
+    }
     const stepEl = document.querySelector(`.ct_form_step[data-step="${step}"]`);
     if (!stepEl) return [];
     const names = Array.from(stepEl.querySelectorAll('[formControlName]'))
@@ -238,11 +522,24 @@ export class ListYourCarComponent {
 
   private isStepValid(step: number): boolean {
     const controls = this.getStepControlNames(step);
-    if (controls.length === 0) return true;
-    return controls.every((name) => {
+    const controlsValid = controls.every((name) => {
       const control = this.carFormOne.get(name);
       return control ? control.valid : true;
     });
+
+    if (step !== 1) {
+      return controlsValid;
+    }
+
+    if (!controlsValid) {
+      return false;
+    }
+
+    if (this.activeVehicleTab === 'type-approval' || this.activeVehicleTab === 'serial-number') {
+      return !!this.activeIdentifierValue.trim();
+    }
+
+    return true;
   }
 
   private markStepTouched(step: number): void {
@@ -254,6 +551,22 @@ export class ListYourCarComponent {
       control.markAsDirty({ onlySelf: true });
       control.updateValueAndValidity({ onlySelf: true });
     });
+
+    if (step === 1 && (this.activeVehicleTab === 'type-approval' || this.activeVehicleTab === 'serial-number')) {
+      this.stepOneIdentifierTouched = true;
+    }
+  }
+
+  private getStepOneControlNames(): string[] {
+    switch (this.activeVehicleTab) {
+      case 'make-models':
+        return ['brandName', 'carModel', 'registration_month', 'registration_year'];
+      case 'type-approval':
+      case 'serial-number':
+        return ['registration_month', 'registration_year'];
+      default:
+        return ['registration_month', 'registration_year'];
+    }
   }
 
   onCarImagesSelected(event: Event): void {
@@ -411,10 +724,49 @@ export class ListYourCarComponent {
     if (this.submitInProgress) return;
 
     this.currentFormStep = this.getCurrentStep();
+    if (this.currentFormStep === 1) {
+      this.handleStepOneSubmit();
+      return;
+    }
+
+    this.submitFormStep();
+  }
+
+  private handleStepOneSubmit(): void {
+    if (this.submitInProgress) return;
+
     this.markStepTouched(this.currentFormStep);
     if (!this.isStepValid(this.currentFormStep)) {
       return;
     }
+
+    if (this.activeVehicleTab === 'make-models') {
+      this.hasAttemptedMakeModelSearch = true;
+
+      if (!this.matchedVehicles.length) {
+        this.loadMatchedVehicles();
+        return;
+      }
+
+      this.makeModelSelectionTouched = true;
+      this.stepOneSearchError = this.translate.instant('vehicle.selectVehicleFromList');
+      return;
+    }
+
+    if (this.activeVehicleTab === 'type-approval' || this.activeVehicleTab === 'serial-number') {
+      if (!this.selectedVehicleDetails) {
+        this.lookupVehicleFromIdentifiers();
+        return;
+      }
+
+      this.patchVehicleDataToForm(this.selectedVehicleDetails.raw);
+    }
+
+    this.submitFormStep();
+  }
+
+  private submitFormStep(): void {
+    if (this.submitInProgress) return;
 
     this.submitError = null;
     this.loading = true;
@@ -459,6 +811,456 @@ export class ListYourCarComponent {
         this.message.error(errMsg);
       }
     });
+  }
+
+  private loadMatchedVehicles(): void {
+    this.stepOneSearchError = null;
+    this.stepOneSearchMessage = null;
+    this.selectedVehicleDetails = null;
+    this.equipmentExpanded = false;
+    const rawMatches = this.versionOptions.map((item) => this.getVersionVehiclePayload(item.raw));
+    const sourceItems = rawMatches.length ? rawMatches : [];
+
+    this.matchedVehicles = sourceItems
+      .map((item: any, index: number) => this.normalizeVehicleCard(item, index))
+      .filter((item: StepOneVehicleCard | null): item is StepOneVehicleCard => !!item);
+
+    if (!this.matchedVehicles.length) {
+      this.stepOneSearchMessage = this.translate.instant('vehicle.noVehiclesFoundForSelection');
+    }
+  }
+
+  private lookupVehicleFromIdentifiers(): void {
+    if (this.stepOneLookupLoading) return;
+
+    this.stepOneSearchError = null;
+    this.stepOneSearchMessage = null;
+    this.selectedVehicleDetails = null;
+    this.equipmentExpanded = false;
+
+    this.carFormOne.patchValue({
+      type_approval: this.activeVehicleTab === 'type-approval' ? this.typeApprovalSearch.trim() : '',
+      vin_number: this.activeVehicleTab === 'serial-number' ? this.serialNumberSearch.trim() : '',
+      registration_master_number: this.activeVehicleTab === 'serial-number' ? this.serialNumberSearch.trim() : ''
+    });
+
+    const formData = this.buildFormData();
+    this.stepOneLookupLoading = true;
+    this.loading = true;
+
+    this.service.listYourCar(formData).pipe(
+      finalize(() => {
+        this.stepOneLookupLoading = false;
+        this.loading = false;
+      }),
+      first()
+    ).subscribe({
+      next: () => {
+        this.fetchLatestDraftData();
+      },
+      error: (error: any) => {
+        const errMsg = error?.message || this.translate.instant('vehicle.failedToFetchVehicleDetails');
+        this.stepOneSearchError = errMsg;
+        this.message.error(errMsg);
+      }
+    });
+  }
+
+  private fetchLatestDraftData(): void {
+    this.service.get('user/latest-draft-car').pipe(
+      first()
+    ).subscribe({
+      next: (res: any) => {
+        const draftData = res?.data?.data || null;
+        if (!draftData) {
+          this.stepOneSearchMessage = this.translate.instant('vehicle.noVehicleDetailsFound');
+          return;
+        }
+
+        this.patchDraftData(draftData, false);
+        this.selectedVehicleDetails = this.buildVehicleDetailsView(draftData);
+        this.equipmentExpanded = false;
+
+        if (!this.selectedVehicleDetails.leftItems.length && !this.selectedVehicleDetails.rightItems.length) {
+          this.stepOneSearchMessage = this.translate.instant('vehicle.noVehicleDetailsFound');
+        }
+      },
+      error: () => {
+        this.stepOneSearchError = this.translate.instant('vehicle.failedToFetchVehicleDetails');
+      }
+    });
+  }
+
+  private normalizeSelectOptions(
+    payload: any,
+    arrayKeys: string[],
+    idKeys: string[],
+    labelKeys: string[]
+  ): StepOneSelectOption[] {
+    const source = this.extractArray(payload, arrayKeys);
+
+    return source
+      .map((item: any, index: number) => {
+        const value = this.pickFirst(item, idKeys) ?? index;
+        const label = this.pickFirst(item, labelKeys);
+
+        if (value === null || value === undefined || !label) {
+          return null;
+        }
+
+        return {
+          label: String(label),
+          value,
+          raw: item
+        };
+      })
+      .filter((item: StepOneSelectOption | null): item is StepOneSelectOption => !!item);
+  }
+
+  private normalizeVehicleCard(item: any, index: number): StepOneVehicleCard | null {
+    const vehicle = this.getVersionVehiclePayload(item);
+    const title = this.buildVehicleTitle(item);
+    if (!title) {
+      return null;
+    }
+
+    return {
+      id: this.pickFirst(item, ['id', 'vehicle_id', 'version_id', 'fzkey']) ?? index,
+      title,
+      subtitle: this.formatVehicleValue(this.pickFirst(vehicle, ['version', 'version_name', 'trim', 'variant'])),
+      engine: this.formatVehicleValue(
+        this.pickFirst(vehicle, ['ps', 'totalPs', 'horsepower', 'powerOutput', 'engine', 'engineType'])
+          ? `${this.pickFirst(vehicle, ['ps', 'totalPs', 'horsepower', 'powerOutput', 'engine', 'engineType'])} HP`
+          : this.pickFirst(vehicle, ['engine_cc', 'engine_cm3', 'engine_displacement', 'displacement'])
+      ),
+      transmission: this.formatVehicleValue(
+        this.pickFirst(vehicle, ['transmission_name', 'gearbox', 'transmission_value', 'transmission'])
+      ),
+      fuel: this.formatVehicleValue(
+        this.pickFirst(vehicle, ['fuel_name', 'fuel_type_value', 'fuel_type', 'fuel'])
+      ),
+      dateRange: this.buildDateRange(vehicle),
+      doors: this.formatVehicleValue(this.pickFirst(vehicle, ['doors', 'door_count'])),
+      seats: this.formatVehicleValue(this.pickFirst(vehicle, ['sittingCapacity', 'seats', 'seat_count'])),
+      raw: vehicle
+    };
+  }
+
+  private buildVehicleDetailsView(item: any): VehicleDetailsView {
+    const vehicle = this.getVersionVehiclePayload(item);
+    const equipment = this.extractEquipment(item);
+    return {
+      title: this.buildVehicleTitle(item) || this.translate.instant('vehicle.vehicleDetails'),
+      subtitle: this.translate.instant('vehicle.prefilledVehicleDetails'),
+      leftItems: [
+        this.createDetailItem(this.translate.instant('vehicle.bodyType'), this.pickFirst(vehicle, ['body_name', 'body_type_value', 'body_type', 'bodyType'])),
+        this.createDetailItem(this.translate.instant('vehicle.transmission'), this.pickFirst(vehicle, ['transmission_name', 'gearbox', 'transmission_value', 'transmission'])),
+        this.createDetailItem(this.translate.instant('vehicle.fuelType'), this.pickFirst(vehicle, ['fuel_name', 'fuel_type_value', 'fuel_type', 'fuel'])),
+        this.createDetailItem(this.translate.instant('vehicle.driveType'), this.pickFirst(vehicle, ['drive_name', 'drive_type_value', 'drive_type', 'driveType'])),
+        this.createDetailItem(this.translate.instant('vehicle.doors'), this.pickFirst(vehicle, ['doors', 'door_count'])),
+        this.createDetailItem(this.translate.instant('filters.seats'), this.pickFirst(vehicle, ['sittingCapacity', 'seats', 'seat_count'])),
+        this.createDetailItem(this.translate.instant('vehicle.powerOutput'), this.pickFirst(vehicle, ['ps', 'totalPs', 'powerOutput', 'power_output'])),
+        this.createDetailItem('Engine (cm3)', this.pickFirst(vehicle, ['displacement', 'engineType', 'engine', 'engine_cc', 'engine_cm3', 'engine_displacement'])),
+        this.createDetailItem(this.translate.instant('vehicle.cylinders'), this.pickFirst(vehicle, ['cylinders', 'cylinder_count'])),
+        this.createDetailItem(this.translate.instant('vehicle.gears'), this.pickFirst(vehicle, ['gears', 'gear_count'])),
+        this.createDetailItem(`${this.translate.instant('vehicle.wheelbase')} (mm)`, this.pickFirst(vehicle, ['wheelbase', 'wheelbase_mm'])),
+        this.createDetailItem(`${this.translate.instant('vehicle.curbWeight')} (kg)`, this.pickFirst(vehicle, ['curb_weight', 'curb_weight_kg', 'totalWeight']))
+      ].filter((detail: VehicleDetailItem | null): detail is VehicleDetailItem => !!detail),
+      rightItems: [
+        this.createDetailItem(`${this.translate.instant('filters.co2Emissions')} (g/km)`, this.pickFirst(vehicle, ['co2Emission', 'co2_emission', 'co2_emissions'])),
+        this.createDetailItem(this.translate.instant('vehicle.consumption'), this.pickFirst(vehicle, ['consuption', 'consumption'])),
+        this.createDetailItem(this.translate.instant('vehicle.emissionStandard'), this.pickFirst(vehicle, ['emission_standard', 'emissionStandard'])),
+        this.createDetailItem(this.translate.instant('vehicle.vehicleIdentificationNumber'), this.pickFirst(vehicle, ['vin_number', 'serial_number'])),
+        this.createDetailItem(this.translate.instant('vehicle.typeApproval'), this.pickFirst(vehicle, ['type_approval', 'typeApprovalNrs'])),
+        this.createDetailItem(this.translate.instant('vehicle.registrationMasterNumber'), this.pickFirst(vehicle, ['registration_master_number']))
+      ].filter((detail: VehicleDetailItem | null): detail is VehicleDetailItem => !!detail),
+      equipmentCount: Number(this.pickFirst(vehicle, ['equipment_count', 'equipmentCount'])) || equipment.length,
+      equipment,
+      raw: vehicle
+    };
+  }
+
+  private createDetailItem(label: string, value: any): VehicleDetailItem | null {
+    if (value === null || value === undefined || value === '') {
+      return null;
+    }
+
+    return {
+      label,
+      value: String(value)
+    };
+  }
+
+  private patchDraftData(data: any, updateStep: boolean = true): void {
+    this.lastIntertedData = data || null;
+    if (!data) return;
+
+    if (updateStep) {
+      this.currentFormStep = (data.page || 0) + 1;
+    }
+
+    this.carFormOne.patchValue(data);
+    this.carFormOne.patchValue({
+      phone_number: `${data.country_code || ''}${data.phone_number || ''}`,
+      warranty_from: data.warranty_from ? this.formatDate(data.warranty_from) : '',
+      warranty_to: data.warranty_to ? this.formatDate(data.warranty_to) : '',
+      last_mfk_date: data.last_mfk_date ? this.formatDate(data.last_mfk_date) : ''
+    });
+
+    this.rnNumber = data.registration_master_number || '';
+    this.typeApprovalSearch = data.type_approval || '';
+    this.serialNumberSearch = data.vin_number || data.registration_master_number || '';
+    this.selectedVehicleDetails = null;
+
+    this.carImages = [];
+    this.selectedReel = null;
+    this.reelThumbnail = null;
+    this.carImagePreviews = (data.carImages || []).map((img: any) => ({
+      file: null,
+      url: img.url,
+      isRemote: true
+    }));
+    this.reelPreviewUrl = data.carReel ? data.carReel : null;
+    this.reelThumbnailPreviewUrl = data.reelThumbnails ? data.reelThumbnails : null;
+  }
+
+  private patchVehicleDataToForm(item: any): void {
+    const vehicle = this.getVersionVehiclePayload(item);
+    if (!vehicle) return;
+
+    const patchValue: Record<string, any> = {
+      brandName: this.pickFirst(vehicle, ['brand_name', 'brandName', 'brand', 'make_display', 'make']) || this.carFormOne.get('brandName')?.value,
+      carModel: this.pickFirst(vehicle, ['model_name', 'carModel', 'model']) || this.carFormOne.get('carModel')?.value,
+      version: this.pickFirst(vehicle, ['version', 'version_name', 'title', 'name']) || this.carFormOne.get('version')?.value,
+      registration_month: this.pickFirst(vehicle, ['registration_month']) || this.carFormOne.get('registration_month')?.value,
+      registration_year: this.pickFirst(vehicle, ['registration_year']) || this.carFormOne.get('registration_year')?.value,
+      sittingCapacity: this.pickFirst(vehicle, ['sittingCapacity', 'seats', 'seat_count']) || this.carFormOne.get('sittingCapacity')?.value,
+      powerOutput: this.pickFirst(vehicle, ['ps', 'totalPs', 'powerOutput', 'power_output', 'horsepower', 'kw_output']) || this.carFormOne.get('powerOutput')?.value,
+      doors: this.pickFirst(vehicle, ['doors', 'door_count']) || this.carFormOne.get('doors')?.value,
+      engineType: this.pickFirst(vehicle, ['displacement', 'engineType', 'engine', 'engine_cc', 'engine_cm3', 'engine_displacement']) || this.carFormOne.get('engineType')?.value,
+      co2Emission: this.pickFirst(vehicle, ['co2Emission', 'co2_emission', 'co2_emissions']) || this.carFormOne.get('co2Emission')?.value,
+      consuption: this.pickFirst(vehicle, ['consuption', 'consumption']) || this.carFormOne.get('consuption')?.value,
+      type_approval: this.pickFirst(vehicle, ['type_approval', 'typeApprovalNrs']) || this.carFormOne.get('type_approval')?.value,
+      vin_number: this.pickFirst(vehicle, ['vin_number', 'serial_number']) || this.carFormOne.get('vin_number')?.value,
+      registration_master_number: this.pickFirst(vehicle, ['registration_master_number']) || this.carFormOne.get('registration_master_number')?.value
+    };
+
+    const fuelTypeId = this.resolveOptionId(
+      this.fuelTypes.flatMap((group: any) => group.options || []),
+      this.pickFirst(vehicle, ['fuel_type_id', 'fuel_name', 'fuel_type_value', 'fuel_type', 'fuel'])
+    );
+    const transmissionId = this.resolveOptionId(
+      this.transmissions,
+      this.pickFirst(vehicle, ['transmission_id', 'transmission_name', 'transmission_value', 'transmission', 'gearbox'])
+    );
+    const driveTypeId = this.resolveOptionId(
+      this.driveTypes,
+      this.pickFirst(vehicle, ['drive_type_id', 'drive_name', 'drive_type_value', 'drive_type'])
+    );
+    const bodyTypeId = this.resolveOptionId(
+      this.bodyTypes,
+      this.pickFirst(vehicle, ['body_type_id', 'body_name', 'body_type_value', 'body_type'])
+    );
+
+    if (fuelTypeId !== null) {
+      patchValue['fuel_type_id'] = fuelTypeId;
+    }
+    if (transmissionId !== null) {
+      patchValue['transmission_id'] = transmissionId;
+    }
+    if (driveTypeId !== null) {
+      patchValue['drive_type_id'] = driveTypeId;
+    }
+    if (bodyTypeId !== null) {
+      patchValue['body_type_id'] = bodyTypeId;
+    }
+
+    this.carFormOne.patchValue(patchValue);
+  }
+
+  private resolveOptionId(options: any[], rawValue: any): any {
+    if (rawValue === null || rawValue === undefined || rawValue === '') {
+      return null;
+    }
+
+    const directMatch = options.find((item: any) => String(item?.id ?? item?.value) === String(rawValue));
+    if (directMatch) {
+      return directMatch.id ?? directMatch.value;
+    }
+
+    const normalizedValue = this.normalizeText(rawValue);
+    const labelMatch = options.find((item: any) => {
+      const candidates = [
+        item?.label,
+        item?.title,
+        item?.value,
+        item?.name
+      ].filter(Boolean);
+
+      return candidates.some((candidate: any) => this.normalizeText(candidate) === normalizedValue);
+    });
+
+    return labelMatch ? labelMatch.id ?? labelMatch.value : null;
+  }
+
+  private extractArray(payload: any, preferredKeys: string[] = []): any[] {
+    if (Array.isArray(payload)) {
+      return payload;
+    }
+
+    for (const key of preferredKeys) {
+      if (Array.isArray(payload?.[key])) {
+        return payload[key];
+      }
+    }
+
+    const nestedCandidates = [payload?.data, payload?.results, payload?.items];
+    for (const candidate of nestedCandidates) {
+      if (Array.isArray(candidate)) {
+        return candidate;
+      }
+      if (Array.isArray(candidate?.data)) {
+        return candidate.data;
+      }
+    }
+
+    return [];
+  }
+
+  private extractVehicleList(item: any): any[] {
+    return this.extractArray(item, [
+      'vehicles',
+      'vehicle_list',
+      'matches',
+      'results',
+      'items',
+      'versions',
+      'variants'
+    ]);
+  }
+
+  private extractEquipment(item: any): string[] {
+    const vehicle = this.getVersionVehiclePayload(item);
+    const equipment = this.extractArray(item, [
+      'equipment',
+      'equipments',
+      'equipment_list',
+      'carFeatures',
+      'extras'
+    ]);
+
+    return equipment
+      .map((entry: any) => {
+        if (typeof entry === 'string') {
+          return entry;
+        }
+        return this.pickFirst(entry, ['label', 'name', 'title', 'value']);
+      })
+      .filter((entry: string | null): entry is string => !!entry);
+
+    if (equipment.length) {
+      return equipment;
+    }
+
+    return this.extractArray(vehicle, ['colorOptionsData'])
+      .map((entry: any) => this.pickFirst(entry, ['label', 'name', 'title', 'value']))
+      .filter((entry: string | null): entry is string => !!entry);
+  }
+
+  private buildVehicleTitle(item: any): string {
+    const vehicle = this.getVersionVehiclePayload(item);
+    const explicitTitle = this.pickFirst(vehicle, ['description', 'title', 'vehicle_title', 'name']);
+    if (explicitTitle) {
+      return String(explicitTitle);
+    }
+
+    const brand = this.pickFirst(vehicle, ['brand_name', 'brandName', 'brand', 'make_display', 'make']);
+    const model = this.pickFirst(vehicle, ['model_name', 'carModel', 'model']);
+    const version = this.pickFirst(vehicle, ['version', 'version_name']);
+
+    return [brand, model, version].filter(Boolean).join(' ').trim();
+  }
+
+  private buildDateRange(item: any): string {
+    const vehicle = this.getVersionVehiclePayload(item);
+    const from = this.pickFirst(vehicle, ['productionStart', 'production_from', 'from_date', 'start_date', 'date_from', 'registration_from']);
+    const to = this.pickFirst(vehicle, ['productionEnd', 'production_to', 'to_date', 'end_date', 'date_to', 'registration_to']);
+
+    if (from || to) {
+      return [this.formatCatalogDate(from), this.formatCatalogDate(to)].filter(Boolean).join(' - ');
+    }
+
+    const month = this.pickFirst(vehicle, ['registration_month']);
+    const year = this.pickFirst(vehicle, ['registration_year']);
+    return [month, year].filter(Boolean).join('/');
+  }
+
+  private formatVehicleValue(value: any): string {
+    if (value === null || value === undefined || value === '') {
+      return '';
+    }
+    return String(value);
+  }
+
+  private pickFirst(item: any, keys: string[]): any {
+    if (!item) return null;
+
+    for (const key of keys) {
+      const value = item[key];
+      if (Array.isArray(value) && value.length > 0) {
+        return value.join(', ');
+      }
+      if (value !== undefined && value !== null && value !== '') {
+        return value;
+      }
+    }
+
+    return null;
+  }
+
+  private getVersionVehiclePayload(item: any): any {
+    const nestedVehicle = item?.raw_payload?.data?.[0];
+    if (!nestedVehicle) {
+      return item;
+    }
+
+    return {
+      ...item,
+      ...nestedVehicle,
+      brand_name: item?.brand_name || nestedVehicle?.brand,
+      model_name: item?.model_name || nestedVehicle?.model,
+      version_name: item?.version_name || nestedVehicle?.version
+    };
+  }
+
+  private formatCatalogDate(value: any): string {
+    if (!value) return '';
+    const normalized = String(value).trim();
+
+    if (/^\d{6}$/.test(normalized)) {
+      return `${normalized.slice(4, 6)}.${normalized.slice(0, 4)}`;
+    }
+
+    if (/^\d{4}-\d{2}$/.test(normalized)) {
+      const [year, month] = normalized.split('-');
+      return `${month}.${year}`;
+    }
+
+    return normalized;
+  }
+
+  private normalizeText(value: any): string {
+    return String(value ?? '').trim().toLowerCase();
+  }
+
+  private findOptionByValue(options: StepOneSelectOption[], value: string | number | null): StepOneSelectOption | undefined {
+    return options.find((item) => String(item.value) === String(value));
+  }
+
+  private resetStepOneResults(): void {
+    this.matchedVehicles = [];
+    this.selectedVehicleDetails = null;
+    this.equipmentExpanded = false;
   }
 
   onFeatureChange(event: any) {
@@ -514,30 +1316,7 @@ export class ListYourCarComponent {
   getLastInsertedData(): void {
     this.service.get('user/latest-draft-car').pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
-        this.lastIntertedData = res?.data.data || null;
-        if (this.lastIntertedData) {
-          this.currentFormStep = this.lastIntertedData.page + 1;
-          this.carFormOne.patchValue(this.lastIntertedData);
-          this.carFormOne.patchValue({
-            phone_number: this.lastIntertedData.country_code + this.lastIntertedData.phone_number,
-            warranty_from: this.lastIntertedData.warranty_from ? this.formatDate(this.lastIntertedData.warranty_from) : '',
-            warranty_to: this.lastIntertedData.warranty_to ? this.formatDate(this.lastIntertedData.warranty_to) : '',
-            last_mfk_date: this.lastIntertedData.last_mfk_date ? this.formatDate(this.lastIntertedData.last_mfk_date) : ''
-          });
-
-          // Draft media now lives on the server, so clear any stale local files
-          // to avoid re-sending removed or already-uploaded images on the next submit.
-          this.carImages = [];
-          this.selectedReel = null;
-          this.reelThumbnail = null;
-          this.carImagePreviews = (this.lastIntertedData.carImages || []).map((img: any) => ({
-            file: null,
-            url: img.url,
-            isRemote: true
-          }));
-          this.reelPreviewUrl = this.lastIntertedData.carReel ? this.lastIntertedData.carReel : null;
-          this.reelThumbnailPreviewUrl = this.lastIntertedData.reelThumbnails ? this.lastIntertedData.reelThumbnails : null;
-        }
+        this.patchDraftData(res?.data?.data || null);
       },
       error: (error) => {
         console.error('Error fetching last inserted data:', error);

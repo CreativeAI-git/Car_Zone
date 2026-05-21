@@ -38,6 +38,22 @@ export class CommonService {
     return this.http.post<any>(this.baseUrl + 'user/web/listYourCar', data);
   }
 
+  getBrandsList(): Observable<any> {
+    return this.http.get<any>(this.baseUrl + 'user/brands-list');
+  }
+
+  getModelsList(brandId: string | number): Observable<any> {
+    return this.http.get<any>(this.baseUrl + 'user/models-list', {
+      params: { brand_id: brandId }
+    });
+  }
+
+  getVersionsList(modelId: string | number): Observable<any> {
+    return this.http.get<any>(this.baseUrl + 'user/versions-list', {
+      params: { model_id: modelId }
+    });
+  }
+
   delete<T>(url: string, data?: any): Observable<T> {
     return this.http.delete<T>(this.baseUrl + url, { body: data });
   };
