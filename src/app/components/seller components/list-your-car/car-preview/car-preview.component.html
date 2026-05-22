@@ -69,7 +69,7 @@
                         </ul>
                         <ul class="p-0 car-content-detail-list">
                             <li class="d-flex gap-2 align-items-start">
-                                <img src="img/icons/carn.png" />
+                                <img src="img/icons/carn1.png" style="height: 26px;" />
                                 <span>{{carData?.body_type_value || ('common.notAvailable' | translate)}} </span>
                             </li>
                             <li class="d-flex gap-2 align-items-start">
@@ -81,10 +81,10 @@
                                 <span>{{carData?.condition_value || ('common.notAvailable' | translate)}} </span>
                             </li>
 
-                            <!-- <li class="d-flex gap-2 align-items-start">
+                            <li *ngIf="carData?.consumption" class="d-flex gap-2 align-items-start">
                                 <img src="img/icons/km-blackn.png" />
-                                <span>{{carData?.energy_efficiency || ('common.notAvailable' | translate)}} </span>
-                            </li> -->
+                                <span>{{carData?.consumption }} L / 100km </span>
+                            </li>
                         </ul>
                     </div>
                     <hr class="my-4" />
@@ -136,12 +136,25 @@
                     <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.specifications' | translate }}</h4>
                     <div class="row">
                         <div class="col-md-6">
+                            <p class="mb-1">{{ 'vehicle.doors' | translate }}: {{carData?.doors ||
+                                ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'filters.seats' | translate }}: {{carData?.seats ||
+                                carData?.sittingCapacity
+                                || ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.cylinders' | translate }}: {{carData?.cylinders ||
+                                ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">{{ 'vehicle.gears' | translate }}: {{carData?.gears ||
+                                ('common.notAvailable' | translate)}}</p>
                             <p class="mb-1">{{ 'vehicle.height' | translate }} (mm): {{carData?.height_mm ||
                                 ('common.notAvailable' | translate)}}</p>
                             <p class="mb-1">{{ 'vehicle.width' | translate }} (mm): {{carData?.width_mm ||
                                 ('common.notAvailable' | translate)}}</p>
                         </div>
                         <div class="col-md-6">
+                            <p class="mb-1">Empty weight (kg): {{carData?.emptyWeight ||
+                                ('common.notAvailable' | translate)}}</p>
+                            <p class="mb-1">Total weight (kg): {{carData?.totalWeight ||
+                                ('common.notAvailable' | translate)}}</p>
                             <p class="mb-1">{{ 'vehicle.length' | translate }} (mm): {{carData?.length_mm ||
                                 ('common.notAvailable' | translate)}}</p>
                             <p class="mb-1">{{ 'vehicle.brakedTowingCapacity' | translate }} (kg):

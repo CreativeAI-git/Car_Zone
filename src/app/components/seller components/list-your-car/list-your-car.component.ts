@@ -93,8 +93,14 @@ export class ListYourCarComponent {
       'body_type_id',
       'powerOutput',
       'doors',
+      'sittingCapacity',
+      'cylinders',
+      'gears',
       'carCondition',
       'carMileage',
+      'consuption',
+      'emptyWeight',
+      'totalWeight',
       'state_id',
       'mfk_warrenty_id',
       'warranty_from',
@@ -531,6 +537,7 @@ export class ListYourCarComponent {
       registration_month: ['', [Validators.required]],
       registration_year: ['', [Validators.required]],
       sittingCapacity: [null, [Validators.required]],
+      cylinders: [''],
       body_type_id: ['', [Validators.required]],
       drive_type_id: ['', [Validators.required]],
       selectYear: ['', [Validators.required]],
@@ -538,6 +545,7 @@ export class ListYourCarComponent {
       fuel_type_id: ['', Validators.required],
       powerOutput: ['', [Validators.required]],
       doors: [''],
+      gears: [''],
       transmission_id: ['', Validators.required],
       state_id: ['', Validators.required],
       mfk_warrenty_id: ['', Validators.required],
@@ -549,6 +557,8 @@ export class ListYourCarComponent {
       co2Emission: [''],
       carCondition: ['', Validators.required],
       consuption: ['', Validators.required],
+      emptyWeight: [''],
+      totalWeight: [''],
       exterior_color_id: ['', Validators.required],
       interior_color_id: ['', Validators.required],
       is_metallic: [false],
@@ -954,7 +964,8 @@ export class ListYourCarComponent {
           this.selectedReel = null;
           this.reelThumbnail = null;
           this.currentFormStep = 1;
-          this.goToStep(1);
+          this.syncActiveStepClasses();
+          this.router.navigate(['/my-profile/my-listings']);
           return;
         }
         const totalSteps = this.getTotalSteps();
@@ -967,9 +978,6 @@ export class ListYourCarComponent {
           this.goToStep(this.currentFormStep + 1);
           this.getLastInsertedData();
           return;
-        }
-        if (this.currentFormStep === 6) {
-          this.router.navigate(['/my-profile/my-listings']);
         }
       },
       error: (error: any) => {
@@ -1348,11 +1356,15 @@ export class ListYourCarComponent {
       registration_month: this.pickFirst(vehicle, ['registration_month']) || this.carFormOne.get('registration_month')?.value,
       registration_year: this.pickFirst(vehicle, ['registration_year']) || this.carFormOne.get('registration_year')?.value,
       sittingCapacity: this.pickFirst(vehicle, ['sittingCapacity', 'seats', 'seat_count']) || this.carFormOne.get('sittingCapacity')?.value,
+      cylinders: this.pickFirst(vehicle, ['cylinders', 'cylinder_count']) || this.carFormOne.get('cylinders')?.value,
       powerOutput: this.pickFirst(vehicle, ['ps', 'totalPs', 'powerOutput', 'power_output', 'horsepower', 'kw_output']) || this.carFormOne.get('powerOutput')?.value,
       doors: this.pickFirst(vehicle, ['doors', 'door_count']) || this.carFormOne.get('doors')?.value,
+      gears: this.pickFirst(vehicle, ['gears', 'gear_count']) || this.carFormOne.get('gears')?.value,
       engineType: this.pickFirst(vehicle, ['displacement', 'engineType', 'engine', 'engine_cc', 'engine_cm3', 'engine_displacement']) || this.carFormOne.get('engineType')?.value,
       co2Emission: this.pickFirst(vehicle, ['co2Emission', 'co2_emission', 'co2_emissions']) || this.carFormOne.get('co2Emission')?.value,
       consuption: this.pickFirst(vehicle, ['consuption', 'consumption']) || this.carFormOne.get('consuption')?.value,
+      emptyWeight: this.pickFirst(vehicle, ['emptyWeight', 'empty_weight', 'curb_weight', 'curb_weight_kg']) || this.carFormOne.get('emptyWeight')?.value,
+      totalWeight: this.pickFirst(vehicle, ['totalWeight', 'total_weight']) || this.carFormOne.get('totalWeight')?.value,
       type_approval: this.pickFirst(vehicle, ['type_approval', 'typeApprovalNrs']) || this.carFormOne.get('type_approval')?.value,
       vin_number: this.pickFirst(vehicle, ['vin_number', 'serial_number']) || this.carFormOne.get('vin_number')?.value,
       registration_master_number: this.pickFirst(vehicle, ['registration_master_number']) || this.carFormOne.get('registration_master_number')?.value
@@ -1748,11 +1760,15 @@ export class ListYourCarComponent {
     this.carFormOne.patchValue({
       version: '',
       sittingCapacity: null,
+      cylinders: '',
       powerOutput: '',
       doors: '',
+      gears: '',
       engineType: '',
       co2Emission: '',
       consuption: '',
+      emptyWeight: '',
+      totalWeight: '',
       fuel_type_id: '',
       transmission_id: '',
       drive_type_id: '',

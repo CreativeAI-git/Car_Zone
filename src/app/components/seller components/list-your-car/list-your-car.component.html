@@ -860,15 +860,15 @@
                                           @if (canShowStepTwoVehicleSummary) {
                                           <div class="ct_step_two_vehicle_summary mb-4">
                                                 <div class="mb-4">
-                                                      <h4 class="ct_fw_600 ct_fs_28 mb-2">{{ 'vehicle.addVehicleData' |
+                                                      <h4 class="ct_fw_600 ct_fs_28 mb-0">{{ 'vehicle.addVehicleData' |
                                                             translate }}</h4>
                                                       <p class="ct_fs_15 ct_color_666666 mb-0">Missing some
                                                             information? No worries, you can add them now</p>
                                                 </div>
 
                                                 <div class="ct_step_two_vehicle_card">
-                                                      <div class="ct_step_two_vehicle_header">
-                                                            <div class="ct_step_two_vehicle_title ct_fs_22">
+                                                      <div class="ct_step_two_vehicle_header mb-0">
+                                                            <div class="ct_step_two_vehicle_title ct_fs_22 mb-0">
                                                                   {{ stepTwoVehicleSummary?.title }}</div>
                                                             <div class="ct_step_two_vehicle_subtitle ct_fs_16">
                                                                   {{ stepTwoVehicleSummary?.subtitle }}</div>
@@ -880,7 +880,7 @@
                                                             </button>
                                                       </div>
 
-                                                      <div class="ct_step_two_vehicle_grid mt-4">
+                                                      <div class="ct_step_two_vehicle_grid">
                                                             <div class="ct_step_two_vehicle_grid_left">
                                                                   <div class="row gy-4 gx-5">
                                                                         @for (detail of stepTwoVehicleSummary?.leftItems
@@ -1265,6 +1265,42 @@
                                                                               'vehicle.doors' | translate),
                                                                               carFormOne.get("doors"))}}</small>
                                                                   </div>
+                                                                  <div class="col-sm-4 mt-3">
+                                                                        <div>
+                                                                              <h5 class="ct_fs_15 ct_fw_400 mb-2">
+                                                                                    {{ 'filters.seats' | translate }}
+                                                                                    <span
+                                                                                          class="ct_color_8f0c1f">*</span>
+                                                                              </h5>
+                                                                        </div>
+                                                                        <input type="text" class="form-control"
+                                                                              [placeholder]="'vehicle.enterHere' | translate"
+                                                                              formControlName="sittingCapacity" />
+                                                                        <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                              'filters.seats' | translate),
+                                                                              carFormOne.get("sittingCapacity"))}}</small>
+                                                                  </div>
+                                                                  <div class="col-sm-4 mt-3">
+                                                                        <div>
+                                                                              <h5 class="ct_fs_15 ct_fw_400 mb-2">
+                                                                                    {{ 'vehicle.cylinders' | translate
+                                                                                    }}
+                                                                              </h5>
+                                                                        </div>
+                                                                        <input type="text" class="form-control"
+                                                                              [placeholder]="'vehicle.enterHere' | translate"
+                                                                              formControlName="cylinders" />
+                                                                  </div>
+                                                                  <div class="col-sm-4 mt-3">
+                                                                        <div>
+                                                                              <h5 class="ct_fs_15 ct_fw_400 mb-2">
+                                                                                    {{ 'vehicle.gears' | translate }}
+                                                                              </h5>
+                                                                        </div>
+                                                                        <input type="text" class="form-control"
+                                                                              [placeholder]="'vehicle.enterHere' | translate"
+                                                                              formControlName="gears" />
+                                                                  </div>
                                                             </div>
                                                       </div>
                                                 </div>
@@ -1340,6 +1376,9 @@
                                                                                     }}</span>
                                                                         </div>
                                                                   </div>
+                                                                  <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                        'vehicle.mileageKm'| translate),
+                                                                        carFormOne.get("carMileage"))}}</small>
                                                             </div>
 
                                                             <div class="col-lg-6 col-md-6 mt-3">
@@ -1377,6 +1416,49 @@
                                                                   <small class="text-danger">{{validationErrorService.getErrorMessage((
                                                                         'profile.state'| translate),
                                                                         carFormOne.get("state_id"))}}</small>
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-4 mt-3">
+                                                                  <div>
+                                                                        <h5 class="ct_fs_15 ct_fw_400 mb-2">
+                                                                              {{ 'vehicle.consumption' | translate }}
+                                                                              <span class="ct_color_8f0c1f">*</span>
+                                                                        </h5>
+                                                                        <div class="position-relative">
+                                                                              <input type="text"
+                                                                                    [placeholder]="'vehicle.enterHere' | translate"
+                                                                                    class="form-control ct_input"
+                                                                                    formControlName="consuption" />
+                                                                        </div>
+                                                                  </div>
+                                                                  <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                        'vehicle.consumption'| translate),
+                                                                        carFormOne.get("consuption"))}}</small>
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-4 mt-3">
+                                                                  <div>
+                                                                        <h5 class="ct_fs_15 ct_fw_400 mb-2">
+                                                                              Empty weight (kg)
+                                                                        </h5>
+                                                                        <div class="position-relative">
+                                                                              <input type="text"
+                                                                                    [placeholder]="'vehicle.enterHere' | translate"
+                                                                                    class="form-control ct_input"
+                                                                                    formControlName="emptyWeight" />
+                                                                        </div>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-4 mt-3">
+                                                                  <div>
+                                                                        <h5 class="ct_fs_15 ct_fw_400 mb-2">
+                                                                              Total weight (kg)
+                                                                        </h5>
+                                                                        <div class="position-relative">
+                                                                              <input type="text"
+                                                                                    [placeholder]="'vehicle.enterHere' | translate"
+                                                                                    class="form-control ct_input"
+                                                                                    formControlName="totalWeight" />
+                                                                        </div>
+                                                                  </div>
                                                             </div>
 
                                                             <div class="col-12 mt-3">
