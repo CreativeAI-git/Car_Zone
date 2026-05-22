@@ -1303,9 +1303,12 @@ export class ListYourCarComponent {
         this.createDetailItem('Registration year', this.pickFirst(vehicle, ['registration_year', 'production_year']))
       ].filter((detail: VehicleDetailItem | null): detail is VehicleDetailItem => !!detail),
       rightItems: [
+        this.createDetailItem('Type approval', this.pickFirst(vehicle, ['type_approval', 'typeApprovalNrs'])),
         this.createDetailItem('CO₂ emissions (g/km)', this.pickFirst(vehicle, ['co2Emission', 'co2_emission', 'co2_emissions'])),
         this.createDetailItem('Fuel consumption', this.pickFirst(vehicle, ['consuption', 'consumption'])),
-        this.createDetailItem('Emissions standard', this.pickFirst(vehicle, ['emission_standard', 'emissionStandard']))
+        this.createDetailItem('Emissions standard', this.pickFirst(vehicle, ['emission_standard', 'emissionStandard'])),
+        this.createDetailItem('VIN', this.pickFirst(vehicle, ['vin_number', 'serial_number'])),
+        this.createDetailItem('Registration master number', this.pickFirst(vehicle, ['registration_master_number']))
       ].filter((detail: VehicleDetailItem | null): detail is VehicleDetailItem => !!detail),
       equipmentCount: Number(this.pickFirst(vehicle, ['equipment_count', 'equipmentCount'])) || equipment.length,
       equipment,
