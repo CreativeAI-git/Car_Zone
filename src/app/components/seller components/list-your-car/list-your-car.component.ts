@@ -856,12 +856,8 @@ export class ListYourCarComponent {
     }
 
     if (this.activeVehicleTab === 'serial-number') {
-      if (!this.selectedVehicleDetails) {
-        this.lookupVehicleFromIdentifiers();
-        return;
-      }
-
-      this.patchVehicleDataToForm(this.selectedVehicleDetails.raw);
+      this.lookupVehicleByVin();
+      return;
     }
 
     this.submitFormStep();
@@ -1008,6 +1004,54 @@ export class ListYourCarComponent {
           this.stepOneSearchMessage = this.translate.instant('vehicle.noVehicleDetailsFound');
           return;
         }
+        this.selectedVehicleDetails = this.buildVehicleDetailsView(vehiclePayload);
+        this.stepTwoVehicleSummary = this.buildStepTwoVehicleSummary(vehiclePayload);
+        this.patchVehicleDataToForm(vehiclePayload);
+        this.goToStep(2);
+      },
+      error: (error: any) => {
+        const errMsg = error?.message || this.translate.instant('vehicle.failedToFetchVehicleDetails');
+        this.stepOneSearchError = errMsg;
+        this.message.error(errMsg);
+      }
+    });
+  }
+
+  private lookupVehicleByVin(): void {
+    if (this.stepOneLookupLoading) return;
+
+    const vinValue = this.serialNumberSearch.trim();
+    if (!vinValue) {
+      this.stepOneIdentifierTouched = true;
+      return;
+    }
+
+    this.stepOneSearchError = null;
+    this.stepOneSearchMessage = null;
+    this.selectedVehicleDetails = null;
+    this.equipmentExpanded = false;
+    this.stepOneLookupLoading = true;
+    this.loading = true;
+
+    this.carFormOne.patchValue({
+      vin_number: vinValue,
+      registration_master_number: vinValue
+    }, { emitEvent: false });
+
+    this.service.getVehicleByVin(vinValue).pipe(
+      finalize(() => {
+        this.stepOneLookupLoading = false;
+        this.loading = false;
+      }),
+      first()
+    ).subscribe({
+      next: (res: any) => {
+        const vehiclePayload = this.extractTypeApprovalVehicle(res);
+        if (!vehiclePayload) {
+          this.stepOneSearchMessage = this.translate.instant('vehicle.noVehicleDetailsFound');
+          return;
+        }
+
         this.selectedVehicleDetails = this.buildVehicleDetailsView(vehiclePayload);
         this.stepTwoVehicleSummary = this.buildStepTwoVehicleSummary(vehiclePayload);
         this.patchVehicleDataToForm(vehiclePayload);

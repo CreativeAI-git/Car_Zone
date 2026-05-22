@@ -60,6 +60,12 @@ export class CommonService {
     });
   }
 
+  getVehicleByVin(vinNumber: string): Observable<any> {
+    return this.http.get<any>(this.baseUrl + 'user/vehicle-by-vin', {
+      params: { vin_number: vinNumber }
+    });
+  }
+
   delete<T>(url: string, data?: any): Observable<T> {
     return this.http.delete<T>(this.baseUrl + url, { body: data });
   };
