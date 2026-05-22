@@ -839,6 +839,101 @@
                                     <!-- STEP 2 -->
                                     <div class="ct_form_step" [class]="{ 'active': currentFormStep === 2 }"
                                           data-step="2">
+                                          @if (canShowStepTwoVehicleSummary) {
+                                          <div class="ct_step_two_vehicle_summary mb-4">
+                                                <div class="mb-4">
+                                                      <h4 class="ct_fw_600 ct_fs_28 mb-2">{{ 'vehicle.addVehicleData' |
+                                                            translate }}</h4>
+                                                      <p class="ct_fs_15 ct_color_666666 mb-0">Missing some
+                                                            information? No worries, you can add them now</p>
+                                                </div>
+
+                                                <div class="ct_step_two_vehicle_card">
+                                                      <div class="ct_step_two_vehicle_header">
+                                                            <div class="ct_step_two_vehicle_title ct_fs_22">
+                                                                        {{ stepTwoVehicleSummary?.title }}</div>
+                                                            <div class="ct_step_two_vehicle_subtitle ct_fs_16">
+                                                                  {{ stepTwoVehicleSummary?.subtitle }}</div>
+                                                            <button type="button" class="ct_step_two_edit_link"
+                                                                  (click)="editSelectedVehicleFromStepTwo()">
+                                                                  {{ 'vehicle.notYourVehicleEditData' | translate }}
+                                                                  <i
+                                                                        class="fa-solid fa-chevron-right ms-2 ct_fs_14"></i>
+                                                            </button>
+                                                      </div>
+
+                                                      <div class="ct_step_two_vehicle_grid mt-4">
+                                                            <div class="ct_step_two_vehicle_grid_left">
+                                                                  <div class="row gy-4 gx-5">
+                                                                        @for (detail of stepTwoVehicleSummary?.leftItems
+                                                                        || []; track $index) {
+                                                                        <div class="col-md-6">
+                                                                              <div
+                                                                                    class="ct_step_two_label ct_fs_14 ct_color_666666">
+                                                                                    {{ detail.label }}</div>
+                                                                              <div class="ct_step_two_value ct_fs_16">{{
+                                                                                    detail.value }}</div>
+                                                                        </div>
+                                                                        }
+                                                                  </div>
+                                                            </div>
+
+                                                            <div class="ct_step_two_vehicle_grid_divider d-none d-lg-block">
+                                                            </div>
+
+                                                            <div class="ct_step_two_vehicle_grid_right">
+                                                                  <div class="row gy-4 gx-5">
+                                                                        @for (detail of stepTwoVehicleSummary?.rightItems
+                                                                        || []; track $index) {
+                                                                        <div class="col-md-6">
+                                                                              <div
+                                                                                    class="ct_step_two_label ct_fs_14 ct_color_666666">
+                                                                                    {{ detail.label }}</div>
+                                                                              <div class="ct_step_two_value ct_fs_16">{{
+                                                                                    detail.value }}</div>
+                                                                        </div>
+                                                                        }
+                                                                  </div>
+
+                                                                  @if ((stepTwoVehicleSummary?.equipmentCount || 0) >
+                                                                  0) {
+                                                                  <hr />
+                                                                  <div
+                                                                        class="ct_step_two_equipment_box d-flex justify-content-between align-items-center flex-wrap gap-3">
+                                                                        <div
+                                                                              class="ct_step_two_equipment_text ct_fs_14 ct_color_666666">
+                                                                              {{
+                                                                              'vehicle.standardEquipmentIdentified' |
+                                                                              translate:{ count:
+                                                                              stepTwoVehicleSummary?.equipmentCount } }}
+                                                                        </div>
+                                                                        <button type="button"
+                                                                              class="ct_step_two_view_btn"
+                                                                              (click)="toggleEquipment()">
+                                                                              View
+                                                                        </button>
+                                                                  </div>
+
+                                                                  @if (equipmentExpanded &&
+                                                                  (stepTwoVehicleSummary?.equipment || []).length) {
+                                                                  <ul class="px-0 equipment-list mt-3">
+                                                                        @for (equipment of
+                                                                        stepTwoVehicleSummary?.equipment || []; track
+                                                                        $index) {
+                                                                        <li>
+                                                                              <img src="img/icons/list-chk.png" />
+                                                                              {{ equipment }}
+                                                                        </li>
+                                                                        }
+                                                                  </ul>
+                                                                  }
+                                                                  }
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          }
+
                                           <div id="filterAccordion" class="">
                                                 <div class="collapse-cont-wrapper">
                                                       <div

@@ -54,6 +54,12 @@ export class CommonService {
     });
   }
 
+  getVehicleByTypeApproval(typeApproval: string): Observable<any> {
+    return this.http.get<any>(this.baseUrl + 'user/vehicle-by-type-approval', {
+      params: { type_approval: typeApproval }
+    });
+  }
+
   delete<T>(url: string, data?: any): Observable<T> {
     return this.http.delete<T>(this.baseUrl + url, { body: data });
   };

@@ -136,6 +136,7 @@ export class ListYourCarComponent {
   stepOneResultFilterOptions: StepOneResultFilterOptions = this.getDefaultStepOneResultFilterOptions();
   stepOneApiFilters: Record<string, any> = {};
   selectedVehicleDetails: VehicleDetailsView | null = null;
+  stepTwoVehicleSummary: VehicleDetailsView | null = null;
   equipmentExpanded = false;
   loadingBrands = false;
   loadingModels = false;
@@ -183,6 +184,10 @@ export class ListYourCarComponent {
 
   get canShowVehicleDetails(): boolean {
     return !!this.selectedVehicleDetails;
+  }
+
+  get canShowStepTwoVehicleSummary(): boolean {
+    return !!this.stepTwoVehicleSummary;
   }
 
   get isMakeModelSearchFormView(): boolean {
@@ -408,13 +413,9 @@ export class ListYourCarComponent {
     this.stepOneSearchError = null;
     this.selectedMatchedVehicle = vehicle;
     this.selectedVehicleDetails = this.buildVehicleDetailsView(vehicle.raw);
-    // this.patchVehicleDataToForm(vehicle.raw);
-    if (this.selectedMatchedVehicle) {
-      this.selectedVehicleDetails = this.buildVehicleDetailsView(this.selectedMatchedVehicle.raw);
-      this.patchVehicleDataToForm(this.selectedMatchedVehicle.raw);
-      this.goToStep(2);
-      return;
-    }
+    this.stepTwoVehicleSummary = this.buildStepTwoVehicleSummary(vehicle.raw);
+    this.patchVehicleDataToForm(vehicle.raw);
+    this.goToStep(2);
   }
 
   toggleEquipment(): void {
@@ -425,7 +426,17 @@ export class ListYourCarComponent {
     this.stepOneSearchError = null;
     this.stepOneSearchMessage = null;
     this.selectedVehicleDetails = null;
+    this.selectedMatchedVehicle = null;
+    this.stepTwoVehicleSummary = null;
     this.equipmentExpanded = false;
+  }
+
+  editSelectedVehicleFromStepTwo(): void {
+    this.editVehicleData();
+    if (this.activeVehicleTab === 'make-models') {
+      this.stepOneViewState = this.allMatchedVehicles.length ? 'result-list' : 'search-form';
+    }
+    this.goToStep(1);
   }
 
   goBackToMakeModelSearch(): void {
@@ -547,14 +558,8 @@ export class ListYourCarComponent {
   private goToStep(step: number): void {
     const totalSteps = this.getTotalSteps();
     if (step < 1 || step > totalSteps) return;
-
-    const currentStepEl = document.querySelector(`.ct_form_step[data-step="${this.currentFormStep}"]`);
-    const nextStepEl = document.querySelector(`.ct_form_step[data-step="${step}"]`);
-
-    currentStepEl?.classList.remove('active');
-    nextStepEl?.classList.add('active');
     this.currentFormStep = step;
-    this.updateStepper();
+    this.syncActiveStepClasses();
   }
 
   private updateStepper(): void {
@@ -567,6 +572,23 @@ export class ListYourCarComponent {
         this.currentFormStep === this.getTotalSteps() ? 'common.submit' : 'common.next'
       );
     }
+  }
+
+  private syncActiveStepClasses(): void {
+    document.querySelectorAll('.ct_form_step').forEach((element, index) => {
+      const targetStep = index + 1;
+      element.classList.toggle('active', targetStep === this.currentFormStep);
+    });
+
+    this.updateStepper();
+
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.ct_form_step').forEach((element, index) => {
+        const targetStep = index + 1;
+        element.classList.toggle('active', targetStep === this.currentFormStep);
+      });
+      this.updateStepper();
+    });
   }
 
   private getStepControlNames(step: number): string[] {
@@ -778,6 +800,12 @@ export class ListYourCarComponent {
   onSubmit(): void {
     if (!this.carFormOne) return;
     if (this.submitInProgress) return;
+
+    if (this.currentFormStep === 1 && this.activeVehicleTab === 'make-models' && this.stepOneViewState === 'result-list') {
+      this.handleStepOneSubmit();
+      return;
+    }
+
     this.submitCurrentStep();
   }
 
@@ -811,6 +839,7 @@ export class ListYourCarComponent {
       }
       if (this.selectedMatchedVehicle) {
         this.selectedVehicleDetails = this.buildVehicleDetailsView(this.selectedMatchedVehicle.raw);
+        this.stepTwoVehicleSummary = this.buildStepTwoVehicleSummary(this.selectedMatchedVehicle.raw);
         this.patchVehicleDataToForm(this.selectedMatchedVehicle.raw);
         this.goToStep(2);
         return;
@@ -821,7 +850,12 @@ export class ListYourCarComponent {
       return;
     }
 
-    if (this.activeVehicleTab === 'type-approval' || this.activeVehicleTab === 'serial-number') {
+    if (this.activeVehicleTab === 'type-approval') {
+      this.lookupVehicleByTypeApproval();
+      return;
+    }
+
+    if (this.activeVehicleTab === 'serial-number') {
       if (!this.selectedVehicleDetails) {
         this.lookupVehicleFromIdentifiers();
         return;
@@ -868,6 +902,7 @@ export class ListYourCarComponent {
           }
           this.goToStep(this.currentFormStep + 1);
           this.getLastInsertedData();
+          return;
         }
         if (this.currentFormStep === 6) {
           this.router.navigate(['/my-profile/my-listings']);
@@ -940,6 +975,52 @@ export class ListYourCarComponent {
     });
   }
 
+  private lookupVehicleByTypeApproval(): void {
+    if (this.stepOneLookupLoading) return;
+
+    const typeApprovalValue = this.typeApprovalSearch.trim();
+    if (!typeApprovalValue) {
+      this.stepOneIdentifierTouched = true;
+      return;
+    }
+
+    this.stepOneSearchError = null;
+    this.stepOneSearchMessage = null;
+    this.selectedVehicleDetails = null;
+    this.equipmentExpanded = false;
+    this.stepOneLookupLoading = true;
+    this.loading = true;
+
+    this.carFormOne.patchValue({
+      type_approval: typeApprovalValue
+    });
+
+    this.service.getVehicleByTypeApproval(typeApprovalValue).pipe(
+      finalize(() => {
+        this.stepOneLookupLoading = false;
+        this.loading = false;
+      }),
+      first()
+    ).subscribe({
+      next: (res: any) => {
+        const vehiclePayload = this.extractTypeApprovalVehicle(res);
+        if (!vehiclePayload) {
+          this.stepOneSearchMessage = this.translate.instant('vehicle.noVehicleDetailsFound');
+          return;
+        }
+        this.selectedVehicleDetails = this.buildVehicleDetailsView(vehiclePayload);
+        this.stepTwoVehicleSummary = this.buildStepTwoVehicleSummary(vehiclePayload);
+        this.patchVehicleDataToForm(vehiclePayload);
+        this.goToStep(2);
+      },
+      error: (error: any) => {
+        const errMsg = error?.message || this.translate.instant('vehicle.failedToFetchVehicleDetails');
+        this.stepOneSearchError = errMsg;
+        this.message.error(errMsg);
+      }
+    });
+  }
+
   private fetchLatestDraftData(): void {
     this.service.get('user/latest-draft-car').pipe(
       first()
@@ -953,6 +1034,7 @@ export class ListYourCarComponent {
 
         this.patchDraftData(draftData, false);
         this.selectedVehicleDetails = this.buildVehicleDetailsView(draftData);
+        this.stepTwoVehicleSummary = this.buildStepTwoVehicleSummary(draftData);
         this.equipmentExpanded = false;
 
         if (!this.selectedVehicleDetails.leftItems.length && !this.selectedVehicleDetails.rightItems.length) {
@@ -1047,6 +1129,45 @@ export class ListYourCarComponent {
         this.createDetailItem(this.translate.instant('vehicle.vehicleIdentificationNumber'), this.pickFirst(vehicle, ['vin_number', 'serial_number'])),
         this.createDetailItem(this.translate.instant('vehicle.typeApproval'), this.pickFirst(vehicle, ['type_approval', 'typeApprovalNrs'])),
         this.createDetailItem(this.translate.instant('vehicle.registrationMasterNumber'), this.pickFirst(vehicle, ['registration_master_number']))
+      ].filter((detail: VehicleDetailItem | null): detail is VehicleDetailItem => !!detail),
+      equipmentCount: Number(this.pickFirst(vehicle, ['equipment_count', 'equipmentCount'])) || equipment.length,
+      equipment,
+      raw: vehicle
+    };
+  }
+
+  private buildStepTwoVehicleSummary(item: any): VehicleDetailsView {
+    const vehicle = this.getVersionVehiclePayload(item);
+    const equipment = this.extractEquipment(item);
+    const powerPs = this.pickFirst(vehicle, ['ps', 'totalPs', 'powerOutput', 'power_output']);
+    const powerKw = this.pickFirst(vehicle, ['kw', 'kw_output']);
+    const formattedPower = [powerPs, powerKw]
+      .filter((value) => value !== null && value !== undefined && value !== '')
+      .join(' / ');
+
+    return {
+      title: this.buildVehicleTitle(item) || this.translate.instant('vehicle.vehicleDetails'),
+      subtitle: this.translate.instant('vehicle.prefilledVehicleDetails'),
+      leftItems: [
+        this.createDetailItem('Body type', this.pickFirst(vehicle, ['body_name', 'body_type_value', 'body_type', 'bodyType'])),
+        this.createDetailItem('Transmission', this.pickFirst(vehicle, ['transmission_name', 'gearbox', 'transmission_value', 'transmission'])),
+        this.createDetailItem('Fuel', this.pickFirst(vehicle, ['fuel_name', 'fuel_type_value', 'fuel_type', 'fuel'])),
+        this.createDetailItem('Drive', this.pickFirst(vehicle, ['drive_name', 'drive_type_value', 'drive_type', 'driveType'])),
+        this.createDetailItem('Doors', this.pickFirst(vehicle, ['doors', 'door_count'])),
+        this.createDetailItem('Seats', this.pickFirst(vehicle, ['sittingCapacity', 'seats', 'seat_count'])),
+        this.createDetailItem('Power (PS / kW)', formattedPower),
+        this.createDetailItem('Engine (cm³)', this.pickFirst(vehicle, ['displacement', 'engineType', 'engine', 'engine_cc', 'engine_cm3', 'engine_displacement'])),
+        this.createDetailItem('Cylinders', this.pickFirst(vehicle, ['cylinders', 'cylinder_count'])),
+        this.createDetailItem('Gears', this.pickFirst(vehicle, ['gears', 'gear_count'])),
+        this.createDetailItem('Wheelbase (mm)', this.pickFirst(vehicle, ['wheelbase', 'wheelbase_mm'])),
+        this.createDetailItem('Curb weight (kg)', this.pickFirst(vehicle, ['curb_weight', 'curb_weight_kg', 'totalWeight'])),
+        this.createDetailItem('Payload (kg)', this.pickFirst(vehicle, ['payload', 'payload_kg'])),
+        this.createDetailItem('Registration year', this.pickFirst(vehicle, ['registration_year', 'production_year']))
+      ].filter((detail: VehicleDetailItem | null): detail is VehicleDetailItem => !!detail),
+      rightItems: [
+        this.createDetailItem('CO₂ emissions (g/km)', this.pickFirst(vehicle, ['co2Emission', 'co2_emission', 'co2_emissions'])),
+        this.createDetailItem('Fuel consumption', this.pickFirst(vehicle, ['consuption', 'consumption'])),
+        this.createDetailItem('Emissions standard', this.pickFirst(vehicle, ['emission_standard', 'emissionStandard']))
       ].filter((detail: VehicleDetailItem | null): detail is VehicleDetailItem => !!detail),
       equipmentCount: Number(this.pickFirst(vehicle, ['equipment_count', 'equipmentCount'])) || equipment.length,
       equipment,
@@ -1150,7 +1271,7 @@ export class ListYourCarComponent {
       patchValue['body_type_id'] = bodyTypeId;
     }
 
-    this.carFormOne.patchValue(patchValue);
+    this.carFormOne.patchValue(patchValue, { emitEvent: false });
   }
 
   private resolveOptionId(options: any[], rawValue: any): any {
@@ -1308,6 +1429,35 @@ export class ListYourCarComponent {
     };
   }
 
+  private extractTypeApprovalVehicle(response: any): any {
+    const candidates = [
+      response?.data?.data,
+      response?.data,
+      response?.results,
+      response
+    ];
+
+    for (const candidate of candidates) {
+      if (Array.isArray(candidate) && candidate.length > 0) {
+        return candidate[0];
+      }
+
+      if (candidate && typeof candidate === 'object') {
+        if (Array.isArray(candidate?.data) && candidate.data.length > 0) {
+          return candidate.data[0];
+        }
+
+        if (candidate?.data && typeof candidate.data === 'object' && !Array.isArray(candidate.data)) {
+          return candidate.data;
+        }
+
+        return candidate;
+      }
+    }
+
+    return null;
+  }
+
   private formatCatalogDate(value: any): string {
     if (!value) return '';
     const normalized = String(value).trim();
@@ -1341,6 +1491,7 @@ export class ListYourCarComponent {
     this.stepOneResultFilterOptions = this.getDefaultStepOneResultFilterOptions();
     this.stepOneApiFilters = {};
     this.selectedVehicleDetails = null;
+    this.stepTwoVehicleSummary = null;
     this.equipmentExpanded = false;
   }
 

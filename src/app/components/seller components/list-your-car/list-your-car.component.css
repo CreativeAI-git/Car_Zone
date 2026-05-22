@@ -432,6 +432,96 @@ quill-editor {
       color: #666666;
 }
 
+.ct_step_two_vehicle_summary {
+      margin-bottom: 32px;
+}
+
+.ct_step_two_vehicle_card {
+      background: #fff;
+      border: 1px solid #ececf3;
+      border-radius: 10px;
+      padding: 28px 24px 24px;
+      box-shadow: none;
+}
+
+.ct_step_two_vehicle_header {
+      margin-bottom: 22px;
+}
+
+.ct_step_two_vehicle_title {
+      color: #1f2937;
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 8px;
+}
+
+.ct_step_two_vehicle_subtitle {
+      color: #667085;
+      font-size: 15px;
+      margin-bottom: 12px;
+}
+
+.ct_step_two_edit_link {
+      border: 0;
+      background: transparent;
+      color: #2563eb;
+      font-size: 14px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+}
+
+.ct_step_two_vehicle_grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) 1px minmax(260px, 0.9fr);
+      gap: 18px;
+      align-items: start;
+}
+
+.ct_step_two_vehicle_grid_divider {
+      min-height: 100%;
+      background: #e5e7eb;
+}
+
+.ct_step_two_label {
+      color: #667085;
+      font-size: 14px;
+      line-height: 1.3;
+      margin-bottom: 4px;
+}
+
+.ct_step_two_value {
+      color: #101828;
+      font-size: 15px;
+      line-height: 1.4;
+      font-weight: 500;
+}
+
+.ct_step_two_equipment_box {
+      padding-top: 8px;
+}
+
+.ct_step_two_equipment_text {
+      color: #667085;
+}
+
+.ct_step_two_view_btn {
+      min-width: 74px;
+      height: 38px;
+      border: 1px solid #2f6fed;
+      border-radius: 8px;
+      background: #fff;
+      color: #2f6fed;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0 16px;
+}
+
+.ct_step_two_view_btn:hover {
+      background: #f5f8ff;
+}
+
 @media screen and (max-width: 767px) {
       .ct_step_one_vehicle_details {
             padding: 18px;
@@ -440,5 +530,18 @@ quill-editor {
       .ct_step_one_tab_item .nav-link {
             font-size: 14px;
             padding-inline: 8px;
+      }
+
+      .ct_step_two_vehicle_card {
+            padding: 18px;
+      }
+
+      .ct_step_two_vehicle_grid {
+            grid-template-columns: 1fr;
+            gap: 18px;
+      }
+
+      .ct_step_two_vehicle_title {
+            font-size: 17px;
       }
 }
