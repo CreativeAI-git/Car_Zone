@@ -1075,6 +1075,15 @@ export class ListYourCarComponent {
       first()
     ).subscribe({
       next: (res: any) => {
+        if (res?.success === false) {
+          const errMsg = res?.message || this.translate.instant('vehicle.noVehicleDetailsFound');
+          this.stepOneSearchError = errMsg;
+          this.stepOneSearchMessage = null;
+          this.stepTwoVehicleSummary = null;
+          this.message.error(errMsg);
+          return;
+        }
+
         const vehiclePayload = this.extractTypeApprovalVehicle(res);
         if (!vehiclePayload) {
           this.stepOneSearchMessage = this.translate.instant('vehicle.noVehicleDetailsFound');
@@ -1122,6 +1131,15 @@ export class ListYourCarComponent {
       first()
     ).subscribe({
       next: (res: any) => {
+        if (res?.success === false) {
+          const errMsg = res?.message || this.translate.instant('vehicle.noVehicleDetailsFound');
+          this.stepOneSearchError = errMsg;
+          this.stepOneSearchMessage = null;
+          this.stepTwoVehicleSummary = null;
+          this.message.error(errMsg);
+          return;
+        }
+
         const vehiclePayload = this.extractTypeApprovalVehicle(res);
         if (!vehiclePayload) {
           this.stepOneSearchMessage = this.translate.instant('vehicle.noVehicleDetailsFound');
