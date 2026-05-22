@@ -2,6 +2,78 @@ quill-editor {
       background: #fff;
 }
 
+.ct_effective_photographs_card {
+      background: #f8f8f8;
+      border: 1px solid #f0f0f0;
+      border-radius: 18px;
+      padding: 36px 30px;
+}
+
+.ct_effective_photographs_title {
+      color: #111827;
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 28px;
+}
+
+.ct_effective_photographs_grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 24px;
+}
+
+.ct_effective_photographs_item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+}
+
+.ct_effective_photographs_icon {
+      width: 54px;
+      height: 54px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(17, 24, 39, 0.08);
+      color: #111111;
+      font-size: 24px;
+      margin-bottom: 16px;
+}
+
+.ct_effective_photographs_text {
+      max-width: 150px;
+      color: #5c5c5c;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.35;
+}
+
+@media screen and (max-width: 991px) {
+      .ct_effective_photographs_grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+}
+
+@media screen and (max-width: 575px) {
+      .ct_effective_photographs_card {
+            padding: 24px 18px;
+      }
+
+      .ct_effective_photographs_title {
+            font-size: 20px;
+            margin-bottom: 22px;
+      }
+
+      .ct_effective_photographs_grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+      }
+}
+
 .cutom_radio_input {
       height: 25px;
       width: 25px;

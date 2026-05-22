@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -82,6 +82,70 @@ interface VehicleDetailsView {
 })
 export class ListYourCarComponent {
   private destroy$ = new Subject<void>();
+  private readonly stepControlMap: Record<number, string[]> = {
+    2: [
+      'brandName',
+      'version',
+      'carModel',
+      'fuel_type_id',
+      'transmission_id',
+      'drive_type_id',
+      'body_type_id',
+      'powerOutput',
+      'doors',
+      'carCondition',
+      'carMileage',
+      'state_id',
+      'mfk_warrenty_id',
+      'warranty_from',
+      'warranty_to',
+      'warranty_type_id',
+      'last_mfk_date',
+      'exterior_color_id',
+      'interior_color_id',
+      'is_metallic',
+      'is_swiss_vehicle',
+      'is_accident_vehicle',
+      'is_fresh_from_service',
+      'height_mm',
+      'width_mm',
+      'length_mm',
+      'braked_towing_capacity_kg',
+      'energy_efficiency',
+      'type_approval',
+      'vin_number',
+      'registration_master_number',
+      'additional_title_999',
+      'description'
+    ],
+    3: [
+      'selling_price',
+      'new_price',
+      'isLeasing',
+      'banking_partner',
+      'annual_interest_rate',
+      'residual_value',
+      'leasing_value'
+    ],
+    4: [
+      'first_name',
+      'last_name',
+      'street',
+      'house_number',
+      'postal_code',
+      'po_box',
+      'city',
+      'country',
+      'phone_number'
+    ],
+    5: [],
+    6: []
+  };
+  private readonly stepOneTabControlMap: Record<StepOneTabKey, string[]> = {
+    'make-models': ['registration_month', 'registration_year', 'brandName', 'carModel'],
+    'type-approval': ['registration_month', 'registration_year'],
+    'serial-number': ['registration_month', 'registration_year']
+  };
   carFormOne!: FormGroup;
   carImages: File[] = [];
   carImagePreviews: { file: File | null; url: string; isRemote?: boolean }[] = [];
@@ -112,7 +176,6 @@ export class ListYourCarComponent {
   ];
   months = carData.months;
   years = Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i)
-  private nextBtnListener?: (event: Event) => void;
   private submitInProgress = false;
   activeVehicleTab: StepOneTabKey = 'make-models';
   stepOneViewState: StepOneViewState = 'search-form';
@@ -199,7 +262,6 @@ export class ListYourCarComponent {
   }
 
   ngOnInit(): void {
-    this.loadScript();
     this.getFuelTypes();
     this.getTransmissions();
     this.getDriveTypes();
@@ -451,14 +513,10 @@ export class ListYourCarComponent {
   }
 
   ngAfterViewInit(): void {
-    this.bindStepValidation();
+    this.syncActiveStepClasses();
   }
 
   ngOnDestroy(): void {
-    if (this.nextBtnListener) {
-      const nextBtn = document.getElementById('nextBtn');
-      nextBtn?.removeEventListener('click', this.nextBtnListener, true);
-    }
     this.cleanupAllPreviews();
     this.destroy$.next();
     this.destroy$.complete();
@@ -529,28 +587,6 @@ export class ListYourCarComponent {
     });
   }
 
-  private bindStepValidation(): void {
-    const nextBtn = document.getElementById('nextBtn');
-    if (!nextBtn) return;
-
-    this.nextBtnListener = (event: Event) => {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-
-      const currentStep = this.getCurrentStep();
-      this.currentFormStep = currentStep;
-      this.submitCurrentStep();
-    };
-    nextBtn.addEventListener('click', this.nextBtnListener, true);
-  }
-
-  private getCurrentStep(): number {
-    const activeStep = document.querySelector('.ct_form_step.active') as HTMLElement | null;
-    const stepAttr = activeStep?.dataset?.['step'];
-    const step = stepAttr ? Number(stepAttr) : 1;
-    return Number.isNaN(step) ? 1 : step;
-  }
-
   private getTotalSteps(): number {
     return document.querySelectorAll('.ct_form_step').length || 1;
   }
@@ -591,65 +627,91 @@ export class ListYourCarComponent {
     });
   }
 
+  private getStepOneControlNames(): string[] {
+    return this.stepOneTabControlMap[this.activeVehicleTab] || ['registration_month', 'registration_year'];
+  }
+
   private getStepControlNames(step: number): string[] {
     if (step === 1) {
       return this.getStepOneControlNames();
     }
-    const stepEl = document.querySelector(`.ct_form_step[data-step="${step}"]`);
-    if (!stepEl) return [];
-    const names = Array.from(stepEl.querySelectorAll('[formControlName]'))
-      .map((el) => el.getAttribute('formControlName'))
-      .filter((name): name is string => !!name);
-    return Array.from(new Set(names));
+
+    const controls = this.stepControlMap[step] || [];
+    return Array.from(new Set(controls));
   }
 
-  private isStepValid(step: number): boolean {
-    const controls = this.getStepControlNames(step);
-    const controlsValid = controls.every((name) => {
-      const control = this.carFormOne.get(name);
-      return control ? control.valid : true;
+  private getStepControls(step: number): AbstractControl[] {
+    return this.getStepControlNames(step)
+      .map((name) => this.carFormOne.get(name))
+      .filter((control): control is AbstractControl => !!control);
+  }
+
+  private markStepTouched(step: number): void {
+    this.getStepControls(step).forEach((control) => {
+      control.markAsTouched({ onlySelf: true });
+      control.markAsDirty({ onlySelf: true });
+      control.updateValueAndValidity({ onlySelf: true });
     });
+  }
 
-    if (step !== 1) {
-      return controlsValid;
-    }
+  private areStepControlsValid(step: number): boolean {
+    return this.getStepControls(step).every((control) => control.valid);
+  }
 
-    if (!controlsValid) {
-      return false;
-    }
-
+  private isStepOneFlowValid(markTouched: boolean = false): boolean {
     if (this.activeVehicleTab === 'type-approval' || this.activeVehicleTab === 'serial-number') {
-      return !!this.activeIdentifierValue.trim();
+      const hasIdentifier = !!this.activeIdentifierValue.trim();
+      if (!hasIdentifier && markTouched) {
+        this.stepOneIdentifierTouched = true;
+      }
+      return hasIdentifier;
+    }
+
+    if (this.activeVehicleTab === 'make-models' && this.stepOneViewState === 'result-list' && !this.selectedMatchedVehicle) {
+      if (markTouched) {
+        this.makeModelSelectionTouched = true;
+        this.stepOneSearchError = this.translate.instant('vehicle.selectVehicleFromList');
+      }
+      return false;
     }
 
     return true;
   }
 
-  private markStepTouched(step: number): void {
-    const controls = this.getStepControlNames(step);
-    controls.forEach((name) => {
-      const control = this.carFormOne.get(name);
-      if (!control) return;
-      control.markAsTouched({ onlySelf: true });
-      control.markAsDirty({ onlySelf: true });
-      control.updateValueAndValidity({ onlySelf: true });
-    });
-
-    if (step === 1 && (this.activeVehicleTab === 'type-approval' || this.activeVehicleTab === 'serial-number')) {
-      this.stepOneIdentifierTouched = true;
+  private isStepValid(step: number, markTouched: boolean = false): boolean {
+    if (markTouched) {
+      this.markStepTouched(step);
     }
+
+    const controlsValid = this.areStepControlsValid(step);
+    if (!controlsValid) {
+      return false;
+    }
+
+    if (step === 1) {
+      return this.isStepOneFlowValid(markTouched);
+    }
+
+    return true;
   }
 
-  private getStepOneControlNames(): string[] {
-    switch (this.activeVehicleTab) {
-      case 'make-models':
-        return ['brandName', 'carModel', 'registration_month', 'registration_year'];
-      case 'type-approval':
-      case 'serial-number':
-        return ['registration_month', 'registration_year'];
-      default:
-        return ['registration_month', 'registration_year'];
+  private validateAllStepsBeforeFinalSubmit(): boolean {
+    const stepsToValidate = [1, 2, 3, 4, 5];
+    let firstInvalidStep: number | null = null;
+
+    stepsToValidate.forEach((step) => {
+      const isValid = this.isStepValid(step, true);
+      if (!isValid && firstInvalidStep === null) {
+        firstInvalidStep = step;
+      }
+    });
+
+    if (firstInvalidStep !== null) {
+      this.goToStep(firstInvalidStep);
+      return false;
     }
+
+    return true;
   }
 
   onCarImagesSelected(event: Event): void {
@@ -812,9 +874,16 @@ export class ListYourCarComponent {
   private submitCurrentStep(): void {
     if (this.submitInProgress) return;
 
-    this.currentFormStep = this.getCurrentStep();
     if (this.currentFormStep === 1) {
       this.handleStepOneSubmit();
+      return;
+    }
+
+    if (this.currentFormStep === this.getTotalSteps()) {
+      if (!this.validateAllStepsBeforeFinalSubmit()) {
+        return;
+      }
+    } else if (!this.isStepValid(this.currentFormStep, true)) {
       return;
     }
 
@@ -825,8 +894,7 @@ export class ListYourCarComponent {
 
     if (this.submitInProgress) return;
 
-    this.markStepTouched(this.currentFormStep);
-    if (!this.isStepValid(this.currentFormStep)) {
+    if (!this.isStepValid(this.currentFormStep, true)) {
       return;
     }
 
@@ -1238,13 +1306,19 @@ export class ListYourCarComponent {
       this.currentFormStep = (data.page || 0) + 1;
     }
 
-    this.carFormOne.patchValue(data);
+    const draftCarId = data?.car_id ?? null;
+
     this.carFormOne.patchValue({
+      ...data,
+      car_id: draftCarId
+    }, { emitEvent: false });
+    this.carFormOne.patchValue({
+      car_id: draftCarId,
       phone_number: `${data.country_code || ''}${data.phone_number || ''}`,
       warranty_from: data.warranty_from ? this.formatDate(data.warranty_from) : '',
       warranty_to: data.warranty_to ? this.formatDate(data.warranty_to) : '',
       last_mfk_date: data.last_mfk_date ? this.formatDate(data.last_mfk_date) : ''
-    });
+    }, { emitEvent: false });
 
     this.rnNumber = data.registration_master_number || '';
     this.typeApprovalSearch = data.type_approval || '';
@@ -1268,7 +1342,6 @@ export class ListYourCarComponent {
     if (!vehicle) return;
 
     const patchValue: Record<string, any> = {
-      car_id: this.pickFirst(vehicle, ['car_id', 'vehicle_id', 'id', 'version_id', 'fzkey']) || this.carFormOne.get('car_id')?.value,
       brandName: this.pickFirst(vehicle, ['brand_name', 'brandName', 'brand', 'make_display', 'make']) || this.carFormOne.get('brandName')?.value,
       carModel: this.pickFirst(vehicle, ['model_name', 'carModel', 'model']) || this.carFormOne.get('carModel')?.value,
       version: this.pickFirst(vehicle, ['version', 'version_name', 'title', 'name']) || this.carFormOne.get('version')?.value,
@@ -1673,7 +1746,6 @@ export class ListYourCarComponent {
 
   private clearSelectedMatchedVehicleData(): void {
     this.carFormOne.patchValue({
-      car_id: null,
       version: '',
       sittingCapacity: null,
       powerOutput: '',
@@ -1731,14 +1803,7 @@ export class ListYourCarComponent {
     }
   }
   loadScript() {
-    const existingScript = document.querySelector('script[src="js/multistep-form.js"]');
-    if (existingScript) {
-      existingScript.remove();
-    }
-    const scriptElement = document.createElement('script');
-    scriptElement.src = 'js/multistep-form.js';
-    scriptElement.async = true;
-    document.body.appendChild(scriptElement);
+    return;
   }
 
   getLastInsertedData(): void {

@@ -235,167 +235,185 @@
 
                                                       <div class="ct_step_one_result_filters mb-4">
                                                             <div class="row g-3">
-                                                            <div class="col-md-6 col-xl-4">
-                                                                  <label class="ct_fw_400 ct_fs_17 mb-2">Make</label>
-                                                                  <nz-select class="form-select"
-                                                                        nzPlaceHolder="Make" [nzShowSearch]="true"
-                                                                        [nzAllowClear]="true"
-                                                                        [ngModel]="stepOneResultFilters.make"
-                                                                        (ngModelChange)="stepOneResultFilters.make = $event; onStepOneResultFilterChange()"
-                                                                        [ngModelOptions]="{ standalone: true }">
-                                                                        @for (item of stepOneResultFilterOptions.make;
-                                                                        track item.value) {
-                                                                        <nz-option nzCustomContent
-                                                                              [nzLabel]="item.label"
-                                                                              [nzValue]="item.value"
-                                                                              class="ct_custom_select">
-                                                                              <div
-                                                                                    class="d-flex align-items-center justify-content-between">
-                                                                                    <p class="m-0">{{ item.label }}</p>
-                                                                                    <input type="radio"
-                                                                                          class="cutom_radio_input"
-                                                                                          [checked]="item.value === stepOneResultFilters.make" />
-                                                                              </div>
-                                                                        </nz-option>
-                                                                        }
-                                                                  </nz-select>
-                                                            </div>
+                                                                  <div class="col-md-6 col-xl-4">
+                                                                        <label
+                                                                              class="ct_fw_400 ct_fs_17 mb-2">Make</label>
+                                                                        <nz-select class="form-select"
+                                                                              nzPlaceHolder="Make" [nzShowSearch]="true"
+                                                                              [nzAllowClear]="true"
+                                                                              [ngModel]="stepOneResultFilters.make"
+                                                                              (ngModelChange)="stepOneResultFilters.make = $event; onStepOneResultFilterChange()"
+                                                                              [ngModelOptions]="{ standalone: true }">
+                                                                              @for (item of
+                                                                              stepOneResultFilterOptions.make;
+                                                                              track item.value) {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.label"
+                                                                                    [nzValue]="item.value"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <p class="m-0">{{ item.label
+                                                                                                }}</p>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.value === stepOneResultFilters.make" />
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
+                                                                  </div>
 
-                                                            <div class="col-md-6 col-xl-4">
-                                                                  <label class="ct_fw_400 ct_fs_17 mb-2">Model</label>
-                                                                  <nz-select class="form-select"
-                                                                        nzPlaceHolder="Model" [nzShowSearch]="true"
-                                                                        [nzAllowClear]="true"
-                                                                        [ngModel]="stepOneResultFilters.model"
-                                                                        (ngModelChange)="stepOneResultFilters.model = $event; onStepOneResultFilterChange()"
-                                                                        [ngModelOptions]="{ standalone: true }">
-                                                                        @for (item of stepOneResultFilterOptions.model;
-                                                                        track item.value) {
-                                                                        <nz-option nzCustomContent
-                                                                              [nzLabel]="item.label"
-                                                                              [nzValue]="item.value"
-                                                                              class="ct_custom_select">
-                                                                              <div
-                                                                                    class="d-flex align-items-center justify-content-between">
-                                                                                    <p class="m-0">{{ item.label }}</p>
-                                                                                    <input type="radio"
-                                                                                          class="cutom_radio_input"
-                                                                                          [checked]="item.value === stepOneResultFilters.model" />
-                                                                              </div>
-                                                                        </nz-option>
-                                                                        }
-                                                                  </nz-select>
-                                                            </div>
+                                                                  <div class="col-md-6 col-xl-4">
+                                                                        <label
+                                                                              class="ct_fw_400 ct_fs_17 mb-2">Model</label>
+                                                                        <nz-select class="form-select"
+                                                                              nzPlaceHolder="Model"
+                                                                              [nzShowSearch]="true"
+                                                                              [nzAllowClear]="true"
+                                                                              [ngModel]="stepOneResultFilters.model"
+                                                                              (ngModelChange)="stepOneResultFilters.model = $event; onStepOneResultFilterChange()"
+                                                                              [ngModelOptions]="{ standalone: true }">
+                                                                              @for (item of
+                                                                              stepOneResultFilterOptions.model;
+                                                                              track item.value) {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.label"
+                                                                                    [nzValue]="item.value"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <p class="m-0">{{ item.label
+                                                                                                }}</p>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.value === stepOneResultFilters.model" />
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
+                                                                  </div>
 
-                                                            <div class="col-md-6 col-xl-4">
-                                                                  <label class="ct_fw_400 ct_fs_17 mb-2">Horsepower
-                                                                        (HP)</label>
-                                                                  <nz-select class="form-select"
-                                                                        nzPlaceHolder="Horsepower (HP)"
-                                                                        [nzShowSearch]="true"
-                                                                        [nzAllowClear]="true"
-                                                                        [ngModel]="stepOneResultFilters.horsepower"
-                                                                        (ngModelChange)="stepOneResultFilters.horsepower = $event; onStepOneResultFilterChange()"
-                                                                        [ngModelOptions]="{ standalone: true }">
-                                                                        @for (item of
-                                                                        stepOneResultFilterOptions.horsepower; track
-                                                                        item.value) {
-                                                                        <nz-option nzCustomContent
-                                                                              [nzLabel]="item.label"
-                                                                              [nzValue]="item.value"
-                                                                              class="ct_custom_select">
-                                                                              <div
-                                                                                    class="d-flex align-items-center justify-content-between">
-                                                                                    <p class="m-0">{{ item.label }}</p>
-                                                                                    <input type="radio"
-                                                                                          class="cutom_radio_input"
-                                                                                          [checked]="item.value === stepOneResultFilters.horsepower" />
-                                                                              </div>
-                                                                        </nz-option>
-                                                                        }
-                                                                  </nz-select>
-                                                            </div>
+                                                                  <div class="col-md-6 col-xl-4">
+                                                                        <label class="ct_fw_400 ct_fs_17 mb-2">Horsepower
+                                                                              (HP)</label>
+                                                                        <nz-select class="form-select"
+                                                                              nzPlaceHolder="Horsepower (HP)"
+                                                                              [nzShowSearch]="true"
+                                                                              [nzAllowClear]="true"
+                                                                              [ngModel]="stepOneResultFilters.horsepower"
+                                                                              (ngModelChange)="stepOneResultFilters.horsepower = $event; onStepOneResultFilterChange()"
+                                                                              [ngModelOptions]="{ standalone: true }">
+                                                                              @for (item of
+                                                                              stepOneResultFilterOptions.horsepower;
+                                                                              track
+                                                                              item.value) {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.label"
+                                                                                    [nzValue]="item.value"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <p class="m-0">{{ item.label
+                                                                                                }}</p>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.value === stepOneResultFilters.horsepower" />
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
+                                                                  </div>
 
-                                                            <div class="col-md-6 col-xl-4">
-                                                                  <label class="ct_fw_400 ct_fs_17 mb-2">Doors</label>
-                                                                  <nz-select class="form-select"
-                                                                        nzPlaceHolder="Doors" [nzShowSearch]="true"
-                                                                        [nzAllowClear]="true"
-                                                                        [ngModel]="stepOneResultFilters.doors"
-                                                                        (ngModelChange)="stepOneResultFilters.doors = $event; onStepOneResultFilterChange()"
-                                                                        [ngModelOptions]="{ standalone: true }">
-                                                                        @for (item of stepOneResultFilterOptions.doors;
-                                                                        track item.value) {
-                                                                        <nz-option nzCustomContent
-                                                                              [nzLabel]="item.label"
-                                                                              [nzValue]="item.value"
-                                                                              class="ct_custom_select">
-                                                                              <div
-                                                                                    class="d-flex align-items-center justify-content-between">
-                                                                                    <p class="m-0">{{ item.label }}</p>
-                                                                                    <input type="radio"
-                                                                                          class="cutom_radio_input"
-                                                                                          [checked]="item.value === stepOneResultFilters.doors" />
-                                                                              </div>
-                                                                        </nz-option>
-                                                                        }
-                                                                  </nz-select>
-                                                            </div>
+                                                                  <div class="col-md-6 col-xl-4">
+                                                                        <label
+                                                                              class="ct_fw_400 ct_fs_17 mb-2">Doors</label>
+                                                                        <nz-select class="form-select"
+                                                                              nzPlaceHolder="Doors"
+                                                                              [nzShowSearch]="true"
+                                                                              [nzAllowClear]="true"
+                                                                              [ngModel]="stepOneResultFilters.doors"
+                                                                              (ngModelChange)="stepOneResultFilters.doors = $event; onStepOneResultFilterChange()"
+                                                                              [ngModelOptions]="{ standalone: true }">
+                                                                              @for (item of
+                                                                              stepOneResultFilterOptions.doors;
+                                                                              track item.value) {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.label"
+                                                                                    [nzValue]="item.value"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <p class="m-0">{{ item.label
+                                                                                                }}</p>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.value === stepOneResultFilters.doors" />
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
+                                                                  </div>
 
-                                                            <div class="col-md-6 col-xl-4">
-                                                                  <label class="ct_fw_400 ct_fs_17 mb-2">Fuel</label>
-                                                                  <nz-select class="form-select"
-                                                                        nzPlaceHolder="Fuel" [nzShowSearch]="true"
-                                                                        [nzAllowClear]="true"
-                                                                        [ngModel]="stepOneResultFilters.fuel"
-                                                                        (ngModelChange)="stepOneResultFilters.fuel = $event; onStepOneResultFilterChange()"
-                                                                        [ngModelOptions]="{ standalone: true }">
-                                                                        @for (item of stepOneResultFilterOptions.fuel;
-                                                                        track item.value) {
-                                                                        <nz-option nzCustomContent
-                                                                              [nzLabel]="item.label"
-                                                                              [nzValue]="item.value"
-                                                                              class="ct_custom_select">
-                                                                              <div
-                                                                                    class="d-flex align-items-center justify-content-between">
-                                                                                    <p class="m-0">{{ item.label }}</p>
-                                                                                    <input type="radio"
-                                                                                          class="cutom_radio_input"
-                                                                                          [checked]="item.value === stepOneResultFilters.fuel" />
-                                                                              </div>
-                                                                        </nz-option>
-                                                                        }
-                                                                  </nz-select>
-                                                            </div>
+                                                                  <div class="col-md-6 col-xl-4">
+                                                                        <label
+                                                                              class="ct_fw_400 ct_fs_17 mb-2">Fuel</label>
+                                                                        <nz-select class="form-select"
+                                                                              nzPlaceHolder="Fuel" [nzShowSearch]="true"
+                                                                              [nzAllowClear]="true"
+                                                                              [ngModel]="stepOneResultFilters.fuel"
+                                                                              (ngModelChange)="stepOneResultFilters.fuel = $event; onStepOneResultFilterChange()"
+                                                                              [ngModelOptions]="{ standalone: true }">
+                                                                              @for (item of
+                                                                              stepOneResultFilterOptions.fuel;
+                                                                              track item.value) {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.label"
+                                                                                    [nzValue]="item.value"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <p class="m-0">{{ item.label
+                                                                                                }}</p>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.value === stepOneResultFilters.fuel" />
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
+                                                                  </div>
 
-                                                            <div class="col-md-6 col-xl-4">
-                                                                  <label
-                                                                        class="ct_fw_400 ct_fs_17 mb-2">Transmission</label>
-                                                                  <nz-select class="form-select"
-                                                                        nzPlaceHolder="Transmission"
-                                                                        [nzShowSearch]="true"
-                                                                        [nzAllowClear]="true"
-                                                                        [ngModel]="stepOneResultFilters.transmission"
-                                                                        (ngModelChange)="stepOneResultFilters.transmission = $event; onStepOneResultFilterChange()"
-                                                                        [ngModelOptions]="{ standalone: true }">
-                                                                        @for (item of
-                                                                        stepOneResultFilterOptions.transmission; track
-                                                                        item.value) {
-                                                                        <nz-option nzCustomContent
-                                                                              [nzLabel]="item.label"
-                                                                              [nzValue]="item.value"
-                                                                              class="ct_custom_select">
-                                                                              <div
-                                                                                    class="d-flex align-items-center justify-content-between">
-                                                                                    <p class="m-0">{{ item.label }}</p>
-                                                                                    <input type="radio"
-                                                                                          class="cutom_radio_input"
-                                                                                          [checked]="item.value === stepOneResultFilters.transmission" />
-                                                                              </div>
-                                                                        </nz-option>
-                                                                        }
-                                                                  </nz-select>
-                                                            </div>
+                                                                  <div class="col-md-6 col-xl-4">
+                                                                        <label
+                                                                              class="ct_fw_400 ct_fs_17 mb-2">Transmission</label>
+                                                                        <nz-select class="form-select"
+                                                                              nzPlaceHolder="Transmission"
+                                                                              [nzShowSearch]="true"
+                                                                              [nzAllowClear]="true"
+                                                                              [ngModel]="stepOneResultFilters.transmission"
+                                                                              (ngModelChange)="stepOneResultFilters.transmission = $event; onStepOneResultFilterChange()"
+                                                                              [ngModelOptions]="{ standalone: true }">
+                                                                              @for (item of
+                                                                              stepOneResultFilterOptions.transmission;
+                                                                              track
+                                                                              item.value) {
+                                                                              <nz-option nzCustomContent
+                                                                                    [nzLabel]="item.label"
+                                                                                    [nzValue]="item.value"
+                                                                                    class="ct_custom_select">
+                                                                                    <div
+                                                                                          class="d-flex align-items-center justify-content-between">
+                                                                                          <p class="m-0">{{ item.label
+                                                                                                }}</p>
+                                                                                          <input type="radio"
+                                                                                                class="cutom_radio_input"
+                                                                                                [checked]="item.value === stepOneResultFilters.transmission" />
+                                                                                    </div>
+                                                                              </nz-option>
+                                                                              }
+                                                                        </nz-select>
+                                                                  </div>
                                                             </div>
                                                       </div>
                                                 </div>
@@ -851,7 +869,7 @@
                                                 <div class="ct_step_two_vehicle_card">
                                                       <div class="ct_step_two_vehicle_header">
                                                             <div class="ct_step_two_vehicle_title ct_fs_22">
-                                                                        {{ stepTwoVehicleSummary?.title }}</div>
+                                                                  {{ stepTwoVehicleSummary?.title }}</div>
                                                             <div class="ct_step_two_vehicle_subtitle ct_fs_16">
                                                                   {{ stepTwoVehicleSummary?.subtitle }}</div>
                                                             <button type="button" class="ct_step_two_edit_link"
@@ -878,12 +896,14 @@
                                                                   </div>
                                                             </div>
 
-                                                            <div class="ct_step_two_vehicle_grid_divider d-none d-lg-block">
+                                                            <div
+                                                                  class="ct_step_two_vehicle_grid_divider d-none d-lg-block">
                                                             </div>
 
                                                             <div class="ct_step_two_vehicle_grid_right">
                                                                   <div class="row gy-4 gx-5">
-                                                                        @for (detail of stepTwoVehicleSummary?.rightItems
+                                                                        @for (detail of
+                                                                        stepTwoVehicleSummary?.rightItems
                                                                         || []; track $index) {
                                                                         <div class="col-md-6">
                                                                               <div
@@ -2444,6 +2464,41 @@
                                     <div class="ct_form_step" [class]="{ 'active': currentFormStep === 5 }"
                                           data-step="5">
                                           <div class="">
+                                                <div class="ct_effective_photographs_card mt-4">
+                                                      <h3 class="ct_effective_photographs_title">Effective Photographs
+                                                      </h3>
+                                                      <div class="ct_effective_photographs_grid">
+                                                            <div class="ct_effective_photographs_item">
+                                                                  <div class="ct_effective_photographs_icon">
+                                                                        <img src="img/icons/Vector (1).png" alt="" />
+                                                                  </div>
+                                                                  <p class="ct_effective_photographs_text mb-0">Entire
+                                                                        equipment</p>
+                                                            </div>
+                                                            <div class="ct_effective_photographs_item">
+                                                                  <div class="ct_effective_photographs_icon">
+                                                                        <img src="img/icons/Vector (2).png" alt="" />
+                                                                  </div>
+                                                                  <p class="ct_effective_photographs_text mb-0">Interior
+                                                                        and exterior shots</p>
+                                                            </div>
+                                                            <div class="ct_effective_photographs_item">
+                                                                  <div class="ct_effective_photographs_icon">
+                                                                        <img src="img/icons/Group (1).png" alt="" />
+                                                                  </div>
+                                                                  <p class="ct_effective_photographs_text mb-0">
+                                                                        All-round view</p>
+                                                            </div>
+                                                            <div class="ct_effective_photographs_item">
+                                                                  <div class="ct_effective_photographs_icon">
+                                                                        <img src="img/icons/Vector (3).png" alt="" />
+                                                                  </div>
+                                                                  <p class="ct_effective_photographs_text mb-0">In
+                                                                        daylight images</p>
+                                                            </div>
+                                                      </div>
+                                                </div>
+
                                                 <div class="mt-4">
                                                       <label class="form-label ct_fw_600 ct_font_cairo ct_fs_18">
                                                             {{ 'media.uploadPhotos' | translate }}
@@ -2792,8 +2847,9 @@
                                           <button type="submit" id="nextBtn" class="ct_submit_pill_btn">
                                                 <span class="ct_btn_icon">→</span>
                                                 @if(!loading){
-                                                @if(currentFormStep === 1 && isMakeModelSearchFormView){ <span>Search</span>
-                                                      }@else if(currentFormStep < 6){ <span>{{ 'common.next' |
+                                                @if(currentFormStep === 1 && isMakeModelSearchFormView){
+                                                <span>Search</span>
+                                                }@else if(currentFormStep < 6){ <span>{{ 'common.next' |
                                                       translate }}</span>
                                                       }@else {
                                                       <span>{{ 'common.submit' | translate }}</span>
