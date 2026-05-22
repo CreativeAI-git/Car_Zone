@@ -362,6 +362,13 @@ quill-editor {
       gap: 14px;
 }
 
+.ct_step_one_result_filters {
+      background: #faf8f5;
+      border: 1px solid #ece7df;
+      border-radius: 16px;
+      padding: 18px;
+}
+
 .ct_vehicle_result_card {
       width: 100%;
       text-align: left;
@@ -374,14 +381,15 @@ quill-editor {
 }
 
 .ct_vehicle_result_card.active {
-      background: #e9eeff;
-      border-color: #dbe4ff;
+      background: #efe7dd;
+      border-color: #c8955c;
+      box-shadow: 0 6px 20px rgba(143, 12, 31, 0.08);
 }
 
 .ct_vehicle_result_card:hover,
 .ct_vehicle_result_card:focus-visible {
-      background: #f6f8ff;
-      border-color: #dbe4ff;
+      background: #fbf7f2;
+      border-color: #d8c4ac;
       box-shadow: 0 4px 14px rgba(16, 24, 40, 0.08);
       outline: none;
 }

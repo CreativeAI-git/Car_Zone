@@ -15,11 +15,35 @@ import { SearchCountryField, CountryISO, NgxIntlTelInputModule } from 'ngx-intl-
 import { Router } from '@angular/router';
 
 type StepOneTabKey = 'make-models' | 'type-approval' | 'serial-number';
+type StepOneViewState = 'search-form' | 'result-list';
 
 interface StepOneSelectOption {
   label: string;
   value: string | number;
   raw: any;
+}
+
+interface StepOneFilterOption {
+  label: string;
+  value: string;
+}
+
+interface StepOneResultFilters {
+  make: string | null;
+  model: string | null;
+  horsepower: string | null;
+  doors: string | null;
+  fuel: string | null;
+  transmission: string | null;
+}
+
+interface StepOneResultFilterOptions {
+  make: StepOneFilterOption[];
+  model: StepOneFilterOption[];
+  horsepower: StepOneFilterOption[];
+  doors: StepOneFilterOption[];
+  fuel: StepOneFilterOption[];
+  transmission: StepOneFilterOption[];
 }
 
 interface StepOneVehicleCard {
@@ -91,6 +115,7 @@ export class ListYourCarComponent {
   private nextBtnListener?: (event: Event) => void;
   private submitInProgress = false;
   activeVehicleTab: StepOneTabKey = 'make-models';
+  stepOneViewState: StepOneViewState = 'search-form';
   brandOptions: StepOneSelectOption[] = [];
   modelOptions: StepOneSelectOption[] = [];
   versionOptions: StepOneSelectOption[] = [];
@@ -104,7 +129,12 @@ export class ListYourCarComponent {
   rnNumber = '';
   typeApprovalSearch = '';
   serialNumberSearch = '';
+  allMatchedVehicles: StepOneVehicleCard[] = [];
   matchedVehicles: StepOneVehicleCard[] = [];
+  selectedMatchedVehicle: StepOneVehicleCard | null = null;
+  stepOneResultFilters: StepOneResultFilters = this.getDefaultStepOneResultFilters();
+  stepOneResultFilterOptions: StepOneResultFilterOptions = this.getDefaultStepOneResultFilterOptions();
+  stepOneApiFilters: Record<string, any> = {};
   selectedVehicleDetails: VehicleDetailsView | null = null;
   equipmentExpanded = false;
   loadingBrands = false;
@@ -114,6 +144,7 @@ export class ListYourCarComponent {
   private brandsLoaded = false;
   private modelOptionsCache = new Map<string | number, StepOneSelectOption[]>();
   private versionOptionsCache = new Map<string | number, StepOneSelectOption[]>();
+  private versionFiltersCache = new Map<string | number, Record<string, any>>();
   currentFormStep: number = 1;
   lastIntertedData: any = null;
   showPreview: boolean = false;
@@ -152,6 +183,14 @@ export class ListYourCarComponent {
 
   get canShowVehicleDetails(): boolean {
     return !!this.selectedVehicleDetails;
+  }
+
+  get isMakeModelSearchFormView(): boolean {
+    return this.activeVehicleTab === 'make-models' && this.stepOneViewState === 'search-form';
+  }
+
+  get isMakeModelResultListView(): boolean {
+    return this.activeVehicleTab === 'make-models' && this.stepOneViewState === 'result-list';
   }
 
   ngOnInit(): void {
@@ -301,6 +340,7 @@ export class ListYourCarComponent {
     const cachedVersions = this.versionOptionsCache.get(modelId);
     if (cachedVersions) {
       this.versionOptions = cachedVersions;
+      this.stepOneApiFilters = this.versionFiltersCache.get(modelId) || {};
       return;
     }
 
@@ -329,9 +369,12 @@ export class ListYourCarComponent {
         ]);
         this.versionOptions = options;
         this.versionOptionsCache.set(modelId, options);
+        this.stepOneApiFilters = this.extractFiltersFromPayload(res);
+        this.versionFiltersCache.set(modelId, this.stepOneApiFilters);
       },
       error: () => {
         this.versionOptions = [];
+        this.stepOneApiFilters = {};
         this.message.error(this.translate.instant('vehicle.failedToLoadVersions'));
       }
     });
@@ -362,9 +405,16 @@ export class ListYourCarComponent {
 
   selectMatchedVehicle(vehicle: StepOneVehicleCard): void {
     this.makeModelSelectionTouched = false;
+    this.stepOneSearchError = null;
+    this.selectedMatchedVehicle = vehicle;
     this.selectedVehicleDetails = this.buildVehicleDetailsView(vehicle.raw);
-    this.patchVehicleDataToForm(vehicle.raw);
-    this.submitFormStep();
+    // this.patchVehicleDataToForm(vehicle.raw);
+    if (this.selectedMatchedVehicle) {
+      this.selectedVehicleDetails = this.buildVehicleDetailsView(this.selectedMatchedVehicle.raw);
+      this.patchVehicleDataToForm(this.selectedMatchedVehicle.raw);
+      this.goToStep(2);
+      return;
+    }
   }
 
   toggleEquipment(): void {
@@ -376,6 +426,17 @@ export class ListYourCarComponent {
     this.stepOneSearchMessage = null;
     this.selectedVehicleDetails = null;
     this.equipmentExpanded = false;
+  }
+
+  goBackToMakeModelSearch(): void {
+    this.stepOneSearchError = null;
+    this.stepOneSearchMessage = null;
+    this.makeModelSelectionTouched = false;
+    this.stepOneViewState = 'search-form';
+  }
+
+  onStepOneResultFilterChange(): void {
+    this.applyStepOneResultFilters();
   }
 
   ngAfterViewInit(): void {
@@ -733,6 +794,7 @@ export class ListYourCarComponent {
   }
 
   private handleStepOneSubmit(): void {
+
     if (this.submitInProgress) return;
 
     this.markStepTouched(this.currentFormStep);
@@ -743,8 +805,14 @@ export class ListYourCarComponent {
     if (this.activeVehicleTab === 'make-models') {
       this.hasAttemptedMakeModelSearch = true;
 
-      if (!this.matchedVehicles.length) {
+      if (this.stepOneViewState === 'search-form') {
         this.loadMatchedVehicles();
+        return;
+      }
+      if (this.selectedMatchedVehicle) {
+        this.selectedVehicleDetails = this.buildVehicleDetailsView(this.selectedMatchedVehicle.raw);
+        this.patchVehicleDataToForm(this.selectedMatchedVehicle.raw);
+        this.goToStep(2);
         return;
       }
 
@@ -817,15 +885,21 @@ export class ListYourCarComponent {
     this.stepOneSearchError = null;
     this.stepOneSearchMessage = null;
     this.selectedVehicleDetails = null;
+    this.selectedMatchedVehicle = null;
     this.equipmentExpanded = false;
     const rawMatches = this.versionOptions.map((item) => this.getVersionVehiclePayload(item.raw));
     const sourceItems = rawMatches.length ? rawMatches : [];
 
-    this.matchedVehicles = sourceItems
+    this.allMatchedVehicles = sourceItems
       .map((item: any, index: number) => this.normalizeVehicleCard(item, index))
       .filter((item: StepOneVehicleCard | null): item is StepOneVehicleCard => !!item);
 
-    if (!this.matchedVehicles.length) {
+    this.stepOneResultFilterOptions = this.buildStepOneResultFilterOptions(this.allMatchedVehicles, this.stepOneApiFilters);
+    this.stepOneResultFilters = this.getDefaultStepOneResultFilters();
+    this.stepOneViewState = 'result-list';
+    this.applyStepOneResultFilters();
+
+    if (!this.allMatchedVehicles.length) {
       this.stepOneSearchMessage = this.translate.instant('vehicle.noVehiclesFoundForSelection');
     }
   }
@@ -1029,6 +1103,7 @@ export class ListYourCarComponent {
     if (!vehicle) return;
 
     const patchValue: Record<string, any> = {
+      car_id: this.pickFirst(vehicle, ['car_id', 'vehicle_id', 'id', 'version_id', 'fzkey']) || this.carFormOne.get('car_id')?.value,
       brandName: this.pickFirst(vehicle, ['brand_name', 'brandName', 'brand', 'make_display', 'make']) || this.carFormOne.get('brandName')?.value,
       carModel: this.pickFirst(vehicle, ['model_name', 'carModel', 'model']) || this.carFormOne.get('carModel')?.value,
       version: this.pickFirst(vehicle, ['version', 'version_name', 'title', 'name']) || this.carFormOne.get('version')?.value,
@@ -1258,9 +1333,167 @@ export class ListYourCarComponent {
   }
 
   private resetStepOneResults(): void {
+    this.stepOneViewState = 'search-form';
+    this.allMatchedVehicles = [];
     this.matchedVehicles = [];
+    this.selectedMatchedVehicle = null;
+    this.stepOneResultFilters = this.getDefaultStepOneResultFilters();
+    this.stepOneResultFilterOptions = this.getDefaultStepOneResultFilterOptions();
+    this.stepOneApiFilters = {};
     this.selectedVehicleDetails = null;
     this.equipmentExpanded = false;
+  }
+
+  private getDefaultStepOneResultFilters(): StepOneResultFilters {
+    return {
+      make: null,
+      model: null,
+      horsepower: null,
+      doors: null,
+      fuel: null,
+      transmission: null
+    };
+  }
+
+  private getDefaultStepOneResultFilterOptions(): StepOneResultFilterOptions {
+    return {
+      make: [],
+      model: [],
+      horsepower: [],
+      doors: [],
+      fuel: [],
+      transmission: []
+    };
+  }
+
+  private applyStepOneResultFilters(): void {
+    const filters = this.stepOneResultFilters;
+    this.matchedVehicles = this.allMatchedVehicles.filter((vehicle) => this.matchesStepOneFilters(vehicle, filters));
+
+    if (this.selectedMatchedVehicle) {
+      const selectionStillVisible = this.matchedVehicles.some((vehicle) => String(vehicle.id) === String(this.selectedMatchedVehicle?.id));
+      if (!selectionStillVisible) {
+        this.selectedMatchedVehicle = null;
+        this.clearSelectedMatchedVehicleData();
+      }
+    }
+
+    this.stepOneSearchMessage = this.matchedVehicles.length
+      ? null
+      : this.translate.instant('vehicle.noVehiclesFoundForSelection');
+    this.stepOneSearchError = null;
+    this.makeModelSelectionTouched = false;
+  }
+
+  private matchesStepOneFilters(vehicleCard: StepOneVehicleCard, filters: StepOneResultFilters): boolean {
+    const vehicle = this.getVersionVehiclePayload(vehicleCard.raw);
+    return this.matchesFilterValue(filters.make, this.pickFirst(vehicle, ['brand_name', 'brandName', 'brand', 'make_display', 'make']))
+      && this.matchesFilterValue(filters.model, this.pickFirst(vehicle, ['model_name', 'carModel', 'model']))
+      && this.matchesFilterValue(filters.horsepower, this.pickFirst(vehicle, ['ps', 'horsepower', 'powerOutput', 'power_output', 'totalPs']))
+      && this.matchesFilterValue(filters.doors, this.pickFirst(vehicle, ['doors', 'door_count']))
+      && this.matchesFilterValue(filters.fuel, this.pickFirst(vehicle, ['fuel_name', 'fuel_type_value', 'fuel_type', 'fuel']))
+      && this.matchesFilterValue(filters.transmission, this.pickFirst(vehicle, ['transmission_name', 'gearbox', 'transmission_value', 'transmission']));
+  }
+
+  private matchesFilterValue(filterValue: string | null, candidateValue: any): boolean {
+    if (!filterValue) {
+      return true;
+    }
+
+    return this.normalizeText(candidateValue) === this.normalizeText(filterValue);
+  }
+
+  private buildStepOneResultFilterOptions(
+    vehicles: StepOneVehicleCard[],
+    responseFilters: Record<string, any>
+  ): StepOneResultFilterOptions {
+    const horsepowerOptions = this.normalizeDynamicFilterOptions(responseFilters['horsepower']);
+    const doorOptions = this.normalizeDynamicFilterOptions(responseFilters['doors']);
+    const fuelOptions = this.normalizeDynamicFilterOptions(responseFilters['fuel_types']);
+    const transmissionOptions = this.normalizeDynamicFilterOptions(responseFilters['transmissions']);
+
+    return {
+      make: this.buildUniqueVehicleOptions(vehicles, ['brand_name', 'brandName', 'brand', 'make_display', 'make']),
+      model: this.buildUniqueVehicleOptions(vehicles, ['model_name', 'carModel', 'model']),
+      horsepower: horsepowerOptions.length ? horsepowerOptions : this.buildUniqueVehicleOptions(vehicles, ['ps', 'horsepower', 'powerOutput', 'power_output', 'totalPs']),
+      doors: doorOptions.length ? doorOptions : this.buildUniqueVehicleOptions(vehicles, ['doors', 'door_count']),
+      fuel: fuelOptions.length ? fuelOptions : this.buildUniqueVehicleOptions(vehicles, ['fuel_name', 'fuel_type_value', 'fuel_type', 'fuel']),
+      transmission: transmissionOptions.length ? transmissionOptions : this.buildUniqueVehicleOptions(vehicles, ['transmission_name', 'gearbox', 'transmission_value', 'transmission'])
+    };
+  }
+
+  private buildUniqueVehicleOptions(vehicles: StepOneVehicleCard[], keys: string[]): StepOneFilterOption[] {
+    const optionMap = new Map<string, StepOneFilterOption>();
+
+    vehicles.forEach((vehicleCard) => {
+      const vehicle = this.getVersionVehiclePayload(vehicleCard.raw);
+      const value = this.pickFirst(vehicle, keys);
+      if (value === null || value === undefined || value === '') {
+        return;
+      }
+
+      const normalized = this.normalizeText(value);
+      if (!optionMap.has(normalized)) {
+        optionMap.set(normalized, {
+          label: String(value),
+          value: String(value)
+        });
+      }
+    });
+
+    return Array.from(optionMap.values()).sort((left, right) => left.label.localeCompare(right.label));
+  }
+
+  private normalizeDynamicFilterOptions(source: any): StepOneFilterOption[] {
+    const items = this.extractArray(source, ['data', 'items', 'results']);
+    const optionMap = new Map<string, StepOneFilterOption>();
+
+    items.forEach((item: any) => {
+      const value = this.pickFirst(item, ['value', 'label', 'name', 'title', 'slug', 'id']) ?? item;
+      const label = this.pickFirst(item, ['label', 'name', 'title', 'value']) ?? item;
+
+      if (value === null || value === undefined || value === '' || label === null || label === undefined || label === '') {
+        return;
+      }
+
+      const normalized = this.normalizeText(value);
+      if (!optionMap.has(normalized)) {
+        optionMap.set(normalized, {
+          label: String(label),
+          value: String(value)
+        });
+      }
+    });
+
+    return Array.from(optionMap.values()).sort((left, right) => left.label.localeCompare(right.label));
+  }
+
+  private extractFiltersFromPayload(payload: any): Record<string, any> {
+    const filters = payload?.filters
+      ?? payload?.data?.filters
+      ?? payload?.results?.filters
+      ?? payload?.items?.filters;
+    return filters && typeof filters === 'object' ? filters : {};
+  }
+
+  private clearSelectedMatchedVehicleData(): void {
+    this.carFormOne.patchValue({
+      car_id: null,
+      version: '',
+      sittingCapacity: null,
+      powerOutput: '',
+      doors: '',
+      engineType: '',
+      co2Emission: '',
+      consuption: '',
+      fuel_type_id: '',
+      transmission_id: '',
+      drive_type_id: '',
+      body_type_id: '',
+      type_approval: '',
+      vin_number: '',
+      registration_master_number: ''
+    });
   }
 
   onFeatureChange(event: any) {
@@ -1348,7 +1581,7 @@ export class ListYourCarComponent {
   }
 
   getFuelTypes() {
-    this.service.get(`user/fuel?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/fuel`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         const data = res?.data || {};
 
@@ -1391,7 +1624,7 @@ export class ListYourCarComponent {
 
 
   getTransmissions() {
-    this.service.get(`user/transmission?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/transmission`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.transmissions = res?.data.types || [];
       },
@@ -1402,7 +1635,7 @@ export class ListYourCarComponent {
   }
 
   getDriveTypes() {
-    this.service.get(`user/drive?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/drive`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.driveTypes = res?.data.types || [];
       },
@@ -1413,7 +1646,7 @@ export class ListYourCarComponent {
   }
 
   getBodyTypes() {
-    this.service.get(`user/body-type?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/body-type`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.bodyTypes = res?.data.types || [];
       },
@@ -1424,7 +1657,7 @@ export class ListYourCarComponent {
   }
 
   getVhicleConditions() {
-    this.service.get(`user/vehicle-conditions?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/vehicle-conditions`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.conditions = res?.data.types || [];
       },
@@ -1435,7 +1668,7 @@ export class ListYourCarComponent {
   }
 
   getCarState() {
-    this.service.get(`user/vichel-state?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/vichel-state`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.carState = res?.data.types || [];
       },
@@ -1446,7 +1679,7 @@ export class ListYourCarComponent {
   }
 
   getWarrantyList() {
-    this.service.get(`user/warranty?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/warranty`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.warrantyList = (res?.data || []).sort((a: { id: number; }, b: { id: number; }) => a.id - b.id);
       },
@@ -1457,7 +1690,7 @@ export class ListYourCarComponent {
   }
 
   getWarrantyTypes() {
-    this.service.get(`user/warranty-quality?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/warranty-quality`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.warrantyTypes = res?.data || [];
       },
@@ -1468,7 +1701,7 @@ export class ListYourCarComponent {
   }
 
   getCarColors() {
-    this.service.get(`user/colors?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/colors`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.carColors = res?.data || [];
       },
@@ -1479,7 +1712,7 @@ export class ListYourCarComponent {
   }
 
   getEnergyEfficiency() {
-    this.service.get(`user/energy-efficiency?lang=${this.currentLang}`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.service.get(`user/energy-efficiency`).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: any) => {
         this.energyEfficiencyOptions = res?.data.types || [];
       },
