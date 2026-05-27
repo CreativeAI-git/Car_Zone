@@ -17,6 +17,22 @@ export type FilterGroup = {
   options: FilterOption[];
 };
 
+export type MakeModelOption = {
+  label: string;
+  value: string | number;
+  count?: number;
+  raw?: any;
+};
+
+export type SelectedMakeModel = {
+  makeId: string | number;
+  makeLabel: string;
+  models: Array<{
+    modelId: string | number;
+    modelLabel: string;
+  }>;
+};
+
 export type NumberRange = {
   min: number | null;
   max: number | null;
@@ -26,6 +42,7 @@ export type FilterPayload = {
   lang: string;
   page: number;
   limit: number;
+  make_model_selection: SelectedMakeModel[];
   seller_type: string[];
   fuel_type_id: number[];
   state_id: number[];
@@ -149,6 +166,8 @@ export class FilterService {
   private lastRequestKey: string | null = null;
   private lastResponse: FilterViewModel | null = null;
   private hasAppliedFilters = false;
+  private makeOptionsCache: MakeModelOption[] | null = null;
+  private readonly modelOptionsCache = new Map<string, MakeModelOption[]>();
 
   readonly draftFilters$ = this.draftFiltersSubject.asObservable();
   readonly appliedFilters$ = this.appliedFiltersSubject.asObservable();
@@ -171,6 +190,65 @@ export class FilterService {
 
   getDefaultPayload(): FilterPayload {
     return this.createDefaultPayload();
+  }
+
+  loadMakeOptions(fallbackCars: any[] = []): Observable<MakeModelOption[]> {
+    if (this.makeOptionsCache?.length) {
+      return of(this.makeOptionsCache);
+    }
+
+    return this.commonService.getAllMakes().pipe(
+      map((response: any) => {
+        const options = this.normalizeMakeOptions(response);
+        return options.length ? options : this.normalizeMakeOptionsFromCars(fallbackCars);
+      }),
+      tap((options) => {
+        this.makeOptionsCache = options;
+      }),
+      catchError(() => {
+        const options = this.normalizeMakeOptionsFromCars(fallbackCars);
+        this.makeOptionsCache = options;
+        return of(options);
+      })
+    );
+  }
+
+  loadModelsByMake(makeId: string | number, makeLabel = '', fallbackCars: any[] = []): Observable<MakeModelOption[]> {
+    const cacheKey = String(makeId);
+    const cachedOptions = this.modelOptionsCache.get(cacheKey);
+    if (cachedOptions) {
+      return of(cachedOptions);
+    }
+
+    return this.commonService.getModelsByMake(makeId).pipe(
+      map((response: any) => {
+        const options = this.normalizeModelOptions(response);
+        return options.length ? options : this.normalizeModelOptionsFromCars(makeId, makeLabel, fallbackCars);
+      }),
+      tap((options) => {
+        this.modelOptionsCache.set(cacheKey, options);
+      }),
+      catchError(() => {
+        const options = this.normalizeModelOptionsFromCars(makeId, makeLabel, fallbackCars);
+        this.modelOptionsCache.set(cacheKey, options);
+        return of(options);
+      })
+    );
+  }
+
+  buildMakeModelSummary(selection: SelectedMakeModel[]): Array<{ brand: string; modals: string[] }> {
+    return (selection || [])
+      .filter((item) => item?.makeLabel)
+      .map((item) => ({
+        brand: item.makeLabel,
+        modals: Array.from(
+          new Set(
+            (item.models || [])
+              .map((model) => model?.modelLabel?.trim())
+              .filter((model): model is string => !!model)
+          )
+        )
+      }));
   }
 
   hasActiveAppliedFilters(): boolean {
@@ -425,6 +503,7 @@ export class FilterService {
       lang: localStorage.getItem('lang') || 'en',
       page: 1,
       limit: 10,
+      make_model_selection: [],
       seller_type: [],
       fuel_type_id: [],
       state_id: [],
@@ -518,6 +597,7 @@ export class FilterService {
   private buildFiltersQuery(payload: FilterPayload): string {
     const defaults = this.createDefaultPayload();
     const params = new URLSearchParams();
+    const makeModelData = this.buildMakeModelRequestData(payload.make_model_selection);
 
     if (this.hasRangeChanged(payload.kilometers_range, defaults.kilometers_range)) {
       this.setIfValue(params, 'km_from', payload.kilometers_range.min_km);
@@ -549,6 +629,12 @@ export class FilterService {
     }
 
     this.setIfValue(params, 'seller_type', payload.seller_type);
+    this.setIfValue(params, 'make_id', makeModelData.makeIds);
+    this.setIfValue(params, 'brand_id', makeModelData.makeIds);
+    this.setIfValue(params, 'make', makeModelData.makeLabels);
+    this.setIfValue(params, 'brand', makeModelData.makeLabels);
+    this.setIfValue(params, 'model_id', makeModelData.modelIds);
+    this.setIfValue(params, 'model', makeModelData.modelLabels);
     this.setIfValue(params, 'state_id', payload.state_id);
     this.setIfValue(params, 'body_type_id', payload.body_type_id);
     this.setIfValue(params, 'fuel_type_id', payload.fuel_type_id);
@@ -563,11 +649,35 @@ export class FilterService {
 
   private buildFacetedPayload(payload: FilterPayload): Record<string, any> {
     const defaults = this.createDefaultPayload();
+    const makeModelData = this.buildMakeModelRequestData(payload.make_model_selection);
     const compactPayload: Record<string, any> = {
       lang: payload.lang || defaults.lang,
       page: payload.page || defaults.page,
       limit: payload.limit || defaults.limit
     };
+
+    if (makeModelData.selection.length > 0) {
+      compactPayload['make_model_selection'] = makeModelData.selection;
+      compactPayload['make_model_filters'] = makeModelData.selection;
+    }
+
+    if (makeModelData.makeIds.length > 0) {
+      compactPayload['make_id'] = makeModelData.makeIds;
+      compactPayload['brand_id'] = makeModelData.makeIds;
+    }
+
+    if (makeModelData.makeLabels.length > 0) {
+      compactPayload['make'] = makeModelData.makeLabels;
+      compactPayload['brand'] = makeModelData.makeLabels;
+    }
+
+    if (makeModelData.modelIds.length > 0) {
+      compactPayload['model_id'] = makeModelData.modelIds;
+    }
+
+    if (makeModelData.modelLabels.length > 0) {
+      compactPayload['model'] = makeModelData.modelLabels;
+    }
 
     if (payload.seller_type.length > 0) {
       compactPayload['seller_type'] = payload.seller_type;
@@ -680,6 +790,7 @@ export class FilterService {
       this.hasRangeChanged(payload.price_range, defaults.price_range) ||
       this.hasRangeChanged(payload.seat_range, defaults.seat_range) ||
       this.hasRangeChanged(payload.door_range, defaults.door_range) ||
+      payload.make_model_selection.length > 0 ||
       payload.price_type !== defaults.price_type ||
       payload.seller_type.length > 0 ||
       payload.fuel_type_id.length > 0 ||
@@ -765,5 +876,209 @@ export class FilterService {
       columns[index % columnCount].push(item);
     });
     return columns;
+  }
+
+  private normalizeMakeOptions(payload: any): MakeModelOption[] {
+    const source = this.extractArray(payload, ['data', 'makes', 'brands', 'results', 'items']);
+    const optionMap = new Map<string, MakeModelOption>();
+
+    source.forEach((item: any, index: number) => {
+      const value = this.pickFirst(item, ['make_id', 'brand_id', 'id', 'value']) ?? index;
+      const label = this.pickFirst(item, ['make_display', 'brand_name', 'make', 'brand', 'name', 'label', 'title']);
+
+      if (!label) {
+        return;
+      }
+
+      const key = String(value ?? this.normalizeText(label));
+      if (!optionMap.has(key)) {
+        optionMap.set(key, {
+          label: String(label),
+          value,
+          count: this.toCount(item),
+          raw: item
+        });
+      }
+    });
+
+    return Array.from(optionMap.values()).sort((left, right) => left.label.localeCompare(right.label));
+  }
+
+  private normalizeModelOptions(payload: any): MakeModelOption[] {
+    const source = this.extractArray(payload, ['data', 'models', 'results', 'items']);
+    const optionMap = new Map<string, MakeModelOption>();
+
+    source.forEach((item: any, index: number) => {
+      const value = this.pickFirst(item, ['model_id', 'id', 'value']) ?? index;
+      const label = this.pickFirst(item, ['model_name', 'model', 'name', 'label', 'title']);
+
+      if (!label) {
+        return;
+      }
+
+      const key = String(value ?? this.normalizeText(label));
+      if (!optionMap.has(key)) {
+        optionMap.set(key, {
+          label: String(label),
+          value,
+          count: this.toCount(item),
+          raw: item
+        });
+      }
+    });
+
+    return Array.from(optionMap.values()).sort((left, right) => left.label.localeCompare(right.label));
+  }
+
+  private normalizeMakeOptionsFromCars(cars: any[]): MakeModelOption[] {
+    const optionMap = new Map<string, MakeModelOption>();
+
+    (cars || []).forEach((car: any, index: number) => {
+      const label = this.pickFirst(car, ['brandName', 'brand_name', 'brand', 'make_display', 'make']);
+      const value = this.pickFirst(car, ['make_id', 'brand_id', 'id']) ?? label ?? index;
+
+      if (!label) {
+        return;
+      }
+
+      const key = String(value ?? this.normalizeText(label));
+      if (!optionMap.has(key)) {
+        optionMap.set(key, {
+          label: String(label),
+          value
+        });
+      }
+    });
+
+    return Array.from(optionMap.values()).sort((left, right) => left.label.localeCompare(right.label));
+  }
+
+  private normalizeModelOptionsFromCars(makeId: string | number, makeLabel: string, cars: any[]): MakeModelOption[] {
+    const normalizedMakeLabel = this.normalizeText(makeLabel);
+    const optionMap = new Map<string, MakeModelOption>();
+
+    (cars || [])
+      .filter((car: any) => {
+        const carMakeId = this.pickFirst(car, ['make_id', 'brand_id']);
+        const carMakeLabel = this.pickFirst(car, ['brandName', 'brand_name', 'brand', 'make_display', 'make']);
+
+        return String(carMakeId) === String(makeId)
+          || (!!normalizedMakeLabel && this.normalizeText(carMakeLabel) === normalizedMakeLabel);
+      })
+      .forEach((car: any, index: number) => {
+        const label = this.pickFirst(car, ['carModel', 'model_name', 'model']);
+        const value = this.pickFirst(car, ['model_id', 'id']) ?? label ?? index;
+
+        if (!label) {
+          return;
+        }
+
+        const key = String(value ?? this.normalizeText(label));
+        if (!optionMap.has(key)) {
+          optionMap.set(key, {
+            label: String(label),
+            value
+          });
+        }
+      });
+
+    return Array.from(optionMap.values()).sort((left, right) => left.label.localeCompare(right.label));
+  }
+
+  private buildMakeModelRequestData(selection: SelectedMakeModel[]) {
+    const normalizedSelection = (selection || [])
+      .filter((item) => item?.makeId !== null && item?.makeId !== undefined && item?.makeLabel)
+      .map((item) => ({
+        make_id: item.makeId,
+        brand_id: item.makeId,
+        make: item.makeLabel,
+        brand: item.makeLabel,
+        model_ids: Array.from(
+          new Set(
+            (item.models || [])
+              .map((model) => model?.modelId)
+              .filter((modelId) => modelId !== null && modelId !== undefined && modelId !== '')
+          )
+        ),
+        models: Array.from(
+          new Set(
+            (item.models || [])
+              .map((model) => model?.modelLabel?.trim())
+              .filter((label): label is string => !!label)
+          )
+        )
+      }));
+
+    return {
+      selection: normalizedSelection,
+      makeIds: Array.from(
+        new Set(
+          normalizedSelection
+            .map((item) => item.make_id)
+            .filter((makeId) => makeId !== null && makeId !== undefined && makeId !== '')
+        )
+      ),
+      modelIds: Array.from(
+        new Set(
+          normalizedSelection.flatMap((item) => item.model_ids || [])
+        )
+      ),
+      makeLabels: Array.from(
+        new Set(
+          normalizedSelection
+            .map((item) => item.make)
+            .filter((label): label is string => !!label)
+        )
+      ),
+      modelLabels: Array.from(
+        new Set(
+          normalizedSelection.flatMap((item) => item.models || [])
+        )
+      )
+    };
+  }
+
+  private extractArray(payload: any, preferredKeys: string[] = []): any[] {
+    if (Array.isArray(payload)) {
+      return payload;
+    }
+
+    for (const key of preferredKeys) {
+      if (Array.isArray(payload?.[key])) {
+        return payload[key];
+      }
+    }
+
+    const nestedCandidates = [payload?.data, payload?.results, payload?.items];
+    for (const candidate of nestedCandidates) {
+      if (Array.isArray(candidate)) {
+        return candidate;
+      }
+      if (Array.isArray(candidate?.data)) {
+        return candidate.data;
+      }
+    }
+
+    return [];
+  }
+
+  private pickFirst(item: any, keys: string[]): any {
+    for (const key of keys) {
+      const value = item?.[key];
+      if (value !== null && value !== undefined && value !== '') {
+        return value;
+      }
+    }
+
+    return null;
+  }
+
+  private normalizeText(value: any): string {
+    return String(value ?? '').trim().toLowerCase();
+  }
+
+  private toCount(item: any): number | undefined {
+    const value = item?.count ?? item?.total_cars ?? item?.total;
+    return value === null || value === undefined || value === '' ? undefined : Number(value);
   }
 }

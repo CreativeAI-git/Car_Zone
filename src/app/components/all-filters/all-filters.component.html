@@ -14,30 +14,30 @@
             </div>
 
             <div id="collapseAddVehicle" class="collapse collapse-content show" data-bs-parent="#filterAccordion">
-                <a href="#" class="btn-grey-transparent w-25 text-center" data-bs-toggle="modal"
-                    data-bs-target="#selectMakeModal">
+                <a href="#" class="btn-grey-transparent w-25 text-center" data-bs-toggle="modal" data-bs-target="#selectMakeModal">
                     <img src="img/icons/proicons_add.png" class="me-2" />
                     {{ 'vehicle.addVehicleData' | translate }}
                 </a>
+
+                @if (selectedBrandsModal.length) {
+                <div class="mt-3 d-flex flex-wrap gap-2">
+                    @for (item of selectedBrandsModal; track $index) {
+                    <span class="btn-grey-transparent px-3 py-2">
+                        {{ item.brand }}@if(item.modals.length){ ({{ item.modals.join(', ') }}) }
+                    </span>
+                    }
+                </div>
+                }
+
                 <div class="modal fade" id="selectMakeModal" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                         <div class="modal-content">
-                            <!-- header -->
                             <div class="modal-header border-0">
-                                <!-- <h5 class="modal-title w-100 text-center">{{ 'filters.selectMake' | translate }}</h5> -->
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
-
-                            <!-- body -->
                             <div class="modal-body">
-                                <!-- search -->
                                 <div class="ct_custom_scroll">
                                     <div class="vehicle-modal-header d-flex">
-                                        <!-- <div>
-                          <a>
-                            <img src="img/icons/chevron-right.png" />
-                          </a>
-                        </div> -->
                                         <div class="w-100">
                                             <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo text-center">
                                                 {{ 'filters.selectMake' | translate }}
@@ -48,45 +48,9 @@
                                         <div class="position-relative">
                                             <input type="text"
                                                 class="form-control ct_input ct_input_ps_40 ct_input_h_40 ct_border_op_10"
-                                                [placeholder]="'filters.search' | translate" />
+                                                [placeholder]="'filters.search' | translate"
+                                                [(ngModel)]="makeModelSearchTerm" />
                                             <i class="fa-solid fa-search ct_input_icon_left"></i>
-                                        </div>
-                                    </div>
-                                    <div class="vehicle-modal-detail-box">
-                                        <h4 class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f mt-4">
-                                            {{ 'filters.popularMakes' | translate }}
-                                        </h4>
-                                        <div class="popular-make-icon">
-                                            <div class="popular-make-icon-box">
-                                                <img src="img/sorting-icon/icon-1.png" />
-                                            </div>
-                                            <div class="popular-make-icon-box">
-                                                <img src="img/sorting-icon/icon-2.png" />
-                                            </div>
-                                            <div class="popular-make-icon-box">
-                                                <img src="img/sorting-icon/icon3.png" />
-                                            </div>
-                                            <div class="popular-make-icon-box">
-                                                <img src="img/sorting-icon/icon4.png" />
-                                            </div>
-                                            <div class="popular-make-icon-box">
-                                                <img src="img/sorting-icon/icon5.png" />
-                                            </div>
-                                            <div class="popular-make-icon-box">
-                                                <img src="img/sorting-icon/icon6.png" />
-                                            </div>
-                                            <div class="popular-make-icon-box">
-                                                <img src="img/sorting-icon/icon7.png" />
-                                            </div>
-                                            <div class="popular-make-icon-box">
-                                                <img src="img/sorting-icon/icon8.png" />
-                                            </div>
-                                            <div class="popular-make-icon-box">
-                                                <img src="img/sorting-icon/icon9.png" />
-                                            </div>
-                                            <div class="popular-make-icon-box">
-                                                <img src="img/sorting-icon/icon10.png" />
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="vehicle-modal-detail-box">
@@ -94,335 +58,73 @@
                                             {{ 'filters.allMakes' | translate }}
                                         </h4>
                                         <div class="popular-make-all-box">
-                                            <div class="popular-make-all-box d-flex justify-content-between">
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.bmw' | translate }}
+                                            @if (loadingMakes) {
+                                            <p class="ct_fs_14 ct_fw_400 mb-0">
+                                                {{ 'common.loading' | translate }}
+                                            </p>
+                                            } @else {
+                                            @for (make of filteredMakeOptions; track make.value) {
+                                            <div class="popular-make-all mb-2">
+                                                <div class="popular-make-all-box d-flex justify-content-between align-items-center gap-3">
+                                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            [id]="'all-filters-make-' + make.value"
+                                                            [checked]="isMakeSelected(make.value)"
+                                                            (change)="toggleMakeSelection(make, $event)" />
+                                                        <label [for]="'all-filters-make-' + make.value" class="ct_fs_13 ct_fw_300 mb-0">
+                                                            {{ make.label }}
+                                                        </label>
+                                                    </div>
+                                                    <button type="button" class="btn btn-link p-0 text-decoration-none"
+                                                        (click)="openMakeModels(make)">
+                                                        <span class="ct_fs_12 ct_fw_300 me-2">{{ getSelectedModelCount(make.value) }}</span>
+                                                        <img src="img/icons/chevron-left.png" />
+                                                    </button>
+                                                </div>
+                                                @if (isMakeExpanded(make.value)) {
+                                                <div class="ps-4 pt-3">
+                                                    @if (loadingModelsByMake[make.value]) {
+                                                    <p class="ct_fs_13 ct_fw_300 mb-2">
+                                                        {{ 'common.loading' | translate }}
                                                     </p>
+                                                    } @else if (!getVisibleModels(make.value).length) {
+                                                    <p class="ct_fs_13 ct_fw_300 mb-2">
+                                                        {{ 'vehicle.noVehiclesFoundForSelection' | translate }}
+                                                    </p>
+                                                    } @else {
+                                                    @for (model of getVisibleModels(make.value); track model.value) {
+                                                    <div class="form-check ct_custom_check d-flex justify-content-between align-items-center mb-2">
+                                                        <div class="d-flex gap-2 align-items-center">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                [id]="'all-filters-model-' + make.value + '-' + model.value"
+                                                                [checked]="isModelSelected(make.value, model.value)"
+                                                                (change)="toggleModelSelection(make, model, $event)" />
+                                                            <label [for]="'all-filters-model-' + make.value + '-' + model.value" class="ct_fs_13 ct_fw_300 mb-0">
+                                                                {{ model.label }}
+                                                            </label>
+                                                        </div>
+                                                        <span class="ct_fs_12 ct_fw_300">{{ model.count || 0 }}</span>
+                                                    </div>
+                                                    }
+                                                    }
                                                 </div>
-                                                <div>
-                                                    <a href="#">
-                                                        <img src="img/icons/chevron-left.png" data-bs-toggle="modal"
-                                                            data-bs-target="#selectMakeModelModal" />
-                                                    </a>
-                                                </div>
+                                                }
                                             </div>
-
-                                            <div class="popular-make-all">
-                                                <div class="popular-make-all-box d-flex justify-content-between">
-                                                    <div>
-                                                        <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.bugatti' |
-                                                            translate }}</p>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#">
-                                                            <img src="img/icons/chevron-left.png" data-bs-toggle="modal"
-                                                                data-bs-target="#selectMakeModelModal" />
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all">
-                                                <div class="popular-make-all-box d-flex justify-content-between">
-                                                    <div>
-                                                        <p class="ct_fs_13 ct_fw_300 mb-0">
-                                                            {{ 'filters.astonMartin' | translate }}
-                                                        </p>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#">
-                                                            <img src="img/icons/chevron-left.png" data-bs-toggle="modal"
-                                                                data-bs-target="#selectMakeModelModal" />
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all">
-                                                <div class="popular-make-all-box d-flex justify-content-between">
-                                                    <div>
-                                                        <p class="ct_fs_13 ct_fw_300 mb-0">
-                                                            {{ 'filters.lamborghini' | translate }}
-                                                        </p>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#">
-                                                            <img src="img/icons/chevron-left.png" data-bs-toggle="modal"
-                                                                data-bs-target="#selectMakeModelModal" />
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all">
-                                                <div class="popular-make-all-box d-flex justify-content-between">
-                                                    <div>
-                                                        <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.mahindra' |
-                                                            translate }}</p>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#">
-                                                            <img src="img/icons/chevron-left.png" data-bs-toggle="modal"
-                                                                data-bs-target="#selectMakeModelModal" />
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all">
-                                                <div class="popular-make-all-box d-flex justify-content-between">
-                                                    <div>
-                                                        <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.maserati' |
-                                                            translate }}</p>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#">
-                                                            <img src="img/icons/chevron-left.png" data-bs-toggle="modal"
-                                                                data-bs-target="#selectMakeModelModal" />
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all">
-                                                <div class="popular-make-all-box d-flex justify-content-between">
-                                                    <div>
-                                                        <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.skoda' |
-                                                            translate }}</p>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#">
-                                                            <img src="img/icons/chevron-left.png" data-bs-toggle="modal"
-                                                                data-bs-target="#selectMakeModelModal" />
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all">
-                                                <div class="popular-make-all-box d-flex justify-content-between">
-                                                    <div>
-                                                        <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.renault' |
-                                                            translate }}</p>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#">
-                                                            <img src="img/icons/chevron-left.png" data-bs-toggle="modal"
-                                                                data-bs-target="#selectMakeModelModal" />
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all">
-                                                <div class="popular-make-all-box d-flex justify-content-between">
-                                                    <div>
-                                                        <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.suzuki' |
-                                                            translate }}</p>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#">
-                                                            <img src="img/icons/chevron-left.png" data-bs-toggle="modal"
-                                                                data-bs-target="#selectMakeModelModal" /></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all">
-                                                <div class="popular-make-all-box d-flex justify-content-between">
-                                                    <div>
-                                                        <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.fiat' | translate
-                                                            }}</p>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#">
-                                                            <img src="img/icons/chevron-left.png" data-bs-toggle="modal"
-                                                                data-bs-target="#selectMakeModelModal" /></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all">
-                                                <div class="popular-make-all-box d-flex justify-content-between">
-                                                    <div>
-                                                        <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.byd' | translate
-                                                            }}</p>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#">
-                                                            <img src="img/icons/chevron-left.png" data-bs-toggle="modal"
-                                                                data-bs-target="#selectMakeModelModal" />
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            } @empty {
+                                            <p class="ct_fs_14 ct_fw_400 mb-0">
+                                                {{ 'vehicle.noVehiclesFoundForSelection' | translate }}
+                                            </p>
+                                            }
+                                            }
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal fade" id="selectMakeModelModal" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-                        <div class="modal-content">
-                            <!-- header -->
-                            <div class="modal-header border-0">
-                                <!-- <h5 class="modal-title w-100 text-center">{{ 'filters.selectMake' | translate }}</h5> -->
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-
-                            <!-- body -->
-                            <div class="modal-body">
-                                <!-- search -->
-                                <div class="ct_custom_scroll">
-                                    <div class="vehicle-modal-header d-flex">
-                                        <div>
-                                            <a>
-                                                <img src="img/icons/chevron-right.png" data-bs-toggle="modal"
-                                                    data-bs-target="#selectMakeModal" />
-                                            </a>
-                                        </div>
-                                        <div class="w-100">
-                                            <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo text-center">
-                                                {{ 'filters.modelsForBrand' | translate:{ brand: ('filters.bmw' |
-                                                translate) } }}
-                                            </h3>
-                                        </div>
-                                    </div>
-                                    <div class="pt-4">
-                                        <div class="position-relative">
-                                            <input type="text"
-                                                class="form-control ct_input ct_input_ps_40 ct_input_h_40 ct_border_op_10"
-                                                [placeholder]="'filters.search' | translate" />
-                                            <i class="fa-solid fa-search ct_input_icon_left"></i>
-                                        </div>
-                                    </div>
-
-                                    <div class="vehicle-modal-detail-box">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <h4 class="ct_fs_18 ct_fw_400 my-4">
-                                                    {{ 'filters.selectAllModels' | translate }}
-                                                </h4>
-                                            </div>
-                                            <div>
-                                                <h4 class="ct_fs_14 ct_fw_400 my-4">{{ 'filters.12876' | translate }}
-                                                </h4>
-                                            </div>
-                                        </div>
-                                        <div class="popular-make-all-box">
-                                            <div class="popular-make-all-box d-flex justify-content-between">
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.1Series' | translate
-                                                        }}</p>
-                                                </div>
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">1111</p>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all-box d-flex justify-content-between">
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">114</p>
-                                                </div>
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">1111</p>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all-box d-flex justify-content-between">
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">116</p>
-                                                </div>
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">1111</p>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all-box d-flex justify-content-between">
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">118</p>
-                                                </div>
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">120</p>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all-box d-flex justify-content-between">
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">123</p>
-                                                </div>
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">1111</p>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all-box d-flex justify-content-between">
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.1erM' | translate }}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">111</p>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all-box d-flex justify-content-between">
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">M2</p>
-                                                </div>
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">1111</p>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all-box d-flex justify-content-between">
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">M4</p>
-                                                </div>
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">111</p>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all-box d-flex justify-content-between">
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">M5</p>
-                                                </div>
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">1111</p>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all-box d-flex justify-content-between">
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">M6</p>
-                                                </div>
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">111</p>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all-box d-flex justify-content-between">
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">M8</p>
-                                                </div>
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">1111</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="popular-make-all-box d-flex justify-content-between">
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">X3M</p>
-                                                </div>
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">1111</p>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all-box d-flex justify-content-between">
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">{{ 'filters.2Series' | translate
-                                                        }}</p>
-                                                </div>
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">1111</p>
-                                                </div>
-                                            </div>
-                                            <div class="popular-make-all-box d-flex justify-content-between">
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">
-                                                        214 Active Tourer
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <p class="ct_fs_13 ct_fw_300 mb-0">111</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="d-flex justify-content-between gap-3 mt-4">
+                                        <button type="button" class="btn btn-link p-0 ct_color_8f0c1f" (click)="clearMakeModelFilter()">
+                                            {{ 'vehicle.reset' | translate }}
+                                        </button>
+                                        <button type="button" class="ct_red_gradient_btn" data-bs-dismiss="modal">
+                                            {{ 'filters.totalCarsFound' | translate:{ count: (filterData.total_cars || 0) } }}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -1196,9 +898,8 @@
                             <div class="row">
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <nz-select class="form-select" [nzPlaceHolder]="'cm3'"
-                                        [nzShowSearch]="true" [nzAllowClear]="true"
-                                        [(ngModel)]="cubicCapacityRange[0]"
+                                    <nz-select class="form-select" [nzPlaceHolder]="'cm3'" [nzShowSearch]="true"
+                                        [nzAllowClear]="true" [(ngModel)]="cubicCapacityRange[0]"
                                         [ngModelOptions]="{standalone: true}"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of cubicCapacityOptions; track option) {
@@ -1213,9 +914,8 @@
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <nz-select class="form-select" [nzPlaceHolder]="'cm3'"
-                                        [nzShowSearch]="true" [nzAllowClear]="true"
-                                        [(ngModel)]="cubicCapacityRange[1]"
+                                    <nz-select class="form-select" [nzPlaceHolder]="'cm3'" [nzShowSearch]="true"
+                                        [nzAllowClear]="true" [(ngModel)]="cubicCapacityRange[1]"
                                         [ngModelOptions]="{standalone: true}"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of cubicCapacityOptions; track option) {
@@ -1250,8 +950,7 @@
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'vehicle.cylinders' | translate"
-                                        [nzShowSearch]="true" [nzAllowClear]="true"
-                                        [(ngModel)]="cylindersRange[0]"
+                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="cylindersRange[0]"
                                         [ngModelOptions]="{standalone: true}"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of cylinderOptions; track option) {
@@ -1267,8 +966,7 @@
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'vehicle.cylinders' | translate"
-                                        [nzShowSearch]="true" [nzAllowClear]="true"
-                                        [(ngModel)]="cylindersRange[1]"
+                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="cylindersRange[1]"
                                         [ngModelOptions]="{standalone: true}"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of cylinderOptions; track option) {
@@ -1338,8 +1036,7 @@
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'filters.kwh' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true"
-                                        [(ngModel)]="batteryCapacityRange[0]"
-                                        [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="batteryCapacityRange[0]" [ngModelOptions]="{standalone: true}"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of batteryCapacityOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kWh'"></nz-option>
@@ -1355,8 +1052,7 @@
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'filters.kwh' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true"
-                                        [(ngModel)]="batteryCapacityRange[1]"
-                                        [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="batteryCapacityRange[1]" [ngModelOptions]="{standalone: true}"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of batteryCapacityOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kWh'"></nz-option>
@@ -1391,8 +1087,7 @@
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
-                                        [nzShowSearch]="true" [nzAllowClear]="true"
-                                        [(ngModel)]="towCapacityRange[0]"
+                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="towCapacityRange[0]"
                                         [ngModelOptions]="{standalone: true}"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of towCapacityOptions; track option) {
@@ -1408,8 +1103,7 @@
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
-                                        [nzShowSearch]="true" [nzAllowClear]="true"
-                                        [(ngModel)]="towCapacityRange[1]"
+                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="towCapacityRange[1]"
                                         [ngModelOptions]="{standalone: true}"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of towCapacityOptions; track option) {
@@ -1447,8 +1141,7 @@
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
-                                        [nzShowSearch]="true" [nzAllowClear]="true"
-                                        [(ngModel)]="totalWeightRange[0]"
+                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="totalWeightRange[0]"
                                         [ngModelOptions]="{standalone: true}"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of weightOptions; track option) {
@@ -1464,8 +1157,7 @@
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
-                                        [nzShowSearch]="true" [nzAllowClear]="true"
-                                        [(ngModel)]="totalWeightRange[1]"
+                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="totalWeightRange[1]"
                                         [ngModelOptions]="{standalone: true}"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of weightOptions; track option) {
@@ -1499,8 +1191,7 @@
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
-                                        [nzShowSearch]="true" [nzAllowClear]="true"
-                                        [(ngModel)]="emptyWeightRange[0]"
+                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="emptyWeightRange[0]"
                                         [ngModelOptions]="{standalone: true}"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of weightOptions; track option) {
@@ -1516,8 +1207,7 @@
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
-                                        [nzShowSearch]="true" [nzAllowClear]="true"
-                                        [(ngModel)]="emptyWeightRange[1]"
+                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="emptyWeightRange[1]"
                                         [ngModelOptions]="{standalone: true}"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of weightOptions; track option) {

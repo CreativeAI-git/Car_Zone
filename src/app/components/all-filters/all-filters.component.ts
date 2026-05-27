@@ -6,7 +6,14 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { FilterGroup, FilterOption, FilterPayload, FilterService } from '../../services/filter.service';
+import {
+  FilterGroup,
+  FilterOption,
+  FilterPayload,
+  FilterService,
+  MakeModelOption,
+  SelectedMakeModel
+} from '../../services/filter.service';
 
 @Component({
   selector: 'app-all-filters',
@@ -21,6 +28,14 @@ export class AllFiltersComponent {
   private seatRangeChange$ = new Subject<void>();
   private doorRangeChange$ = new Subject<void>();
 
+  makeModelSearchTerm = '';
+  selectedMakeModels: SelectedMakeModel[] = [];
+  selectedBrandsModal: Array<{ brand: string; modals: string[] }> = [];
+  makeOptions: MakeModelOption[] = [];
+  modelOptionsByMake: Record<string, MakeModelOption[]> = {};
+  loadingMakes = false;
+  loadingModelsByMake: Record<string, boolean> = {};
+  expandedMakeIds: Array<string | number> = [];
   fuelTypeGroups: FilterGroup[] = [];
   transmissions: FilterOption[] = [];
   conditions: FilterOption[] = [];
@@ -102,6 +117,7 @@ export class AllFiltersComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe((loading) => (this.isLoading = loading));
 
+    this.loadMakeOptions();
     this.getFiltersData();
 
     this.priceRangeChange$
@@ -267,6 +283,113 @@ export class AllFiltersComponent {
     this.emptyWeightRange = [null, null];
     this.filterService.patchDraft(defaults);
     this.getFiltersData();
+  }
+
+  get filteredMakeOptions(): MakeModelOption[] {
+    const term = this.normalizeSearchText(this.makeModelSearchTerm);
+    if (!term) {
+      return this.makeOptions;
+    }
+
+    return this.makeOptions.filter((item) => this.normalizeSearchText(item.label).includes(term));
+  }
+
+  getVisibleModels(makeId: string | number): MakeModelOption[] {
+    const models = this.modelOptionsByMake[String(makeId)] || [];
+    const term = this.normalizeSearchText(this.makeModelSearchTerm);
+
+    if (!term) {
+      return models;
+    }
+
+    return models.filter((item) => this.normalizeSearchText(item.label).includes(term));
+  }
+
+  isMakeSelected(makeId: string | number): boolean {
+    return this.selectedMakeModels.some((item) => String(item.makeId) === String(makeId));
+  }
+
+  isMakeExpanded(makeId: string | number): boolean {
+    return this.expandedMakeIds.some((item) => String(item) === String(makeId));
+  }
+
+  isModelSelected(makeId: string | number, modelId: string | number): boolean {
+    return this.selectedMakeModels
+      .find((item) => String(item.makeId) === String(makeId))
+      ?.models.some((item) => String(item.modelId) === String(modelId)) ?? false;
+  }
+
+  toggleMakeSelection(make: MakeModelOption, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const exists = this.isMakeSelected(make.value);
+
+    if (input.checked && !exists) {
+      this.selectedMakeModels = [
+        ...this.selectedMakeModels,
+        { makeId: make.value, makeLabel: make.label, models: [] }
+      ];
+      this.openMakeModels(make);
+    } else if (!input.checked && exists) {
+      this.selectedMakeModels = this.selectedMakeModels.filter((item) => String(item.makeId) !== String(make.value));
+      this.expandedMakeIds = this.expandedMakeIds.filter((item) => String(item) !== String(make.value));
+    }
+
+    this.syncMakeModelSummary();
+    this.getFiltersData();
+  }
+
+  openMakeModels(make: MakeModelOption): void {
+    if (!this.isMakeExpanded(make.value)) {
+      this.expandedMakeIds = [...this.expandedMakeIds, make.value];
+    }
+
+    this.ensureModelsLoaded(make.value, make.label);
+  }
+
+  closeMakeModels(makeId: string | number): void {
+    this.expandedMakeIds = this.expandedMakeIds.filter((item) => String(item) !== String(makeId));
+  }
+
+  toggleModelSelection(make: MakeModelOption, model: MakeModelOption, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const nextSelection = this.cloneSelectedMakeModels(this.selectedMakeModels);
+    let makeSelection = nextSelection.find((item) => String(item.makeId) === String(make.value));
+
+    if (!makeSelection) {
+      makeSelection = {
+        makeId: make.value,
+        makeLabel: make.label,
+        models: []
+      };
+      nextSelection.push(makeSelection);
+    }
+
+    if (input.checked) {
+      if (!makeSelection.models.some((item) => String(item.modelId) === String(model.value))) {
+        makeSelection.models = [
+          ...makeSelection.models,
+          { modelId: model.value, modelLabel: model.label }
+        ];
+      }
+    } else {
+      makeSelection.models = makeSelection.models.filter((item) => String(item.modelId) !== String(model.value));
+    }
+
+    this.selectedMakeModels = nextSelection;
+    this.syncMakeModelSummary();
+    this.getFiltersData();
+  }
+
+  clearMakeModelFilter(): void {
+    this.makeModelSearchTerm = '';
+    this.selectedMakeModels = [];
+    this.selectedBrandsModal = [];
+    this.expandedMakeIds = [];
+    this.getFiltersData();
+  }
+
+  getSelectedModelCount(makeId: string | number): number {
+    return this.selectedMakeModels.find((item) => String(item.makeId) === String(makeId))?.models.length || 0;
   }
 
   onResetSellerType() {
@@ -487,6 +610,10 @@ export class AllFiltersComponent {
     this.driveTypeId = [...(payload.drive_type || [])];
     this.interiorColorId = [...(payload.interior_color || [])];
     this.exteriorColorId = [...(payload.exterior_color || [])];
+    this.selectedMakeModels = this.cloneSelectedMakeModels(payload.make_model_selection || []);
+    this.selectedBrandsModal = this.filterService.buildMakeModelSummary(this.selectedMakeModels);
+    this.expandedMakeIds = this.selectedMakeModels.map((item) => item.makeId);
+    this.selectedMakeModels.forEach((item) => this.ensureModelsLoaded(item.makeId, item.makeLabel));
     this.yearRange = [
       payload.year_range?.min_year ?? this.yearRange[0],
       payload.year_range?.max_year ?? this.yearRange[1]
@@ -522,6 +649,7 @@ export class AllFiltersComponent {
 
     return {
       lang: localStorage.getItem('lang') || 'en',
+      make_model_selection: this.cloneSelectedMakeModels(this.selectedMakeModels),
       seller_type: [...this.selectedSellerType],
       state_id: [...this.stateId],
       body_type_id: [...this.bodyTypeId],
@@ -560,5 +688,50 @@ export class AllFiltersComponent {
     }
 
     return list.filter((item) => item !== value);
+  }
+
+  private loadMakeOptions(): void {
+    this.loadingMakes = true;
+    this.filterService.loadMakeOptions().pipe(takeUntil(this.destroy$)).subscribe({
+      next: (options) => {
+        this.makeOptions = options;
+        this.loadingMakes = false;
+      },
+      error: () => {
+        this.makeOptions = [];
+        this.loadingMakes = false;
+      }
+    });
+  }
+
+  private ensureModelsLoaded(makeId: string | number, makeLabel: string): void {
+    const cacheKey = String(makeId);
+    if (this.modelOptionsByMake[cacheKey] || this.loadingModelsByMake[cacheKey]) {
+      return;
+    }
+
+    this.loadingModelsByMake[cacheKey] = true;
+    this.filterService.loadModelsByMake(makeId, makeLabel).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (options) => {
+        this.modelOptionsByMake[cacheKey] = options;
+        this.loadingModelsByMake[cacheKey] = false;
+      },
+      error: () => {
+        this.modelOptionsByMake[cacheKey] = [];
+        this.loadingModelsByMake[cacheKey] = false;
+      }
+    });
+  }
+
+  private syncMakeModelSummary(): void {
+    this.selectedBrandsModal = this.filterService.buildMakeModelSummary(this.selectedMakeModels);
+  }
+
+  private cloneSelectedMakeModels(selection: SelectedMakeModel[]): SelectedMakeModel[] {
+    return JSON.parse(JSON.stringify(selection || []));
+  }
+
+  private normalizeSearchText(value: string): string {
+    return (value || '').trim().toLowerCase();
   }
 }

@@ -55,8 +55,9 @@
                                                                         @if(selectedBrandsModal.length > 0){
                                                                         @for (item of selectedBrandsModal; track
                                                                         $index) {
-                                                                        {{item.brand}}({{item.modals.join(', ')}})@if($index
-                                                                        !==
+                                                                        {{item.brand}}@if(item.modals.length){
+                                                                        ({{item.modals.join(', ')}})
+                                                                        }@if($index !==
                                                                         selectedBrandsModal.length - 1){, }
                                                                         }
                                                                         }@else{
@@ -65,20 +66,11 @@
                                                                   </span>
                                                             </button>
                                                             <ng-template #contentTemplate>
-                                                                  <div
-                                                                        class="search-vehicle-modal-box ct_custom_scroll">
-                                                                        <div class="vehicle-modal-header d-flex mt-4">
-                                                                              <div>
-                                                                                    <a>
-                                                                                          <img
-                                                                                                src="img/icons/chevron-right.png" />
-                                                                                    </a>
-                                                                              </div>
+                                                                  <div class="search-vehicle-modal-box ct_custom_scroll">
+                                                                        <div class="vehicle-modal-header d-flex mt-4 justify-content-between align-items-center">
                                                                               <div class="w-100">
-                                                                                    <h3
-                                                                                          class="ct_fs_22 ct_fw_600 ct_font_cairo text-center">
-                                                                                          {{ 'filters.selectMake' |
-                                                                                          translate }}
+                                                                                    <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo text-center">
+                                                                                          {{ 'filters.selectMake' | translate }}
                                                                                     </h3>
                                                                               </div>
                                                                         </div>
@@ -86,261 +78,85 @@
                                                                               <div class="position-relative">
                                                                                     <input type="text"
                                                                                           class="form-control ct_input ct_input_ps_40 ct_input_h_40 ct_border_op_10"
-                                                                                          [placeholder]="'filters.search' | translate" />
-                                                                                    <i
-                                                                                          class="fa-solid fa-search ct_input_icon_left"></i>
+                                                                                          [placeholder]="'filters.search' | translate"
+                                                                                          [(ngModel)]="makeModelSearchTerm" />
+                                                                                    <i class="fa-solid fa-search ct_input_icon_left"></i>
                                                                               </div>
                                                                         </div>
                                                                         <div class="vehicle-modal-detail-box">
-                                                                              <h4
-                                                                                    class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f mt-4">
-                                                                                    {{ 'filters.popularMakes' |
-                                                                                    translate }}
-                                                                              </h4>
-                                                                              <div class="popular-make-icon">
-                                                                                    <div class="popular-make-icon-box">
-                                                                                          <img
-                                                                                                src="img/sorting-icon/icon-1.png" />
-                                                                                    </div>
-                                                                                    <div class="popular-make-icon-box">
-                                                                                          <img
-                                                                                                src="img/sorting-icon/icon-2.png" />
-                                                                                    </div>
-                                                                                    <div class="popular-make-icon-box">
-                                                                                          <img
-                                                                                                src="img/sorting-icon/icon3.png" />
-                                                                                    </div>
-                                                                                    <div class="popular-make-icon-box">
-                                                                                          <img
-                                                                                                src="img/sorting-icon/icon4.png" />
-                                                                                    </div>
-                                                                                    <div class="popular-make-icon-box">
-                                                                                          <img
-                                                                                                src="img/sorting-icon/icon5.png" />
-                                                                                    </div>
-                                                                                    <div class="popular-make-icon-box">
-                                                                                          <img
-                                                                                                src="img/sorting-icon/icon6.png" />
-                                                                                    </div>
-                                                                                    <div class="popular-make-icon-box">
-                                                                                          <img
-                                                                                                src="img/sorting-icon/icon7.png" />
-                                                                                    </div>
-                                                                                    <div class="popular-make-icon-box">
-                                                                                          <img
-                                                                                                src="img/sorting-icon/icon8.png" />
-                                                                                    </div>
-                                                                                    <div class="popular-make-icon-box">
-                                                                                          <img
-                                                                                                src="img/sorting-icon/icon9.png" />
-                                                                                    </div>
-                                                                                    <div class="popular-make-icon-box">
-                                                                                          <img
-                                                                                                src="img/sorting-icon/icon10.png" />
-                                                                                    </div>
-                                                                              </div>
-                                                                        </div>
-                                                                        <div class="vehicle-modal-detail-box">
-                                                                              <h4
-                                                                                    class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f my-4">
+                                                                              <h4 class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f my-4">
                                                                                     {{ 'filters.allMakes' | translate }}
                                                                               </h4>
                                                                               <div class="popular-make-all-box">
-                                                                                    <div
-                                                                                          class="popular-make-all-box d-flex justify-content-between">
-                                                                                          <div>
-                                                                                                <p
-                                                                                                      class="ct_fs_13 ct_fw_300 mb-0">
-                                                                                                      BMW</p>
+                                                                                    @if (loadingMakes) {
+                                                                                    <p class="ct_fs_14 ct_fw_400 mb-0">
+                                                                                          {{ 'common.loading' | translate }}
+                                                                                    </p>
+                                                                                    } @else {
+                                                                                    @for (make of filteredMakeOptions; track make.value) {
+                                                                                    <div class="popular-make-all mb-2">
+                                                                                          <div class="popular-make-all-box d-flex justify-content-between align-items-center gap-3">
+                                                                                                <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                                                      <input class="form-check-input"
+                                                                                                            type="checkbox"
+                                                                                                            [id]="'home-make-' + make.value"
+                                                                                                            [checked]="isMakeSelected(make.value)"
+                                                                                                            (change)="toggleMakeSelection(make, $event)" />
+                                                                                                      <label [for]="'home-make-' + make.value" class="ct_fs_13 ct_fw_300 mb-0">
+                                                                                                            {{ make.label }}
+                                                                                                      </label>
+                                                                                                </div>
+                                                                                                <button type="button" class="btn btn-link p-0 text-decoration-none"
+                                                                                                      (click)="openMakeModels(make)">
+                                                                                                      <span class="ct_fs_12 ct_fw_300 me-2">{{ getSelectedModelCount(make.value) }}</span>
+                                                                                                      <img src="img/icons/chevron-left.png" />
+                                                                                                </button>
                                                                                           </div>
-                                                                                          <div>
-                                                                                                <a href="#">
-                                                                                                      <img
-                                                                                                            src="img/icons/chevron-left.png" /></a>
+                                                                                          @if (isMakeExpanded(make.value)) {
+                                                                                          <div class="ps-4 pt-3">
+                                                                                                @if (loadingModelsByMake[make.value]) {
+                                                                                                <p class="ct_fs_13 ct_fw_300 mb-2">
+                                                                                                      {{ 'common.loading' | translate }}
+                                                                                                </p>
+                                                                                                } @else if (!getVisibleModels(make.value).length) {
+                                                                                                <p class="ct_fs_13 ct_fw_300 mb-2">
+                                                                                                      {{ 'vehicle.noVehiclesFoundForSelection' | translate }}
+                                                                                                </p>
+                                                                                                } @else {
+                                                                                                @for (model of getVisibleModels(make.value); track model.value) {
+                                                                                                <div class="form-check ct_custom_check d-flex justify-content-between align-items-center mb-2">
+                                                                                                      <div class="d-flex gap-2 align-items-center">
+                                                                                                            <input class="form-check-input"
+                                                                                                                  type="checkbox"
+                                                                                                                  [id]="'home-model-' + make.value + '-' + model.value"
+                                                                                                                  [checked]="isModelSelected(make.value, model.value)"
+                                                                                                                  (change)="toggleModelSelection(make, model, $event)" />
+                                                                                                            <label [for]="'home-model-' + make.value + '-' + model.value" class="ct_fs_13 ct_fw_300 mb-0">
+                                                                                                                  {{ model.label }}
+                                                                                                            </label>
+                                                                                                      </div>
+                                                                                                      <span class="ct_fs_12 ct_fw_300">{{ model.count || 0 }}</span>
+                                                                                                </div>
+                                                                                                }
+                                                                                                }
                                                                                           </div>
+                                                                                          }
                                                                                     </div>
-
-                                                                                    <div class="popular-make-all">
-                                                                                          <div
-                                                                                                class="popular-make-all-box d-flex justify-content-between">
-                                                                                                <div>
-                                                                                                      <p
-                                                                                                            class="ct_fs_13 ct_fw_300 mb-0">
-                                                                                                            {{
-                                                                                                            'filters.bugatti'
-                                                                                                            | translate
-                                                                                                            }}</p>
-                                                                                                </div>
-                                                                                                <div>
-                                                                                                      <a href="#">
-                                                                                                            <img
-                                                                                                                  src="img/icons/chevron-left.png" /></a>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </div>
-                                                                                    <div class="popular-make-all">
-                                                                                          <div
-                                                                                                class="popular-make-all-box d-flex justify-content-between">
-                                                                                                <div>
-                                                                                                      <p
-                                                                                                            class="ct_fs_13 ct_fw_300 mb-0">
-                                                                                                            {{
-                                                                                                            'vehicle.astonMartin'
-                                                                                                            | translate
-                                                                                                            }}</p>
-                                                                                                </div>
-                                                                                                <div>
-                                                                                                      <a href="#">
-                                                                                                            <img
-                                                                                                                  src="img/icons/chevron-left.png" /></a>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </div>
-                                                                                    <div class="popular-make-all">
-                                                                                          <div
-                                                                                                class="popular-make-all-box d-flex justify-content-between">
-                                                                                                <div>
-                                                                                                      <p
-                                                                                                            class="ct_fs_13 ct_fw_300 mb-0">
-                                                                                                            {{
-                                                                                                            'vehicle.lamborghini'
-                                                                                                            | translate
-                                                                                                            }}</p>
-                                                                                                </div>
-                                                                                                <div>
-                                                                                                      <a href="#">
-                                                                                                            <img
-                                                                                                                  src="img/icons/chevron-left.png" /></a>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </div>
-                                                                                    <div class="popular-make-all">
-                                                                                          <div
-                                                                                                class="popular-make-all-box d-flex justify-content-between">
-                                                                                                <div>
-                                                                                                      <p
-                                                                                                            class="ct_fs_13 ct_fw_300 mb-0">
-                                                                                                            {{
-                                                                                                            'filters.mahindra'
-                                                                                                            | translate
-                                                                                                            }}</p>
-                                                                                                </div>
-                                                                                                <div>
-                                                                                                      <a href="#">
-                                                                                                            <img
-                                                                                                                  src="img/icons/chevron-left.png" /></a>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </div>
-                                                                                    <div class="popular-make-all">
-                                                                                          <div
-                                                                                                class="popular-make-all-box d-flex justify-content-between">
-                                                                                                <div>
-                                                                                                      <p
-                                                                                                            class="ct_fs_13 ct_fw_300 mb-0">
-                                                                                                            {{
-                                                                                                            'filters.maserati'
-                                                                                                            | translate
-                                                                                                            }}</p>
-                                                                                                </div>
-                                                                                                <div>
-                                                                                                      <a href="#">
-                                                                                                            <img
-                                                                                                                  src="img/icons/chevron-left.png" /></a>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </div>
-                                                                                    <div class="popular-make-all">
-                                                                                          <div
-                                                                                                class="popular-make-all-box d-flex justify-content-between">
-                                                                                                <div>
-                                                                                                      <p
-                                                                                                            class="ct_fs_13 ct_fw_300 mb-0">
-                                                                                                            {{
-                                                                                                            'filters.skoda'
-                                                                                                            | translate
-                                                                                                            }}</p>
-                                                                                                </div>
-                                                                                                <div>
-                                                                                                      <a href="#">
-                                                                                                            <img
-                                                                                                                  src="img/icons/chevron-left.png" /></a>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </div>
-                                                                                    <div class="popular-make-all">
-                                                                                          <div
-                                                                                                class="popular-make-all-box d-flex justify-content-between">
-                                                                                                <div>
-                                                                                                      <p
-                                                                                                            class="ct_fs_13 ct_fw_300 mb-0">
-                                                                                                            {{
-                                                                                                            'filters.renault'
-                                                                                                            | translate
-                                                                                                            }}</p>
-                                                                                                </div>
-                                                                                                <div>
-                                                                                                      <a href="#">
-                                                                                                            <img
-                                                                                                                  src="img/icons/chevron-left.png" />
-                                                                                                      </a>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </div>
-                                                                                    <div class="popular-make-all">
-                                                                                          <div
-                                                                                                class="popular-make-all-box d-flex justify-content-between">
-                                                                                                <div>
-                                                                                                      <p
-                                                                                                            class="ct_fs_13 ct_fw_300 mb-0">
-                                                                                                            {{
-                                                                                                            'filters.suzuki'
-                                                                                                            | translate
-                                                                                                            }}</p>
-                                                                                                </div>
-                                                                                                <div>
-                                                                                                      <a href="#">
-                                                                                                            <img
-                                                                                                                  src="img/icons/chevron-left.png" /></a>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </div>
-                                                                                    <div class="popular-make-all">
-                                                                                          <div
-                                                                                                class="popular-make-all-box d-flex justify-content-between">
-                                                                                                <div>
-                                                                                                      <p
-                                                                                                            class="ct_fs_13 ct_fw_300 mb-0">
-                                                                                                            {{
-                                                                                                            'filters.fiat'
-                                                                                                            |
-                                                                                                            translate }}
-                                                                                                      </p>
-                                                                                                </div>
-                                                                                                <div>
-                                                                                                      <a href="#">
-                                                                                                            <img
-                                                                                                                  src="img/icons/chevron-left.png" /></a>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </div>
-                                                                                    <div class="popular-make-all">
-                                                                                          <div
-                                                                                                class="popular-make-all-box d-flex justify-content-between">
-                                                                                                <div>
-                                                                                                      <p
-                                                                                                            class="ct_fs_13 ct_fw_300 mb-0">
-                                                                                                            BYD</p>
-                                                                                                </div>
-                                                                                                <div>
-                                                                                                      <a href="#">
-                                                                                                            <img
-                                                                                                                  src="img/icons/chevron-left.png" />
-                                                                                                      </a>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </div>
+                                                                                    } @empty {
+                                                                                    <p class="ct_fs_14 ct_fw_400 mb-0">
+                                                                                          {{ 'vehicle.noVehiclesFoundForSelection' | translate }}
+                                                                                    </p>
+                                                                                    }
+                                                                                    }
                                                                               </div>
+                                                                        </div>
+                                                                        <div class="d-flex justify-content-between gap-3 mt-4">
+                                                                              <button type="button" class="btn btn-link p-0 ct_color_8f0c1f" (click)="clearMakeModelFilter()">
+                                                                                    {{ 'vehicle.reset' | translate }}
+                                                                              </button>
+                                                                              <button class="ct_red_gradient_btn" (click)="closePopup('make')">
+                                                                                    {{ 'filters.totalCarsFound' | translate:{ count: totalCars } }}
+                                                                              </button>
                                                                         </div>
                                                                   </div>
                                                             </ng-template>
@@ -977,16 +793,7 @@
                                                                   class="filter-preview-box w-100 ">
                                                                   <img src="img/icons/power-output.png" />
                                                                   <span class="filter-preview-box-label">
-                                                                        @if(selectedBrandsModal.length > 0){
-                                                                        @for (item of selectedBrandsModal; track
-                                                                        $index) {
-                                                                        {{item.brand}}({{item.modals.join(', ')}})@if($index
-                                                                        !==
-                                                                        selectedBrandsModal.length - 1){, }
-                                                                        }
-                                                                        }@else{
                                                                         {{'vehicle.powerOutput' | translate}}
-                                                                        }
                                                                   </span>
                                                             </button>
                                                             <ng-template #powerContentTemplate>

@@ -14,7 +14,14 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { FilterGroup, FilterOption, FilterPayload, FilterService } from '../../services/filter.service';
+import {
+  FilterGroup,
+  FilterOption,
+  FilterPayload,
+  FilterService,
+  MakeModelOption,
+  SelectedMakeModel
+} from '../../services/filter.service';
 declare var Swiper: any;
 @Component({
   selector: 'app-home',
@@ -48,7 +55,14 @@ export class HomeComponent {
   FuelVisible = false;
   TransmissionVisible = false;
   PowerVisible = false;
+  makeModelSearchTerm = '';
   selectedBrandsModal: any[] = [];
+  selectedMakeModels: SelectedMakeModel[] = [];
+  makeOptions: MakeModelOption[] = [];
+  modelOptionsByMake: Record<string, MakeModelOption[]> = {};
+  loadingMakes = false;
+  loadingModelsByMake: Record<string, boolean> = {};
+  expandedMakeIds: Array<string | number> = [];
   bodyTypes: FilterOption[] = [];
   homeBodyTypeCards = [
     { label: 'Wagon', icon: 'img/Wagon-1.png', aliases: ['wagon'] },
@@ -112,6 +126,7 @@ export class HomeComponent {
   ngOnInit(): void {
     this.token = this.authService.getToken();
     this.getCars();
+    this.loadMakeOptions();
 
     const currentYear = new Date().getFullYear();
     this.yearRange = [currentYear - 35, currentYear];
@@ -546,6 +561,10 @@ export class HomeComponent {
     this.transmissionId = [...(payload.transmission || [])];
     this.fuelTypeId = [...(payload.fuel_type_id || [])];
     this.bodyTypeId = [...(payload.body_type_id || [])];
+    this.selectedMakeModels = this.cloneSelectedMakeModels(payload.make_model_selection || []);
+    this.selectedBrandsModal = this.filterService.buildMakeModelSummary(this.selectedMakeModels);
+    this.expandedMakeIds = this.selectedMakeModels.map((item) => item.makeId);
+    this.selectedMakeModels.forEach((item) => this.ensureModelsLoaded(item.makeId, item.makeLabel));
   }
 
   private applyFilters(patch: Partial<FilterPayload>) {
@@ -614,6 +633,158 @@ export class HomeComponent {
       .replace(/[^a-zA-Z0-9]+/g, ' ')
       .trim()
       .toLowerCase();
+  }
+
+  get filteredMakeOptions(): MakeModelOption[] {
+    const term = this.normalizeSearchText(this.makeModelSearchTerm);
+    if (!term) {
+      return this.makeOptions;
+    }
+
+    return this.makeOptions.filter((item) => this.normalizeSearchText(item.label).includes(term));
+  }
+
+  getVisibleModels(makeId: string | number): MakeModelOption[] {
+    const models = this.modelOptionsByMake[String(makeId)] || [];
+    const term = this.normalizeSearchText(this.makeModelSearchTerm);
+
+    if (!term) {
+      return models;
+    }
+
+    return models.filter((item) => this.normalizeSearchText(item.label).includes(term));
+  }
+
+  isMakeSelected(makeId: string | number): boolean {
+    return this.selectedMakeModels.some((item) => String(item.makeId) === String(makeId));
+  }
+
+  isMakeExpanded(makeId: string | number): boolean {
+    return this.expandedMakeIds.some((item) => String(item) === String(makeId));
+  }
+
+  isModelSelected(makeId: string | number, modelId: string | number): boolean {
+    return this.selectedMakeModels
+      .find((item) => String(item.makeId) === String(makeId))
+      ?.models.some((item) => String(item.modelId) === String(modelId)) ?? false;
+  }
+
+  toggleMakeSelection(make: MakeModelOption, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const exists = this.isMakeSelected(make.value);
+
+    if (input.checked && !exists) {
+      this.selectedMakeModels = [
+        ...this.selectedMakeModels,
+        { makeId: make.value, makeLabel: make.label, models: [] }
+      ];
+      this.openMakeModels(make);
+    } else if (!input.checked && exists) {
+      this.selectedMakeModels = this.selectedMakeModels.filter((item) => String(item.makeId) !== String(make.value));
+      this.expandedMakeIds = this.expandedMakeIds.filter((item) => String(item) !== String(make.value));
+    }
+
+    this.syncMakeModelSummary();
+    this.applyFilters({ make_model_selection: this.cloneSelectedMakeModels(this.selectedMakeModels) });
+  }
+
+  openMakeModels(make: MakeModelOption): void {
+    if (!this.isMakeExpanded(make.value)) {
+      this.expandedMakeIds = [...this.expandedMakeIds, make.value];
+    }
+
+    this.ensureModelsLoaded(make.value, make.label);
+  }
+
+  closeMakeModels(makeId: string | number): void {
+    this.expandedMakeIds = this.expandedMakeIds.filter((item) => String(item) !== String(makeId));
+  }
+
+  toggleModelSelection(make: MakeModelOption, model: MakeModelOption, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const nextSelection = this.cloneSelectedMakeModels(this.selectedMakeModels);
+    let makeSelection = nextSelection.find((item) => String(item.makeId) === String(make.value));
+
+    if (!makeSelection) {
+      makeSelection = {
+        makeId: make.value,
+        makeLabel: make.label,
+        models: []
+      };
+      nextSelection.push(makeSelection);
+    }
+
+    if (input.checked) {
+      if (!makeSelection.models.some((item) => String(item.modelId) === String(model.value))) {
+        makeSelection.models = [
+          ...makeSelection.models,
+          { modelId: model.value, modelLabel: model.label }
+        ];
+      }
+    } else {
+      makeSelection.models = makeSelection.models.filter((item) => String(item.modelId) !== String(model.value));
+    }
+
+    this.selectedMakeModels = nextSelection;
+    this.syncMakeModelSummary();
+    this.applyFilters({ make_model_selection: this.cloneSelectedMakeModels(this.selectedMakeModels) });
+  }
+
+  clearMakeModelFilter(): void {
+    this.makeModelSearchTerm = '';
+    this.selectedMakeModels = [];
+    this.selectedBrandsModal = [];
+    this.expandedMakeIds = [];
+    this.applyFilters({ make_model_selection: [] });
+  }
+
+  getSelectedModelCount(makeId: string | number): number {
+    return this.selectedMakeModels.find((item) => String(item.makeId) === String(makeId))?.models.length || 0;
+  }
+
+  private loadMakeOptions(): void {
+    this.loadingMakes = true;
+    this.filterService.loadMakeOptions(this.carsList).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (options) => {
+        this.makeOptions = options;
+        this.loadingMakes = false;
+      },
+      error: () => {
+        this.makeOptions = [];
+        this.loadingMakes = false;
+      }
+    });
+  }
+
+  private ensureModelsLoaded(makeId: string | number, makeLabel: string): void {
+    const cacheKey = String(makeId);
+    if (this.modelOptionsByMake[cacheKey] || this.loadingModelsByMake[cacheKey]) {
+      return;
+    }
+
+    this.loadingModelsByMake[cacheKey] = true;
+    this.filterService.loadModelsByMake(makeId, makeLabel, this.carsList).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (options) => {
+        this.modelOptionsByMake[cacheKey] = options;
+        this.loadingModelsByMake[cacheKey] = false;
+      },
+      error: () => {
+        this.modelOptionsByMake[cacheKey] = [];
+        this.loadingModelsByMake[cacheKey] = false;
+      }
+    });
+  }
+
+  private syncMakeModelSummary(): void {
+    this.selectedBrandsModal = this.filterService.buildMakeModelSummary(this.selectedMakeModels);
+  }
+
+  private cloneSelectedMakeModels(selection: SelectedMakeModel[]): SelectedMakeModel[] {
+    return JSON.parse(JSON.stringify(selection || []));
+  }
+
+  private normalizeSearchText(value: string): string {
+    return (value || '').trim().toLowerCase();
   }
 
   ngOnDestroy(): void {

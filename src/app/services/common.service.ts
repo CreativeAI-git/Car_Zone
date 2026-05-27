@@ -42,6 +42,14 @@ export class CommonService {
     return this.http.get<any>(this.baseUrl + 'user/brands-list');
   }
 
+  getAllMakes(): Observable<any> {
+    return this.http.get<any>(this.baseUrl + 'user/web/all-makes');
+  }
+
+  getModelsByMake(makeId: string | number): Observable<any> {
+    return this.http.get<any>(this.baseUrl + `user/web/models-by-make/${makeId}`);
+  }
+
   getModelsList(brandId: string | number): Observable<any> {
     return this.http.get<any>(this.baseUrl + 'user/models-list', {
       params: { brand_id: brandId }
