@@ -893,6 +893,7 @@
   },
   "filters": {
     "12876": "12’876",
+    "selectModel": "Select Model",
     "filters": "Filters",
     "applyFilters": "Apply Filters",
     "minimum": "Minimum",

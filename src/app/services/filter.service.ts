@@ -213,7 +213,7 @@ export class FilterService {
     );
   }
 
-  loadModelsByMake(makeId: string | number, makeLabel = '', fallbackCars: any[] = []): Observable<MakeModelOption[]> {
+  loadModelsByMake(makeId: string | number): Observable<MakeModelOption[]> {
     const cacheKey = String(makeId);
     const cachedOptions = this.modelOptionsCache.get(cacheKey);
     if (cachedOptions) {
@@ -221,15 +221,12 @@ export class FilterService {
     }
 
     return this.commonService.getModelsByMake(makeId).pipe(
-      map((response: any) => {
-        const options = this.normalizeModelOptions(response);
-        return options.length ? options : this.normalizeModelOptionsFromCars(makeId, makeLabel, fallbackCars);
-      }),
+      map((response: any) => this.normalizeModelOptions(response)),
       tap((options) => {
         this.modelOptionsCache.set(cacheKey, options);
       }),
       catchError(() => {
-        const options = this.normalizeModelOptionsFromCars(makeId, makeLabel, fallbackCars);
+        const options: MakeModelOption[] = [];
         this.modelOptionsCache.set(cacheKey, options);
         return of(options);
       })
@@ -629,9 +626,8 @@ export class FilterService {
     }
 
     this.setIfValue(params, 'seller_type', payload.seller_type);
-    this.setIfValue(params, 'make', makeModelData.makeLabels);
-    this.setIfValue(params, 'brand', makeModelData.makeLabels);
-    this.setIfValue(params, 'model', makeModelData.modelLabels);
+    this.setIfValue(params, 'brand_name', makeModelData.makeLabels);
+    this.setIfValue(params, 'model_name', makeModelData.modelLabels);
     this.setIfValue(params, 'state_id', payload.state_id);
     this.setIfValue(params, 'body_type_id', payload.body_type_id);
     this.setIfValue(params, 'fuel_type_id', payload.fuel_type_id);
@@ -941,43 +937,25 @@ export class FilterService {
     return Array.from(optionMap.values()).sort((left, right) => left.label.localeCompare(right.label));
   }
 
-  private normalizeModelOptionsFromCars(makeId: string | number, makeLabel: string, cars: any[]): MakeModelOption[] {
-    const normalizedMakeLabel = this.normalizeText(makeLabel);
-    const optionMap = new Map<string, MakeModelOption>();
-
-    (cars || [])
-      .filter((car: any) => {
-        const carMakeId = this.pickFirst(car, ['make_id', 'brand_id']);
-        const carMakeLabel = this.pickFirst(car, ['brandName', 'brand_name', 'brand', 'make_display', 'make']);
-
-        return String(carMakeId) === String(makeId)
-          || (!!normalizedMakeLabel && this.normalizeText(carMakeLabel) === normalizedMakeLabel);
-      })
-      .forEach((car: any, index: number) => {
-        const label = this.pickFirst(car, ['carModel', 'model_name', 'model']);
-        const value = this.pickFirst(car, ['model_id', 'id']) ?? label ?? index;
-
-        if (!label) {
-          return;
-        }
-
-        const key = String(value ?? this.normalizeText(label));
-        if (!optionMap.has(key)) {
-          optionMap.set(key, {
-            label: String(label),
-            value
-          });
-        }
-      });
-
-    return Array.from(optionMap.values()).sort((left, right) => left.label.localeCompare(right.label));
-  }
-
   private buildMakeModelRequestData(selection: SelectedMakeModel[]) {
     const normalizedSelection = (selection || [])
       .filter((item) => item?.makeId !== null && item?.makeId !== undefined && item?.makeLabel)
       .map((item) => ({
+        make_id: item.makeId,
         make: item.makeLabel,
+        models_data: Array.from(
+          new Map(
+            (item.models || [])
+              .filter((model) => model?.modelId !== null && model?.modelId !== undefined && model?.modelLabel)
+              .map((model) => [
+                String(model.modelId),
+                {
+                  model_id: model.modelId,
+                  model: model.modelLabel.trim()
+                }
+              ])
+          ).values()
+        ),
         models: Array.from(
           new Set(
             (item.models || [])
@@ -1020,6 +998,13 @@ export class FilterService {
       if (Array.isArray(candidate)) {
         return candidate;
       }
+
+      for (const key of preferredKeys) {
+        if (Array.isArray(candidate?.[key])) {
+          return candidate[key];
+        }
+      }
+
       if (Array.isArray(candidate?.data)) {
         return candidate.data;
       }

@@ -60,6 +60,7 @@ export class HomeComponent {
   selectedMakeModels: SelectedMakeModel[] = [];
   makeOptions: MakeModelOption[] = [];
   modelOptionsByMake: Record<string, MakeModelOption[]> = {};
+  activeMakeForModels: MakeModelOption | null = null;
   loadingMakes = false;
   loadingModelsByMake: Record<string, boolean> = {};
   expandedMakeIds: Array<string | number> = [];
@@ -664,6 +665,10 @@ export class HomeComponent {
     return models.filter((item) => this.normalizeSearchText(item.label).includes(term));
   }
 
+  get activeMakeModels(): MakeModelOption[] {
+    return this.activeMakeForModels ? this.getVisibleModels(this.activeMakeForModels.value) : [];
+  }
+
   isMakeSelected(makeId: string | number): boolean {
     return this.selectedMakeModels.some((item) => String(item.makeId) === String(makeId));
   }
@@ -691,18 +696,25 @@ export class HomeComponent {
     } else if (!input.checked && exists) {
       this.selectedMakeModels = this.selectedMakeModels.filter((item) => String(item.makeId) !== String(make.value));
       this.expandedMakeIds = this.expandedMakeIds.filter((item) => String(item) !== String(make.value));
+      this.syncMakeModelSummary();
+      this.applyFilters({ make_model_selection: this.getCommittedMakeModelSelection() });
+      return;
     }
 
     this.syncMakeModelSummary();
-    this.applyFilters({ make_model_selection: this.cloneSelectedMakeModels(this.selectedMakeModels) });
   }
 
   openMakeModels(make: MakeModelOption): void {
+    this.activeMakeForModels = make;
     if (!this.isMakeExpanded(make.value)) {
       this.expandedMakeIds = [...this.expandedMakeIds, make.value];
     }
 
     this.ensureModelsLoaded(make.value, make.label);
+  }
+
+  backToMakeList(): void {
+    this.activeMakeForModels = null;
   }
 
   closeMakeModels(makeId: string | number): void {
@@ -736,7 +748,7 @@ export class HomeComponent {
 
     this.selectedMakeModels = nextSelection;
     this.syncMakeModelSummary();
-    this.applyFilters({ make_model_selection: this.cloneSelectedMakeModels(this.selectedMakeModels) });
+    this.applyFilters({ make_model_selection: this.getCommittedMakeModelSelection() });
   }
 
   clearMakeModelFilter(): void {
@@ -744,6 +756,7 @@ export class HomeComponent {
     this.selectedMakeModels = [];
     this.selectedBrandsModal = [];
     this.expandedMakeIds = [];
+    this.activeMakeForModels = null;
     this.applyFilters({ make_model_selection: [] });
   }
 
@@ -763,7 +776,6 @@ export class HomeComponent {
         { makeId: make.value, makeLabel: make.label, models: [] }
       ];
       this.syncMakeModelSummary();
-      this.applyFilters({ make_model_selection: this.cloneSelectedMakeModels(this.selectedMakeModels) });
     }
 
     this.openMakeModels(make);
@@ -795,7 +807,7 @@ export class HomeComponent {
     }
 
     this.loadingModelsByMake[cacheKey] = true;
-    this.filterService.loadModelsByMake(makeId, makeLabel, this.carsList).pipe(takeUntil(this.destroy$)).subscribe({
+    this.filterService.loadModelsByMake(makeId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (options) => {
         this.modelOptionsByMake[cacheKey] = options;
         this.loadingModelsByMake[cacheKey] = false;
@@ -808,11 +820,17 @@ export class HomeComponent {
   }
 
   private syncMakeModelSummary(): void {
-    this.selectedBrandsModal = this.filterService.buildMakeModelSummary(this.selectedMakeModels);
+    this.selectedBrandsModal = this.filterService.buildMakeModelSummary(this.getCommittedMakeModelSelection());
   }
 
   private cloneSelectedMakeModels(selection: SelectedMakeModel[]): SelectedMakeModel[] {
     return JSON.parse(JSON.stringify(selection || []));
+  }
+
+  private getCommittedMakeModelSelection(): SelectedMakeModel[] {
+    return this.cloneSelectedMakeModels(
+      this.selectedMakeModels.filter((item) => (item.models || []).length > 0)
+    );
   }
 
   private normalizeSearchText(value: string): string {

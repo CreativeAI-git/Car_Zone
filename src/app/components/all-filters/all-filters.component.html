@@ -37,9 +37,15 @@
                             </div>
                             <div class="modal-body">
                                 <div class="vehicle-modal-header d-flex justify-content-between align-items-center">
-                                    <div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        @if (activeMakeForModels) {
+                                        <button type="button" class="btn btn-link p-0 text-decoration-none ct_color_8f0c1f"
+                                            (click)="backToMakeList()">
+                                            <i class="fa-solid fa-arrow-left"></i>
+                                        </button>
+                                        }
                                         <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                            {{ 'filters.selectMake' | translate }}
+                                            {{ (activeMakeForModels ? 'filters.selectModel' : 'filters.selectMake') | translate }}
                                         </h3>
                                     </div>
                                     <div>
@@ -59,6 +65,7 @@
                                             <i class="fa-solid fa-search ct_input_icon_left"></i>
                                         </div>
                                     </div>
+                                    @if (!activeMakeForModels) {
                                     <div class="vehicle-modal-detail-box">
                                         <h4 class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f mt-4">
                                             {{ 'filters.popularMakes' | translate }}
@@ -102,34 +109,6 @@
                                                         <img src="img/icons/chevron-left.png" />
                                                     </button>
                                                 </div>
-                                                @if (isMakeExpanded(make.value)) {
-                                                <div class="ps-4 pt-3">
-                                                    @if (loadingModelsByMake[make.value]) {
-                                                    <p class="ct_fs_13 ct_fw_300 mb-2">
-                                                        {{ 'common.loading' | translate }}
-                                                    </p>
-                                                    } @else if (!getVisibleModels(make.value).length) {
-                                                    <p class="ct_fs_13 ct_fw_300 mb-2">
-                                                        {{ 'vehicle.noVehiclesFoundForSelection' | translate }}
-                                                    </p>
-                                                    } @else {
-                                                    @for (model of getVisibleModels(make.value); track model.value) {
-                                                    <div class="form-check ct_custom_check d-flex justify-content-between align-items-center mb-2">
-                                                        <div class="d-flex gap-2 align-items-center">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                [id]="'all-filters-model-' + make.value + '-' + model.value"
-                                                                [checked]="isModelSelected(make.value, model.value)"
-                                                                (change)="toggleModelSelection(make, model, $event)" />
-                                                            <label [for]="'all-filters-model-' + make.value + '-' + model.value" class="ct_fs_13 ct_fw_300 mb-0">
-                                                                {{ model.label }}
-                                                            </label>
-                                                        </div>
-                                                        <span class="ct_fs_12 ct_fw_300">{{ model.count || 0 }}</span>
-                                                    </div>
-                                                    }
-                                                    }
-                                                </div>
-                                                }
                                             </div>
                                             } @empty {
                                             <p class="ct_fs_14 ct_fw_400 mb-0">
@@ -139,6 +118,37 @@
                                             }
                                         </div>
                                     </div>
+                                    } @else {
+                                    <div class="vehicle-modal-detail-box">
+                                        <h4 class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f mb-4">
+                                            {{ activeMakeForModels.label }}
+                                        </h4>
+                                        @if (loadingModelsByMake[activeMakeForModels.value]) {
+                                        <p class="ct_fs_13 ct_fw_300 mb-2">
+                                            {{ 'common.loading' | translate }}
+                                        </p>
+                                        } @else if (!activeMakeModels.length) {
+                                        <p class="ct_fs_13 ct_fw_300 mb-2">
+                                            {{ 'vehicle.noVehiclesFoundForSelection' | translate }}
+                                        </p>
+                                        } @else {
+                                        @for (model of activeMakeModels; track model.value) {
+                                        <div class="form-check ct_custom_check d-flex justify-content-between align-items-center mb-2">
+                                            <div class="d-flex gap-2 align-items-center">
+                                                <input class="form-check-input" type="checkbox"
+                                                    [id]="'all-filters-model-' + activeMakeForModels.value + '-' + model.value"
+                                                    [checked]="isModelSelected(activeMakeForModels.value, model.value)"
+                                                    (change)="toggleModelSelection(activeMakeForModels, model, $event)" />
+                                                <label [for]="'all-filters-model-' + activeMakeForModels.value + '-' + model.value" class="ct_fs_13 ct_fw_300 mb-0">
+                                                    {{ model.label }}
+                                                </label>
+                                            </div>
+                                            <span class="ct_fs_12 ct_fw_300">{{ model.count || 0 }}</span>
+                                        </div>
+                                        }
+                                        }
+                                    </div>
+                                    }
                                 </div>
                                 <button type="button" class="ct_red_gradient_btn mt-4" data-bs-dismiss="modal">
                                     {{ 'filters.totalCarsFound' | translate:{ count: (filterData.total_cars || 0) } }}
