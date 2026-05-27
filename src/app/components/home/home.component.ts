@@ -63,6 +63,15 @@ export class HomeComponent {
   loadingMakes = false;
   loadingModelsByMake: Record<string, boolean> = {};
   expandedMakeIds: Array<string | number> = [];
+  popularMakeCards = [
+    { label: 'BMW', icon: 'img/icons/bmw.png', aliases: ['bmw'] },
+    { label: 'Ferrari', icon: 'img/icons/ferrari.png', aliases: ['ferrari'] },
+    { label: 'Lamborghini', icon: 'img/icons/lamborghini.png', aliases: ['lamborghini', 'laborghini'] },
+    { label: 'Tesla', icon: 'img/icons/Tesla.png', aliases: ['tesla'] },
+    { label: 'Audi', icon: 'img/icons/audi.png', aliases: ['audi'] },
+    { label: 'Mercedes', icon: 'img/icons/mercedes.png', aliases: ['mercedes', 'mercedes benz', 'mercedes-benz'] },
+    { label: 'Ford', icon: 'img/icons/ford.png', aliases: ['ford'] }
+  ];
   bodyTypes: FilterOption[] = [];
   homeBodyTypeCards = [
     { label: 'Wagon', icon: 'img/Wagon-1.png', aliases: ['wagon'] },
@@ -742,6 +751,29 @@ export class HomeComponent {
     return this.selectedMakeModels.find((item) => String(item.makeId) === String(makeId))?.models.length || 0;
   }
 
+  onPopularMakeSelect(card: { label: string; aliases?: string[] }): void {
+    const make = this.findPopularMakeOption(card);
+    if (!make) {
+      return;
+    }
+
+    if (!this.isMakeSelected(make.value)) {
+      this.selectedMakeModels = [
+        ...this.selectedMakeModels,
+        { makeId: make.value, makeLabel: make.label, models: [] }
+      ];
+      this.syncMakeModelSummary();
+      this.applyFilters({ make_model_selection: this.cloneSelectedMakeModels(this.selectedMakeModels) });
+    }
+
+    this.openMakeModels(make);
+  }
+
+  isPopularMakeActive(card: { label: string; aliases?: string[] }): boolean {
+    const make = this.findPopularMakeOption(card);
+    return !!make && this.isMakeSelected(make.value);
+  }
+
   private loadMakeOptions(): void {
     this.loadingMakes = true;
     this.filterService.loadMakeOptions(this.carsList).pipe(takeUntil(this.destroy$)).subscribe({
@@ -785,6 +817,11 @@ export class HomeComponent {
 
   private normalizeSearchText(value: string): string {
     return (value || '').trim().toLowerCase();
+  }
+
+  private findPopularMakeOption(card: { label: string; aliases?: string[] }): MakeModelOption | undefined {
+    const labels = [card.label, ...(card.aliases || [])].map((item) => this.normalizeSearchText(item));
+    return this.makeOptions.find((item) => labels.includes(this.normalizeSearchText(item.label)));
   }
 
   ngOnDestroy(): void {

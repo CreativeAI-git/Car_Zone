@@ -36,14 +36,20 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="ct_custom_scroll">
-                                    <div class="vehicle-modal-header d-flex">
-                                        <div class="w-100">
-                                            <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo text-center">
-                                                {{ 'filters.selectMake' | translate }}
-                                            </h3>
-                                        </div>
+                                <div class="vehicle-modal-header d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
+                                            {{ 'filters.selectMake' | translate }}
+                                        </h3>
                                     </div>
+                                    <div>
+                                        <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
+                                            (click)="clearMakeModelFilter()">
+                                            {{ 'vehicle.reset' | translate }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="ct_custom_scroll">
                                     <div class="pt-4">
                                         <div class="position-relative">
                                             <input type="text"
@@ -51,6 +57,21 @@
                                                 [placeholder]="'filters.search' | translate"
                                                 [(ngModel)]="makeModelSearchTerm" />
                                             <i class="fa-solid fa-search ct_input_icon_left"></i>
+                                        </div>
+                                    </div>
+                                    <div class="vehicle-modal-detail-box">
+                                        <h4 class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f mt-4">
+                                            {{ 'filters.popularMakes' | translate }}
+                                        </h4>
+                                        <div class="popular-make-icon">
+                                            @for (card of popularMakeCards; track card.label) {
+                                            <button type="button"
+                                                class="popular-make-icon-box border-0 bg-transparent p-0"
+                                                [class.active]="isPopularMakeActive(card)"
+                                                (click)="onPopularMakeSelect(card)">
+                                                <img [src]="card.icon" [alt]="card.label" />
+                                            </button>
+                                            }
                                         </div>
                                     </div>
                                     <div class="vehicle-modal-detail-box">
@@ -118,15 +139,10 @@
                                             }
                                         </div>
                                     </div>
-                                    <div class="d-flex justify-content-between gap-3 mt-4">
-                                        <button type="button" class="btn btn-link p-0 ct_color_8f0c1f" (click)="clearMakeModelFilter()">
-                                            {{ 'vehicle.reset' | translate }}
-                                        </button>
-                                        <button type="button" class="ct_red_gradient_btn" data-bs-dismiss="modal">
-                                            {{ 'filters.totalCarsFound' | translate:{ count: (filterData.total_cars || 0) } }}
-                                        </button>
-                                    </div>
                                 </div>
+                                <button type="button" class="ct_red_gradient_btn mt-4" data-bs-dismiss="modal">
+                                    {{ 'filters.totalCarsFound' | translate:{ count: (filterData.total_cars || 0) } }}
+                                </button>
                             </div>
                         </div>
                     </div>

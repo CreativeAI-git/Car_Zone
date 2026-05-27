@@ -414,9 +414,9 @@ export class FilterService {
       1,
       Number(
         carsData?.totalPages ??
-          carsData?.lastPage ??
-          carsData?.last_page ??
-          Math.ceil(totalCars / Math.max(pageSize, 1))
+        carsData?.lastPage ??
+        carsData?.last_page ??
+        Math.ceil(totalCars / Math.max(pageSize, 1))
       ) || 1
     );
 
@@ -629,11 +629,8 @@ export class FilterService {
     }
 
     this.setIfValue(params, 'seller_type', payload.seller_type);
-    this.setIfValue(params, 'make_id', makeModelData.makeIds);
-    this.setIfValue(params, 'brand_id', makeModelData.makeIds);
     this.setIfValue(params, 'make', makeModelData.makeLabels);
     this.setIfValue(params, 'brand', makeModelData.makeLabels);
-    this.setIfValue(params, 'model_id', makeModelData.modelIds);
     this.setIfValue(params, 'model', makeModelData.modelLabels);
     this.setIfValue(params, 'state_id', payload.state_id);
     this.setIfValue(params, 'body_type_id', payload.body_type_id);
@@ -661,18 +658,9 @@ export class FilterService {
       compactPayload['make_model_filters'] = makeModelData.selection;
     }
 
-    if (makeModelData.makeIds.length > 0) {
-      compactPayload['make_id'] = makeModelData.makeIds;
-      compactPayload['brand_id'] = makeModelData.makeIds;
-    }
-
     if (makeModelData.makeLabels.length > 0) {
       compactPayload['make'] = makeModelData.makeLabels;
       compactPayload['brand'] = makeModelData.makeLabels;
-    }
-
-    if (makeModelData.modelIds.length > 0) {
-      compactPayload['model_id'] = makeModelData.modelIds;
     }
 
     if (makeModelData.modelLabels.length > 0) {
@@ -989,17 +977,7 @@ export class FilterService {
     const normalizedSelection = (selection || [])
       .filter((item) => item?.makeId !== null && item?.makeId !== undefined && item?.makeLabel)
       .map((item) => ({
-        make_id: item.makeId,
-        brand_id: item.makeId,
         make: item.makeLabel,
-        brand: item.makeLabel,
-        model_ids: Array.from(
-          new Set(
-            (item.models || [])
-              .map((model) => model?.modelId)
-              .filter((modelId) => modelId !== null && modelId !== undefined && modelId !== '')
-          )
-        ),
         models: Array.from(
           new Set(
             (item.models || [])
@@ -1011,18 +989,6 @@ export class FilterService {
 
     return {
       selection: normalizedSelection,
-      makeIds: Array.from(
-        new Set(
-          normalizedSelection
-            .map((item) => item.make_id)
-            .filter((makeId) => makeId !== null && makeId !== undefined && makeId !== '')
-        )
-      ),
-      modelIds: Array.from(
-        new Set(
-          normalizedSelection.flatMap((item) => item.model_ids || [])
-        )
-      ),
       makeLabels: Array.from(
         new Set(
           normalizedSelection
