@@ -808,38 +808,32 @@
                                                                         </div>
                                                                         <div class="row">
                                                                               <div class="col-12">
-                                                                                    <input type="text"
-                                                                                          class="form-control"
-                                                                                          [placeholder]="'vehicle.enterHere' | translate"
-                                                                                          formControlName="brandName" />
+                                                                                    <nz-select class="form-select"
+                                                                                          nzPlaceHolder="{{'vehicle.selectMake' | translate}}"
+                                                                                          [nzShowSearch]="true"
+                                                                                          [ngModel]="selectedBrandId"
+                                                                                          (ngModelChange)="onBrandSelectionChange($event)"
+                                                                                          [ngModelOptions]="{ standalone: true }"
+                                                                                          [nzLoading]="loadingBrands">
+                                                                                          @for (item of brandOptions; track item.value) {
+                                                                                          <nz-option nzCustomContent
+                                                                                                [nzLabel]="item.label"
+                                                                                                [nzValue]="item.value"
+                                                                                                class="ct_custom_select">
+                                                                                                <div
+                                                                                                      class="d-flex align-items-center justify-content-between">
+                                                                                                      <p class="m-0">{{item.label}}</p>
+                                                                                                      <input type="radio"
+                                                                                                            class="cutom_radio_input"
+                                                                                                            [checked]="item.value === selectedBrandId" />
+                                                                                                </div>
+                                                                                          </nz-option>
+                                                                                          }
+                                                                                    </nz-select>
                                                                               </div>
                                                                               <small class="text-danger">{{validationErrorService.getErrorMessage(('common.brandName'
                                                                                     | translate),
                                                                                     carFormOne.get("brandName"))}}</small>
-                                                                        </div>
-                                                                  </div>
-                                                                  <div class="col-md-4 mt-3">
-                                                                        <div
-                                                                              class="d-flex justify-content-between align-items-center mb-0">
-                                                                              <div>
-                                                                                    <h5 class="ct_fs_15 ct_fw_400 mb-2">
-                                                                                          {{ 'vehicle.version' |
-                                                                                          translate }}
-                                                                                          <span
-                                                                                                class="ct_color_8f0c1f">*</span>
-                                                                                    </h5>
-                                                                              </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                              <div class="col-12">
-                                                                                    <input type="text"
-                                                                                          class="form-control"
-                                                                                          [placeholder]="'vehicle.enterHere' | translate"
-                                                                                          formControlName="version" />
-                                                                              </div>
-                                                                              <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.version'
-                                                                                    | translate),
-                                                                                    carFormOne.get("version"))}}</small>
                                                                         </div>
                                                                   </div>
                                                                   <div class="col-md-4 mt-3">
@@ -856,14 +850,76 @@
                                                                         </div>
                                                                         <div class="row">
                                                                               <div class="col-12">
-                                                                                    <input type="text"
-                                                                                          class="form-control"
-                                                                                          [placeholder]="'vehicle.enterHere' | translate"
-                                                                                          formControlName="carModel" />
+                                                                                    <nz-select class="form-select"
+                                                                                          nzPlaceHolder="{{'vehicle.selectModel' | translate}}"
+                                                                                          [nzShowSearch]="true"
+                                                                                          [ngModel]="selectedModelId"
+                                                                                          (ngModelChange)="onModelSelectionChange($event)"
+                                                                                          [ngModelOptions]="{ standalone: true }"
+                                                                                          [nzDisabled]="!selectedBrandId"
+                                                                                          [nzLoading]="loadingModels">
+                                                                                          @for (item of modelOptions; track item.value) {
+                                                                                          <nz-option nzCustomContent
+                                                                                                [nzLabel]="item.label"
+                                                                                                [nzValue]="item.value"
+                                                                                                class="ct_custom_select">
+                                                                                                <div
+                                                                                                      class="d-flex align-items-center justify-content-between">
+                                                                                                      <p class="m-0">{{item.label}}</p>
+                                                                                                      <input type="radio"
+                                                                                                            class="cutom_radio_input"
+                                                                                                            [checked]="item.value === selectedModelId" />
+                                                                                                </div>
+                                                                                          </nz-option>
+                                                                                          }
+                                                                                    </nz-select>
                                                                               </div>
                                                                               <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.carModel'
                                                                                     | translate),
                                                                                     carFormOne.get("carModel"))}}</small>
+                                                                        </div>
+                                                                  </div>
+                                                                  <div class="col-md-4 mt-3">
+                                                                        <div
+                                                                              class="d-flex justify-content-between align-items-center mb-0">
+                                                                              <div>
+                                                                                    <h5 class="ct_fs_15 ct_fw_400 mb-2">
+                                                                                          {{ 'vehicle.version' |
+                                                                                          translate }}
+                                                                                          <span
+                                                                                                class="ct_color_8f0c1f">*</span>
+                                                                                    </h5>
+                                                                              </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                              <div class="col-12">
+                                                                                    <nz-select class="form-select"
+                                                                                          nzPlaceHolder="{{'vehicle.selectVersion' | translate}}"
+                                                                                          [nzShowSearch]="true"
+                                                                                          [ngModel]="selectedVersionId"
+                                                                                          (ngModelChange)="onVersionSelectionChange($event)"
+                                                                                          [ngModelOptions]="{ standalone: true }"
+                                                                                          [nzDisabled]="!selectedModelId"
+                                                                                          [nzLoading]="loadingVersions">
+                                                                                          @for (item of versionOptions; track item.value) {
+                                                                                          <nz-option nzCustomContent
+                                                                                                [nzLabel]="item.label"
+                                                                                                [nzValue]="item.value"
+                                                                                                class="ct_custom_select">
+                                                                                                <div
+                                                                                                      class="d-flex align-items-center justify-content-between">
+                                                                                                      <p class="m-0">{{item.label}}</p>
+                                                                                                      <input type="radio"
+                                                                                                            class="cutom_radio_input"
+                                                                                                            [checked]="item.value === selectedVersionId" />
+                                                                                                </div>
+                                                                                          </nz-option>
+                                                                                          }
+                                                                                    </nz-select>
+                                                                              </div>
+                                                                              <small class="text-danger">{{validationErrorService.getErrorMessage(('vehicle.version'
+                                                                                    | translate),
+                                                                                    carFormOne.get("version"))}}</small>
                                                                         </div>
                                                                   </div>
                                                             </div>

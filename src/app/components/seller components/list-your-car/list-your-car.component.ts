@@ -190,6 +190,7 @@ export class ListYourCarComponent {
   versionOptions: StepOneSelectOption[] = [];
   selectedBrandId: string | number | null = null;
   selectedModelId: string | number | null = null;
+  selectedVersionId: string | number | null = null;
   stepOneSearchError: string | null = null;
   stepOneSearchMessage: string | null = null;
   stepOneIdentifierTouched = false;
@@ -333,6 +334,7 @@ export class ListYourCarComponent {
           'make'
         ]);
         this.brandsLoaded = this.brandOptions.length > 0;
+        this.syncVehicleSelectionFromFormValues();
       },
       error: () => {
         this.brandOptions = [];
@@ -344,6 +346,7 @@ export class ListYourCarComponent {
   onBrandSelectionChange(brandId: string | number | null): void {
     this.selectedBrandId = brandId;
     this.selectedModelId = null;
+    this.selectedVersionId = null;
     this.modelOptions = [];
     this.versionOptions = [];
     this.hasAttemptedMakeModelSearch = false;
@@ -400,6 +403,7 @@ export class ListYourCarComponent {
 
   onModelSelectionChange(modelId: string | number | null): void {
     this.selectedModelId = modelId;
+    this.selectedVersionId = null;
     this.versionOptions = [];
     this.hasAttemptedMakeModelSearch = false;
     this.makeModelSelectionTouched = false;
@@ -451,6 +455,21 @@ export class ListYourCarComponent {
         this.message.error(this.translate.instant('vehicle.failedToLoadVersions'));
       }
     });
+  }
+
+  onVersionSelectionChange(versionId: string | number | null): void {
+    this.selectedVersionId = versionId;
+
+    const selectedVersion = this.findOptionByValue(this.versionOptions, versionId);
+    this.carFormOne.patchValue({ version: selectedVersion?.label || '' });
+
+    if (!selectedVersion?.raw) {
+      return;
+    }
+
+    const vehiclePayload = this.getVersionVehiclePayload(selectedVersion.raw);
+    this.stepTwoVehicleSummary = this.buildStepTwoVehicleSummary(vehiclePayload);
+    this.patchVehicleDataToForm(vehiclePayload);
   }
 
   onVehicleIdentifierInput(): void {
@@ -1364,6 +1383,7 @@ export class ListYourCarComponent {
     }));
     this.reelPreviewUrl = data.carReel ? data.carReel : null;
     this.reelThumbnailPreviewUrl = data.reelThumbnails ? data.reelThumbnails : null;
+    this.syncVehicleSelectionFromFormValues();
   }
 
   private patchVehicleDataToForm(item: any): void {
@@ -1422,6 +1442,7 @@ export class ListYourCarComponent {
     }
 
     this.carFormOne.patchValue(patchValue, { emitEvent: false });
+    this.syncVehicleSelectionFromFormValues();
   }
 
   private resolveOptionId(options: any[], rawValue: any): any {
@@ -1630,6 +1651,135 @@ export class ListYourCarComponent {
 
   private findOptionByValue(options: StepOneSelectOption[], value: string | number | null): StepOneSelectOption | undefined {
     return options.find((item) => String(item.value) === String(value));
+  }
+
+  private findOptionByLabel(options: StepOneSelectOption[], value: any): StepOneSelectOption | undefined {
+    const normalizedValue = this.normalizeText(value);
+    if (!normalizedValue) {
+      return undefined;
+    }
+
+    return options.find((item) => this.normalizeText(item.label) === normalizedValue);
+  }
+
+  private syncVehicleSelectionFromFormValues(): void {
+    if (!this.brandOptions.length) {
+      return;
+    }
+
+    const brandName = this.carFormOne.get('brandName')?.value;
+    const brandOption = this.findOptionByLabel(this.brandOptions, brandName);
+    this.selectedBrandId = brandOption?.value ?? null;
+
+    if (!brandOption) {
+      this.modelOptions = [];
+      this.versionOptions = [];
+      this.selectedModelId = null;
+      this.selectedVersionId = null;
+      return;
+    }
+
+    const cachedModels = this.modelOptionsCache.get(brandOption.value);
+    if (cachedModels?.length) {
+      this.modelOptions = cachedModels;
+      this.syncModelSelectionFromFormValues();
+      return;
+    }
+
+    this.loadingModels = true;
+    this.service.getModelsList(brandOption.value).pipe(
+      finalize(() => {
+        this.loadingModels = false;
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (res: any) => {
+        const options = this.normalizeSelectOptions(res, [
+          'models',
+          'data',
+          'results',
+          'items'
+        ], [
+          'id',
+          'model_id'
+        ], [
+          'label',
+          'name',
+          'title',
+          'model_name',
+          'model'
+        ]);
+        this.modelOptions = options;
+        this.modelOptionsCache.set(brandOption.value, options);
+        this.syncModelSelectionFromFormValues();
+      },
+      error: () => {
+        this.modelOptions = [];
+        this.selectedModelId = null;
+        this.selectedVersionId = null;
+      }
+    });
+  }
+
+  private syncModelSelectionFromFormValues(): void {
+    const modelName = this.carFormOne.get('carModel')?.value;
+    const modelOption = this.findOptionByLabel(this.modelOptions, modelName);
+    this.selectedModelId = modelOption?.value ?? null;
+
+    if (!modelOption) {
+      this.versionOptions = [];
+      this.selectedVersionId = null;
+      return;
+    }
+
+    const cachedVersions = this.versionOptionsCache.get(modelOption.value);
+    if (cachedVersions?.length) {
+      this.versionOptions = cachedVersions;
+      this.stepOneApiFilters = this.versionFiltersCache.get(modelOption.value) || {};
+      this.syncVersionSelectionFromFormValues();
+      return;
+    }
+
+    this.loadingVersions = true;
+    this.service.getVersionsList(modelOption.value).pipe(
+      finalize(() => {
+        this.loadingVersions = false;
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (res: any) => {
+        const options = this.normalizeSelectOptions(res, [
+          'versions',
+          'data',
+          'results',
+          'items'
+        ], [
+          'id',
+          'version_id'
+        ], [
+          'label',
+          'name',
+          'title',
+          'version_name',
+          'version'
+        ]);
+        this.versionOptions = options;
+        this.versionOptionsCache.set(modelOption.value, options);
+        this.stepOneApiFilters = this.extractFiltersFromPayload(res);
+        this.versionFiltersCache.set(modelOption.value, this.stepOneApiFilters);
+        this.syncVersionSelectionFromFormValues();
+      },
+      error: () => {
+        this.versionOptions = [];
+        this.selectedVersionId = null;
+      }
+    });
+  }
+
+  private syncVersionSelectionFromFormValues(): void {
+    const versionName = this.carFormOne.get('version')?.value;
+    const versionOption = this.findOptionByLabel(this.versionOptions, versionName);
+    this.selectedVersionId = versionOption?.value ?? null;
   }
 
   private resetStepOneResults(): void {
