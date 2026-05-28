@@ -39,12 +39,12 @@ export class AllFiltersComponent {
   expandedMakeIds: Array<string | number> = [];
   popularMakeCards = [
     { label: 'BMW', icon: 'img/icons/bmw.png', aliases: ['bmw'] },
-    { label: 'Ferrari', icon: 'img/icons/ferrari.png', aliases: ['ferrari'] },
+    { label: 'Ferrari', icon: 'img/sorting-icon/icon-2.png', aliases: ['ferrari'] },
     { label: 'Lamborghini', icon: 'img/icons/lamborghini.png', aliases: ['lamborghini', 'laborghini'] },
     { label: 'Tesla', icon: 'img/icons/Tesla.png', aliases: ['tesla'] },
     { label: 'Audi', icon: 'img/icons/audi.png', aliases: ['audi'] },
     { label: 'Mercedes', icon: 'img/icons/mercedes.png', aliases: ['mercedes', 'mercedes benz', 'mercedes-benz'] },
-    { label: 'Ford', icon: 'img/icons/ford.png', aliases: ['ford'] }
+    { label: 'Ford', icon: 'img/sorting-icon/icon8.png', aliases: ['ford'] }
   ];
   fuelTypeGroups: FilterGroup[] = [];
   transmissions: FilterOption[] = [];

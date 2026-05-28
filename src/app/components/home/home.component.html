@@ -67,124 +67,177 @@
                                                             </button>
                                                             <ng-template #contentTemplate>
                                                                   <div class="search-vehicle-modal-box">
-                                                                        <div class="vehicle-modal-header d-flex mt-4 justify-content-between align-items-center">
-                                                                        <div class="d-flex align-items-center gap-2">
-                                                                              @if (activeMakeForModels) {
-                                                                              <button type="button" class="btn btn-link p-0 text-decoration-none ct_color_8f0c1f"
-                                                                                    (click)="backToMakeList()">
-                                                                                    <i class="fa-solid fa-arrow-left"></i>
-                                                                              </button>
-                                                                              }
-                                                                              <h3 class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
-                                                                                    {{ (activeMakeForModels ? 'filters.selectModel' : 'filters.selectMake') | translate }}
-                                                                              </h3>
-                                                                        </div>
+                                                                        <div
+                                                                              class="vehicle-modal-header d-flex mt-4 justify-content-between align-items-center">
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-2">
+                                                                                    @if (activeMakeForModels) {
+                                                                                    <button type="button"
+                                                                                          class="btn btn-link p-0 text-decoration-none ct_color_8f0c1f"
+                                                                                          (click)="backToMakeList()">
+                                                                                          <i
+                                                                                                class="fa-solid fa-arrow-left"></i>
+                                                                                    </button>
+                                                                                    }
+                                                                                    <h3
+                                                                                          class="ct_fs_22 ct_fw_600 ct_font_cairo mb-0">
+                                                                                          {{ (activeMakeForModels ?
+                                                                                          'filters.selectModel' :
+                                                                                          'filters.selectMake') |
+                                                                                          translate }}
+                                                                                    </h3>
+                                                                              </div>
                                                                               <div>
                                                                                     <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
                                                                                           (click)="clearMakeModelFilter()">
-                                                                                          {{ 'vehicle.reset' | translate }}
+                                                                                          {{ 'vehicle.reset' | translate
+                                                                                          }}
                                                                                     </span>
                                                                               </div>
                                                                         </div>
                                                                         <div class="ct_custom_scroll">
-                                                                        <div class="pt-4">
-                                                                              <div class="position-relative">
-                                                                                    <input type="text"
-                                                                                          class="form-control ct_input ct_input_ps_40 ct_input_h_40 ct_border_op_10"
-                                                                                          [placeholder]="'filters.search' | translate"
-                                                                                          [(ngModel)]="makeModelSearchTerm" />
-                                                                                    <i class="fa-solid fa-search ct_input_icon_left"></i>
+                                                                              <div class="pt-4">
+                                                                                    <div class="position-relative">
+                                                                                          <input type="text"
+                                                                                                class="form-control ct_input ct_input_ps_40 ct_input_h_40 ct_border_op_10"
+                                                                                                [placeholder]="'filters.search' | translate"
+                                                                                                [(ngModel)]="makeModelSearchTerm" />
+                                                                                          <i
+                                                                                                class="fa-solid fa-search ct_input_icon_left"></i>
+                                                                                    </div>
                                                                               </div>
-                                                                        </div>
-                                                                        @if (!activeMakeForModels) {
-                                                                        <div class="vehicle-modal-detail-box">
-                                                                              <h4 class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f mt-4">
-                                                                                    {{ 'filters.popularMakes' | translate }}
-                                                                              </h4>
-                                                                              <div class="popular-make-icon">
-                                                                                    @for (card of popularMakeCards; track card.label) {
-                                                                                    <button type="button"
-                                                                                          class="popular-make-icon-box border-0 bg-transparent p-0"
-                                                                                          [class.active]="isPopularMakeActive(card)"
-                                                                                          (click)="onPopularMakeSelect(card)">
-                                                                                          <img [src]="card.icon" [alt]="card.label" />
-                                                                                    </button>
-                                                                                    }
+                                                                              @if (!activeMakeForModels) {
+                                                                              <div class="vehicle-modal-detail-box">
+                                                                                    <h4
+                                                                                          class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f mt-4">
+                                                                                          {{ 'filters.popularMakes' |
+                                                                                          translate }}
+                                                                                    </h4>
+                                                                                    <div class="popular-make-icon">
+                                                                                          @for (card of
+                                                                                          popularMakeCards; track
+                                                                                          card.label) {
+                                                                                          <button type="button"
+                                                                                                class="popular-make-icon-box"
+                                                                                                [class.active]="isPopularMakeActive(card)"
+                                                                                                (click)="onPopularMakeSelect(card)">
+                                                                                                <img [src]="card.icon"
+                                                                                                      [alt]="card.label" />
+                                                                                          </button>
+                                                                                          }
+                                                                                    </div>
                                                                               </div>
-                                                                        </div>
-                                                                        <div class="vehicle-modal-detail-box">
-                                                                              <h4 class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f my-4">
-                                                                                    {{ 'filters.allMakes' | translate }}
-                                                                              </h4>
-                                                                              <div class="popular-make-all-box">
-                                                                                    @if (loadingMakes) {
-                                                                                    <p class="ct_fs_14 ct_fw_400 mb-0">
-                                                                                          {{ 'common.loading' | translate }}
+                                                                              <div class="vehicle-modal-detail-box">
+                                                                                    <h4
+                                                                                          class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f my-4">
+                                                                                          {{ 'filters.allMakes' |
+                                                                                          translate }}
+                                                                                    </h4>
+                                                                                    <div class="popular-make-all-box">
+                                                                                          @if (loadingMakes) {
+                                                                                          <p
+                                                                                                class="ct_fs_14 ct_fw_400 mb-0">
+                                                                                                {{ 'common.loading' |
+                                                                                                translate }}
+                                                                                          </p>
+                                                                                          } @else {
+                                                                                          @for (make of
+                                                                                          filteredMakeOptions; track
+                                                                                          make.value) {
+                                                                                          <div
+                                                                                                class="popular-make-all mb-2">
+                                                                                                <div
+                                                                                                      class="popular-make-all-box d-flex justify-content-between align-items-center gap-3">
+                                                                                                      <div
+                                                                                                            class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                                                                                            <input class="form-check-input"
+                                                                                                                  type="checkbox"
+                                                                                                                  [id]="'home-make-' + make.value"
+                                                                                                                  [checked]="isMakeSelected(make.value)"
+                                                                                                                  (change)="toggleMakeSelection(make, $event)" />
+                                                                                                            <label [for]="'home-make-' + make.value"
+                                                                                                                  class="ct_fs_13 ct_fw_300 mb-0">
+                                                                                                                  {{
+                                                                                                                  make.label
+                                                                                                                  }}
+                                                                                                            </label>
+                                                                                                      </div>
+                                                                                                      <button
+                                                                                                            type="button"
+                                                                                                            class="btn btn-link p-0 text-decoration-none"
+                                                                                                            (click)="openMakeModels(make)">
+                                                                                                            <span
+                                                                                                                  class="ct_fs_12 ct_fw_300 me-2">{{
+                                                                                                                  getSelectedModelCount(make.value)
+                                                                                                                  }}</span>
+                                                                                                            <img
+                                                                                                                  src="img/icons/chevron-left.png" />
+                                                                                                      </button>
+                                                                                                </div>
+                                                                                          </div>
+                                                                                          } @empty {
+                                                                                          <p
+                                                                                                class="ct_fs_14 ct_fw_400 mb-0">
+                                                                                                {{
+                                                                                                'vehicle.noVehiclesFoundForSelection'
+                                                                                                | translate }}
+                                                                                          </p>
+                                                                                          }
+                                                                                          }
+                                                                                    </div>
+                                                                              </div>
+                                                                              } @else {
+                                                                              <div class="vehicle-modal-detail-box">
+                                                                                    <h4
+                                                                                          class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f my-3">
+                                                                                          {{ activeMakeForModels.label
+                                                                                          }}
+                                                                                    </h4>
+                                                                                    @if
+                                                                                    (loadingModelsByMake[activeMakeForModels.value])
+                                                                                    {
+                                                                                    <p class="ct_fs_13 ct_fw_300 mb-2">
+                                                                                          {{ 'common.loading' |
+                                                                                          translate }}
+                                                                                    </p>
+                                                                                    } @else if
+                                                                                    (!activeMakeModels.length) {
+                                                                                    <p class="ct_fs_13 ct_fw_300 mb-2">
+                                                                                          {{
+                                                                                          'vehicle.noVehiclesFoundForSelection'
+                                                                                          | translate }}
                                                                                     </p>
                                                                                     } @else {
-                                                                                    @for (make of filteredMakeOptions; track make.value) {
-                                                                                    <div class="popular-make-all mb-2">
-                                                                                          <div class="popular-make-all-box d-flex justify-content-between align-items-center gap-3">
-                                                                                                <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                                                                                      <input class="form-check-input"
-                                                                                                            type="checkbox"
-                                                                                                            [id]="'home-make-' + make.value"
-                                                                                                            [checked]="isMakeSelected(make.value)"
-                                                                                                            (change)="toggleMakeSelection(make, $event)" />
-                                                                                                      <label [for]="'home-make-' + make.value" class="ct_fs_13 ct_fw_300 mb-0">
-                                                                                                            {{ make.label }}
-                                                                                                      </label>
-                                                                                                </div>
-                                                                                                <button type="button" class="btn btn-link p-0 text-decoration-none"
-                                                                                                      (click)="openMakeModels(make)">
-                                                                                                      <span class="ct_fs_12 ct_fw_300 me-2">{{ getSelectedModelCount(make.value) }}</span>
-                                                                                                      <img src="img/icons/chevron-left.png" />
-                                                                                                </button>
+                                                                                    @for (model of activeMakeModels;
+                                                                                    track model.value) {
+                                                                                    <div
+                                                                                          class="form-check ct_custom_check d-flex justify-content-between align-items-center mb-2">
+                                                                                          <div
+                                                                                                class="d-flex gap-2 align-items-center">
+                                                                                                <input class="form-check-input"
+                                                                                                      type="checkbox"
+                                                                                                      [id]="'home-model-' + activeMakeForModels.value + '-' + model.value"
+                                                                                                      [checked]="isModelSelected(activeMakeForModels.value, model.value)"
+                                                                                                      (change)="toggleModelSelection(activeMakeForModels, model, $event)" />
+                                                                                                <label [for]="'home-model-' + activeMakeForModels.value + '-' + model.value"
+                                                                                                      class="ct_fs_13 ct_fw_300 mb-0">
+                                                                                                      {{ model.label }}
+                                                                                                </label>
                                                                                           </div>
+                                                                                          <span
+                                                                                                class="ct_fs_12 ct_fw_300">{{
+                                                                                                model.count || 0
+                                                                                                }}</span>
                                                                                     </div>
-                                                                                    } @empty {
-                                                                                    <p class="ct_fs_14 ct_fw_400 mb-0">
-                                                                                          {{ 'vehicle.noVehiclesFoundForSelection' | translate }}
-                                                                                    </p>
                                                                                     }
                                                                                     }
                                                                               </div>
-                                                                        </div>
-                                                                        } @else {
-                                                                        <div class="vehicle-modal-detail-box">
-                                                                              <h4 class="ct_fs_18 ct_fw_600 ct_font_cairo ct_color_8f0c1f mb-4">
-                                                                                    {{ activeMakeForModels.label }}
-                                                                              </h4>
-                                                                              @if (loadingModelsByMake[activeMakeForModels.value]) {
-                                                                              <p class="ct_fs_13 ct_fw_300 mb-2">
-                                                                                    {{ 'common.loading' | translate }}
-                                                                              </p>
-                                                                              } @else if (!activeMakeModels.length) {
-                                                                              <p class="ct_fs_13 ct_fw_300 mb-2">
-                                                                                    {{ 'vehicle.noVehiclesFoundForSelection' | translate }}
-                                                                              </p>
-                                                                              } @else {
-                                                                              @for (model of activeMakeModels; track model.value) {
-                                                                              <div class="form-check ct_custom_check d-flex justify-content-between align-items-center mb-2">
-                                                                                    <div class="d-flex gap-2 align-items-center">
-                                                                                          <input class="form-check-input"
-                                                                                                type="checkbox"
-                                                                                                [id]="'home-model-' + activeMakeForModels.value + '-' + model.value"
-                                                                                                [checked]="isModelSelected(activeMakeForModels.value, model.value)"
-                                                                                                (change)="toggleModelSelection(activeMakeForModels, model, $event)" />
-                                                                                          <label [for]="'home-model-' + activeMakeForModels.value + '-' + model.value" class="ct_fs_13 ct_fw_300 mb-0">
-                                                                                                {{ model.label }}
-                                                                                          </label>
-                                                                                    </div>
-                                                                                    <span class="ct_fs_12 ct_fw_300">{{ model.count || 0 }}</span>
-                                                                              </div>
-                                                                              }
                                                                               }
                                                                         </div>
-                                                                        }
-                                                                        </div>
-                                                                        <button class="ct_red_gradient_btn mt-4" (click)="closePopup('make')">
-                                                                              {{ 'filters.totalCarsFound' | translate:{ count: totalCars } }}
+                                                                        <button class="ct_red_gradient_btn mt-4"
+                                                                              (click)="closePopup('make')">
+                                                                              {{ 'filters.totalCarsFound' | translate:{
+                                                                              count: totalCars } }}
                                                                         </button>
                                                                   </div>
                                                             </ng-template>

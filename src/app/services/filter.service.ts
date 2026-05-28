@@ -655,12 +655,11 @@ export class FilterService {
     }
 
     if (makeModelData.makeLabels.length > 0) {
-      compactPayload['make'] = makeModelData.makeLabels;
-      compactPayload['brand'] = makeModelData.makeLabels;
+      compactPayload['brandName'] = makeModelData.makeLabels;
     }
 
     if (makeModelData.modelLabels.length > 0) {
-      compactPayload['model'] = makeModelData.modelLabels;
+      compactPayload['carModel'] = makeModelData.modelLabels;
     }
 
     if (payload.seller_type.length > 0) {
