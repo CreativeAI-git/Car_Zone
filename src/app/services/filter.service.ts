@@ -91,6 +91,7 @@ export type FilterPayload = {
   wltp_range: FilterNumericRange;
   consumption: FilterNumericRange;
   co2_emission: FilterNumericRange;
+  power_unit: 'PS' | 'KW';
   price_type: 'Purchase' | 'Lease';
 };
 
@@ -645,6 +646,7 @@ export class FilterService {
         min_value: null,
         max_value: null
       },
+      power_unit: 'PS',
       price_type: 'Purchase'
     };
   }
@@ -780,7 +782,7 @@ export class FilterService {
 
     this.setRangeQueryParams(params, 'power_from', 'power_to', payload.engine_power, defaults.engine_power);
     if (this.hasNumericFacetRangeChanged(payload.engine_power, defaults.engine_power)) {
-      this.setIfValue(params, 'power_unit', 'PS');
+      this.setIfValue(params, 'power_unit', payload.power_unit || defaults.power_unit);
     }
 
     this.setRangeQueryParams(
@@ -955,6 +957,9 @@ export class FilterService {
     }
 
     this.assignNumericRangePayload(compactPayload, 'engine_power', payload.engine_power, defaults.engine_power);
+    if (this.hasNumericFacetRangeChanged(payload.engine_power, defaults.engine_power)) {
+      compactPayload['power_unit'] = payload.power_unit || defaults.power_unit;
+    }
     this.assignNumericRangePayload(compactPayload, 'cubic_capacity', payload.cubic_capacity, defaults.cubic_capacity);
     this.assignNumericRangePayload(compactPayload, 'cylinders', payload.cylinders, defaults.cylinders);
     this.assignNumericRangePayload(compactPayload, 'battery_capacity', payload.battery_capacity, defaults.battery_capacity);

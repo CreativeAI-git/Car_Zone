@@ -870,15 +870,31 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-12 mb-3">
+                                    <div class="d-flex gap-4 align-items-center">
+                                        <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                            <input class="form-check-input" type="radio" name="powerUnit"
+                                                id="power-unit-ps" [checked]="powerUnit === 'PS'"
+                                                (change)="onPowerUnitChange('PS')" />
+                                            <label for="power-unit-ps" class="mb-0">PS</label>
+                                        </div>
+                                        <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
+                                            <input class="form-check-input" type="radio" name="powerUnit"
+                                                id="power-unit-kw" [checked]="powerUnit === 'KW'"
+                                                (change)="onPowerUnitChange('KW')" />
+                                            <label for="power-unit-kw" class="mb-0">KW</label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <nz-select class="form-select" [nzPlaceHolder]="'common.ps' | translate"
+                                    <nz-select class="form-select" [nzPlaceHolder]="powerUnit"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="powerOutputRange[0]"
                                         [ngModelOptions]="{standalone: true}"
                                         (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.from' | translate">
-                                        @for (option of psOptions; track option) {
-                                        <nz-option [nzValue]="option" [nzLabel]="option + ' PS'"></nz-option>
+                                        @for (option of activePowerOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' ' + powerUnit"></nz-option>
                                         }
                                     </nz-select>
                                     @if (showPowerOutputFromError) {
@@ -889,13 +905,13 @@
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <nz-select class="form-select" [nzPlaceHolder]="'common.ps' | translate"
+                                    <nz-select class="form-select" [nzPlaceHolder]="powerUnit"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="powerOutputRange[1]"
                                         [ngModelOptions]="{standalone: true}"
                                         (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.to' | translate">
-                                        @for (option of psOptions; track option) {
-                                        <nz-option [nzValue]="option" [nzLabel]="option + ' PS'"></nz-option>
+                                        @for (option of activePowerOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' ' + powerUnit"></nz-option>
                                         }
                                     </nz-select>
                                     @if (showPowerOutputToError) {

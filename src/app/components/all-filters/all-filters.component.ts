@@ -71,6 +71,7 @@ export class AllFiltersComponent {
   seatRange: [number, number] = [0, 25];
   doorRange: [number, number] = [0, 10];
   powerOutputRange: [number | null, number | null] = [null, null];
+  powerUnit: 'PS' | 'KW' = 'PS';
   cubicCapacityRange: [number | null, number | null] = [null, null];
   cylindersRange: [number | null, number | null] = [null, null];
   batteryCapacityRange: [number | null, number | null] = [null, null];
@@ -80,6 +81,7 @@ export class AllFiltersComponent {
   consumptionRange: [number | null, number | null] = [null, null];
   co2EmissionRange: [number | null, number | null] = [null, null];
   psOptions: number[] = [];
+  kwOptions: number[] = [];
   cubicCapacityOptions: number[] = [];
   cylinderOptions: number[] = [];
   batteryCapacityOptions: number[] = [];
@@ -115,6 +117,9 @@ export class AllFiltersComponent {
     }
 
     this.psOptions = Array.from({ length: 150 }, (_, index) => (index + 1) * 10);
+    this.kwOptions = Array.from(
+      new Set(this.psOptions.map((value) => Math.max(1, Math.round(value * 0.7355))))
+    ).sort((left, right) => left - right);
     this.cubicCapacityOptions = Array.from({ length: 99 }, (_, index) => (index + 2) * 100);
     this.cylinderOptions = Array.from({ length: 16 }, (_, index) => index + 1);
     this.batteryCapacityOptions = Array.from({ length: 59 }, (_, index) => 10 + (index * 5));
@@ -538,6 +543,17 @@ export class AllFiltersComponent {
 
   onResetPowerOutput() {
     this.powerOutputRange = [null, null];
+    this.powerUnit = 'PS';
+    this.getFiltersData();
+  }
+
+  onPowerUnitChange(unit: 'PS' | 'KW') {
+    if (this.powerUnit === unit) {
+      return;
+    }
+
+    this.powerUnit = unit;
+    this.powerOutputRange = [null, null];
     this.getFiltersData();
   }
 
@@ -674,6 +690,7 @@ export class AllFiltersComponent {
 
   private syncStateFromPayload(payload: FilterPayload) {
     this.priceType = payload.price_type ?? 'Purchase';
+    this.powerUnit = payload.power_unit ?? 'PS';
     this.selectedSellerType = [...(payload.seller_type || [])];
     this.stateId = [...(payload.state_id || [])];
     this.bodyTypeId = [...(payload.body_type_id || [])];
@@ -821,8 +838,13 @@ export class AllFiltersComponent {
         min_value: this.co2EmissionRange[0],
         max_value: this.co2EmissionRange[1]
       },
+      power_unit: this.powerUnit,
       price_type: this.priceType
     };
+  }
+
+  get activePowerOptions(): number[] {
+    return this.powerUnit === 'KW' ? this.kwOptions : this.psOptions;
   }
 
   onWarrantyChange(id: string | number, event: Event) {

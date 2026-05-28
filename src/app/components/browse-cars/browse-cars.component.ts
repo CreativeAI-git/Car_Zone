@@ -99,6 +99,10 @@ export class BrowseCarsComponent {
   yearRange: [number, number] = [1990, new Date().getFullYear()];
   years: number[] = [];
   kmRange: [number, number] = [0, 4000000];
+  powerOutputRange: [number | null, number | null] = [null, null];
+  powerUnit: 'PS' | 'KW' = 'PS';
+  psOptions: number[] = [];
+  kwOptions: number[] = [];
   priceType: 'Purchase' | 'Lease' = 'Purchase';
   transmissions: FilterOption[] = [];
   transmissionId: number[] = [];
@@ -141,6 +145,11 @@ export class BrowseCarsComponent {
     for (let year = currentYear; year >= 1990; year--) {
       this.years.push(year);
     }
+
+    this.psOptions = Array.from({ length: 150 }, (_, index) => (index + 1) * 10);
+    this.kwOptions = Array.from(
+      new Set(this.psOptions.map((value) => Math.max(1, Math.round(value * 0.7355))))
+    ).sort((left, right) => left - right);
 
     this.filterService.appliedFilters$
       .pipe(takeUntil(this.destroy$))
@@ -474,6 +483,26 @@ export class BrowseCarsComponent {
     });
   }
 
+  onPowerRangeChange() {
+    this.applyFilters({
+      engine_power: {
+        min_value: this.powerOutputRange[0],
+        max_value: this.powerOutputRange[1]
+      },
+      power_unit: this.powerUnit
+    });
+  }
+
+  onPowerUnitChange(unit: 'PS' | 'KW') {
+    if (this.powerUnit === unit) {
+      return;
+    }
+
+    this.powerUnit = unit;
+    this.powerOutputRange = [null, null];
+    this.onPowerRangeChange();
+  }
+
   closePopup(popup: 'make' | 'body' | 'price' | 'year' | 'km' | 'transmission' | 'power' | 'fuel') {
     switch (popup) {
       case 'make':
@@ -543,6 +572,16 @@ export class BrowseCarsComponent {
   onResetFuel() {
     this.fuelTypeId = [];
     this.applyFilters({ fuel_type_id: [] });
+  }
+
+  onResetPower() {
+    const defaults = this.filterService.getDefaultPayload();
+    this.powerUnit = defaults.power_unit;
+    this.powerOutputRange = [defaults.engine_power.min_value, defaults.engine_power.max_value];
+    this.applyFilters({
+      engine_power: { ...defaults.engine_power },
+      power_unit: defaults.power_unit
+    });
   }
 
   onResetFilters() {
@@ -643,6 +682,11 @@ export class BrowseCarsComponent {
       payload.kilometers_range?.min_km ?? 0,
       payload.kilometers_range?.max_km ?? 4000000
     ];
+    this.powerUnit = payload.power_unit ?? 'PS';
+    this.powerOutputRange = [
+      payload.engine_power?.min_value ?? null,
+      payload.engine_power?.max_value ?? null
+    ];
     this.currentPage = payload.page ?? 1;
     this.pageSize = payload.limit ?? 10;
     this.transmissionId = [...(payload.transmission || [])];
@@ -724,6 +768,10 @@ export class BrowseCarsComponent {
     initial: { min_value: number | null; max_value: number | null }
   ): boolean {
     return current?.min_value !== initial?.min_value || current?.max_value !== initial?.max_value;
+  }
+
+  get activePowerOptions(): number[] {
+    return this.powerUnit === 'KW' ? this.kwOptions : this.psOptions;
   }
 
   private refreshBrowseData() {

@@ -893,7 +893,8 @@
                                                                               </div>
                                                                               <div>
                                                                                     <span
-                                                                                          class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{
+                                                                                          class="ct_fs_14 ct_fw_400 ct_color_8f0c1f"
+                                                                                          (click)="onResetPower()">{{
                                                                                           'vehicle.reset' |
                                                                                           translate }}</span>
                                                                               </div>
@@ -904,22 +905,26 @@
                                                                                     class="ct_radio-wrapper d-flex gap-3">
                                                                                     <label
                                                                                           class="ct_radio-button ct_fw_400 text-black">
-                                                                                          <input id="option1"
-                                                                                                name="ct_radio-group"
-                                                                                                type="radio" />
+                                                                                          <input id="home-power-ps"
+                                                                                                name="home-power-unit"
+                                                                                                type="radio"
+                                                                                                [checked]="powerUnit === 'PS'"
+                                                                                                (change)="onPowerUnitChange('PS')" />
                                                                                           <span
                                                                                                 class="ct_radio-checkmark"></span>
-                                                                                          ps
+                                                                                          PS
                                                                                     </label>
 
                                                                                     <label
                                                                                           class="ct_radio-button ct_fw_400 text-black">
-                                                                                          <input id="option1"
-                                                                                                name="ct_radio-group"
-                                                                                                type="radio" />
+                                                                                          <input id="home-power-kw"
+                                                                                                name="home-power-unit"
+                                                                                                type="radio"
+                                                                                                [checked]="powerUnit === 'KW'"
+                                                                                                (change)="onPowerUnitChange('KW')" />
                                                                                           <span
                                                                                                 class="ct_radio-checkmark"></span>
-                                                                                          kw
+                                                                                          KW
                                                                                     </label>
                                                                               </div>
                                                                         </div>
@@ -929,22 +934,36 @@
                                                                                           class="ct_fs_15 ct_fw_400 mb-2">{{
                                                                                           'common.from' | translate }}
                                                                                     </label>
-                                                                                    <input type="text"
-                                                                                          class="form-control"
-                                                                                          [placeholder]="'vehicle.km' | translate"
-                                                                                          [attr.aria-label]="'filters.username' | translate"
-                                                                                          aria-describedby="basic-addon1" />
+                                                                                    <nz-select class="form-select"
+                                                                                          [nzPlaceHolder]="powerUnit"
+                                                                                          [nzShowSearch]="true"
+                                                                                          [nzAllowClear]="true"
+                                                                                          [(ngModel)]="powerOutputRange[0]"
+                                                                                          [ngModelOptions]="{standalone: true}"
+                                                                                          (ngModelChange)="onPowerRangeChange()">
+                                                                                          @for (option of activePowerOptions; track option) {
+                                                                                          <nz-option [nzValue]="option"
+                                                                                                [nzLabel]="option + ' ' + powerUnit"></nz-option>
+                                                                                          }
+                                                                                    </nz-select>
                                                                               </div>
                                                                               <div class="col-6">
                                                                                     <label
                                                                                           class="ct_fs_15 ct_fw_400 mb-2">
                                                                                           {{ 'common.to' | translate }}
                                                                                     </label>
-                                                                                    <input type="text"
-                                                                                          class="form-control"
-                                                                                          [placeholder]="'vehicle.km' | translate"
-                                                                                          [attr.aria-label]="'filters.username' | translate"
-                                                                                          aria-describedby="basic-addon1" />
+                                                                                    <nz-select class="form-select"
+                                                                                          [nzPlaceHolder]="powerUnit"
+                                                                                          [nzShowSearch]="true"
+                                                                                          [nzAllowClear]="true"
+                                                                                          [(ngModel)]="powerOutputRange[1]"
+                                                                                          [ngModelOptions]="{standalone: true}"
+                                                                                          (ngModelChange)="onPowerRangeChange()">
+                                                                                          @for (option of activePowerOptions; track option) {
+                                                                                          <nz-option [nzValue]="option"
+                                                                                                [nzLabel]="option + ' ' + powerUnit"></nz-option>
+                                                                                          }
+                                                                                    </nz-select>
                                                                               </div>
                                                                         </div>
 
