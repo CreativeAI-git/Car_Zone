@@ -854,43 +854,36 @@ export class FilterService {
       limit: payload.limit || defaults.limit
     };
 
-    if (makeModelData.selection.length > 0) {
-      compactPayload['make_model_selection'] = makeModelData.selection;
-      compactPayload['make_model_filters'] = makeModelData.selection;
-    }
-
     if (makeModelData.makeLabels.length > 0) {
       compactPayload['brandName'] = makeModelData.makeLabels;
-      compactPayload['brand_name'] = makeModelData.makeLabels;
     }
 
     if (makeModelData.modelLabels.length > 0) {
       compactPayload['carModel'] = makeModelData.modelLabels;
-      compactPayload['model_name'] = makeModelData.modelLabels;
     }
 
     if (payload.seller_type.length > 0) {
-      compactPayload['seller_type'] = payload.seller_type;
+      compactPayload['seller_types'] = payload.seller_type;
     }
 
     if (payload.fuel_type_id.length > 0) {
-      compactPayload['fuel_type_id'] = payload.fuel_type_id;
+      compactPayload['fuel_type_ids'] = payload.fuel_type_id;
     }
 
     if (payload.state_id.length > 0) {
-      compactPayload['state_id'] = payload.state_id;
+      compactPayload['state_ids'] = payload.state_id;
     }
 
     if (payload.body_type_id.length > 0) {
-      compactPayload['body_type_id'] = payload.body_type_id;
+      compactPayload['body_type_ids'] = payload.body_type_id;
     }
 
     if (payload.transmission.length > 0) {
-      compactPayload['transmission'] = payload.transmission;
+      compactPayload['transmission_ids'] = payload.transmission;
     }
 
     if (payload.drive_type.length > 0) {
-      compactPayload['drive_type'] = payload.drive_type;
+      compactPayload['drive_ids'] = payload.drive_type;
     }
 
     if (payload.accident_vehicle.length > 0) {
@@ -902,15 +895,15 @@ export class FilterService {
     }
 
     if (payload.exterior_color.length > 0) {
-      compactPayload['exterior_color'] = payload.exterior_color;
+      compactPayload['exterior_color_ids'] = payload.exterior_color;
     }
 
     if (payload.interior_color.length > 0) {
-      compactPayload['interior_color'] = payload.interior_color;
+      compactPayload['interior_color_ids'] = payload.interior_color;
     }
 
     if (payload.energy_efficiency.length > 0) {
-      compactPayload['energy_efficiency'] = payload.energy_efficiency;
+      compactPayload['energy_efficiency_codes'] = payload.energy_efficiency;
     }
 
     if (payload.vehicle_condition.length > 0) {
@@ -922,57 +915,57 @@ export class FilterService {
     }
 
     if (this.hasRangeChanged(payload.year_range, defaults.year_range)) {
-      compactPayload['year_range'] = {
-        min_year: payload.year_range.min_year,
-        max_year: payload.year_range.max_year
+      compactPayload['year'] = {
+        min: payload.year_range.min_year,
+        max: payload.year_range.max_year
       };
     }
 
     if (this.hasRangeChanged(payload.kilometers_range, defaults.kilometers_range)) {
-      compactPayload['kilometers_range'] = {
-        min_km: payload.kilometers_range.min_km,
-        max_km: payload.kilometers_range.max_km
+      compactPayload['mileage'] = {
+        min: payload.kilometers_range.min_km,
+        max: payload.kilometers_range.max_km
       };
     }
 
     if (this.hasRangeChanged(payload.price_range, defaults.price_range)) {
-      compactPayload['price_range'] = {
-        min_price: payload.price_range.min_price,
-        max_price: payload.price_range.max_price
+      compactPayload['price'] = {
+        min: payload.price_range.min_price,
+        max: payload.price_range.max_price,
+        type: (payload.price_type || defaults.price_type).toLowerCase()
       };
     }
 
     if (this.hasRangeChanged(payload.seat_range, defaults.seat_range)) {
-      compactPayload['seat_range'] = {
-        min_seat: payload.seat_range.min_seat,
-        max_seat: payload.seat_range.max_seat
+      compactPayload['seat'] = {
+        min: payload.seat_range.min_seat,
+        max: payload.seat_range.max_seat
       };
     }
 
     if (this.hasRangeChanged(payload.door_range, defaults.door_range)) {
-      compactPayload['door_range'] = {
-        min_door: payload.door_range.min_door,
-        max_door: payload.door_range.max_door
+      compactPayload['door'] = {
+        min: payload.door_range.min_door,
+        max: payload.door_range.max_door
       };
     }
 
-    this.assignNumericRangePayload(compactPayload, 'engine_power', payload.engine_power, defaults.engine_power);
     if (this.hasNumericFacetRangeChanged(payload.engine_power, defaults.engine_power)) {
-      compactPayload['power_unit'] = payload.power_unit || defaults.power_unit;
+      compactPayload['powerOutput'] = {
+        min_po: payload.engine_power.min_value,
+        max_po: payload.engine_power.max_value,
+        unit: payload.power_unit || defaults.power_unit
+      };
     }
-    this.assignNumericRangePayload(compactPayload, 'cubic_capacity', payload.cubic_capacity, defaults.cubic_capacity);
-    this.assignNumericRangePayload(compactPayload, 'cylinders', payload.cylinders, defaults.cylinders);
-    this.assignNumericRangePayload(compactPayload, 'battery_capacity', payload.battery_capacity, defaults.battery_capacity);
-    this.assignNumericRangePayload(compactPayload, 'total_weight', payload.total_weight, defaults.total_weight);
-    this.assignNumericRangePayload(compactPayload, 'empty_weight', payload.empty_weight, defaults.empty_weight);
-    this.assignNumericRangePayload(compactPayload, 'towing_capacity', payload.towing_capacity, defaults.towing_capacity);
-    this.assignNumericRangePayload(compactPayload, 'wltp_range', payload.wltp_range, defaults.wltp_range);
-    this.assignNumericRangePayload(compactPayload, 'consumption', payload.consumption, defaults.consumption);
-    this.assignNumericRangePayload(compactPayload, 'co2_emission', payload.co2_emission, defaults.co2_emission);
-
-    if (payload.price_type !== defaults.price_type) {
-      compactPayload['price_type'] = payload.price_type;
-    }
+    this.assignNumericRangePayload(compactPayload, 'cubic_capacity', payload.cubic_capacity, defaults.cubic_capacity, 'min', 'max');
+    this.assignNumericRangePayload(compactPayload, 'cylinders', payload.cylinders, defaults.cylinders, 'min', 'max');
+    this.assignNumericRangePayload(compactPayload, 'battery_capacity', payload.battery_capacity, defaults.battery_capacity, 'min', 'max');
+    this.assignNumericRangePayload(compactPayload, 'total_weight', payload.total_weight, defaults.total_weight, 'min', 'max');
+    this.assignNumericRangePayload(compactPayload, 'empty_weight', payload.empty_weight, defaults.empty_weight, 'min', 'max');
+    this.assignNumericRangePayload(compactPayload, 'towing_capacity', payload.towing_capacity, defaults.towing_capacity, 'min', 'max');
+    this.assignNumericRangePayload(compactPayload, 'wltp_range', payload.wltp_range, defaults.wltp_range, 'min', 'max');
+    this.assignNumericRangePayload(compactPayload, 'consumption', payload.consumption, defaults.consumption, 'min', 'max');
+    this.assignNumericRangePayload(compactPayload, 'co2_emission', payload.co2_emission, defaults.co2_emission, 'min', 'max');
 
     return compactPayload;
   }
@@ -1273,15 +1266,19 @@ export class FilterService {
     target: Record<string, any>,
     key: string,
     value: FilterNumericRange,
-    defaults: FilterNumericRange
+    defaults: FilterNumericRange,
+    minKey = 'min_value',
+    maxKey = 'max_value',
+    extras?: Record<string, any>
   ): void {
     if (!this.hasNumericFacetRangeChanged(value, defaults)) {
       return;
     }
 
     target[key] = {
-      min_value: value.min_value,
-      max_value: value.max_value
+      [minKey]: value.min_value,
+      [maxKey]: value.max_value,
+      ...(extras || {})
     };
   }
 

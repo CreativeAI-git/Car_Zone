@@ -839,6 +839,35 @@
       <div class="tab-content mt-3" id="myTabContent">
             <div class="tab-pane fade show active" id="czone" role="tabpanel">
                   @if (loaded) {
+                  @if (carsList.length === 0 && filterService.hasActiveAppliedFilters()) {
+                  <div
+                        class="d-flex flex-column align-items-center justify-content-center text-center bg-white rounded-4 shadow-sm p-5 position-relative overflow-hidden">
+
+                        <div class="position-absolute top-0 start-0 w-100 h-100"
+                              style="background: radial-gradient(circle at top, rgba(220,53,69,0.05), transparent); z-index:0;">
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-center rounded-circle mb-4 position-relative"
+                              style="width: 120px; height: 120px; background: linear-gradient(135deg, #ffccd1, #fff); z-index:1;">
+                              <i class="fa-solid fa-car-side text-danger fs-1"></i>
+                              <span
+                                    class="position-absolute top-0 start-0 w-100 h-100 rounded-circle border border-3 border-danger opacity-25"></span>
+                        </div>
+
+                        <h2 class="fw-bold text-dark mb-3" style="z-index:1;">No Cars Found For Your Selected Filters
+                        </h2>
+                        <p class="text-muted" style="max-width: 420px; z-index:1;">
+                              Try adjusting or clearing some filters to see more vehicles.
+                        </p>
+
+                        <div class="w-50 border-top border-danger opacity-50 mb-4" style="z-index:1;"></div>
+
+                        <button type="button" class="btn-red-transparent" style="z-index:1;"
+                              (click)="onResetFilters()">
+                              Reset Filters
+                        </button>
+                  </div>
+                  } @else {
                   @for (item of carsList; track $index) {
                   <div class="mb-4">
                         <div class="row align-items-start">
@@ -1021,6 +1050,7 @@
                               </ul>
                         </nav>
                   </div>
+                  }
                   }
                   }
             </div>
