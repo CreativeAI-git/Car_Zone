@@ -44,7 +44,7 @@ export type FilterNumericRange = {
 };
 
 export type FilterPayload = {
-  lang: string;
+  lang?: string;
   page: number;
   limit: number;
   make_model_selection: SelectedMakeModel[];
@@ -569,7 +569,6 @@ export class FilterService {
   private createDefaultPayload(): FilterPayload {
     const currentYear = new Date().getFullYear();
     return {
-      lang: localStorage.getItem('lang') || 'en',
       page: 1,
       limit: 10,
       make_model_selection: [],
@@ -752,9 +751,11 @@ export class FilterService {
     const params = new URLSearchParams();
     const makeModelData = this.buildMakeModelRequestData(payload.make_model_selection);
 
+    this.setIfValue(params, 'lang', payload.lang || defaults.lang);
+
     if (this.hasRangeChanged(payload.kilometers_range, defaults.kilometers_range)) {
-      this.setIfValue(params, 'km_from', payload.kilometers_range.min_km);
-      this.setIfValue(params, 'km_to', payload.kilometers_range.max_km);
+      this.setIfValue(params, 'from_km', payload.kilometers_range.min_km);
+      this.setIfValue(params, 'to_km', payload.kilometers_range.max_km);
     }
 
     if (this.hasRangeChanged(payload.price_range, defaults.price_range)) {
@@ -768,43 +769,73 @@ export class FilterService {
     }
 
     if (this.hasRangeChanged(payload.seat_range, defaults.seat_range)) {
-      this.setIfValue(params, 'seat_min', payload.seat_range.min_seat);
-      this.setIfValue(params, 'seat_max', payload.seat_range.max_seat);
+      this.setIfValue(params, 'seat_from', payload.seat_range.min_seat);
+      this.setIfValue(params, 'seat_to', payload.seat_range.max_seat);
     }
 
     if (this.hasRangeChanged(payload.door_range, defaults.door_range)) {
-      this.setIfValue(params, 'door_min', payload.door_range.min_door);
-      this.setIfValue(params, 'door_max', payload.door_range.max_door);
+      this.setIfValue(params, 'door_from', payload.door_range.min_door);
+      this.setIfValue(params, 'door_to', payload.door_range.max_door);
     }
 
-    this.setNumericRangeQueryParams(params, 'engine_power', payload.engine_power, defaults.engine_power);
-    this.setNumericRangeQueryParams(params, 'cubic_capacity', payload.cubic_capacity, defaults.cubic_capacity);
-    this.setNumericRangeQueryParams(params, 'cylinders', payload.cylinders, defaults.cylinders);
-    this.setNumericRangeQueryParams(params, 'battery_capacity', payload.battery_capacity, defaults.battery_capacity);
-    this.setNumericRangeQueryParams(params, 'total_weight', payload.total_weight, defaults.total_weight);
-    this.setNumericRangeQueryParams(params, 'empty_weight', payload.empty_weight, defaults.empty_weight);
-    this.setNumericRangeQueryParams(params, 'towing_capacity', payload.towing_capacity, defaults.towing_capacity);
-    this.setNumericRangeQueryParams(params, 'wltp_range', payload.wltp_range, defaults.wltp_range);
-    this.setNumericRangeQueryParams(params, 'consumption', payload.consumption, defaults.consumption);
-    this.setNumericRangeQueryParams(params, 'co2_emission', payload.co2_emission, defaults.co2_emission);
-
-    if (payload.price_type !== defaults.price_type) {
-      this.setIfValue(params, 'price_type', payload.price_type);
+    this.setRangeQueryParams(params, 'power_from', 'power_to', payload.engine_power, defaults.engine_power);
+    if (this.hasNumericFacetRangeChanged(payload.engine_power, defaults.engine_power)) {
+      this.setIfValue(params, 'power_unit', 'PS');
     }
 
-    this.setIfValue(params, 'seller_type', payload.seller_type);
-    this.setIfValue(params, 'brand_name', makeModelData.makeLabels);
-    this.setIfValue(params, 'model_name', makeModelData.modelLabels);
-    this.setIfValue(params, 'state_id', payload.state_id);
-    this.setIfValue(params, 'body_type_id', payload.body_type_id);
-    this.setIfValue(params, 'fuel_type_id', payload.fuel_type_id);
-    this.setIfValue(params, 'transmission_id', payload.transmission);
-    this.setIfValue(params, 'drive_type_id', payload.drive_type);
-    this.setIfValue(params, 'accident_vehicle', payload.accident_vehicle);
-    this.setIfValue(params, 'mfk_warranty', payload.mfk_warranty);
+    this.setRangeQueryParams(
+      params,
+      'cubic_capacity_from',
+      'cubic_capacity_to',
+      payload.cubic_capacity,
+      defaults.cubic_capacity
+    );
+    this.setRangeQueryParams(params, 'cylinders_from', 'cylinders_to', payload.cylinders, defaults.cylinders);
+    this.setRangeQueryParams(
+      params,
+      'battery_capacity_from',
+      'battery_capacity_to',
+      payload.battery_capacity,
+      defaults.battery_capacity
+    );
+    this.setRangeQueryParams(
+      params,
+      'total_weight_from',
+      'total_weight_to',
+      payload.total_weight,
+      defaults.total_weight
+    );
+    this.setRangeQueryParams(
+      params,
+      'empty_weight_from',
+      'empty_weight_to',
+      payload.empty_weight,
+      defaults.empty_weight
+    );
+    this.setRangeQueryParams(params, 'towing_from', 'towing_to', payload.towing_capacity, defaults.towing_capacity);
+    this.setRangeQueryParams(params, 'wltp_range_from', 'wltp_range_to', payload.wltp_range, defaults.wltp_range);
+    this.setRangeQueryParams(
+      params,
+      'consumption_from',
+      'consumption_to',
+      payload.consumption,
+      defaults.consumption
+    );
+    this.setRangeQueryParams(params, 'co2_from', 'co2_to', payload.co2_emission, defaults.co2_emission);
+
+    this.setIfValue(params, 'sellerType', payload.seller_type);
+    this.setIfValue(params, 'brandName', makeModelData.makeLabels);
+    this.setIfValue(params, 'carModel', makeModelData.modelLabels);
+    this.setIfValue(params, 'state_ids', payload.state_id);
+    this.setIfValue(params, 'body_type', payload.body_type_id);
+    this.setIfValue(params, 'fuelType', payload.fuel_type_id);
+    this.setIfValue(params, 'transmission', payload.transmission);
+    this.setIfValue(params, 'drive_type', payload.drive_type);
+    this.setIfValue(params, 'vehicle_accident_status_id', payload.accident_vehicle);
+    this.setIfValue(params, 'mfk_warrenty_id', payload.mfk_warranty);
     this.setIfValue(params, 'interior_color_id', payload.interior_color);
     this.setIfValue(params, 'exterior_color_id', payload.exterior_color);
-    this.setIfValue(params, 'vehicle_condition', payload.vehicle_condition);
+    this.setIfValue(params, 'carCondition', payload.vehicle_condition);
     this.setIfValue(params, 'energy_efficiency', payload.energy_efficiency);
     this.setIfValue(params, 'listing_age', payload.listing_age);
 
@@ -1218,9 +1249,10 @@ export class FilterService {
     return columns;
   }
 
-  private setNumericRangeQueryParams(
+  private setRangeQueryParams(
     params: URLSearchParams,
-    key: string,
+    fromKey: string,
+    toKey: string,
     value: FilterNumericRange,
     defaults: FilterNumericRange
   ): void {
@@ -1228,8 +1260,8 @@ export class FilterService {
       return;
     }
 
-    this.setIfValue(params, `${key}_min`, value.min_value);
-    this.setIfValue(params, `${key}_max`, value.max_value);
+    this.setIfValue(params, fromKey, value.min_value);
+    this.setIfValue(params, toKey, value.max_value);
   }
 
   private assignNumericRangePayload(
