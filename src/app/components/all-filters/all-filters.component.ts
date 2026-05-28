@@ -57,6 +57,7 @@ export class AllFiltersComponent {
   interiorColorColumns: FilterOption[][] = [];
   carState: FilterOption[] = [];
   warrantyList: FilterOption[] = [];
+  accidentVehicleOptions: FilterOption[] = [];
   energyEfficiencyOptions: FilterOption[] = [];
   kilometersRangeAnalytics: any = {};
   priceRangeAnalytics: any = {};
@@ -91,8 +92,11 @@ export class AllFiltersComponent {
   fuelTypeId: number[] = [];
   transmissionId: number[] = [];
   driveTypeId: number[] = [];
+  accidentVehicleId: Array<string | number> = [];
+  warrantyIds: Array<string | number> = [];
   interiorColorId: number[] = [];
   exteriorColorId: number[] = [];
+  energyEfficiencyId: string[] = [];
   filterData: any = { total_cars: 0 };
   isLoading = false;
 
@@ -528,30 +532,37 @@ export class AllFiltersComponent {
 
   onResetPowerOutput() {
     this.powerOutputRange = [null, null];
+    this.getFiltersData();
   }
 
   onResetCubicCapacity() {
     this.cubicCapacityRange = [null, null];
+    this.getFiltersData();
   }
 
   onResetCylinders() {
     this.cylindersRange = [null, null];
+    this.getFiltersData();
   }
 
   onResetBatteryCapacity() {
     this.batteryCapacityRange = [null, null];
+    this.getFiltersData();
   }
 
   onResetTowCapacity() {
     this.towCapacityRange = [null, null];
+    this.getFiltersData();
   }
 
   onResetTotalWeight() {
     this.totalWeightRange = [null, null];
+    this.getFiltersData();
   }
 
   onResetEmptyWeight() {
     this.emptyWeightRange = [null, null];
+    this.getFiltersData();
   }
 
   onSellerTypeChange(type: string, event: Event) {
@@ -631,6 +642,7 @@ export class AllFiltersComponent {
     this.interiorColorColumns = viewModel.interiorColorColumns;
     this.carState = viewModel.carState;
     this.warrantyList = viewModel.warrantyList;
+    this.accidentVehicleOptions = viewModel.accidentVehicleOptions;
     this.energyEfficiencyOptions = viewModel.energyEfficiencyOptions;
     this.kilometersRangeAnalytics = viewModel.kilometersRangeAnalytics;
     this.priceRangeAnalytics = viewModel.priceRangeAnalytics;
@@ -652,8 +664,11 @@ export class AllFiltersComponent {
     this.fuelTypeId = [...(payload.fuel_type_id || [])];
     this.transmissionId = [...(payload.transmission || [])];
     this.driveTypeId = [...(payload.drive_type || [])];
+    this.accidentVehicleId = [...(payload.accident_vehicle || [])];
+    this.warrantyIds = [...(payload.mfk_warranty || [])];
     this.interiorColorId = [...(payload.interior_color || [])];
     this.exteriorColorId = [...(payload.exterior_color || [])];
+    this.energyEfficiencyId = [...(payload.energy_efficiency || [])];
     this.selectedMakeModels = this.cloneSelectedMakeModels(payload.make_model_selection || []);
     this.selectedBrandsModal = this.filterService.buildMakeModelSummary(this.getCommittedMakeModelSelection());
     this.expandedMakeIds = this.selectedMakeModels.map((item) => item.makeId);
@@ -679,13 +694,34 @@ export class AllFiltersComponent {
       payload.door_range?.min_door ?? 0,
       payload.door_range?.max_door ?? 10
     ];
-    this.powerOutputRange = [null, null];
-    this.cubicCapacityRange = [null, null];
-    this.cylindersRange = [null, null];
-    this.batteryCapacityRange = [null, null];
-    this.towCapacityRange = [null, null];
-    this.totalWeightRange = [null, null];
-    this.emptyWeightRange = [null, null];
+    this.powerOutputRange = [
+      payload.engine_power?.min_value ?? null,
+      payload.engine_power?.max_value ?? null
+    ];
+    this.cubicCapacityRange = [
+      payload.cubic_capacity?.min_value ?? null,
+      payload.cubic_capacity?.max_value ?? null
+    ];
+    this.cylindersRange = [
+      payload.cylinders?.min_value ?? null,
+      payload.cylinders?.max_value ?? null
+    ];
+    this.batteryCapacityRange = [
+      payload.battery_capacity?.min_value ?? null,
+      payload.battery_capacity?.max_value ?? null
+    ];
+    this.towCapacityRange = [
+      payload.towing_capacity?.min_value ?? null,
+      payload.towing_capacity?.max_value ?? null
+    ];
+    this.totalWeightRange = [
+      payload.total_weight?.min_value ?? null,
+      payload.total_weight?.max_value ?? null
+    ];
+    this.emptyWeightRange = [
+      payload.empty_weight?.min_value ?? null,
+      payload.empty_weight?.max_value ?? null
+    ];
   }
 
   private buildDraftPayload(): Partial<FilterPayload> {
@@ -700,8 +736,11 @@ export class AllFiltersComponent {
       fuel_type_id: [...this.fuelTypeId],
       transmission: [...this.transmissionId],
       drive_type: [...this.driveTypeId],
+      accident_vehicle: [...this.accidentVehicleId],
+      mfk_warranty: [...this.warrantyIds],
       exterior_color: [...this.exteriorColorId],
       interior_color: [...this.interiorColorId],
+      energy_efficiency: [...this.energyEfficiencyId],
       year_range: {
         min_year: this.yearRange[0],
         max_year: this.yearRange[1]
@@ -722,8 +761,54 @@ export class AllFiltersComponent {
         min_door: this.doorRange[0],
         max_door: this.doorRange[1]
       },
+      engine_power: {
+        min_value: this.powerOutputRange[0],
+        max_value: this.powerOutputRange[1]
+      },
+      cubic_capacity: {
+        min_value: this.cubicCapacityRange[0],
+        max_value: this.cubicCapacityRange[1]
+      },
+      cylinders: {
+        min_value: this.cylindersRange[0],
+        max_value: this.cylindersRange[1]
+      },
+      battery_capacity: {
+        min_value: this.batteryCapacityRange[0],
+        max_value: this.batteryCapacityRange[1]
+      },
+      towing_capacity: {
+        min_value: this.towCapacityRange[0],
+        max_value: this.towCapacityRange[1]
+      },
+      total_weight: {
+        min_value: this.totalWeightRange[0],
+        max_value: this.totalWeightRange[1]
+      },
+      empty_weight: {
+        min_value: this.emptyWeightRange[0],
+        max_value: this.emptyWeightRange[1]
+      },
       price_type: this.priceType
     };
+  }
+
+  onWarrantyChange(id: string | number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.warrantyIds = this.toggleSelection(this.warrantyIds, id, input.checked);
+    this.getFiltersData();
+  }
+
+  onAccidentVehicleChange(id: string | number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.accidentVehicleId = this.toggleSelection(this.accidentVehicleId, id, input.checked);
+    this.getFiltersData();
+  }
+
+  onEnergyEfficiencyChange(id: string, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.energyEfficiencyId = this.toggleSelection(this.energyEfficiencyId, id, input.checked);
+    this.getFiltersData();
   }
 
   private toggleSelection<T>(list: T[], value: T, checked: boolean): T[] {

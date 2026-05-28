@@ -240,15 +240,46 @@ export class HomeComponent {
     count += payload.state_id.length;
     count += payload.drive_type.length;
     count += payload.accident_vehicle.length;
+    count += payload.mfk_warranty.length;
     count += payload.exterior_color.length;
     count += payload.interior_color.length;
     count += payload.energy_efficiency.length;
+    count += payload.vehicle_condition.length;
+    count += payload.listing_age.length;
 
     if (this.hasRangeObjectChanged(payload.seat_range, defaults.seat_range)) {
       count += 1;
     }
 
     if (this.hasRangeObjectChanged(payload.door_range, defaults.door_range)) {
+      count += 1;
+    }
+
+    if (this.hasNumericRangeChanged(payload.engine_power, defaults.engine_power)) {
+      count += 1;
+    }
+
+    if (this.hasNumericRangeChanged(payload.cubic_capacity, defaults.cubic_capacity)) {
+      count += 1;
+    }
+
+    if (this.hasNumericRangeChanged(payload.cylinders, defaults.cylinders)) {
+      count += 1;
+    }
+
+    if (this.hasNumericRangeChanged(payload.battery_capacity, defaults.battery_capacity)) {
+      count += 1;
+    }
+
+    if (this.hasNumericRangeChanged(payload.towing_capacity, defaults.towing_capacity)) {
+      count += 1;
+    }
+
+    if (this.hasNumericRangeChanged(payload.total_weight, defaults.total_weight)) {
+      count += 1;
+    }
+
+    if (this.hasNumericRangeChanged(payload.empty_weight, defaults.empty_weight)) {
       count += 1;
     }
 
@@ -621,6 +652,13 @@ export class HomeComponent {
     initial: { [key: string]: number | null }
   ): boolean {
     return Object.keys(current).some((key) => current[key] !== initial[key]);
+  }
+
+  private hasNumericRangeChanged(
+    current: { min_value: number | null; max_value: number | null },
+    initial: { min_value: number | null; max_value: number | null }
+  ): boolean {
+    return current?.min_value !== initial?.min_value || current?.max_value !== initial?.max_value;
   }
 
   private toggleSelection<T>(list: T[], value: T, checked: boolean): T[] {

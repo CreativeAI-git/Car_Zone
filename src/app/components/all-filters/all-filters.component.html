@@ -648,12 +648,13 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ item.label | translate }}
+                                            [id]="'warranty-' + item.value" [checked]="warrantyIds.includes(item.value)"
+                                            (change)="onWarrantyChange(item.value, $event)" />
+                                        <label [for]="'warranty-' + item.value">{{ item.label | translate }}
                                         </label>
                                     </div>
                                     <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
+                                        <span class="ct_fs_12 ct_fw_300">{{ item.count ?? 0 }}</span>
                                     </div>
                                 </div>
                                 }
@@ -670,33 +671,26 @@
                                 </div>
                                 <div>
                                     <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
-                                        (click)="onResetPowerOutput()">{{ 'vehicle.reset' |
+                                        (click)="accidentVehicleId = []; getFiltersData()">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
                             <div class="d-grid ct_gap_14">
+                                @for (item of accidentVehicleOptions; track item.value) {
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'vehicle.accidentVehicle' | translate }}
+                                            [id]="'accident-' + item.value"
+                                            [checked]="accidentVehicleId.includes(item.value)"
+                                            (change)="onAccidentVehicleChange(item.value, $event)" />
+                                        <label [for]="'accident-' + item.value">{{ item.label | translate }}
                                         </label>
                                     </div>
                                     <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
+                                        <span class="ct_fs_12 ct_fw_300">{{ item.count ?? 0 }}</span>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="flexCheckDefault" />
-                                        <label for="flexCheckDefault">{{ 'filters.noAccidentVehicle' | translate }}
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <span class="ct_fs_12 ct_fw_300">356</span>
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -881,6 +875,7 @@
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.ps' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="powerOutputRange[0]"
                                         [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of psOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' PS'"></nz-option>
@@ -897,6 +892,7 @@
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.ps' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="powerOutputRange[1]"
                                         [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of psOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' PS'"></nz-option>
@@ -933,6 +929,7 @@
                                     <nz-select class="form-select" [nzPlaceHolder]="'cm3'" [nzShowSearch]="true"
                                         [nzAllowClear]="true" [(ngModel)]="cubicCapacityRange[0]"
                                         [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of cubicCapacityOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' cm3'"></nz-option>
@@ -949,6 +946,7 @@
                                     <nz-select class="form-select" [nzPlaceHolder]="'cm3'" [nzShowSearch]="true"
                                         [nzAllowClear]="true" [(ngModel)]="cubicCapacityRange[1]"
                                         [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of cubicCapacityOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' cm3'"></nz-option>
@@ -984,6 +982,7 @@
                                     <nz-select class="form-select" [nzPlaceHolder]="'vehicle.cylinders' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="cylindersRange[0]"
                                         [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of cylinderOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option"></nz-option>
@@ -1000,6 +999,7 @@
                                     <nz-select class="form-select" [nzPlaceHolder]="'vehicle.cylinders' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="cylindersRange[1]"
                                         [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of cylinderOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option"></nz-option>
@@ -1027,7 +1027,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
+                                        (click)="energyEfficiencyId = []; getFiltersData()">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
@@ -1069,6 +1070,7 @@
                                     <nz-select class="form-select" [nzPlaceHolder]="'filters.kwh' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true"
                                         [(ngModel)]="batteryCapacityRange[0]" [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of batteryCapacityOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kWh'"></nz-option>
@@ -1085,6 +1087,7 @@
                                     <nz-select class="form-select" [nzPlaceHolder]="'filters.kwh' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true"
                                         [(ngModel)]="batteryCapacityRange[1]" [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of batteryCapacityOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kWh'"></nz-option>
@@ -1121,6 +1124,7 @@
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="towCapacityRange[0]"
                                         [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of towCapacityOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
@@ -1137,6 +1141,7 @@
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="towCapacityRange[1]"
                                         [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of towCapacityOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
@@ -1175,6 +1180,7 @@
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="totalWeightRange[0]"
                                         [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of weightOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
@@ -1191,6 +1197,7 @@
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="totalWeightRange[1]"
                                         [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of weightOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
@@ -1225,6 +1232,7 @@
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="emptyWeightRange[0]"
                                         [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of weightOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
@@ -1241,6 +1249,7 @@
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="emptyWeightRange[1]"
                                         [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of weightOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
@@ -1942,7 +1951,9 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
-                                            [id]="'energy-' + item.value" />
+                                            [id]="'energy-' + item.value"
+                                            [checked]="energyEfficiencyId.includes(item.value)"
+                                            (change)="onEnergyEfficiencyChange(item.value, $event)" />
                                         <label [for]="'energy-' + item.value">{{ item.label | translate }} </label>
                                     </div>
                                     <div>
