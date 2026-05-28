@@ -371,6 +371,7 @@ export class AllFiltersComponent {
 
   openMakeModels(make: MakeModelOption): void {
     this.activeMakeForModels = make;
+    this.makeModelSearchTerm = '';
     if (!this.isMakeExpanded(make.value)) {
       this.expandedMakeIds = [...this.expandedMakeIds, make.value];
     }

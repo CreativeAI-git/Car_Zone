@@ -240,6 +240,23 @@ export class HomeComponent {
     return this.getSelectedLabels(this.fuelTypeId, this.flattenGroupedOptions(this.fuelTypeGroups));
   }
 
+  get powerButtonLabel(): string {
+    const [from, to] = this.powerOutputRange;
+    if (from === null && to === null) {
+      return '';
+    }
+
+    if (from !== null && to !== null) {
+      return `${from} ${this.powerUnit} - ${to} ${this.powerUnit}`;
+    }
+
+    if (from !== null) {
+      return `${from} ${this.powerUnit}`;
+    }
+
+    return `${to} ${this.powerUnit}`;
+  }
+
   get extraFiltersCount(): number {
     const payload = this.appliedFilters;
     const defaults = this.filterService.getDefaultPayload();
@@ -792,6 +809,7 @@ export class HomeComponent {
 
   openMakeModels(make: MakeModelOption): void {
     this.activeMakeForModels = make;
+    this.makeModelSearchTerm = '';
     if (!this.isMakeExpanded(make.value)) {
       this.expandedMakeIds = [...this.expandedMakeIds, make.value];
     }

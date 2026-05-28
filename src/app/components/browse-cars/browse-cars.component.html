@@ -659,7 +659,11 @@
                               nzPopoverPlacement="bottom" class="filter-preview-box w-100 ">
                               <img src="img/icons/power-output.png" />
                               <span class="filter-preview-box-label">
+                                    @if(powerButtonLabel){
+                                    {{ powerButtonLabel }}
+                                    }@else{
                                     {{'vehicle.powerOutput' | translate}}
+                                    }
                               </span>
                         </button>
                         <ng-template #powerContentTemplate>
