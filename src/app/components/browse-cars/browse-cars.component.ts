@@ -823,6 +823,38 @@ export class BrowseCarsComponent {
     return this.activeMakeForModels ? this.getVisibleModels(this.activeMakeForModels.value) : [];
   }
 
+  onQuickMakeReset(): void {
+    this.clearMakeModelFilter();
+  }
+
+  onQuickMakeFilter(card: { label: string; aliases?: string[] }): void {
+    const make = this.findPopularMakeOption(card);
+    const normalizedLabel = card.label?.trim();
+
+    if (!normalizedLabel) {
+      return;
+    }
+
+    const nextSelection: SelectedMakeModel[] = make
+      ? [{ makeId: make.value, makeLabel: make.label, models: [] }]
+      : [{ makeId: normalizedLabel, makeLabel: normalizedLabel, models: [] }];
+
+    this.makeModelSearchTerm = '';
+    this.selectedMakeModels = nextSelection;
+    this.selectedBrandsModal = this.filterService.buildMakeModelSummary(nextSelection);
+    this.expandedMakeIds = [];
+    this.activeMakeForModels = null;
+    this.applyFilters({ make_model_selection: nextSelection });
+  }
+
+  isQuickMakeActive(card: { label: string; aliases?: string[] }): boolean {
+    const labels = [card.label, ...(card.aliases || [])].map((item) => this.normalizeSearchText(item));
+
+    return this.selectedMakeModels.some((item) =>
+      labels.includes(this.normalizeSearchText(item.makeLabel))
+    );
+  }
+
   isMakeSelected(makeId: string | number): boolean {
     return this.selectedMakeModels.some((item) => String(item.makeId) === String(makeId));
   }

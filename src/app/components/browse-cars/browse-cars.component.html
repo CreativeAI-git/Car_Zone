@@ -2,53 +2,22 @@
       <div class="container">
             <ul class="nav nav-tabs pt-4 ct_border_none select-car-tabs gap-3" id="myTab" role="tablist">
                   <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="czone-tab" type="button" role="tab">
+                        <button class="nav-link" [class.active]="!selectedMakeModels.length" id="czone-tab"
+                              type="button" role="tab" (click)="onQuickMakeReset()">
                               <img src="img/icons/c.png" />
                               <span>{{ 'vehicle.zone' | translate }}</span>
                         </button>
                   </li>
+                  @for (card of popularMakeCards; track card.label) {
                   <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="bmw-tab" type="button" role="tab">
-                              <img src="img/icons/bmw.png" />
-                              <span>BMW</span>
+                        <button class="nav-link" [class.active]="isQuickMakeActive(card)"
+                              [id]="'quick-make-tab-' + $index" type="button" role="tab"
+                              (click)="onQuickMakeFilter(card)">
+                              <img [src]="card.icon" [alt]="card.label" />
+                              <span>{{ card.label }}</span>
                         </button>
                   </li>
-                  <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="ferrari-tab" type="button" role="tab">
-                              <img src="img/icons/ferrari.png" />
-                              <span>Ferrari</span>
-                        </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="laborghini-tab" type="button" role="tab">
-                              <img src="img/icons/lamborghini.png" />
-                              <span>{{ 'vehicle.laborghini' | translate }}</span>
-                        </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tesla-tab" type="button" role="tab">
-                              <img src="img/icons/Tesla.png" />
-                              <span>{{ 'vehicle.tesla' | translate }}</span>
-                        </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="audi-tab" type="button" role="tab">
-                              <img src="img/icons/audi.png" />
-                              <span>{{ 'vehicle.audi' | translate }}</span>
-                        </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="mercedes-tab" type="button" role="tab">
-                              <img src="img/icons/mercedes.png" />
-                              <span>{{ 'vehicle.mercedes' | translate }}</span>
-                        </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="ford-tab" type="button" role="tab">
-                              <img src="img/icons/ford.png" />
-                              <span>{{ 'vehicle.ford' | translate }}</span>
-                        </button>
-                  </li>
+                  }
             </ul>
       </div>
 </section>
