@@ -846,10 +846,6 @@ export class HomeComponent {
     this.applyFilters({ make_model_selection: [] });
   }
 
-  getSelectedModelCount(makeId: string | number): number {
-    return this.selectedMakeModels.find((item) => String(item.makeId) === String(makeId))?.models.length || 0;
-  }
-
   onPopularMakeSelect(card: { label: string; aliases?: string[] }): void {
     const make = this.findPopularMakeOption(card);
     if (!make) {

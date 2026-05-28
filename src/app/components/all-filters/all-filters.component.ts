@@ -425,9 +425,6 @@ export class AllFiltersComponent {
     this.getFiltersData();
   }
 
-  getSelectedModelCount(makeId: string | number): number {
-    return this.selectedMakeModels.find((item) => String(item.makeId) === String(makeId))?.models.length || 0;
-  }
 
   onPopularMakeSelect(card: { label: string; aliases?: string[] }): void {
     const make = this.findPopularMakeOption(card);

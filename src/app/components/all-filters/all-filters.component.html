@@ -110,8 +110,7 @@
                                                     </div>
                                                     <button type="button" class="btn btn-link p-0 text-decoration-none"
                                                         (click)="openMakeModels(make)">
-                                                        <span class="ct_fs_12 ct_fw_300 me-2">{{
-                                                            getSelectedModelCount(make.value) }}</span>
+
                                                         <img src="img/icons/chevron-left.png" />
                                                     </button>
                                                 </div>
@@ -888,10 +887,9 @@
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <nz-select class="form-select" [nzPlaceHolder]="powerUnit"
-                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="powerOutputRange[0]"
-                                        [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="getFiltersData()"
+                                    <nz-select class="form-select" [nzPlaceHolder]="powerUnit" [nzShowSearch]="true"
+                                        [nzAllowClear]="true" [(ngModel)]="powerOutputRange[0]"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of activePowerOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' ' + powerUnit"></nz-option>
@@ -905,10 +903,9 @@
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <nz-select class="form-select" [nzPlaceHolder]="powerUnit"
-                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="powerOutputRange[1]"
-                                        [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="getFiltersData()"
+                                    <nz-select class="form-select" [nzPlaceHolder]="powerUnit" [nzShowSearch]="true"
+                                        [nzAllowClear]="true" [(ngModel)]="powerOutputRange[1]"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of activePowerOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' ' + powerUnit"></nz-option>
@@ -944,8 +941,7 @@
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'cm3'" [nzShowSearch]="true"
                                         [nzAllowClear]="true" [(ngModel)]="cubicCapacityRange[0]"
-                                        [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="getFiltersData()"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of cubicCapacityOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' cm3'"></nz-option>
@@ -961,8 +957,7 @@
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'cm3'" [nzShowSearch]="true"
                                         [nzAllowClear]="true" [(ngModel)]="cubicCapacityRange[1]"
-                                        [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="getFiltersData()"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of cubicCapacityOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' cm3'"></nz-option>
@@ -997,8 +992,7 @@
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'vehicle.cylinders' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="cylindersRange[0]"
-                                        [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="getFiltersData()"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of cylinderOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option"></nz-option>
@@ -1014,8 +1008,7 @@
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'vehicle.cylinders' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="cylindersRange[1]"
-                                        [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="getFiltersData()"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of cylinderOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option"></nz-option>
@@ -1103,8 +1096,7 @@
                                     <nz-select class="form-select" [nzPlaceHolder]="'filters.kwh' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true"
                                         [(ngModel)]="batteryCapacityRange[1]" [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="getFiltersData()"
-                                        [attr.aria-label]="'common.to' | translate">
+                                        (ngModelChange)="getFiltersData()" [attr.aria-label]="'common.to' | translate">
                                         @for (option of batteryCapacityOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kWh'"></nz-option>
                                         }
@@ -1139,8 +1131,7 @@
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="towCapacityRange[0]"
-                                        [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="getFiltersData()"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of towCapacityOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
@@ -1156,8 +1147,7 @@
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="towCapacityRange[1]"
-                                        [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="getFiltersData()"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of towCapacityOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
@@ -1195,8 +1185,7 @@
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="totalWeightRange[0]"
-                                        [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="getFiltersData()"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of weightOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
@@ -1212,8 +1201,7 @@
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="totalWeightRange[1]"
-                                        [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="getFiltersData()"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of weightOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
@@ -1247,8 +1235,7 @@
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="emptyWeightRange[0]"
-                                        [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="getFiltersData()"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.from' | translate">
                                         @for (option of weightOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>
@@ -1264,8 +1251,7 @@
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
                                     <nz-select class="form-select" [nzPlaceHolder]="'common.kg' | translate"
                                         [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="emptyWeightRange[1]"
-                                        [ngModelOptions]="{standalone: true}"
-                                        (ngModelChange)="getFiltersData()"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
                                         [attr.aria-label]="'common.to' | translate">
                                         @for (option of weightOptions; track option) {
                                         <nz-option [nzValue]="option" [nzLabel]="option + ' kg'"></nz-option>

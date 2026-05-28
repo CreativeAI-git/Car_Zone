@@ -166,10 +166,7 @@
                                                                                                             type="button"
                                                                                                             class="btn btn-link p-0 text-decoration-none"
                                                                                                             (click)="openMakeModels(make)">
-                                                                                                            <span
-                                                                                                                  class="ct_fs_12 ct_fw_300 me-2">{{
-                                                                                                                  getSelectedModelCount(make.value)
-                                                                                                                  }}</span>
+
                                                                                                             <img
                                                                                                                   src="img/icons/chevron-left.png" />
                                                                                                       </button>
@@ -892,8 +889,7 @@
                                                                                     </h3>
                                                                               </div>
                                                                               <div>
-                                                                                    <span
-                                                                                          class="ct_fs_14 ct_fw_400 ct_color_8f0c1f"
+                                                                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f"
                                                                                           (click)="onResetPower()">{{
                                                                                           'vehicle.reset' |
                                                                                           translate }}</span>
@@ -941,7 +937,9 @@
                                                                                           [(ngModel)]="powerOutputRange[0]"
                                                                                           [ngModelOptions]="{standalone: true}"
                                                                                           (ngModelChange)="onPowerRangeChange()">
-                                                                                          @for (option of activePowerOptions; track option) {
+                                                                                          @for (option of
+                                                                                          activePowerOptions; track
+                                                                                          option) {
                                                                                           <nz-option [nzValue]="option"
                                                                                                 [nzLabel]="option + ' ' + powerUnit"></nz-option>
                                                                                           }
@@ -959,7 +957,9 @@
                                                                                           [(ngModel)]="powerOutputRange[1]"
                                                                                           [ngModelOptions]="{standalone: true}"
                                                                                           (ngModelChange)="onPowerRangeChange()">
-                                                                                          @for (option of activePowerOptions; track option) {
+                                                                                          @for (option of
+                                                                                          activePowerOptions; track
+                                                                                          option) {
                                                                                           <nz-option [nzValue]="option"
                                                                                                 [nzLabel]="option + ' ' + powerUnit"></nz-option>
                                                                                           }
