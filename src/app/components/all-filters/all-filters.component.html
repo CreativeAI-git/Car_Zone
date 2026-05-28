@@ -1879,7 +1879,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
+                                        (click)="onResetConsumption()">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
@@ -1887,15 +1888,25 @@
                             <div class="row">
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'filters.lKm' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'filters.lKm' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="consumptionRange[0]"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
+                                        [attr.aria-label]="'common.from' | translate">
+                                        @for (option of consumptionOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' l/100 km'"></nz-option>
+                                        }
+                                    </nz-select>
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'filters.lKm' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'filters.lKm' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="consumptionRange[1]"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
+                                        [attr.aria-label]="'common.to' | translate">
+                                        @for (option of consumptionOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' l/100 km'"></nz-option>
+                                        }
+                                    </nz-select>
                                 </div>
                             </div>
                         </div>
@@ -1910,7 +1921,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
+                                        (click)="onResetCo2Emission()">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
@@ -1918,15 +1930,25 @@
                             <div class="row">
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2">{{ 'common.from' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'filters.lKm' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'filters.co2Emissions' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="co2EmissionRange[0]"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
+                                        [attr.aria-label]="'common.from' | translate">
+                                        @for (option of co2EmissionOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' g/km'"></nz-option>
+                                        }
+                                    </nz-select>
                                 </div>
                                 <div class="col-6">
                                     <label class="ct_fs_15 ct_fw_400 mb-2"> {{ 'common.to' | translate }} </label>
-                                    <input type="text" class="form-control" [placeholder]="'filters.lKm' | translate"
-                                        [attr.aria-label]="'filters.username' | translate"
-                                        aria-describedby="basic-addon1" />
+                                    <nz-select class="form-select" [nzPlaceHolder]="'filters.co2Emissions' | translate"
+                                        [nzShowSearch]="true" [nzAllowClear]="true" [(ngModel)]="co2EmissionRange[1]"
+                                        [ngModelOptions]="{standalone: true}" (ngModelChange)="getFiltersData()"
+                                        [attr.aria-label]="'common.to' | translate">
+                                        @for (option of co2EmissionOptions; track option) {
+                                        <nz-option [nzValue]="option" [nzLabel]="option + ' g/km'"></nz-option>
+                                        }
+                                    </nz-select>
                                 </div>
                             </div>
                         </div>

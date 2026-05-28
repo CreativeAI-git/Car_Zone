@@ -77,12 +77,16 @@ export class AllFiltersComponent {
   towCapacityRange: [number | null, number | null] = [null, null];
   totalWeightRange: [number | null, number | null] = [null, null];
   emptyWeightRange: [number | null, number | null] = [null, null];
+  consumptionRange: [number | null, number | null] = [null, null];
+  co2EmissionRange: [number | null, number | null] = [null, null];
   psOptions: number[] = [];
   cubicCapacityOptions: number[] = [];
   cylinderOptions: number[] = [];
   batteryCapacityOptions: number[] = [];
   towCapacityOptions: number[] = [];
   weightOptions: number[] = [];
+  consumptionOptions: number[] = [];
+  co2EmissionOptions: number[] = [];
   seats: FilterOption[] = [];
   doors: FilterOption[] = [];
   sellerType: FilterOption[] = [];
@@ -116,6 +120,8 @@ export class AllFiltersComponent {
     this.batteryCapacityOptions = Array.from({ length: 59 }, (_, index) => 10 + (index * 5));
     this.towCapacityOptions = Array.from({ length: 50 }, (_, index) => (index + 1) * 100);
     this.weightOptions = Array.from({ length: 50 }, (_, index) => (index + 1) * 100);
+    this.consumptionOptions = Array.from({ length: 99 }, (_, index) => index + 1);
+    this.co2EmissionOptions = Array.from({ length: 160 }, (_, index) => (index + 1) * 10);
 
     this.filterService.beginEditing();
 
@@ -565,6 +571,16 @@ export class AllFiltersComponent {
     this.getFiltersData();
   }
 
+  onResetConsumption() {
+    this.consumptionRange = [null, null];
+    this.getFiltersData();
+  }
+
+  onResetCo2Emission() {
+    this.co2EmissionRange = [null, null];
+    this.getFiltersData();
+  }
+
   onSellerTypeChange(type: string, event: Event) {
     const input = event.target as HTMLInputElement;
     this.selectedSellerType = this.toggleSelection(this.selectedSellerType, type, input.checked);
@@ -722,6 +738,14 @@ export class AllFiltersComponent {
       payload.empty_weight?.min_value ?? null,
       payload.empty_weight?.max_value ?? null
     ];
+    this.consumptionRange = [
+      payload.consumption?.min_value ?? null,
+      payload.consumption?.max_value ?? null
+    ];
+    this.co2EmissionRange = [
+      payload.co2_emission?.min_value ?? null,
+      payload.co2_emission?.max_value ?? null
+    ];
   }
 
   private buildDraftPayload(): Partial<FilterPayload> {
@@ -788,6 +812,14 @@ export class AllFiltersComponent {
       empty_weight: {
         min_value: this.emptyWeightRange[0],
         max_value: this.emptyWeightRange[1]
+      },
+      consumption: {
+        min_value: this.consumptionRange[0],
+        max_value: this.consumptionRange[1]
+      },
+      co2_emission: {
+        min_value: this.co2EmissionRange[0],
+        max_value: this.co2EmissionRange[1]
       },
       price_type: this.priceType
     };
