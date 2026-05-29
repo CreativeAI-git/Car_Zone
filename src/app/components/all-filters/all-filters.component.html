@@ -1976,7 +1976,7 @@
                                     <div class="form-check ct_custom_check d-flex gap-2 align-items-center">
                                         <input class="form-check-input" type="checkbox" value=""
                                             [id]="'energy-' + item.value"
-                                            [checked]="energyEfficiencyId.includes(item.value)"
+                                            [checked]="energyEfficiencyId.includes(item.label)"
                                             (change)="onEnergyEfficiencyChange(item.label, $event)" />
                                         <label [for]="'energy-' + item.value">{{ item.label | translate }} </label>
                                     </div>
