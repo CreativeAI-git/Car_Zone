@@ -638,7 +638,7 @@
                                 </div>
                                 <div>
                                     <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
-                                        (click)="onResetPowerOutput()">{{ 'vehicle.reset' |
+                                        (click)="onResetMfk()">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
@@ -1036,8 +1036,7 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer"
-                                        (click)="energyEfficiencyId = []; getFiltersData()">{{ 'vehicle.reset' |
+                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
@@ -1965,7 +1964,8 @@
                                     </h5>
                                 </div>
                                 <div>
-                                    <span class="ct_fs_14 ct_fw_400 ct_color_8f0c1f">{{ 'vehicle.reset' |
+                                    <span (click)="onResetEnergyEfficiency()"
+                                        class="ct_fs_14 ct_fw_400 ct_color_8f0c1f cursor-pointer">{{ 'vehicle.reset' |
                                         translate }}</span>
                                 </div>
                             </div>
@@ -1977,7 +1977,7 @@
                                         <input class="form-check-input" type="checkbox" value=""
                                             [id]="'energy-' + item.value"
                                             [checked]="energyEfficiencyId.includes(item.value)"
-                                            (change)="onEnergyEfficiencyChange(item.value, $event)" />
+                                            (change)="onEnergyEfficiencyChange(item.label, $event)" />
                                         <label [for]="'energy-' + item.value">{{ item.label | translate }} </label>
                                     </div>
                                     <div>

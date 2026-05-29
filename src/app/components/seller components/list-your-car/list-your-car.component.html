@@ -815,14 +815,17 @@
                                                                                           (ngModelChange)="onBrandSelectionChange($event)"
                                                                                           [ngModelOptions]="{ standalone: true }"
                                                                                           [nzLoading]="loadingBrands">
-                                                                                          @for (item of brandOptions; track item.value) {
+                                                                                          @for (item of brandOptions;
+                                                                                          track item.value) {
                                                                                           <nz-option nzCustomContent
                                                                                                 [nzLabel]="item.label"
                                                                                                 [nzValue]="item.value"
                                                                                                 class="ct_custom_select">
                                                                                                 <div
                                                                                                       class="d-flex align-items-center justify-content-between">
-                                                                                                      <p class="m-0">{{item.label}}</p>
+                                                                                                      <p class="m-0">
+                                                                                                            {{item.label}}
+                                                                                                      </p>
                                                                                                       <input type="radio"
                                                                                                             class="cutom_radio_input"
                                                                                                             [checked]="item.value === selectedBrandId" />
@@ -858,14 +861,17 @@
                                                                                           [ngModelOptions]="{ standalone: true }"
                                                                                           [nzDisabled]="!selectedBrandId"
                                                                                           [nzLoading]="loadingModels">
-                                                                                          @for (item of modelOptions; track item.value) {
+                                                                                          @for (item of modelOptions;
+                                                                                          track item.value) {
                                                                                           <nz-option nzCustomContent
                                                                                                 [nzLabel]="item.label"
                                                                                                 [nzValue]="item.value"
                                                                                                 class="ct_custom_select">
                                                                                                 <div
                                                                                                       class="d-flex align-items-center justify-content-between">
-                                                                                                      <p class="m-0">{{item.label}}</p>
+                                                                                                      <p class="m-0">
+                                                                                                            {{item.label}}
+                                                                                                      </p>
                                                                                                       <input type="radio"
                                                                                                             class="cutom_radio_input"
                                                                                                             [checked]="item.value === selectedModelId" />
@@ -901,14 +907,17 @@
                                                                                           [ngModelOptions]="{ standalone: true }"
                                                                                           [nzDisabled]="!selectedModelId"
                                                                                           [nzLoading]="loadingVersions">
-                                                                                          @for (item of versionOptions; track item.value) {
+                                                                                          @for (item of versionOptions;
+                                                                                          track item.value) {
                                                                                           <nz-option nzCustomContent
                                                                                                 [nzLabel]="item.label"
                                                                                                 [nzValue]="item.value"
                                                                                                 class="ct_custom_select">
                                                                                                 <div
                                                                                                       class="d-flex align-items-center justify-content-between">
-                                                                                                      <p class="m-0">{{item.label}}</p>
+                                                                                                      <p class="m-0">
+                                                                                                            {{item.label}}
+                                                                                                      </p>
                                                                                                       <input type="radio"
                                                                                                             class="cutom_radio_input"
                                                                                                             [checked]="item.value === selectedVersionId" />
@@ -1151,10 +1160,10 @@
                                                                         </div>
                                                                         <input type="text" class="form-control"
                                                                               [placeholder]="'vehicle.enterHere' | translate"
-                                                                              formControlName="sittingCapacity" />
+                                                                              formControlName="seats" />
                                                                         <small class="text-danger">{{validationErrorService.getErrorMessage((
                                                                               'filters.seats' | translate),
-                                                                              carFormOne.get("sittingCapacity"))}}</small>
+                                                                              carFormOne.get("seats"))}}</small>
                                                                   </div>
                                                                   <div class="col-sm-4 mt-3">
                                                                         <div>
@@ -1303,12 +1312,12 @@
                                                                               <input type="text"
                                                                                     [placeholder]="'vehicle.enterHere' | translate"
                                                                                     class="form-control ct_input"
-                                                                                    formControlName="consuption" />
+                                                                                    formControlName="consumption" />
                                                                         </div>
                                                                   </div>
                                                                   <small class="text-danger">{{validationErrorService.getErrorMessage((
                                                                         'vehicle.consumption'| translate),
-                                                                        carFormOne.get("consuption"))}}</small>
+                                                                        carFormOne.get("consumption"))}}</small>
                                                             </div>
                                                             <div class="col-lg-4 col-md-4 mt-3">
                                                                   <div>
@@ -2529,8 +2538,9 @@
                                                       <div class="upload-videos mt-3" *ngIf="reelPreviewUrl">
                                                             <div class="ct_single_uploaded_img mt-2 py-2">
                                                                   <div class="mobile-frame">
-                                                                        <video #reelPreviewVideo [src]="reelPreviewUrl" autoplay controls
-                                                                              playsinline class="videoPreview"></video>
+                                                                        <video #reelPreviewVideo [src]="reelPreviewUrl"
+                                                                              autoplay controls playsinline
+                                                                              class="videoPreview"></video>
                                                                         <button class="btn-remove" type="button">
                                                                               <i class="fa-solid fa-trash"
                                                                                     (click)="removeReel()"></i>

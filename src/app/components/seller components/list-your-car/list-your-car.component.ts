@@ -94,12 +94,12 @@ export class ListYourCarComponent {
       'body_type_id',
       'powerOutput',
       'doors',
-      'sittingCapacity',
+      'seats',
       'cylinders',
       'gears',
       'carCondition',
       'carMileage',
-      'consuption',
+      'consumption',
       'emptyWeight',
       'totalWeight',
       'state_id',
@@ -556,7 +556,7 @@ export class ListYourCarComponent {
       version: ['', [Validators.required, NoWhitespaceDirective.validate]],
       registration_month: ['', [Validators.required]],
       registration_year: ['', [Validators.required]],
-      sittingCapacity: [null, [Validators.required]],
+      seats: [null, [Validators.required]],
       cylinders: [''],
       body_type_id: ['', [Validators.required]],
       drive_type_id: ['', [Validators.required]],
@@ -576,7 +576,7 @@ export class ListYourCarComponent {
       engineType: [''],
       co2Emission: [''],
       carCondition: ['', Validators.required],
-      consuption: ['', Validators.required],
+      consumption: ['', Validators.required],
       emptyWeight: [''],
       totalWeight: [''],
       exterior_color_id: ['', Validators.required],
@@ -732,24 +732,24 @@ export class ListYourCarComponent {
     return true;
   }
 
-  private validateAllStepsBeforeFinalSubmit(): boolean {
-    const stepsToValidate = [1, 2, 3, 4, 5];
-    let firstInvalidStep: number | null = null;
+  // private validateAllStepsBeforeFinalSubmit(): boolean {
+  //   const stepsToValidate = [1, 2, 3, 4, 5];
+  //   let firstInvalidStep: number | null = null;
 
-    stepsToValidate.forEach((step) => {
-      const isValid = this.isStepValid(step, true);
-      if (!isValid && firstInvalidStep === null) {
-        firstInvalidStep = step;
-      }
-    });
+  //   stepsToValidate.forEach((step) => {
+  //     const isValid = this.isStepValid(step, true);
+  //     if (!isValid && firstInvalidStep === null) {
+  //       firstInvalidStep = step;
+  //     }
+  //   });
 
-    if (firstInvalidStep !== null) {
-      this.goToStep(firstInvalidStep);
-      return false;
-    }
+  //   if (firstInvalidStep !== null) {
+  //     this.goToStep(firstInvalidStep);
+  //     return false;
+  //   }
 
-    return true;
-  }
+  //   return true;
+  // }
 
   onCarImagesSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -859,7 +859,7 @@ export class ListYourCarComponent {
 
     const fieldMap: Record<string, string> = {
       bodyTypes: 'body_type',
-      consuption: 'consumption'
+      consumption: 'consumption'
     };
 
     Object.keys(formValue).forEach((key) => {
@@ -900,7 +900,6 @@ export class ListYourCarComponent {
   onSubmit(): void {
     if (!this.carFormOne) return;
     if (this.submitInProgress) return;
-
     if (this.currentFormStep === 1 && this.activeVehicleTab === 'make-models' && this.stepOneViewState === 'result-list') {
       this.handleStepOneSubmit();
       return;
@@ -917,11 +916,7 @@ export class ListYourCarComponent {
       return;
     }
 
-    if (this.currentFormStep === this.getTotalSteps()) {
-      if (!this.validateAllStepsBeforeFinalSubmit()) {
-        return;
-      }
-    } else if (!this.isStepValid(this.currentFormStep, true)) {
+    if (!this.isStepValid(this.currentFormStep, true)) {
       return;
     }
 
@@ -1263,7 +1258,7 @@ export class ListYourCarComponent {
       ),
       dateRange: this.buildDateRange(vehicle),
       doors: this.formatVehicleValue(this.pickFirst(vehicle, ['doors', 'door_count'])),
-      seats: this.formatVehicleValue(this.pickFirst(vehicle, ['sittingCapacity', 'seats', 'seat_count'])),
+      seats: this.formatVehicleValue(this.pickFirst(vehicle, ['seats', 'seats', 'seat_count'])),
       raw: vehicle
     };
   }
@@ -1280,7 +1275,7 @@ export class ListYourCarComponent {
         this.createDetailItem(this.translate.instant('vehicle.fuelType'), this.pickFirst(vehicle, ['fuel_name', 'fuel_type_value', 'fuel_type', 'fuel'])),
         this.createDetailItem(this.translate.instant('vehicle.driveType'), this.pickFirst(vehicle, ['drive_name', 'drive_type_value', 'drive_type', 'driveType'])),
         this.createDetailItem(this.translate.instant('vehicle.doors'), this.pickFirst(vehicle, ['doors', 'door_count'])),
-        this.createDetailItem(this.translate.instant('filters.seats'), this.pickFirst(vehicle, ['sittingCapacity', 'seats', 'seat_count'])),
+        this.createDetailItem(this.translate.instant('filters.seats'), this.pickFirst(vehicle, ['seats', 'seats', 'seat_count'])),
         this.createDetailItem(this.translate.instant('vehicle.powerOutput'), this.pickFirst(vehicle, ['ps', 'totalPs', 'powerOutput', 'power_output'])),
         this.createDetailItem('Engine (cm3)', this.pickFirst(vehicle, ['displacement', 'engineType', 'engine', 'engine_cc', 'engine_cm3', 'engine_displacement'])),
         this.createDetailItem(this.translate.instant('vehicle.cylinders'), this.pickFirst(vehicle, ['cylinders', 'cylinder_count'])),
@@ -1290,7 +1285,7 @@ export class ListYourCarComponent {
       ].filter((detail: VehicleDetailItem | null): detail is VehicleDetailItem => !!detail),
       rightItems: [
         this.createDetailItem(`${this.translate.instant('filters.co2Emissions')} (g/km)`, this.pickFirst(vehicle, ['co2Emission', 'co2_emission', 'co2_emissions'])),
-        this.createDetailItem(this.translate.instant('vehicle.consumption'), this.pickFirst(vehicle, ['consuption', 'consumption'])),
+        this.createDetailItem(this.translate.instant('vehicle.consumption'), this.pickFirst(vehicle, ['consumption', 'consumption'])),
         this.createDetailItem(this.translate.instant('vehicle.emissionStandard'), this.pickFirst(vehicle, ['emission_standard', 'emissionStandard'])),
         this.createDetailItem(this.translate.instant('vehicle.vehicleIdentificationNumber'), this.pickFirst(vehicle, ['vin_number', 'serial_number'])),
         this.createDetailItem(this.translate.instant('vehicle.typeApproval'), this.pickFirst(vehicle, ['type_approval', 'typeApprovalNrs'])),
@@ -1320,7 +1315,7 @@ export class ListYourCarComponent {
         this.createDetailItem('Fuel', this.pickFirst(vehicle, ['fuel_name', 'fuel_type_value', 'fuel_type', 'fuel'])),
         this.createDetailItem('Drive', this.pickFirst(vehicle, ['drive_name', 'drive_type_value', 'drive_type', 'driveType'])),
         this.createDetailItem('Doors', this.pickFirst(vehicle, ['doors', 'door_count'])),
-        this.createDetailItem('Seats', this.pickFirst(vehicle, ['sittingCapacity', 'seats', 'seat_count'])),
+        this.createDetailItem('Seats', this.pickFirst(vehicle, ['seats', 'seats', 'seat_count'])),
         this.createDetailItem('Power (PS / kW)', formattedPower),
         this.createDetailItem('Engine (cm³)', this.pickFirst(vehicle, ['displacement', 'engineType', 'engine', 'engine_cc', 'engine_cm3', 'engine_displacement'])),
         this.createDetailItem('Cylinders', this.pickFirst(vehicle, ['cylinders', 'cylinder_count'])),
@@ -1333,7 +1328,7 @@ export class ListYourCarComponent {
       rightItems: [
         this.createDetailItem('Type approval', this.pickFirst(vehicle, ['type_approval', 'typeApprovalNrs'])),
         this.createDetailItem('CO₂ emissions (g/km)', this.pickFirst(vehicle, ['co2Emission', 'co2_emission', 'co2_emissions'])),
-        this.createDetailItem('Fuel consumption', this.pickFirst(vehicle, ['consuption', 'consumption'])),
+        this.createDetailItem('Fuel consumption', this.pickFirst(vehicle, ['consumption', 'consumption'])),
         this.createDetailItem('Emissions standard', this.pickFirst(vehicle, ['emission_standard', 'emissionStandard'])),
         this.createDetailItem('VIN', this.pickFirst(vehicle, ['vin_number', 'serial_number'])),
         this.createDetailItem('Registration master number', this.pickFirst(vehicle, ['registration_master_number']))
@@ -1405,14 +1400,14 @@ export class ListYourCarComponent {
       version: this.pickFirst(vehicle, ['version', 'version_name', 'title', 'name']) || this.carFormOne.get('version')?.value,
       registration_month: this.pickFirst(vehicle, ['registration_month']) || this.carFormOne.get('registration_month')?.value,
       registration_year: this.pickFirst(vehicle, ['registration_year']) || this.carFormOne.get('registration_year')?.value,
-      sittingCapacity: this.pickFirst(vehicle, ['sittingCapacity', 'seats', 'seat_count']) || this.carFormOne.get('sittingCapacity')?.value,
+      seats: this.pickFirst(vehicle, ['seats', 'seats', 'seat_count']) || this.carFormOne.get('seats')?.value,
       cylinders: this.pickFirst(vehicle, ['cylinders', 'cylinder_count']) || this.carFormOne.get('cylinders')?.value,
       powerOutput: this.pickFirst(vehicle, ['ps', 'totalPs', 'powerOutput', 'power_output', 'horsepower', 'kw_output']) || this.carFormOne.get('powerOutput')?.value,
       doors: this.pickFirst(vehicle, ['doors', 'door_count']) || this.carFormOne.get('doors')?.value,
       gears: this.pickFirst(vehicle, ['gears', 'gear_count']) || this.carFormOne.get('gears')?.value,
       engineType: this.pickFirst(vehicle, ['displacement', 'engineType', 'engine', 'engine_cc', 'engine_cm3', 'engine_displacement']) || this.carFormOne.get('engineType')?.value,
       co2Emission: this.pickFirst(vehicle, ['co2Emission', 'co2_emission', 'co2_emissions']) || this.carFormOne.get('co2Emission')?.value,
-      consuption: this.pickFirst(vehicle, ['consuption', 'consumption']) || this.carFormOne.get('consuption')?.value,
+      consumption: this.pickFirst(vehicle, ['consumption', 'consumption']) || this.carFormOne.get('consumption')?.value,
       emptyWeight: this.pickFirst(vehicle, ['emptyWeight', 'empty_weight', 'curb_weight', 'curb_weight_kg']) || this.carFormOne.get('emptyWeight')?.value,
       totalWeight: this.pickFirst(vehicle, ['totalWeight', 'total_weight']) || this.carFormOne.get('totalWeight')?.value,
       type_approval: this.pickFirst(vehicle, ['type_approval', 'typeApprovalNrs']) || this.carFormOne.get('type_approval')?.value,
@@ -1939,14 +1934,14 @@ export class ListYourCarComponent {
   private clearSelectedMatchedVehicleData(): void {
     this.carFormOne.patchValue({
       version: '',
-      sittingCapacity: null,
+      seats: null,
       cylinders: '',
       powerOutput: '',
       doors: '',
       gears: '',
       engineType: '',
       co2Emission: '',
-      consuption: '',
+      consumption: '',
       emptyWeight: '',
       totalWeight: '',
       fuel_type_id: '',

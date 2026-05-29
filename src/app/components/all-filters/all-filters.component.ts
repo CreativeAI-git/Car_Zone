@@ -454,6 +454,11 @@ export class AllFiltersComponent {
     this.getFiltersData();
   }
 
+  onResetEnergyEfficiency() {
+    this.energyEfficiencyId = [];
+    this.getFiltersData();
+  }
+
   onResetYear() {
     const defaults = this.filterService.getDefaultPayload();
     this.yearRange = [
@@ -592,6 +597,10 @@ export class AllFiltersComponent {
 
   onResetCo2Emission() {
     this.co2EmissionRange = [null, null];
+    this.getFiltersData();
+  }
+  onResetMfk() {
+    this.warrantyIds = [];
     this.getFiltersData();
   }
 
