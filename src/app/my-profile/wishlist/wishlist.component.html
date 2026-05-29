@@ -140,10 +140,19 @@
                                                             </div>
                                                             <div class="col-sm-7">
                                                                   <div class="mt-md-0 mt-3">
-                                                                        <img [src]="item.sellerDetails.profileImage"
+                                                                        <img [src]="item.sellerDetails.profileImage || 'img/icons/user-circle-img.png'"
                                                                               class="seller-image" />
                                                                         <h4 class="ct_fs_20 ct_fw_500 mt-2">
                                                                               {{item.sellerDetails.fullName}}</h4>
+                                                                        @if
+                                                                        (item.sellerDetails.accountType !== 'private'
+                                                                        &&
+                                                                        item.sellerDetails.sellerType !== 'private'
+                                                                        &&
+                                                                        item.sellerDetails.account_type !== 'private'
+                                                                        &&
+                                                                        item.sellerDetails.seller_type !== 'private')
+                                                                        {
                                                                         <div class="d-flex align-items-center mt-3">
                                                                               <img src="img/icons/ep_location.png" />
                                                                               <p class="ct_fs_16 ct_fw_300 mb-0">
@@ -161,6 +170,7 @@
                                                                               <img src="img/icons/rating.png" />
                                                                               <img src="img/icons/rating.png" />
                                                                         </div>
+                                                                        }
 
                                                                         <!-- <div class="mt-2">
                                                                               <img src="img/icons/c-icon.png"

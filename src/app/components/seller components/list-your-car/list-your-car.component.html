@@ -2529,7 +2529,7 @@
                                                       <div class="upload-videos mt-3" *ngIf="reelPreviewUrl">
                                                             <div class="ct_single_uploaded_img mt-2 py-2">
                                                                   <div class="mobile-frame">
-                                                                        <video [src]="reelPreviewUrl" autoplay controls
+                                                                        <video #reelPreviewVideo [src]="reelPreviewUrl" autoplay controls
                                                                               playsinline class="videoPreview"></video>
                                                                         <button class="btn-remove" type="button">
                                                                               <i class="fa-solid fa-trash"

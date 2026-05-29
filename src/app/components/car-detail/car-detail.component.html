@@ -504,6 +504,10 @@
                                           <img [src]="carData?.seller.profileImage || 'img/icons/user-circle-img.png'"
                                                 class="seller-image" />
                                           <h4 class="ct_fs_20 ct_fw_500 mt-2">{{carData?.seller.name}}</h4>
+                                          @if (carData?.seller?.accountType !== 'private' &&
+                                          carData?.seller?.sellerType !== 'private' &&
+                                          carData?.seller?.account_type !== 'private' &&
+                                          carData?.seller?.seller_type !== 'private') {
                                           <div class="d-flex align-items-center mt-3">
                                                 <i class="fa-solid fa-location-dot me-2"></i>
                                                 <p class="ct_fs_16 ct_fw_300 mb-0">
@@ -521,6 +525,7 @@
                                                 <img src="img/icons/rating.png" />
                                                 <img src="img/icons/rating.png" />
                                           </div>
+                                          }
                                           <div class="d-flex align-items-center gap-3 my-3">
                                                 <div class="w-50">
                                                       <a class="btn-red w-100 text-center ct_fw_500">{{

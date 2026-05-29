@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { CommonModule } from '@angular/common';
@@ -81,6 +81,7 @@ interface VehicleDetailsView {
   styleUrl: './list-your-car.component.css'
 })
 export class ListYourCarComponent {
+  @ViewChild('reelPreviewVideo') reelPreviewVideo?: ElementRef<HTMLVideoElement>;
   private destroy$ = new Subject<void>();
   private readonly stepControlMap: Record<number, string[]> = {
     2: [
@@ -623,8 +624,15 @@ export class ListYourCarComponent {
   private goToStep(step: number): void {
     const totalSteps = this.getTotalSteps();
     if (step < 1 || step > totalSteps) return;
+    if (step > this.currentFormStep) {
+      this.pauseReelPreviewVideo();
+    }
     this.currentFormStep = step;
     this.syncActiveStepClasses();
+  }
+
+  private pauseReelPreviewVideo(): void {
+    this.reelPreviewVideo?.nativeElement.pause();
   }
 
   private updateStepper(): void {
@@ -799,6 +807,7 @@ export class ListYourCarComponent {
   }
 
   removeReel(): void {
+    this.pauseReelPreviewVideo();
     this.selectedReel = null;
     if (this.reelPreviewUrl) {
       URL.revokeObjectURL(this.reelPreviewUrl);

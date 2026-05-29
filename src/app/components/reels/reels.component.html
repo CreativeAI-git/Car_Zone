@@ -100,22 +100,25 @@
                                           <img [src]="item.sellerLogo || 'img/icons/user-circle-img.png'"
                                                 class="seller-image" />
                                           <h4 class="ct_fs_20 ct_fw_500 mt-2">{{item.sellerName}}</h4>
-                                          <div class="d-flex align-items-center mt-3">
-                                                <img src="img/icons/ep_location.png" class="loc-img me-2" />
-                                                <p class="ct_fs_16 ct_fw_300 mb-0">
-                                                      {{item.sellerAddress}}
-                                                </p>
-                                          </div>
+                                          @if (item.accountType !== 'private' && item.sellerType !== 'private' &&
+                                          item.account_type !== 'private' && item.seller_type !== 'private') {
+                                                <div class="d-flex align-items-center mt-3">
+                                                      <img src="img/icons/ep_location.png" class="loc-img me-2" />
+                                                      <p class="ct_fs_16 ct_fw_300 mb-0">
+                                                            {{item.sellerAddress}}
+                                                      </p>
+                                                </div>
 
-                                          <div class="mt-2">
-                                                <img src="img/icons/google.png" class="me-2" />
-                                                4.5
-                                                <img src="img/icons/rating.png" />
-                                                <img src="img/icons/rating.png" />
-                                                <img src="img/icons/rating.png" />
-                                                <img src="img/icons/rating.png" />
-                                                <img src="img/icons/rating.png" />
-                                          </div>
+                                                <div class="mt-2">
+                                                      <img src="img/icons/google.png" class="me-2" />
+                                                      4.5
+                                                      <img src="img/icons/rating.png" />
+                                                      <img src="img/icons/rating.png" />
+                                                      <img src="img/icons/rating.png" />
+                                                      <img src="img/icons/rating.png" />
+                                                      <img src="img/icons/rating.png" />
+                                                </div>
+                                          }
 
                                           <div class="mt-4">
                                                 <a routerLink="/car-detail" [queryParams]="{id: item.id}"

@@ -829,7 +829,8 @@
                         <div class="card position-relative" routerLink="/car-detail" [queryParams]="{id: item.car_id}">
                               <img [src]="item.car_image" class="card-img-top browse-car-pop" alt="..." />
                               <div class="seller-image-div">
-                                    <img [src]="item.user_profile_image" class="seller-image-2">
+                                    <img [src]="item.user_profile_image || 'img/icons/user-circle-img.png'"
+                                          class="seller-image-2">
                               </div>
                         </div>
                   </div>
@@ -866,8 +867,7 @@
 
                         <div class="w-50 border-top border-danger opacity-50 mb-4" style="z-index:1;"></div>
 
-                        <button type="button" class="btn-red-transparent" style="z-index:1;"
-                              (click)="onResetFilters()">
+                        <button type="button" class="btn-red-transparent" style="z-index:1;" (click)="onResetFilters()">
                               Reset Filters
                         </button>
                   </div>
@@ -982,6 +982,10 @@
                                                                   class="seller-image" />
                                                             <h4 class="ct_fs_20 ct_fw_500 mt-2">
                                                                   {{item.sellerDetails.fullName}}</h4>
+                                                            @if (item.sellerDetails.accountType !== 'private' &&
+                                                            item.sellerDetails.sellerType !== 'private' &&
+                                                            item.sellerDetails.account_type !== 'private' &&
+                                                            item.sellerDetails.seller_type !== 'private') {
                                                             <div class="d-flex align-items-center mt-3">
                                                                   <img src="img/icons/ep_location.png" />
                                                                   <p class="ct_fs_16 ct_fw_300 mb-0">
@@ -999,6 +1003,7 @@
                                                                   <img src="img/icons/rating.png" />
                                                                   <img src="img/icons/rating.png" />
                                                             </div>
+                                                            }
 
                                                             <!-- <div class="mt-2">
                                                                   <img src="img/icons/c-icon.png" class="me-2" />
