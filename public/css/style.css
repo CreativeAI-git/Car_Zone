@@ -748,6 +748,15 @@ span.navbar-toggler-icon i {
   color: #8f0c1f;
 }
 
+.btn-red:hover img {
+  filter: invert(81%) sepia(96%) saturate(7492%) hue-rotate(357deg) brightness(62%) contrast(91%);
+  ;
+}
+
+.btn-red-transparent:hover img {
+  filter: brightness(0) invert(1);
+}
+
 
 
 

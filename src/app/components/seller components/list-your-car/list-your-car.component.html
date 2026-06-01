@@ -2094,11 +2094,14 @@
                                                             </div>
 
                                                             <div class="col-12">
-                                                                  <textarea class="form-control mt-2 mb-2"
+                                                                  <textarea class="form-control mt-2"
                                                                         id="exampleFormControlTextarea1" rows="3"
                                                                         [placeholder]="'vehicle.enterHere' | translate"
                                                                         formControlName="additional_title_999">
                                                                   </textarea>
+                                                                  <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                        'vehicle.additionalTitle' | translate),
+                                                                        carFormOne.get("additional_title_999"))}}</small>
                                                             </div>
 
                                                             <div class="col-12 mt-3">
@@ -2108,11 +2111,14 @@
                                                                               translate }}
                                                                         </h5>
                                                                   </div>
-                                                                  <textarea class="form-control mt-1 mb-5"
+                                                                  <textarea class="form-control mt-1"
                                                                         id="exampleFormControlTextarea1" rows="3"
                                                                         [placeholder]="'vehicle.enterHere' | translate"
                                                                         formControlName="description">
                                                                     </textarea>
+                                                                  <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                        'vehicle.vehicleDescription' | translate),
+                                                                        carFormOne.get("description"))}}</small>
                                                             </div>
                                                       </div>
                                                 </div>
