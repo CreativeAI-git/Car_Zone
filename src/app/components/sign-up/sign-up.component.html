@@ -76,6 +76,7 @@
                                     [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
                                     [searchCountryFlag]="true"
                                     [customPlaceholder]="('common.enter' | translate) + ' ' + ('profile.phoneNumber' | translate)"
+                                    [onlyCountries]="allowedCountries"
                                     [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
                                     [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
                                     [phoneValidation]="true" formControlName="businessPhone">
@@ -91,6 +92,7 @@
                                     [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
                                     [searchCountryFlag]="true"
                                     [customPlaceholder]="('common.enter' | translate) + ' Mobile Phone'"
+                                    [onlyCountries]="allowedCountries"
                                     [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
                                     [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
                                     [phoneValidation]="true" formControlName="mobilePhone">
@@ -106,6 +108,7 @@
                                     [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
                                     [searchCountryFlag]="true"
                                     [customPlaceholder]="('common.enter' | translate) + ' ' + ('profile.whatsAppNumber' | translate)"
+                                    [onlyCountries]="allowedCountries"
                                     [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
                                     [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
                                     [phoneValidation]="true" formControlName="whatsappNumber">

@@ -28,7 +28,14 @@ export class SignUpComponent {
   Form: FormGroup;
   SearchCountryField = SearchCountryField
   CountryISO = CountryISO;
-  selectedCountry = CountryISO.Sweden;
+  selectedCountry = CountryISO.Switzerland;
+  allowedCountries: CountryISO[] = [
+    CountryISO.Switzerland,
+    CountryISO.France,
+    CountryISO.Germany,
+    CountryISO.Italy,
+    CountryISO.Spain
+  ];
   loading: boolean = false
   isShowPassword: boolean = false
   isShowConfirmPassword: boolean = false
