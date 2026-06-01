@@ -2305,22 +2305,6 @@
                                                                   carFormOne.get("last_name"))}}</small>
                                                       </div>
                                                 </div>
-
-                                                <div class="col-lg-4 mt-3">
-                                                      <div>
-                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'profile.street' |
-                                                                  translate }}</h5>
-                                                            <div class="position-relative">
-                                                                  <input type="text"
-                                                                        [placeholder]="'vehicle.enterHere' | translate"
-                                                                        class="form-control" formControlName="street" />
-                                                            </div>
-                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
-                                                                  'profile.street'
-                                                                  | translate),
-                                                                  carFormOne.get("street"))}}</small>
-                                                      </div>
-                                                </div>
                                                 <div class="col-lg-4 mt-3">
                                                       <div>
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'profile.houseNumber'
@@ -2337,6 +2321,22 @@
                                                                   carFormOne.get("house_number"))}}</small>
                                                       </div>
                                                 </div>
+                                                <div class="col-lg-4 mt-3">
+                                                      <div>
+                                                            <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'profile.street' |
+                                                                  translate }}</h5>
+                                                            <div class="position-relative">
+                                                                  <input type="text"
+                                                                        [placeholder]="'vehicle.enterHere' | translate"
+                                                                        class="form-control" formControlName="street" />
+                                                            </div>
+                                                            <small class="text-danger">{{validationErrorService.getErrorMessage((
+                                                                  'profile.street'
+                                                                  | translate),
+                                                                  carFormOne.get("street"))}}</small>
+                                                      </div>
+                                                </div>
+
                                                 <div class="col-lg-4 mt-3">
                                                       <div>
                                                             <h5 class="ct_fs_15 ct_fw_400 mb-2">{{ 'profile.postalCode'
