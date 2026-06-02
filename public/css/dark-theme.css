@@ -229,6 +229,7 @@ body.theme-dark .ct_find_vehicle_tabs button.nav-link {
 
 body.theme-dark .search-vehicle-modal-box {
   background-color: #333;
+  color: #fff;
 }
 
 body.theme-dark .ct_seller_banner:before {
@@ -550,4 +551,8 @@ body.theme-dark .my-listings-search input {
   background: #333 ! important;
   color: #e5e7eb !important;
   border-color: #ececf2 !important;
+}
+
+body.theme-dark .ct_custom_check {
+  color: #e5e7eb ! important;
 }
