@@ -137,14 +137,14 @@ body.theme-dark .accordion-button {
 }
 
 body.theme-dark .carzone-accordian .accordion-body {
-  background-color: #555;
+  background-color: #333;
   color: #fff;
 }
 
 body.theme-dark .filter-preview-box,
 body.theme-dark .car-content-right .box {
-  background-color: #555;
-  border-color: #555;
+  background-color: #333;
+  border-color: #333;
 }
 
 
@@ -158,7 +158,7 @@ body.theme-dark .text-dark {
 } */
 
 body.theme-dark .car-card {
-  border: 1px solid #555;
+  border: 1px solid #333;
 }
 
 body.theme-dark .filter-preview-box div img,
@@ -183,10 +183,8 @@ body.theme-dark .car-content-right-list li img {
 
 body.theme-dark .calculator-box,
 body.theme-dark .car-detail-value-sec,
-body.theme-dark .msg-body ul .sender,
-
-body.theme-dark .bundle-card {
-  background-color: #555;
+body.theme-dark .msg-body ul .sender {
+  background-color: #333;
 }
 
 body.theme-dark h1,
@@ -213,7 +211,7 @@ body.theme-dark .bundle-price {
 body.theme-dark .profile-sidebar-menu li a:hover,
 body.theme-dark .profile-sidebar-menu li .active,
 body.theme-dark .plan-box {
-  background-color: #555 !important;
+  background-color: #333 !important;
 }
 
 body.theme-dark .notification-item div,
@@ -230,7 +228,7 @@ body.theme-dark .ct_find_vehicle_tabs button.nav-link {
 }
 
 body.theme-dark .search-vehicle-modal-box {
-  background-color: #555;
+  background-color: #333;
 }
 
 body.theme-dark .ct_seller_banner:before {
@@ -239,7 +237,7 @@ body.theme-dark .ct_seller_banner:before {
 }
 
 body.theme-dark .ct_right_main_box {
-  border: 0.4px solid #555;
+  border: 0.4px solid #333;
 }
 
 body.theme-dark select.form-select {
@@ -261,7 +259,7 @@ body.theme-dark .sellter-detail-tabs li button {
 
 
 body.theme-dark .chat-date-box {
-  background: #555;
+  background: #333;
 }
 
 body.theme-dark .send-box {
@@ -296,7 +294,7 @@ body.theme-dark .wishlist-svg path {
 
 body.theme-dark .main-header-section .navbar {
   background: transparent;
-  border-color: #555;
+  border-color: #333;
 }
 
 body.theme-dark .role-modal-panel {
@@ -352,12 +350,12 @@ body.theme-dark .main-logo svg path:nth-child(3) {
 /* seller side */
 
 body.theme-dark .ct_car_listed_list:before {
-  border-color: #555;
+  border-color: #333;
 }
 
 body.theme-dark .ct_num {
   background: #111;
-  border-color: #555;
+  border-color: #333;
   color: #fff;
 }
 
@@ -423,8 +421,8 @@ body.theme-dark .login-popup__left {
 }
 
 body.theme-dark .login-popup__role:has(input:checked) {
-  border-color: #555;
-  background: #555;
+  border-color: #333;
+  background: #333;
 }
 
 body.theme-dark .upload-box {
@@ -467,4 +465,54 @@ body.theme-dark .ant-select {
 
 .my-listing-all-box {
   width: 100px;
+}
+
+
+
+body.theme-dark .purchase-type-badge,
+body.theme-dark .history-label {
+  color: #e5e7eb;
+}
+
+body.theme-dark .ct_private_profile_note {
+  background: #333;
+  border-color: #333;
+}
+
+body.theme-dark .ct_private_profile_note p,
+body.theme-dark .profile-notifications-copy,
+body.theme-dark .my-listing-row__specs span,
+body.theme-dark .my-listing-row__date {
+  color: #e5e7eb ! important;
+
+}
+
+body.theme-dark .ct_private_profile_note h6,
+body.theme-dark .profile-notifications-title,
+body.theme-dark .history-price,
+body.theme-dark .ct_share_action,
+body.theme-dark .my-listing-row__title,
+body.theme-dark .my-listing-row__price {
+  color: #fff !important;
+}
+
+body.theme-dark .profile-edit-box,
+body.theme-dark .ct_right_box,
+body.theme-dark .ct_right_main_box {
+  border: 0.4px solid #333 !important;
+}
+
+body.theme-dark .profile-notifications-card,
+body.theme-dark .my-listings-shell,
+body.theme-dark .bundle-card,
+body.theme-dark .history-item {
+  background-color: #333;
+  border: 0.4px solid #333 !important;
+}
+
+
+body.theme-dark .my-listings-search input {
+  background: #333 ! important;
+  color: #e5e7eb !important;
+  border-color: #ececf2 !important;
 }

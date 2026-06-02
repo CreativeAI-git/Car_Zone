@@ -57,6 +57,10 @@ export const routes: Routes = [
                                     loadComponent: () => import('./my-profile/saved-reels/saved-reels.component').then(m => m.SavedReelsComponent),
                               },
                               {
+                                    path: 'my-reels',
+                                    loadComponent: () => import('./my-profile/my-reels/my-reels.component').then(m => m.MyReelsComponent),
+                              },
+                              {
                                     path: 'change-password',
                                     loadComponent: () => import('./my-profile/change-password/change-password.component').then(m => m.ChangePasswordComponent),
                               },

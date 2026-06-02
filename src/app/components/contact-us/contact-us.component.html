@@ -1,32 +1,37 @@
-<section class="ct_py_70">
+<section class="ct_mt_100">
       <div class="container">
             <div class="row">
                   <div class="col-md-8 mx-auto">
                         <div class="ct_edit_profile_bg">
                               <form action="">
                                     <div class="form-group mb-4">
-                                          <label for="" class="mb-2 ct_fw_600 ">{{'profile.fullName' | translate}}</label>
+                                          <label for="" class="mb-2 ct_fw_600 ">{{'profile.fullName' |
+                                                translate}}</label>
                                           <input type="text" class="form-control ct_input"
                                                 placeholder="{{'common.enter' | translate}} {{'profile.fullName' | translate | lowercase}}">
                                     </div>
                                     <div class="form-group mb-4">
-                                          <label for="" class="mb-2 ct_fw_600 ">{{'auth.emailAddress' | translate}}</label>
+                                          <label for="" class="mb-2 ct_fw_600 ">{{'auth.emailAddress' |
+                                                translate}}</label>
                                           <input type="email" class="form-control ct_input"
                                                 placeholder="{{'common.enter' | translate}} {{'auth.emailAddress' | translate | lowercase}}">
                                     </div>
                                     <div class="form-group mb-4">
-                                          <label for="" class="mb-2 ct_fw_600 ">{{'profile.phoneNumber' | translate}}</label>
+                                          <label for="" class="mb-2 ct_fw_600 ">{{'profile.phoneNumber' |
+                                                translate}}</label>
                                           <input type="text" class="form-control ct_input"
                                                 placeholder="{{'common.enter' | translate}} {{'profile.phoneNumber' | translate | lowercase}}">
                                     </div>
                                     <div class="form-group mb-4">
-                                          <label for="" class="mb-2 ct_fw_600 ">{{'profile.address' | translate}}</label>
+                                          <label for="" class="mb-2 ct_fw_600 ">{{'profile.address' |
+                                                translate}}</label>
                                           <textarea class="form-control ct_input h-auto" rows="4"
                                                 placeholder="{{'common.enter' | translate}} {{'profile.address' | translate | lowercase}}"></textarea>
                                     </div>
 
                                     <div class="text-center mt-4">
-                                          <app-submit-button [text]="'common.submit' | translate" [class]="'ct_red_btn'" [isLoading]="loading"></app-submit-button>
+                                          <app-submit-button [text]="'common.submit' | translate" [class]="'btn-red'"
+                                                [isLoading]="loading"></app-submit-button>
                                     </div>
                               </form>
                         </div>
