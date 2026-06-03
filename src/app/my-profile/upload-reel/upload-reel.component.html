@@ -1,0 +1,126 @@
+<section class="upload-reel-page">
+    <div class="upload-reel-shell">
+        <div class="upload-reel-header">
+            <div>
+                <h1 class="upload-reel-title">Upload New Reel</h1>
+                <p class="upload-reel-subtitle">Select a reel video, choose a thumbnail, and add your caption before
+                    posting.</p>
+            </div>
+            <button type="button" class="btn-red-transparent" routerLink="/my-profile/my-reels">
+                Back to My Reels
+            </button>
+        </div>
+
+        <form [formGroup]="reelForm" (ngSubmit)="submitReel()" class="upload-reel-form">
+            <div class="upload-grid">
+                <div class="upload-card">
+                    <div class="upload-card-top">
+                        <div>
+                            <h2>Reel Video</h2>
+                            <p class="upload-card-hint">MP4, MOV, WEBM and other video formats</p>
+                        </div>
+                        @if (selectedVideo) {
+                        <button type="button" class="upload-remove-btn" (click)="removeVideo()">Remove</button>
+                        }
+                    </div>
+
+                    @if (videoPreviewUrl) {
+                    <div class="preview-frame">
+                        <div class="preview-media-stage">
+                            <video [src]="videoPreviewUrl" controls class="preview-video"></video>
+                        </div>
+                        <div class="preview-meta">
+                            <span class="preview-badge">Video selected</span>
+                            <p class="selected-file-name">{{ selectedVideo?.name }}</p>
+                        </div>
+                    </div>
+                    } @else {
+                    <label class="upload-dropzone" (drop)="onVideoDrop($event)" (dragover)="allowDrop($event)">
+                        <input type="file" accept="video/*" class="visually-hidden" (change)="onVideoSelected($event)">
+                        <div class="upload-icon">
+                            <i class="fa-regular fa-images"></i>
+                        </div>
+                        <p class="upload-dropzone-title">Drag video here</p>
+                        <span class="upload-dropzone-btn">Select from your device</span>
+                    </label>
+                    }
+                </div>
+
+                <div class="upload-card">
+                    <div class="upload-card-top">
+                        <div>
+                            <h2>Thumbnail</h2>
+                            <p class="upload-card-hint">JPG, PNG, WEBP, AVIF and other image formats</p>
+                        </div>
+                        @if (selectedThumbnail) {
+                        <button type="button" class="upload-remove-btn" (click)="removeThumbnail()">Remove</button>
+                        }
+                    </div>
+
+                    @if (thumbnailPreviewUrl) {
+                    <div class="preview-frame preview-frame-image">
+                        <div class="preview-media-stage">
+                            <img [src]="thumbnailPreviewUrl" alt="Thumbnail preview" class="preview-image">
+                        </div>
+                        <div class="preview-meta">
+                            <span class="preview-badge">Thumbnail selected</span>
+                            <p class="selected-file-name">{{ selectedThumbnail?.name }}</p>
+                        </div>
+                    </div>
+                    } @else {
+                    <label class="upload-dropzone" (drop)="onThumbnailDrop($event)" (dragover)="allowDrop($event)">
+                        <input type="file" accept="image/*" class="visually-hidden"
+                            (change)="onThumbnailSelected($event)">
+                        <div class="upload-icon">
+                            <i class="fa-regular fa-images"></i>
+                        </div>
+                        <p class="upload-dropzone-title">Drag thumbnail here</p>
+                        <span class="upload-dropzone-btn">Select from your device</span>
+                    </label>
+                    }
+                </div>
+            </div>
+
+            <div class="upload-card caption-card">
+                <div class="upload-card-top">
+                    <h2>Caption</h2>
+                    <span class="caption-count">{{ captionsControl?.value?.length || 0 }}/500</span>
+                </div>
+
+                <textarea formControlName="captions" rows="5" class="caption-input"
+                    placeholder="Write a short caption for your reel"></textarea>
+
+                @if (captionsControl?.touched && captionsControl?.hasError('required')) {
+                <p class="field-error">Caption is required.</p>
+                }
+
+                @if (captionsControl?.touched && captionsControl?.hasError('maxlength')) {
+                <p class="field-error">Caption must be 500 characters or less.</p>
+                }
+            </div>
+
+            <div class="upload-actions">
+                <button type="button" class="btn-red-transparent" routerLink="/my-profile/my-reels">Cancel</button>
+                <button type="submit" class="btn-red" [disabled]="isSubmitting">
+                    {{ isSubmitting ? 'Uploading...' : 'Share Reel' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+@if (showSuccessModal) {
+<div class="success-modal-backdrop">
+    <div class="success-modal-card">
+        <button type="button" class="success-close-btn" (click)="closeSuccessModal()">x</button>
+        <h3>Post Shared</h3>
+        <div class="success-icon-wrap">
+            <div class="success-icon-circle">
+                <i class="fa-solid fa-check"></i>
+            </div>
+        </div>
+        <p>Your post has been shared.</p>
+        <button type="button" class="btn-red" (click)="goToMyReels()">Back to My Reels</button>
+    </div>
+</div>
+}

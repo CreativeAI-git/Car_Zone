@@ -19,13 +19,13 @@ export class MyReelsComponent {
   }
 
   ngOnInit(): void {
-    this.getSavedReels()
+    this.getMyReels()
   }
 
-  getSavedReels() {
+  getMyReels() {
     this.loader.show()
-    this.service.get('user/fetchCarReels').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.savedReels = res.data.data
+    this.service.get('user/fetchMyReels').pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      this.savedReels = res.data
       this.loader.hide()
     },
       err => {
@@ -34,8 +34,13 @@ export class MyReelsComponent {
   }
 
   openReel(item: any) {
-    this.router.navigate(['reel-player'], { queryParams: { id: item.carId } });
+    this.router.navigate(['reel-player'], { queryParams: { id: item.id, type: item.reel_type } });
   }
+
+  navigateToUploadReel() {
+    this.router.navigate(['/my-profile/upload-reel']);
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

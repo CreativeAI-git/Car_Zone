@@ -77,6 +77,16 @@
        background: transparent;
  }
 
+ .ct_play_icon {
+       width: 40px;
+       height: 40px;
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       background: #f1f1f19c;
+       border-radius: 50%;
+ }
+
  .invisible {
        opacity: 0;
        transition: opacity 1s ease-in-out;

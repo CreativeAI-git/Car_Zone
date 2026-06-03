@@ -3,9 +3,9 @@
         <div class="my-listings-shell">
             <div class="my-listings-toolbar">
                 <h1 class="my-listings-title">My Reels</h1>
-                <a class="btn-red my-listings-add-btn">
+                <button type="button" class="btn-red my-listings-add-btn" (click)="navigateToUploadReel()">
                     Upload New Reel
-                </a>
+                </button>
             </div>
             <div class="row">
                 @if(savedReels.length == 0){
@@ -42,15 +42,12 @@
                     <div class="ct_reels_card">
                         <div class="" (click)="openReel(item)">
                             <div class="mobile-frame">
-                                <video [src]="item.carReel" [poster]="item.reelThumbnails" class="videoPreview"></video>
+                                <video [src]="item.reel_url" [poster]="item.thumbnail" class="videoPreview"></video>
                             </div>
                         </div>
                         <div class="d-flex align-items-start justify-content-between gap-3 mt-1">
                             <div>
-                                <p class="mb-0 ct_fw_600">{{item.fullModel}}
-                                </p>
-
-                                <p class="mb-0 ct_fw_500">{{item.carReelInfo}}
+                                <p class="mb-0 ct_fw_600">{{item.captions}}
                                 </p>
                             </div>
                         </div>
