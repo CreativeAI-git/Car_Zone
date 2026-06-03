@@ -1,36 +1,52 @@
-<section class="w-100 mx-auto" style="max-width: 800px;">
-      <div class="ct_back_btn text-white" style="cursor: pointer;" (click)="location.back()">
-            <i class="fa-solid fa-arrow-left"></i>Back
-      </div>
+<section class="reel-player-shell w-100 mx-auto" style="width: 800px;">
       <div class="mySwiper swiper">
             <div class="swiper-wrapper">
                   @for (item of carReels; track item.id) {
                   @if(item.carReel){
                   <div class="swiper-slide">
-                        <div class="mobile-frame">
-                              <video #video [src]="item.carReel" autoplay loop preload="none" class="videoPreview">
-                              </video>
-                              <div class="playOverlay" (click)="togglePlay(video)">
-                                    <div class="ct_play_icon" [ngClass]="isPlaying ? 'invisible' : 'visible'">
-                                          <i class="fa-solid" [ngClass]="isPlaying ? 'fa-pause' : 'fa-play' "></i>
+                        <div class="mobile-frame reel-stage">
+                              <video #video [src]="item.carReel" autoplay loop preload="none"
+                                    class="videoPreview"></video>
+
+                              <div class="reel-backdrop-top"></div>
+                              <div class="reel-backdrop-bottom"></div>
+
+                              <button type="button" class="reel-back-btn" (click)="location.back()">
+                                    <i class="fa-solid fa-arrow-left"></i>
+                              </button>
+
+                              <div class="reel-top-bar">
+                                    <div class="reel-title-wrap">
+                                          <h1 class="reel-title">{{ item.fullModel || 'Car Reel' }}</h1>
                                     </div>
                               </div>
-                              <div
-                                    class="d-flex align-items-center justify-content-between gap-3 ct_reel_title_top w-100">
-                                    <div>
-                                          <p class="mb-0 ct_fw_600 ct_fs_18">{{item.fullModel}}
-                                          </p>
 
-                                          <p class="mb-0 ct_fw_500" style="color: #ff062a;">{{item.carReelInfo}}
-                                          </p>
+                              <div class="playOverlay" (click)="togglePlay(video)">
+                                    <div class="ct_play_icon" [ngClass]="isPlaying ? 'invisible' : 'visible'">
+                                          <i class="fa-solid" [ngClass]="isPlaying ? 'fa-pause' : 'fa-play'"></i>
                                     </div>
-                                    <div class="d-flex align-items-center gap-2" style="font-size: 20px;">
-                                          <i class="fa-regular fa-eye" routerLink="/car-detail"
-                                                [queryParams]="{id: item.id}" style="cursor: pointer;"></i>
+                              </div>
+
+                              <div class="reel-side-actions">
+                                    <div class="reel-avatar">
+                                          <img [src]="getSellerAvatar(item)" alt="Seller avatar">
+                                    </div>
+
+                                    <a class="reel-action-btn" routerLink="/car-detail" [queryParams]="{id: item.id}">
+                                          <i class="fa-regular fa-eye"></i>
+                                    </a>
+
+                                    <button type="button" class="reel-action-btn"
+                                          (click)="item.isSavedReel ? removeFromSaved(item) : saveReel(item)">
                                           <i class="fa-bookmark"
-                                                [ngClass]="item.isSavedReel ? 'fa-solid' : 'fa-regular'"
-                                                (click)="item.isSavedReel ? removeFromSaved(item) : saveReel(item)"></i>
-                                    </div>
+                                                [ngClass]="item.isSavedReel ? 'fa-solid' : 'fa-regular'"></i>
+                                    </button>
+                              </div>
+
+                              <div class="reel-bottom-copy">
+                                    <p class="reel-price-line">
+                                          {{item.carReelInfo}}
+                                    </p>
                               </div>
                         </div>
                   </div>

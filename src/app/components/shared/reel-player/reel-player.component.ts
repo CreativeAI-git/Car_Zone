@@ -327,6 +327,11 @@ export class ReelPlayerComponent {
     }
   }
 
+
+  getSellerAvatar(item: any): string {
+    return item?.sellerLogo || item?.profileImage || 'img/icons/user-circle-img.png';
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
