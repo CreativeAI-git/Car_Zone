@@ -20,7 +20,7 @@
                                           <h1 class="reel-title">{{ item.fullModel || 'Seller Reel' }}</h1>
                                     </div>
 
-                                    @if(reelType !== 'profile'){
+                                    @if(item.reelType !== 'profile'){
                                     <div class="reel-filter-anchor">
                                           <button type="button" class="reel-filter-btn"
                                                 [class.reel-filter-btn--active]="hasActiveFilters"
@@ -30,7 +30,7 @@
                                     </div>
                                     }
 
-                                    @if(showFilterPanel && reelType !== 'profile'){
+                                    @if(showFilterPanel && item.reelType !== 'profile'){
                                     <div class="reel-filter-panel">
                                           <div class="reel-filter-grid">
                                                 <div class="reel-filter-field">
@@ -47,7 +47,11 @@
                                                             </button>
 
                                                             @if(showMakeDropdown){
-                                                            <div class="reel-multi-dropdown__menu">
+                                                            <div class="reel-multi-dropdown__menu"
+                                                                  (click)="$event.stopPropagation()"
+                                                                  (wheel)="onDropdownWheel($event)"
+                                                                  (touchstart)="onDropdownInteraction($event)"
+                                                                  (touchmove)="onDropdownInteraction($event)">
                                                                   @for (make of makeOptions; track make.value) {
                                                                   <label
                                                                         class="ct_custom_check reel-multi-dropdown__option">
@@ -56,6 +60,8 @@
                                                                               (change)="onMakeToggle(make, $event)" />
                                                                         <span class="reel-multi-dropdown__option-text">{{
                                                                               make.label }}</span>
+                                                                        <span
+                                                                              class="reel-multi-dropdown__option-count">{{make.count}}</span>
                                                                   </label>
                                                                   }
                                                             </div>
@@ -77,8 +83,13 @@
                                                             </button>
 
                                                             @if(showBodyTypeDropdown){
-                                                            <div class="reel-multi-dropdown__menu">
-                                                                  @for (bodyType of bodyTypes; track bodyType.id) {
+                                                            <div class="reel-multi-dropdown__menu"
+                                                                  (click)="$event.stopPropagation()"
+                                                                  (wheel)="onDropdownWheel($event)"
+                                                                  (touchstart)="onDropdownInteraction($event)"
+                                                                  (touchmove)="onDropdownInteraction($event)">
+                                                                  @for (bodyType of bodyTypes; track bodyType.id + '-' +
+                                                                  $index) {
                                                                   <label
                                                                         class="ct_custom_check reel-multi-dropdown__option">
 
@@ -89,6 +100,8 @@
                                                                               class="reel-multi-dropdown__option-icon" />
                                                                         <span class="reel-multi-dropdown__option-text">{{
                                                                               bodyType.name }}</span>
+                                                                        <span
+                                                                              class="reel-multi-dropdown__option-count">{{bodyType.count}}</span>
                                                                   </label>
                                                                   }
                                                             </div>

@@ -38,7 +38,7 @@ export class ReelPlayerComponent implements AfterViewInit {
   showMakeDropdown = false;
   showBodyTypeDropdown = false;
   makeOptions: MakeModelOption[] = [];
-  bodyTypes: Array<{ id: number | string; name: string; image: string }> = [];
+  bodyTypes: Array<{ id: number | string; name: string; image: string; count: number }> = [];
   selectedMakeIds: Array<string | number> = [];
   selectedBodyTypeIds: Array<string | number> = [];
   filters = {
@@ -596,7 +596,8 @@ export class ReelPlayerComponent implements AfterViewInit {
           this.bodyTypes = (res?.data?.types || []).map((item: any) => ({
             id: item?.id,
             name: item?.name || item?.code || '',
-            image: item?.image || ''
+            image: item?.image || '',
+            count: item?.count || 0
           })).filter((item: any) => item.id !== null && item.id !== undefined && item.name);
           this.isLoadingFilters = false;
         },
@@ -622,7 +623,7 @@ export class ReelPlayerComponent implements AfterViewInit {
     }
 
     if (this.filters.body_type_id.length) {
-      params.set('body_type_id', JSON.stringify(this.filters.body_type_id.toString()));
+      params.set('body_type_id', JSON.stringify(this.filters.body_type_id.map((id) => String(id))));
     }
 
     if (this.filters.price_from !== null && this.filters.price_from !== undefined) {
@@ -681,6 +682,14 @@ export class ReelPlayerComponent implements AfterViewInit {
 
   isBodyTypeSelected(bodyTypeId: string | number): boolean {
     return this.selectedBodyTypeIds.some((item) => String(item) === String(bodyTypeId));
+  }
+
+  onDropdownInteraction(event: Event): void {
+    event.stopPropagation();
+  }
+
+  onDropdownWheel(event: WheelEvent): void {
+    event.stopPropagation();
   }
 
   private buildSelectionLabel(labels: string[], fallbackPluralLabel: string): string {
