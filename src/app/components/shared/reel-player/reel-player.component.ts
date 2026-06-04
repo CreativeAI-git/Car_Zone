@@ -559,7 +559,7 @@ export class ReelPlayerComponent implements AfterViewInit {
       return 'All makes';
     }
 
-    return this.filters.make.join(', ');
+    return this.buildSelectionLabel(this.filters.make, 'makes');
   }
 
   get selectedBodyTypeLabel(): string {
@@ -567,10 +567,12 @@ export class ReelPlayerComponent implements AfterViewInit {
       return 'All body types';
     }
 
-    return this.bodyTypes
+    const labels = this.bodyTypes
       .filter((item) => this.selectedBodyTypeIds.some((selectedId) => String(selectedId) === String(item.id)))
       .map((item) => item.name)
-      .join(', ');
+      .filter(Boolean);
+
+    return this.buildSelectionLabel(labels, 'body types');
   }
 
   private loadFilterOptions(): void {
@@ -616,11 +618,11 @@ export class ReelPlayerComponent implements AfterViewInit {
     params.set('page', String(isInitialLoad ? 1 : this.page));
 
     if (this.filters.make.length) {
-      params.set('make', this.filters.make.join(','));
+      params.set('make', JSON.stringify(this.filters.make));
     }
 
     if (this.filters.body_type_id.length) {
-      params.set('body_type_id', this.filters.body_type_id.join(','));
+      params.set('body_type_id', JSON.stringify(this.filters.body_type_id.toString()));
     }
 
     if (this.filters.price_from !== null && this.filters.price_from !== undefined) {
@@ -679,6 +681,22 @@ export class ReelPlayerComponent implements AfterViewInit {
 
   isBodyTypeSelected(bodyTypeId: string | number): boolean {
     return this.selectedBodyTypeIds.some((item) => String(item) === String(bodyTypeId));
+  }
+
+  private buildSelectionLabel(labels: string[], fallbackPluralLabel: string): string {
+    const normalizedLabels = (labels || []).filter(Boolean);
+
+    if (!normalizedLabels.length) {
+      return `All ${fallbackPluralLabel}`;
+    }
+
+    if (normalizedLabels.length <= 3) {
+      return normalizedLabels.join(', ');
+    }
+
+    const visibleLabels = normalizedLabels.slice(0, 3).join(', ');
+    const remainingCount = normalizedLabels.length - 3;
+    return `${visibleLabels} +${remainingCount}`;
   }
 
   @HostListener('document:click')
