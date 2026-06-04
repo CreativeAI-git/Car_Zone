@@ -44,24 +44,6 @@
 
                               <!-- Gradient Overlay -->
                               <div class="ct_reels_overlay"></div>
-
-                              <!-- Bottom Content -->
-                              <div
-                                    class="d-flex align-items-center justify-content-between w-100 reel-card-description">
-                                    <div>
-                                          <p class="mb-0 ct_fw_600 ct_fs_18 text-white">
-                                                {{item.fullModel}}
-                                          </p>
-                                          <p class="mb-0 ct_fw_600" style="color: #ff062a;">
-                                                {{item.carReelInfo}}
-                                          </p>
-                                    </div>
-                                    <div>
-                                          <i class="fa-bookmark"
-                                                [ngClass]="item.isSavedReel ? 'fa-solid' : 'fa-regular'"
-                                                (click)="item.isSavedReel ? removeFromSaved(item) : saveReel(item)"></i>
-                                    </div>
-                              </div>
                         </div>
                   </div>
 
@@ -71,7 +53,7 @@
                                     <ul class="p-0 car-content-right-list">
                                           <li>
                                                 <img src="img/icons/calendar-brown.png" />
-                                                <span> {{(item.firstRegistration | date:'yyyy-MM') || '-'}} </span>
+                                                <span> {{(item.year | date:'yyyy-MM') || '-'}} </span>
                                           </li>
                                           <li>
                                                 <img src="img/icons/km-brown.png" />
@@ -91,7 +73,7 @@
                                           </li>
                                           <li>
                                                 <img src="img/icons/calendar-brown.png" />
-                                                <span> 7.0 L / 100 Km </span>
+                                                <span> {{item.consumption || '-'}} </span>
                                           </li>
                                     </ul>
                               </div>

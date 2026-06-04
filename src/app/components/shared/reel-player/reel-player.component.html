@@ -17,7 +17,7 @@
 
                               <div class="reel-top-bar">
                                     <div class="reel-title-wrap">
-                                          <h1 class="reel-title">{{ item.fullModel || 'Car Reel' }}</h1>
+                                          <h1 class="reel-title">{{ item.fullModel || 'Seller Reel' }}</h1>
                                     </div>
                               </div>
 
@@ -32,9 +32,15 @@
                                           <img [src]="getSellerAvatar(item)" alt="Seller avatar">
                                     </div>
 
+                                    @if(item.reelType !== 'profile'){
                                     <a class="reel-action-btn" routerLink="/car-detail" [queryParams]="{id: item.id}">
                                           <i class="fa-regular fa-eye"></i>
                                     </a>
+                                    }
+
+                                    <button type="button" class="reel-action-btn" (click)="shareReel(item)">
+                                          <i class="fa-solid fa-share"></i>
+                                    </button>
 
                                     <button type="button" class="reel-action-btn"
                                           (click)="item.isSavedReel ? removeFromSaved(item) : saveReel(item)">
@@ -44,9 +50,20 @@
                               </div>
 
                               <div class="reel-bottom-copy">
+                                    @if(item.captions){
+                                    <div class="reel-caption-wrap">
+                                          <p #captionText class="reel-caption-line" [attr.data-caption-id]="item.id"
+                                                [class.reel-caption-line--expanded]="isCaptionExpanded(item)"
+                                                [class.reel-caption-line--has-toggle]="shouldShowCaptionToggle(item) && !isCaptionExpanded(item)"
+                                                (click)="expandCaption(item)">
+                                                {{item.captions}}
+                                          </p>
+                                    </div>
+                                    }@else {
                                     <p class="reel-price-line">
                                           {{item.carReelInfo}}
                                     </p>
+                                    }
                               </div>
                         </div>
                   </div>

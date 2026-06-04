@@ -230,8 +230,8 @@
 }
 
 .reel-action-btn {
-      width: 30px;
-      height: 30px;
+      width: 40px;
+      height: 40px;
       border: 0;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.06);
@@ -247,7 +247,7 @@
 .reel-bottom-copy {
       position: absolute;
       left: 0;
-      bottom: 0;
+      bottom: 10px;
       width: 100%;
       padding: 0 16px;
       z-index: 3;
@@ -256,11 +256,51 @@
 
 .reel-price-line {
       margin: 0 60px 12px 0;
-      font-size: 13px;
+      font-size: 16px;
       font-weight: 700;
       line-height: 1.35;
       color: rgba(255, 255, 255, 0.94);
       text-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
+}
+
+.reel-caption-line {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.55;
+      color: rgba(255, 255, 255, 0.96);
+      text-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+}
+
+.reel-caption-wrap {
+      position: relative;
+      padding-right: 58px;
+}
+
+.reel-caption-line--has-toggle {
+      padding-right: 24px;
+}
+
+.reel-caption-line--expanded {
+      display: block;
+      -webkit-line-clamp: unset;
+      overflow: visible;
+}
+
+.reel-caption-more {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      border: 0;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.96);
+      padding: 0;
+      font-size: 18px;
+      line-height: 1;
+      font-weight: 700;
 }
 
 .reel-description-card {
@@ -362,6 +402,18 @@
       .reel-price-line {
             margin: 0 54px 12px 0;
             font-size: 13px;
+      }
+
+      .reel-caption-line {
+            font-size: 13px;
+      }
+
+      .reel-caption-wrap {
+            padding-right: 54px;
+      }
+
+      .reel-caption-more {
+            font-size: 16px;
       }
 
       .reel-description-card {

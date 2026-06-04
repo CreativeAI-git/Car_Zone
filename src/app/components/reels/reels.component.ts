@@ -40,7 +40,8 @@ export class ReelsComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
-          this.carReels = [...this.carReels, ...res.data.data];
+          const carReels = [...this.carReels, ...res.data.data];
+          this.carReels = carReels.filter(reel => reel.reelType !== 'profile');
           this.isLoading = false;
           this.loader.hide();
 
