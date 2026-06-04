@@ -35,6 +35,7 @@ export class ReelPlayerComponent implements AfterViewInit {
   reelType: string | undefined | null = null;
   showFilterPanel = false;
   isLoadingFilters = false;
+  isRefreshingFilters = false;
   showMakeDropdown = false;
   showBodyTypeDropdown = false;
   makeOptions: MakeModelOption[] = [];
@@ -120,9 +121,11 @@ export class ReelPlayerComponent implements AfterViewInit {
 
           this.hasMore = currentPage < totalPages;
           this.isLoadingMore = false;
+          this.isRefreshingFilters = false;
         },
         error: () => {
           this.isLoadingMore = false;
+          this.isRefreshingFilters = false;
         }
       });
   }
@@ -225,7 +228,8 @@ export class ReelPlayerComponent implements AfterViewInit {
     this.showFilterPanel = false;
     this.showMakeDropdown = false;
     this.showBodyTypeDropdown = false;
-    this.resetReelsState();
+    this.prepareInitialFetchState();
+    this.isRefreshingFilters = true;
     this.getReels(true);
   }
 
@@ -241,7 +245,8 @@ export class ReelPlayerComponent implements AfterViewInit {
     this.showFilterPanel = false;
     this.showMakeDropdown = false;
     this.showBodyTypeDropdown = false;
-    this.resetReelsState();
+    this.prepareInitialFetchState();
+    this.isRefreshingFilters = true;
     this.getReels(true);
   }
 
@@ -643,6 +648,15 @@ export class ReelPlayerComponent implements AfterViewInit {
     this.isLoadingMore = false;
     this.currentIndex = 0;
     this.carReels = [];
+    this.expandedCaptionIds.clear();
+    this.overflowingCaptionIds.clear();
+  }
+
+  private prepareInitialFetchState(): void {
+    this.page = 1;
+    this.hasMore = true;
+    this.isLoadingMore = false;
+    this.currentIndex = 0;
     this.expandedCaptionIds.clear();
     this.overflowingCaptionIds.clear();
   }

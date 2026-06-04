@@ -8,6 +8,13 @@
                               <video #video [src]="item.carReel" autoplay loop preload="none"
                                     class="videoPreview"></video>
 
+                              @if(isRefreshingFilters){
+                              <div class="reel-filter-loading">
+                                    <div class="reel-filter-loading__spinner"></div>
+                                    <p>Updating reels...</p>
+                              </div>
+                              }
+
                               <div class="reel-backdrop-top"></div>
                               <div class="reel-backdrop-bottom"></div>
 
