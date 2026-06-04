@@ -19,6 +19,111 @@
                                     <div class="reel-title-wrap">
                                           <h1 class="reel-title">{{ item.fullModel || 'Seller Reel' }}</h1>
                                     </div>
+
+                                    @if(reelType !== 'profile'){
+                                    <div class="reel-filter-anchor">
+                                          <button type="button" class="reel-filter-btn"
+                                                [class.reel-filter-btn--active]="hasActiveFilters"
+                                                (click)="toggleFilterPanel()">
+                                                <i class="fa-solid fa-sliders"></i>
+                                          </button>
+                                    </div>
+                                    }
+
+                                    @if(showFilterPanel && reelType !== 'profile'){
+                                    <div class="reel-filter-panel">
+                                          <div class="reel-filter-grid">
+                                                <div class="reel-filter-field">
+                                                      <label for="reel-make">Make</label>
+                                                      <div class="reel-multi-dropdown"
+                                                            (click)="$event.stopPropagation()">
+                                                            <button type="button" id="reel-make"
+                                                                  class="reel-multi-dropdown__toggle"
+                                                                  [class.reel-multi-dropdown__toggle--open]="showMakeDropdown"
+                                                                  (click)="toggleMakeDropdown($event)">
+                                                                  <span class="reel-multi-dropdown__label">{{
+                                                                        selectedMakeLabel }}</span>
+                                                                  <i class="fa-solid fa-chevron-down"></i>
+                                                            </button>
+
+                                                            @if(showMakeDropdown){
+                                                            <div class="reel-multi-dropdown__menu">
+                                                                  @for (make of makeOptions; track make.value) {
+                                                                  <label
+                                                                        class="ct_custom_check reel-multi-dropdown__option">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              [checked]="isMakeSelected(make.value)"
+                                                                              (change)="onMakeToggle(make, $event)" />
+                                                                        <span class="reel-multi-dropdown__option-text">{{
+                                                                              make.label }}</span>
+                                                                  </label>
+                                                                  }
+                                                            </div>
+                                                            }
+                                                      </div>
+                                                </div>
+
+                                                <div class="reel-filter-field">
+                                                      <label for="reel-body-type">Body type</label>
+                                                      <div class="reel-multi-dropdown"
+                                                            (click)="$event.stopPropagation()">
+                                                            <button type="button" id="reel-body-type"
+                                                                  class="reel-multi-dropdown__toggle"
+                                                                  [class.reel-multi-dropdown__toggle--open]="showBodyTypeDropdown"
+                                                                  (click)="toggleBodyTypeDropdown($event)">
+                                                                  <span class="reel-multi-dropdown__label">{{
+                                                                        selectedBodyTypeLabel }}</span>
+                                                                  <i class="fa-solid fa-chevron-down"></i>
+                                                            </button>
+
+                                                            @if(showBodyTypeDropdown){
+                                                            <div class="reel-multi-dropdown__menu">
+                                                                  @for (bodyType of bodyTypes; track bodyType.id) {
+                                                                  <label
+                                                                        class="ct_custom_check reel-multi-dropdown__option">
+
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                              [checked]="isBodyTypeSelected(bodyType.id)"
+                                                                              (change)="onBodyTypeToggle(bodyType, $event)" />
+                                                                        <img [src]="bodyType.image"
+                                                                              class="reel-multi-dropdown__option-icon" />
+                                                                        <span class="reel-multi-dropdown__option-text">{{
+                                                                              bodyType.name }}</span>
+                                                                  </label>
+                                                                  }
+                                                            </div>
+                                                            }
+                                                      </div>
+                                                </div>
+
+                                                <div class="reel-filter-price-row">
+                                                      <div class="reel-filter-field">
+                                                            <label for="reel-price-from">Price From</label>
+                                                            <input id="reel-price-from" type="number" min="0"
+                                                                  [(ngModel)]="filters.price_from"
+                                                                  placeholder="e.g. 50000"
+                                                                  class="form-control reel-multi-dropdown__toggle" />
+                                                      </div>
+
+                                                      <div class="reel-filter-field">
+                                                            <label for="reel-price-to">Price To</label>
+                                                            <input id="reel-price-to" type="number" min="0"
+                                                                  [(ngModel)]="filters.price_to"
+                                                                  placeholder="e.g. 100000"
+                                                                  class="form-control reel-multi-dropdown__toggle" />
+                                                      </div>
+                                                </div>
+                                          </div>
+
+                                          <div class="reel-filter-actions">
+                                                <button type="button" class="reel-filter-reset"
+                                                      (click)="resetFilters()">Reset</button>
+                                                <button type="button" class="reel-filter-apply"
+                                                      [disabled]="isLoadingFilters"
+                                                      (click)="applyFilters()">Apply</button>
+                                          </div>
+                                    </div>
+                                    }
                               </div>
 
                               <div class="playOverlay" (click)="togglePlay(video)">

@@ -96,6 +96,7 @@
       left: 20px;
       width: 100%;
       display: flex;
+      flex-wrap: wrap;
       align-items: flex-start;
       justify-content: space-between;
       gap: 18px;
@@ -105,6 +106,7 @@
 
 .reel-title-wrap {
       color: #fff;
+      max-width: calc(100% - 74px);
 }
 
 .reel-kicker {
@@ -123,6 +125,217 @@
       font-weight: 700;
       color: #fff;
       text-shadow: 0 10px 30px rgba(0, 0, 0, 0.32);
+}
+
+.reel-filter-anchor {
+      margin-left: auto;
+      padding-right: 22px;
+}
+
+.reel-filter-btn {
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.34);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.24);
+}
+
+.reel-filter-btn--active {
+      background: rgba(208, 30, 49, 0.9);
+}
+
+.reel-filter-panel {
+      margin-top: 10px;
+      margin-left: auto;
+      margin-bottom: 0;
+      padding: 15px;
+      border: 0;
+      border-radius: 10px;
+      background: #000000ed;
+      backdrop-filter: none;
+      box-shadow: none;
+      flex: 0 0 calc(100% - 80px);
+}
+
+.reel-filter-grid {
+      display: grid;
+      gap: 10px;
+}
+
+.reel-filter-field {
+      display: grid;
+      gap: 5px;
+}
+
+.reel-filter-field label {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.64);
+      padding-left: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+}
+
+.reel-filter-price-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+}
+
+
+
+.reel-filter-field input:focus {
+      border-color: rgba(255, 255, 255, 0.2);
+}
+
+.reel-filter-field input::placeholder {
+      color: rgba(255, 255, 255, 0.42);
+}
+
+.reel-filter-field input,
+.reel-multi-dropdown__label {
+      font-size: 14px;
+}
+
+.reel-multi-dropdown {
+      position: relative;
+}
+
+.reel-multi-dropdown__toggle {
+      width: 100%;
+      min-height: 42px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      text-align: left;
+      height: 48px !important;
+}
+
+.reel-multi-dropdown__toggle--open {
+      border-color: rgba(255, 255, 255, 0.2);
+}
+
+.reel-multi-dropdown__option-icon {
+      height: 13px;
+      width: 40px;
+      filter: invert(1);
+}
+
+.reel-multi-dropdown__label {
+      color: rgba(255, 255, 255, 0.92);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+}
+
+.reel-multi-dropdown__menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      width: 100%;
+      max-height: 220px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      z-index: 5;
+      padding: 8px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(16, 16, 16, 0.98);
+      box-shadow: 0 18px 30px rgba(0, 0, 0, 0.28);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.26) transparent;
+}
+
+.reel-multi-dropdown__menu::-webkit-scrollbar {
+      width: 6px;
+}
+
+.reel-multi-dropdown__menu::-webkit-scrollbar-track {
+      background: transparent;
+}
+
+.reel-multi-dropdown__menu::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.24);
+      border-radius: 999px;
+}
+
+.reel-multi-dropdown__menu::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.34);
+}
+
+.reel-multi-dropdown__option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+      padding: 7px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+}
+
+.reel-multi-dropdown__option:hover {
+      background: rgba(255, 255, 255, 0.06);
+}
+
+.reel-multi-dropdown__option .form-check-input {
+      margin: 0;
+      flex: 0 0 auto;
+}
+
+.reel-multi-dropdown__option-text {
+      color: #fff;
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 600;
+      flex: 1 1 auto;
+      word-break: break-word;
+}
+
+.reel-filter-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 12px;
+}
+
+.reel-filter-reset,
+.reel-filter-apply {
+      min-width: 78px;
+      min-height: 36px;
+      border-radius: 999px;
+      border: 0;
+      padding: 0 16px;
+      font-size: 12px;
+      font-weight: 700;
+}
+
+.reel-filter-reset {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+}
+
+.reel-filter-apply {
+      background: #d01e31;
+      color: #fff;
+}
+
+.reel-filter-apply:disabled {
+      opacity: 0.6;
 }
 
 .reel-glass-panel {
@@ -353,11 +566,32 @@
       }
 
       .reel-title-wrap {
-            max-width: 42%;
+            max-width: calc(100% - 64px);
       }
 
       .reel-title {
             font-size: 14px;
+      }
+
+      .reel-filter-anchor {
+            padding-right: 16px;
+      }
+
+      .reel-filter-btn {
+            width: 34px;
+            height: 34px;
+      }
+
+      .reel-filter-panel {
+            width: calc(100% - 32px);
+            margin-top: 8px;
+            margin-right: 16px;
+            flex-basis: calc(100% - 32px);
+            padding-top: 6px;
+      }
+
+      .reel-filter-price-row {
+            gap: 8px;
       }
 
       .reel-glass-panel {

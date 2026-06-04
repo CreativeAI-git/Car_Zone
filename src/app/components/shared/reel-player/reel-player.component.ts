@@ -1,16 +1,18 @@
 import { CommonModule, Location } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, QueryList, ViewChildren } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonService } from '../../../services/common.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ModalService } from '../../../services/modal.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { FilterService, MakeModelOption } from '../../../services/filter.service';
 declare var Swiper: any
 
 @Component({
   selector: 'app-reel-player',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './reel-player.component.html',
   styleUrl: './reel-player.component.css',
 })
@@ -31,7 +33,21 @@ export class ReelPlayerComponent implements AfterViewInit {
   isLoadingMore: boolean = false;
   readonly preloadThreshold: number = 2;
   reelType: string | undefined | null = null;
-  constructor(private service: CommonService, private authService: AuthService, private route: ActivatedRoute, public location: Location, private modalService: ModalService, private message: NzMessageService) {
+  showFilterPanel = false;
+  isLoadingFilters = false;
+  showMakeDropdown = false;
+  showBodyTypeDropdown = false;
+  makeOptions: MakeModelOption[] = [];
+  bodyTypes: Array<{ id: number | string; name: string; image: string }> = [];
+  selectedMakeIds: Array<string | number> = [];
+  selectedBodyTypeIds: Array<string | number> = [];
+  filters = {
+    make: [] as string[],
+    body_type_id: [] as Array<string | number>,
+    price_from: null as number | null,
+    price_to: null as number | null
+  };
+  constructor(private service: CommonService, private authService: AuthService, private route: ActivatedRoute, public location: Location, private modalService: ModalService, private message: NzMessageService, private filterService: FilterService) {
     this.route.queryParamMap.subscribe(params => {
       this.reelId = params.get('id')
       this.reelType = params.get('type')
@@ -43,6 +59,7 @@ export class ReelPlayerComponent implements AfterViewInit {
     if (this.reelType === 'profile') {
       this.getMyReels(true)
     } else {
+      this.loadFilterOptions();
       this.getReels(true)
     }
   }
@@ -66,10 +83,7 @@ export class ReelPlayerComponent implements AfterViewInit {
     const endpoint = this.token
       ? `user/fetchAllCarReels`
       : `user/asGuestUsersfetchAllCarReels`;
-
-    const queryParams = isInitialLoad
-      ? `?car_id=${this.reelId}`
-      : `?page=${this.page}`;
+    const queryParams = this.buildReelQueryParams(isInitialLoad);
 
     this.service.get(endpoint + queryParams)
       .pipe(takeUntil(this.destroy$))
@@ -165,6 +179,70 @@ export class ReelPlayerComponent implements AfterViewInit {
           this.isLoadingMore = false;
         }
       });
+  }
+
+  toggleFilterPanel(): void {
+    this.showFilterPanel = !this.showFilterPanel;
+    if (!this.showFilterPanel) {
+      this.showMakeDropdown = false;
+      this.showBodyTypeDropdown = false;
+    }
+  }
+
+  toggleMakeDropdown(event?: Event): void {
+    event?.stopPropagation();
+    this.showMakeDropdown = !this.showMakeDropdown;
+    if (this.showMakeDropdown) {
+      this.showBodyTypeDropdown = false;
+    }
+  }
+
+  toggleBodyTypeDropdown(event?: Event): void {
+    event?.stopPropagation();
+    this.showBodyTypeDropdown = !this.showBodyTypeDropdown;
+    if (this.showBodyTypeDropdown) {
+      this.showMakeDropdown = false;
+    }
+  }
+
+  onMakeToggle(make: MakeModelOption, event: Event): void {
+    event.stopPropagation();
+    const input = event.target as HTMLInputElement;
+    this.selectedMakeIds = this.toggleSelection(this.selectedMakeIds, make.value, input.checked);
+    this.filters.make = this.makeOptions
+      .filter((item) => this.selectedMakeIds.some((selectedId) => String(selectedId) === String(item.value)))
+      .map((item) => item.label);
+  }
+
+  onBodyTypeToggle(bodyType: { id: number | string; name: string }, event: Event): void {
+    event.stopPropagation();
+    const input = event.target as HTMLInputElement;
+    this.selectedBodyTypeIds = this.toggleSelection(this.selectedBodyTypeIds, bodyType.id, input.checked);
+    this.filters.body_type_id = [...this.selectedBodyTypeIds];
+  }
+
+  applyFilters(): void {
+    this.showFilterPanel = false;
+    this.showMakeDropdown = false;
+    this.showBodyTypeDropdown = false;
+    this.resetReelsState();
+    this.getReels(true);
+  }
+
+  resetFilters(): void {
+    this.selectedMakeIds = [];
+    this.selectedBodyTypeIds = [];
+    this.filters = {
+      make: [],
+      body_type_id: [],
+      price_from: null,
+      price_to: null
+    };
+    this.showFilterPanel = false;
+    this.showMakeDropdown = false;
+    this.showBodyTypeDropdown = false;
+    this.resetReelsState();
+    this.getReels(true);
   }
 
   initSwiper() {
@@ -467,6 +545,105 @@ export class ReelPlayerComponent implements AfterViewInit {
     return `${origin}${reelPath}?id=${reelIdentifier}`;
   }
 
+  get hasActiveFilters(): boolean {
+    return !!(
+      this.filters.make.length ||
+      this.filters.body_type_id.length ||
+      this.filters.price_from !== null ||
+      this.filters.price_to !== null
+    );
+  }
+
+  get selectedMakeLabel(): string {
+    if (!this.filters.make.length) {
+      return 'All makes';
+    }
+
+    return this.filters.make.join(', ');
+  }
+
+  get selectedBodyTypeLabel(): string {
+    if (!this.selectedBodyTypeIds.length) {
+      return 'All body types';
+    }
+
+    return this.bodyTypes
+      .filter((item) => this.selectedBodyTypeIds.some((selectedId) => String(selectedId) === String(item.id)))
+      .map((item) => item.name)
+      .join(', ');
+  }
+
+  private loadFilterOptions(): void {
+    this.isLoadingFilters = true;
+
+    this.filterService.loadMakeOptions()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (options) => {
+          this.makeOptions = options;
+        },
+        error: () => {
+          this.makeOptions = [];
+        }
+      });
+
+    this.service.get('user/body-type')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          this.bodyTypes = (res?.data?.types || []).map((item: any) => ({
+            id: item?.id,
+            name: item?.name || item?.code || '',
+            image: item?.image || ''
+          })).filter((item: any) => item.id !== null && item.id !== undefined && item.name);
+          this.isLoadingFilters = false;
+        },
+        error: () => {
+          this.bodyTypes = [];
+          this.isLoadingFilters = false;
+        }
+      });
+  }
+
+  private buildReelQueryParams(isInitialLoad: boolean): string {
+    const params = new URLSearchParams();
+
+    if (!this.hasActiveFilters && isInitialLoad && this.reelId) {
+      params.set('car_id', this.reelId);
+      return `?${params.toString()}`;
+    }
+
+    params.set('page', String(isInitialLoad ? 1 : this.page));
+
+    if (this.filters.make.length) {
+      params.set('make', this.filters.make.join(','));
+    }
+
+    if (this.filters.body_type_id.length) {
+      params.set('body_type_id', this.filters.body_type_id.join(','));
+    }
+
+    if (this.filters.price_from !== null && this.filters.price_from !== undefined) {
+      params.set('price_from', String(this.filters.price_from));
+    }
+
+    if (this.filters.price_to !== null && this.filters.price_to !== undefined) {
+      params.set('price_to', String(this.filters.price_to));
+    }
+
+    return `?${params.toString()}`;
+  }
+
+  private resetReelsState(): void {
+    this.page = 1;
+    this.hasMore = true;
+    this.isLoadingMore = false;
+    this.currentIndex = 0;
+    this.carReels = [];
+    this.expandedCaptionIds.clear();
+    this.overflowingCaptionIds.clear();
+  }
+
   private updateCaptionOverflow(): void {
     if (!this.captionTexts) {
       return;
@@ -486,6 +663,28 @@ export class ReelPlayerComponent implements AfterViewInit {
         this.overflowingCaptionIds.add(captionId);
       }
     });
+  }
+
+  private toggleSelection<T>(list: T[], value: T, checked: boolean): T[] {
+    if (checked) {
+      return list.some((item) => String(item) === String(value)) ? list : [...list, value];
+    }
+
+    return list.filter((item) => String(item) !== String(value));
+  }
+
+  isMakeSelected(makeId: string | number): boolean {
+    return this.selectedMakeIds.some((item) => String(item) === String(makeId));
+  }
+
+  isBodyTypeSelected(bodyTypeId: string | number): boolean {
+    return this.selectedBodyTypeIds.some((item) => String(item) === String(bodyTypeId));
+  }
+
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    this.showMakeDropdown = false;
+    this.showBodyTypeDropdown = false;
   }
 
   ngOnDestroy(): void {
