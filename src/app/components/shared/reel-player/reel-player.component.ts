@@ -57,7 +57,7 @@ export class ReelPlayerComponent implements AfterViewInit {
 
   ngOnInit(): void {
     this.token = this.authService.getToken();
-    if (this.reelType === 'profile') {
+    if (this.reelType) {
       this.getMyReels(true)
     } else {
       this.loadFilterOptions();
@@ -139,7 +139,7 @@ export class ReelPlayerComponent implements AfterViewInit {
     const endpoint = `user/fetchReelById`;
 
     const queryParams = isInitialLoad
-      ? `?reel_id=${this.reelId}&reelType=profile`
+      ? `?reel_id=${this.reelId}&reelType=${this.reelType}`
       : `?page=${this.page}`;
 
     this.service.get(endpoint + queryParams)

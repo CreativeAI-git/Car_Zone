@@ -23,18 +23,19 @@
                             class="position-absolute top-0 start-0 w-100 h-100 rounded-circle border border-3 border-danger opacity-25"></span>
                     </div>
 
-                    <h2 class="fw-bold text-dark mb-3" style="z-index:1;">{{'media.noReelsFoundInYourSavedReels' |
+                    <h2 class="fw-bold text-dark mb-3" style="z-index:1;">{{'media.noUploadedReelsYet' |
                         translate}}
                     </h2>
                     <p class="text-muted" style="max-width: 400px; z-index:1;">
-                        {{'media.looksLikeYouHaventSavedAnyCarReelsYet' | translate}}
+                        {{'media.youHaventUploadedAnyReelsYet' | translate}}
                     </p>
 
                     <div class="w-50 border-top border-danger opacity-50 mb-4" style="z-index:1;"></div>
 
-                    <a routerLink="/reels" class="btn-red-transparent" style="z-index:1;">
-                        {{'media.browseReels' | translate}}
-                    </a>
+                    <button type="button" class="btn-red-transparent" style="z-index:1;"
+                        (click)="navigateToUploadReel()">
+                        {{'media.uploadYourFirstReel' | translate}}
+                    </button>
                 </div>
                 }@else{
                 @for (item of savedReels; track $index) {

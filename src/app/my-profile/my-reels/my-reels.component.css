@@ -41,3 +41,7 @@
     object-fit: cover;
     background-color: #e6e6e6;
 }
+
+:host-context(body.theme-dark) .my-listings-title {
+    color: #fff !important;
+}
