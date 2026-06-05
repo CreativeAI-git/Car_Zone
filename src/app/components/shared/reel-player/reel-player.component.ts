@@ -303,8 +303,10 @@ export class ReelPlayerComponent implements AfterViewInit {
       !this.isLoadingMore &&
       activeIndex >= this.carReels.length - this.preloadThreshold;
 
-    if (shouldLoadMore) {
+    if (shouldLoadMore && !this.reelType) {
       this.getReels();
+    } else if (shouldLoadMore && this.reelType) {
+      this.getMyReels();
     }
   }
 
