@@ -561,6 +561,24 @@ export class ReelPlayerComponent implements AfterViewInit {
     );
   }
 
+  get displayReels(): any[] {
+    return this.carReels.filter((item: any) => !!item?.carReel);
+  }
+
+  get showEmptyReelState(): boolean {
+    return !this.isRefreshingFilters && this.displayReels.length === 0;
+  }
+
+  get emptyStateTitle(): string {
+    return this.hasActiveFilters ? 'No reels match these filters' : 'No reels available right now';
+  }
+
+  get emptyStateMessage(): string {
+    return this.hasActiveFilters
+      ? 'Try changing make, body type, or price range to see more reels.'
+      : 'Please check back in a moment for new seller reels.';
+  }
+
   get selectedMakeLabel(): string {
     if (!this.filters.make.length) {
       return 'All makes';
