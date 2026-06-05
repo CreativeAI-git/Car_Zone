@@ -31,6 +31,7 @@ export class ReelPlayerComponent implements AfterViewInit {
   page: number = 1;
   hasMore: boolean = true;
   isLoadingMore: boolean = false;
+  hasResolvedInitialLoad = false;
   readonly preloadThreshold: number = 2;
   reelType: string | undefined | null = null;
   showFilterPanel = false;
@@ -80,6 +81,10 @@ export class ReelPlayerComponent implements AfterViewInit {
       return;
     }
 
+    if (isInitialLoad) {
+      this.hasResolvedInitialLoad = false;
+    }
+
     this.isLoadingMore = true;
     const endpoint = this.token
       ? `user/fetchAllCarReels`
@@ -122,10 +127,16 @@ export class ReelPlayerComponent implements AfterViewInit {
           this.hasMore = currentPage < totalPages;
           this.isLoadingMore = false;
           this.isRefreshingFilters = false;
+          if (isInitialLoad) {
+            this.hasResolvedInitialLoad = true;
+          }
         },
         error: () => {
           this.isLoadingMore = false;
           this.isRefreshingFilters = false;
+          if (isInitialLoad) {
+            this.hasResolvedInitialLoad = true;
+          }
         }
       });
   }
@@ -133,6 +144,10 @@ export class ReelPlayerComponent implements AfterViewInit {
   getMyReels(isInitialLoad: boolean = false) {
     if (this.isLoadingMore || (!isInitialLoad && !this.hasMore)) {
       return;
+    }
+
+    if (isInitialLoad) {
+      this.hasResolvedInitialLoad = false;
     }
 
     this.isLoadingMore = true;
@@ -177,9 +192,15 @@ export class ReelPlayerComponent implements AfterViewInit {
 
           this.hasMore = currentPage < totalPages;
           this.isLoadingMore = false;
+          if (isInitialLoad) {
+            this.hasResolvedInitialLoad = true;
+          }
         },
         error: () => {
           this.isLoadingMore = false;
+          if (isInitialLoad) {
+            this.hasResolvedInitialLoad = true;
+          }
         }
       });
   }
@@ -566,7 +587,7 @@ export class ReelPlayerComponent implements AfterViewInit {
   }
 
   get showEmptyReelState(): boolean {
-    return !this.isRefreshingFilters && this.displayReels.length === 0;
+    return this.hasResolvedInitialLoad && !this.isRefreshingFilters && this.displayReels.length === 0;
   }
 
   get emptyStateTitle(): string {
