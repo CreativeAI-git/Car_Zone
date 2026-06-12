@@ -33,6 +33,14 @@ export const routes: Routes = [
                         loadComponent: () => import('./components/reels/reels.component').then(m => m.ReelsComponent)
                   },
                   {
+                        path: 'schedule-request',
+                        loadComponent: () => import('./components/seller components/schedule-request/schedule-request.component').then(m => m.ScheduleRequestComponent)
+                  },
+                  {
+                        path: 'schedule-request-detail',
+                        loadComponent: () => import('./components/seller components/schedule-request-detail/schedule-request-detail.component').then(m => m.ScheduleRequestDetailComponent)
+                  },
+                  {
                         path: 'chats',
                         loadComponent: () => import('./components/chats/chats.component').then(m => m.ChatsComponent)
                   },

@@ -24,7 +24,8 @@
                                     <a class="nav-link ct_fs_16 ct_fw_600" (click)="listCar()">Sell</a>
                               </li>
                               <li class="nav-item">
-                                    <a class="nav-link ct_fs_16 ct_fw_600">Schedule request</a>
+                                    <a class="nav-link ct_fs_16 ct_fw_600" routerLinkActive="active"
+                                          routerLink="/schedule-request">Schedule request</a>
                               </li>
                               }
                         </ul>
@@ -201,11 +202,12 @@
                         <h5 class="modal-title">Application Under Review</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
-                    <div class="modal-body">
-                          <p class="mb-0">
-                                Your company account is currently being reviewed by our team. Once your application is approved, you will be able to access this feature and continue with listing your vehicles.
-                          </p>
-                    </div>
+                  <div class="modal-body">
+                        <p class="mb-0">
+                              Your company account is currently being reviewed by our team. Once your application is
+                              approved, you will be able to access this feature and continue with listing your vehicles.
+                        </p>
+                  </div>
                   <div class="modal-footer border-0 pt-0">
                         <button type="button" class="btn-red" data-bs-dismiss="modal">OK</button>
                   </div>
