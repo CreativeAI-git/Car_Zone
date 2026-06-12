@@ -10,22 +10,22 @@ import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { SubmitButtonComponent } from '../shared/submit-button/submit-button.component';
 import { ChfFormatPipe } from '../../pipes/chf-format.pipe';
+import { CountryISO, NgxIntlTelInputModule, SearchCountryField } from 'ngx-intl-tel-input-gg';
 
 export interface PhysicalVisitPayload {
-  fullName: string;
+  full_name: string;
   email: string;
-  phoneNumber: string;
-  visitDate: string;
-  visitTime: string;
+  phone_number: string;
+  visit_date: string;
+  visit_time: string;
   message?: string;
   car_id?: string | number;
-  seller_id?: string | number;
 }
 
 @Component({
   selector: 'app-schedule-physical-visit',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, TranslateModule, RouterModule, SubmitButtonComponent, ChfFormatPipe],
+  imports: [ReactiveFormsModule, CommonModule, TranslateModule, RouterModule, SubmitButtonComponent, ChfFormatPipe, NgxIntlTelInputModule],
   templateUrl: './schedule-physical-visit.component.html',
   styleUrl: './schedule-physical-visit.component.css'
 })
@@ -35,6 +35,16 @@ export class SchedulePhysicalVisitComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   carId: any;
   carData: any;
+  SearchCountryField = SearchCountryField;
+  CountryISO = CountryISO;
+  selectedCountry = CountryISO.Switzerland;
+  allowedCountries: CountryISO[] = [
+    CountryISO.Switzerland,
+    CountryISO.France,
+    CountryISO.Germany,
+    CountryISO.Italy,
+    CountryISO.Spain
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -48,7 +58,7 @@ export class SchedulePhysicalVisitComponent implements OnInit, OnDestroy {
     this.Form = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9+() -]+$'), Validators.minLength(8)]],
+      phoneNumber: ['', [Validators.required]],
       visitDate: ['', [Validators.required, this.futureDateValidator]],
       visitTime: ['', [Validators.required]],
       message: ['', [Validators.maxLength(500)]]
@@ -87,7 +97,7 @@ export class SchedulePhysicalVisitComponent implements OnInit, OnDestroy {
           this.Form.patchValue({
             fullName: profile.fullName || '',
             email: profile.email || '',
-            phoneNumber: `${profile.countryCode || ''}${profile.phoneNumber || ''}`
+            phoneNumber: profile.countryCode ? `${profile.countryCode}${profile.phoneNumber}` : (profile.phoneNumber || '')
           });
         });
       }
@@ -95,7 +105,7 @@ export class SchedulePhysicalVisitComponent implements OnInit, OnDestroy {
       this.Form.patchValue({
         fullName: userProfile.fullName || '',
         email: userProfile.email || '',
-        phoneNumber: `${userProfile.countryCode || ''}${userProfile.phoneNumber || ''}`
+        phoneNumber: userProfile.countryCode ? `${userProfile.countryCode}${userProfile.phoneNumber}` : (userProfile.phoneNumber || '')
       });
     }
   }
@@ -115,13 +125,18 @@ export class SchedulePhysicalVisitComponent implements OnInit, OnDestroy {
     }
 
     this.loading = true;
+    const phoneVal = this.Form.value.phoneNumber;
     const payload: PhysicalVisitPayload = {
-      ...this.Form.value,
+      full_name: this.Form.value.fullName,
+      email: this.Form.value.email,
+      phone_number: phoneVal?.e164Number ? phoneVal.e164Number : phoneVal,
+      visit_date: this.Form.value.visitDate,
+      visit_time: this.Form.value.visitTime,
+      message: this.Form.value.message,
       car_id: this.carData?.vehicle?.id,
-      seller_id: this.carData?.seller?.id
     };
 
-    this.commonService.post('user/web/schedule-physical-visit', payload)
+    this.commonService.post('user/Schedule-visit', payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {

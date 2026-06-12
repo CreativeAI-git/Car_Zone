@@ -36,9 +36,16 @@
                                 <div class="form-group mb-4">
                                     <label for="" class="mb-2 ct_fw_500 ct_fs_18">Phone Number <span
                                             class="ct_color_8f0c1f">*</span></label>
-                                    <input type="text" formControlName="phoneNumber" class="form-control ct_input"
-                                        placeholder="Enter Your Phone Number" />
-                                    <small class="text-danger"
+                                    <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
+                                        [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
+                                        [searchCountryFlag]="true"
+                                        [customPlaceholder]="'Enter Your Phone Number'"
+                                        [onlyCountries]="allowedCountries"
+                                        [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                        [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
+                                        [phoneValidation]="true" formControlName="phoneNumber">
+                                    </ngx-intl-tel-input>
+                                    <small class="text-danger d-block mt-1"
                                         *ngIf="Form.get('phoneNumber')?.touched && Form.get('phoneNumber')?.invalid">
                                         {{ validationErrorService.getErrorMessage('Phone Number',
                                         Form.get('phoneNumber')) }}
