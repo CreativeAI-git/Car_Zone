@@ -22,6 +22,11 @@
                   </nav>
 
                   <div class="d-flex gap-4 align-items-center mt-xl-0 mt-3">
+                        <div class="d-flex align-items-center gap-1 ct_cursor_pointer" routerLink="/reel-player"
+                              [queryParams]="{ id: carData?.vehicle.id }">
+                              <i class="fa-regular fa-circle-play ct_fs_18"></i>
+                              <span class="ct_fs_17 mb-1 ct_fw_400">Watch Reel</span>
+                        </div>
                         <div class="d-flex align-items-center gap-1 ct_cursor_pointer"
                               (click)="carData?.is_in_wishlist ? removeFromWishlist(carData) : addToWishlist(carData)">
                               <i class="fa-heart ct_fs_18"

@@ -166,7 +166,7 @@
 .reel-back-btn {
       position: absolute;
       top: 22px;
-      left: 4px;
+      left: 13px;
       width: 28px;
       height: 28px;
       border: 0;
@@ -174,7 +174,7 @@
       background: rgba(15, 23, 42, 0.34);
       color: #fff;
       backdrop-filter: blur(12px);
-      z-index: 3;
+      z-index: 15;
       cursor: pointer;
 }
 

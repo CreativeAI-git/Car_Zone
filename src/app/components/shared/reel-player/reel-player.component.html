@@ -175,10 +175,6 @@
                               </button>
 
                               <div class="reel-top-bar">
-                                    <div class="reel-title-wrap">
-                                          <h1 class="reel-title">{{ item.fullModel || 'Seller Reel' }}</h1>
-                                    </div>
-
                                     @if(item.reelType !== 'profile'){
                                     <div class="reel-filter-anchor">
                                           <button type="button" class="reel-filter-btn"
@@ -337,6 +333,9 @@
                                           </p>
                                     </div>
                                     }@else {
+                                    <div class="reel-title-wrap mb-2">
+                                          <h1 class="reel-title">{{ item.fullModel || 'Seller Reel' }}</h1>
+                                    </div>
                                     <p class="reel-price-line">
                                           {{item.carReelInfo}}
                                     </p>
