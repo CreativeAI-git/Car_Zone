@@ -49,6 +49,10 @@ export const routes: Routes = [
                         loadComponent: () => import('./components/car-detail/car-detail.component').then(m => m.CarDetailComponent)
                   },
                   {
+                        path: 'schedule-physical-visit',
+                        loadComponent: () => import('./components/schedule-physical-visit/schedule-physical-visit.component').then(m => m.SchedulePhysicalVisitComponent)
+                  },
+                  {
                         path: 'seller-detail',
                         loadComponent: () => import('./components/seller-detail/seller-detail.component').then(m => m.SellerDetailComponent)
                   },
