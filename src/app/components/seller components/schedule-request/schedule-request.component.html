@@ -4,55 +4,65 @@
             <div class="col-md-12">
                 <div class="collections-header">
                     <div class="mb-4">
-                        <h3 class="ct_fs_35 ct_fw_600 ct_font_cairo text-start mb-0">Schedule Requests </h3>
-                        <p class="text-start">Review and manage the test drive request</p>
+                        <h3 class="ct_fs_35 ct_fw_600 ct_font_cairo text-start mb-0">Schedule Requests</h3>
+                        <p class="text-start">Review and manage the physical visit requests received for your listings.
+                        </p>
                     </div>
                     <div class="d-flex gap-3">
                         <div class="position-relative w-100 ">
                             <input type="text"
                                 class="form-control ct_input ct_input_ps_40 ct_input_h_40 ct_border_op_10 shadow-sm"
-                                placeholder="Search" />
+                                placeholder="Search by brand, model, or buyer name" [(ngModel)]="searchTerm"
+                                (input)="onFilterChange()" />
                             <i class="fa-solid fa-search ct_input_icon_left"></i>
                         </div>
                         <div class=" ">
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>All </option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select class="form-select" [(ngModel)]="statusFilter" (change)="onFilterChange()">
+                                <option value="all">All</option>
+                                <option value="pending">Pending</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="rejected">Rejected</option>
                             </select>
                         </div>
                     </div>
-                    <div class="ct_schedule_box mt-5">
 
+                    <div *ngIf="filteredRequests.length === 0"
+                        class="d-flex flex-column align-items-center justify-content-center text-center bg-white rounded-4 shadow-sm p-5 position-relative overflow-hidden mt-5"
+                        style="min-height: 40vh;">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle mb-4 position-relative"
+                            style="width: 100px; height: 100px; background: linear-gradient(135deg, #ffccd1, #fff); z-index:1;">
+                            <i class="bi bi-inbox text-danger fs-1"></i>
+                        </div>
+                        <h2 class="fw-bold text-dark mb-3" style="z-index:1;">No Requests Found</h2>
+                        <p>You haven't received any physical visit requests matching your criteria.</p>
+                    </div>
+
+                    <div class="ct_schedule_box mt-4" *ngFor="let item of filteredRequests">
                         <div class="my-listing-car">
-
                             <div class="schedule-card border-0 position-relative">
-
-                                <!-- Status Badge -->
-
-
-                                <div class="d-md-flex w-100 align-items-center">
-
+                                <div class="d-md-flex w-100 align-items-start">
                                     <div class="d-flex gap-3 w-100 align-items-center">
                                         <!-- Image -->
                                         <div class="mb-md-0 mt-md-0 mt-2 mb-3 ">
-                                            <img src="img/my-listing-car.png" class="ct_img_128" alt="Car">
+                                            <img [src]="item?.vehicle?.image || 'img/placeholder.png'"
+                                                class="ct_img_128 ct_object_fit_cover"
+                                                style="border-radius: 8px; width: 128px; height: 128px;" alt="Car">
                                         </div>
 
                                         <!-- Info -->
                                         <div class="w-100">
-                                            <h5 class="mb-2 text-start ">
-                                                <a routerLink="/schedule-request-detail"
-                                                    class="text-dark ct_fs_18 ct_fw_600"> Mercedes-Bens C-Class</a>
+                                            <h5 class="mb-0 text-start ">
+                                                <a [routerLink]="['/schedule-request-detail']"
+                                                    [queryParams]="{id: item?.id}" class="text-dark ct_fs_18 ct_fw_600">
+                                                    {{item?.vehicle?.brandName}} {{item?.vehicle?.carModel}}</a>
                                             </h5>
                                             <div
-                                                class="text-start ct_fs_24 ct_fw_700 ct_font_cairo ct_color ct_color_8f0c1f mb-3">
-                                                CHF 45'900</div>
+                                                class="text-start ct_fs_24 ct_fw_700 ct_font_cairo ct_color ct_color_8f0c1f mb-0">
+                                                {{item?.vehicle?.price}}
+                                            </div>
 
-
-
-                                            <div class="d-flex align-items-center gap-3 flex-wrap ">
+                                            <div class="d-flex align-items-center gap-3 flex-wrap "
+                                                *ngIf="item?.requester">
                                                 <div>
                                                     <span class="ct_fs_14 ct_fw_400">
                                                         Requested by :
@@ -60,176 +70,40 @@
                                                 </div>
 
                                                 <div>
-                                                    <img src="img/schedule-img.jpg" alt="" class="ct_img_24">
+                                                    <img [src]="item?.requester?.profile_photo || 'img/icons/user-circle-img.png'"
+                                                        alt="" class="ct_img_24 ct_object_fit_cover rounded-circle">
                                                 </div>
 
                                                 <div>
                                                     <span class="ct_fs_14 ct_fw_500">
-                                                        James Mitchell
+                                                        {{item?.requester?.full_name}}
                                                     </span>
                                                 </div>
                                             </div>
 
-                                            <div class="d-flex justify-content-between">
-
-
-
+                                            <div class="d-flex justify-content-between mt-2">
+                                                <div class="ct_fs_14 text-muted">
+                                                    <i class="fa-regular fa-clock me-1"></i> Requested for:
+                                                    {{item?.preferred_date}} at {{item?.preferred_time}}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- Button -->
-                                    <div>
-                                        <p class="text-end mb-0"> <span
-                                                class="badge status-badge-success">Confirmed</span></p>
-                                    </div>
-
-                                </div>
-                            </div>
-
-
-
-                        </div>
-                    </div>
-
-
-                    <div class="ct_schedule_box mt-3">
-
-                        <div class="my-listing-car">
-
-                            <div class="schedule-card border-0 position-relative">
-
-                                <!-- Status Badge -->
-
-
-                                <div class="d-md-flex w-100 align-items-center">
-
-                                    <div class="d-flex gap-3 w-100 align-items-center">
-                                        <!-- Image -->
-                                        <div class="mb-md-0 mt-md-0 mt-2 mb-3 ">
-                                            <img src="img/my-listing-car.png" class="ct_img_128" alt="Car">
-                                        </div>
-
-                                        <!-- Info -->
-                                        <div class="w-100">
-                                            <h5 class="mb-2 text-start">
-                                                <a href="schedule-plan.html"
-                                                    class="text-dark  ct_fs_18 ct_fw_600">Mercedes-Bens C-Class</a>
-                                            </h5>
-                                            <div
-                                                class="text-start ct_fs_24 ct_fw_700 ct_font_cairo ct_color ct_color_8f0c1f mb-3">
-                                                CHF 45'900</div>
-
-
-
-                                            <div class="d-flex align-items-center gap-3 flex-wrap ">
-                                                <div>
-                                                    <span class="ct_fs_14 ct_fw_400">
-                                                        Requested by :
-                                                    </span>
-                                                </div>
-
-                                                <div>
-                                                    <img src="img/schedule-img.jpg" alt="" class="ct_img_24">
-                                                </div>
-
-                                                <div>
-                                                    <span class="ct_fs_14 ct_fw_500">
-                                                        James Mitchell
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="d-flex justify-content-between">
-
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Button -->
-                                    <div>
-                                        <p class="text-end mb-0"> <span
-                                                class="badge status-badge-warning">Pending</span></p>
-                                    </div>
-
-                                </div>
-                            </div>
-
-
-
-                        </div>
-                    </div>
-
-
-
-                    <div class="ct_schedule_box mt-3">
-
-                        <div class="my-listing-car">
-
-                            <div class="schedule-card border-0 position-relative">
-
-                                <!-- Status Badge -->
-
-
-                                <div class="d-md-flex w-100 align-items-center">
-
-                                    <div class="d-flex gap-3 w-100 align-items-center">
-                                        <!-- Image -->
-                                        <div class="mb-md-0 mt-md-0 mt-2 mb-3 ">
-                                            <img src="img/my-listing-car.png" class="ct_img_128" alt="Car">
-                                        </div>
-
-                                        <!-- Info -->
-                                        <div class="w-100">
-                                            <h5 class="text-start">
-                                                <a href="schedule-rejected-plan.html"
-                                                    class="mb-2 text-start ct_fs_18 ct_fw_600 text-dark">Mercedes-Bens
-                                                    C-Class</a>
-                                            </h5>
-                                            <div
-                                                class="text-start ct_fs_24 ct_fw_700 ct_font_cairo ct_color ct_color_8f0c1f mb-3">
-                                                CHF 45'900</div>
-
-
-
-                                            <div class="d-flex align-items-center gap-3 flex-wrap ">
-                                                <div>
-                                                    <span class="ct_fs_14 ct_fw_400">
-                                                        Requested by :
-                                                    </span>
-                                                </div>
-
-                                                <div>
-                                                    <img src="img/schedule-img.jpg" alt="" class="ct_img_24">
-                                                </div>
-
-                                                <div>
-                                                    <span class="ct_fs_14 ct_fw_500">
-                                                        James Mitchell
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="d-flex justify-content-between">
-
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Button -->
-                                    <div>
-                                        <p class="text-end mb-0"> <span
-                                                class="badge status-badge-danger">Rejected</span></p>
+                                    <div class="mt-3 mt-md-0 d-flex flex-column align-items-start">
+                                        <p class="text-start">
+                                            <span class="badge" [ngClass]="getStatusClass(item?.status)">
+                                                {{item?.status | titlecase}}
+                                            </span>
+                                        </p>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
