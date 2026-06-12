@@ -101,20 +101,19 @@
                 </div>
             </div>
             <div class="col-lg-5 mt-lg-0 mt-4">
-                <div class="ct_right_main_box p-0">
+                <div class="ct_right_main_box p-0" *ngIf="carData">
                     <div>
-                        <img src="img/chat-car.jpg" alt="" class="w-100 ct_border_right_16 ct_border_left_16" />
+                        <img [src]="carData?.images?.[0] || 'img/placeholder.png'" alt="" class="w-100 ct_border_right_16 ct_border_left_16" />
                     </div>
                     <div class="p-4">
                         <h3 class="ct_fs_24 ct_fw_500 mb-3">
-                            BMW 123 xDrive M Sport Package/ BMW kidney grille 'Iconic
-                            Glow'
+                            {{carData?.vehicle?.brand}} {{carData?.vehicle?.model}} {{carData?.vehicle?.version}}
                         </h3>
                         <h5 class="ct_fs_32 ct_fw_700 mb-0 ct_color_8f0c1f">
-                            CHF 45’900.-
+                            {{carData?.vehicle?.selling_price | chfFormat}}
                         </h5>
-                        <p class="ct_fs_22 ct_fw_400 ct_color_1877F2 fst_italic">
-                            CHF 550.- per month
+                        <p class="ct_fs_22 ct_fw_400 ct_color_1877F2 fst_italic" *ngIf="carData?.vehicle?.isLeasing">
+                            {{carData?.vehicle?.leasing_value | chfFormat}} per month
                         </p>
                     </div>
                 </div>

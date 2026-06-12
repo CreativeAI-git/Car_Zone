@@ -528,8 +528,8 @@
                                           }
                                           <div class="d-flex align-items-center gap-3 my-3">
                                                 <div class="w-50">
-                                                      <a class="btn-red w-100 text-center ct_fw_500"
-                                                            routerLink="/schedule-physical-visit">{{
+                                                      <a class="btn-red w-100 text-center ct_fw_500 ct_cursor_pointer"
+                                                            (click)="schedulePhysicalVisit()">{{
                                                             'vehicle.physicalVisit' | translate }}</a>
                                                 </div>
                                                 <div class="w-50">

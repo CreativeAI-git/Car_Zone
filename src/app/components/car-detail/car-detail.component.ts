@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonService } from '../../services/common.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -23,7 +23,7 @@ declare var Swiper: any;
   templateUrl: './car-detail.component.html',
   styleUrl: './car-detail.component.css'
 })
-export class CarDetailComponent {
+export class CarDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('closeReportModal') closeReportModal!: ElementRef;
   @ViewChild('closeInquiryModal') closeInquiryModal!: ElementRef<HTMLButtonElement>;
   @ViewChild('descriptionContent') descriptionContent?: ElementRef<HTMLElement>;
@@ -49,6 +49,7 @@ export class CarDetailComponent {
   customReportReason: string = '';
   loading: boolean = false
   inquiryLoading: boolean = false
+
   constructor(private service: CommonService, private route: ActivatedRoute, private loader: LoaderService, private router: Router, private message: NzMessageService, private modalService: ModalService, public authService: AuthService, private translate: TranslateService, public location: Location, private fb: FormBuilder, public validationErrorService: ValidationErrorService) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     this.token = this.authService.getToken();
@@ -226,6 +227,14 @@ export class CarDetailComponent {
 
   openInquiryLoginModal() {
     this.modalService.openLoginModal();
+  }
+
+  schedulePhysicalVisit() {
+    if (this.authService.isLogedIn()) {
+      this.router.navigate(['/schedule-physical-visit'], { queryParams: { id: this.carData?.vehicle?.id } });
+    } else {
+      this.modalService.openLoginModal();
+    }
   }
 
   async copyShareLink() {
