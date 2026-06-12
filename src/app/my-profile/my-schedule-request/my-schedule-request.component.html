@@ -58,10 +58,12 @@
                                 </div>
 
                                 <span class="my-listing-row__status" [ngClass]="{
-                                        'my-listing-row__status--active': item?.status?.toLowerCase() === 'confirmed',
-                                        'my-listing-row__status--expired': item?.status?.toLowerCase() === 'rejected' || item?.status?.toLowerCase() === 'pending'
+                                        'my-listing-row__status--active': item?.buyer_side_status?.toLowerCase() === 'confirmed',
+                                        'my-listing-row__status--expired': item?.buyer_side_status?.toLowerCase() === 'rejected',
+                                        'my-listing-row__status--pending': item?.buyer_side_status?.toLowerCase() === 'pending',
+                                        'my-listing-row__status--reschedule': item?.buyer_side_status?.toLowerCase() === 'reschedule',
                                     }">
-                                    {{item?.status | titlecase}}
+                                    {{item?.buyer_side_status | titlecase}}
                                 </span>
                             </div>
 

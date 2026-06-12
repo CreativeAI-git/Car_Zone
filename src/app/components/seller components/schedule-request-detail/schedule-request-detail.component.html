@@ -1,4 +1,4 @@
-<div class="container ct_mt_100">
+<div class="container ct_mt_100 mb-5">
     <div class="row justify-content-center">
         <div class="d-sm-flex justify-content-between align-items-center">
             <div class="">
@@ -7,80 +7,88 @@
                 </h3>
                 <p class="ct_fs_14">Review and manage the test drive request</p>
             </div>
-            <div>
+            <div *ngIf="requestDetail">
                 <p class="mb-1">Request received</p>
-                <h5 class="ct_fs_16 ct_fw_600">24 Jul' 2025 · 4 PM</h5>
+                <h5 class="ct_fs_16 ct_fw_600">{{requestDetail?.requested_on | date: 'd MMM yyyy · h a'}}</h5>
             </div>
         </div>
 
-        <div class="booking-card">
+        <div class="booking-card" *ngIf="requestDetail">
             <div class="row g-4">
                 <!-- LEFT SIDE -->
                 <div class="col-md-7">
-                    <div class="ct_schedule_box">
-                        <img src="img/schedule-plan-car.png" class="schedule-car-img mb-3 w-100" alt="Car" />
+                    <div class="ct_schedule_box h-100">
+                        <img [src]="requestDetail?.vehicle?.image || 'img/placeholder.png'"
+                            class="schedule-car-img mb-3 w-100 ct_object_fit_cover" alt="Car"
+                            style="height: 350px; border-radius: 8px;" />
 
                         <div class="d-lg-flex justify-content-between align-content-center">
-                            <h5 class="ct_fs_24 ct_fw_700 mb-0">Mercedes-Benz C-Class</h5>
+                            <h5 class="ct_fs_24 ct_fw_700 mb-0">{{requestDetail?.vehicle?.brandName}}
+                                {{requestDetail?.vehicle?.carModel}}</h5>
                             <h4 class="ct_fs_30 ct_fw_700 ct_color_8f0c1f mb-0">
-                                CHF 45,900
+                                {{requestDetail?.vehicle?.price}}
                             </h4>
                         </div>
-                        <p class="text-muted mb-4">
-                            <i class="fa-solid fa-calendar"></i> 200 km &nbsp; | &nbsp;
-                            <i class="fa-solid fa-gear"></i> 15,000 km &nbsp; | &nbsp;
+                        <p class="text-muted mb-4 mt-2">
+                            <i class="fa-solid fa-calendar"></i> {{requestDetail?.vehicle?.registration_year || 'N/A'}}
+                            &nbsp; | &nbsp;
+                            <i class="fa-solid fa-gauge-high"></i> {{requestDetail?.vehicle?.mileage}} &nbsp;
                         </p>
 
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex gap-3 align-items-center">
+                        <div class="d-flex justify-content-between"
+                            *ngIf="requestDetail?.vehicle?.fuel_type || requestDetail?.vehicle?.transmission || requestDetail?.vehicle?.color">
+                            <div class="d-flex gap-3 align-items-center" *ngIf="requestDetail?.vehicle?.fuel_type">
                                 <div>
                                     <i class="fa-solid fa-gas-pump"></i>
                                 </div>
                                 <div>
                                     <p class="ct_fs_12 mb-0">Fuel Type</p>
-                                    <h5 class="ct_fw_600 ct_fs_14">Petrol</h5>
+                                    <h5 class="ct_fw_600 ct_fs_14">{{requestDetail?.vehicle?.fuel_type}}</h5>
                                 </div>
                             </div>
-                            <div class="d-flex gap-3 align-items-center">
+                            <div class="d-flex gap-3 align-items-center" *ngIf="requestDetail?.vehicle?.transmission">
                                 <div>
                                     <i class="fa-solid fa-gears"></i>
                                 </div>
                                 <div>
                                     <p class="ct_fs_12 mb-0">Transmission</p>
-                                    <h5 class="ct_fw_600 ct_fs_14">Automatic</h5>
+                                    <h5 class="ct_fw_600 ct_fs_14">{{requestDetail?.vehicle?.transmission}}</h5>
                                 </div>
                             </div>
-                            <div class="d-flex gap-3 align-items-center">
+                            <div class="d-flex gap-3 align-items-center" *ngIf="requestDetail?.vehicle?.color">
                                 <div>
                                     <i class="fa-solid fa-palette"></i>
                                 </div>
                                 <div>
                                     <p class="ct_fs_12 mb-0">Color</p>
-                                    <h5 class="ct_fw_600 ct_fs_14">Silver</h5>
+                                    <h5 class="ct_fw_600 ct_fs_14">{{requestDetail?.vehicle?.color}}</h5>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mt-3">
-                            <a href="#" class="ct_fs_2563eb ct_fs_14 ct_fw_600">
+                        <div class="mt-4">
+                            <a [routerLink]="['/car-detail']" [queryParams]="{id: requestDetail?.vehicle?.id}"
+                                class="ct_fs_2563eb ct_fs_14 ct_fw_600 text-decoration-none">
                                 View Full Details
-                                <i class="fa-solid fa-arrow-right ms-2"></i></a>
+                                <i class="fa-solid fa-arrow-right ms-2"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- RIGHT SIDE -->
                 <div class="col-md-5">
-                    <!-- Client Info -->
-                    <div class="info-box mb-3 ct_schedule_box">
+                    <!-- Requester Info -->
+                    <div class="info-box mb-3 ct_schedule_box" *ngIf="requestDetail?.requester">
                         <h6 class="ct_fs_18 ct_fw_700 mb-3">Client Information</h6>
                         <div class="d-flex align-items-center gap-3">
-                            <img src="img/user-img.jpg" class="client-img ct_img_64" alt="Client" />
+                            <img [src]="requestDetail?.requester?.profile_photo || 'img/icons/user-circle-img.png'"
+                                class="client-img ct_img_64 ct_object_fit_cover rounded-circle" alt="Client" />
                             <div>
-                                <div class="ct_fs_18 ct_fw_700">Brooklyn Simmons</div>
+                                <div class="ct_fs_18 ct_fw_700">{{requestDetail?.requester?.full_name}}</div>
                             </div>
                         </div>
-                        <div class="mt-3">
+                        <div class="mt-4">
                             <div class="d-flex gap-4 align-items-center">
                                 <div>
                                     <i class="fa-solid fa-envelope ct_fs_2563eb fs-5"></i>
@@ -88,63 +96,121 @@
                                 <div>
                                     <h5 class="mb-0 ct_fs_12">Email</h5>
                                     <p class="ct_fs_14 ct_fw_500 mb-0">
-                                        brooklyn.simmonsemail.com
+                                        {{requestDetail?.requester?.email || 'N/A'}}
                                     </p>
                                 </div>
                             </div>
 
-                            <div class="d-flex gap-4 mt-4 align-items-center">
+                            <div class="d-flex gap-4 mt-3 align-items-center">
                                 <div>
                                     <i class="fa-solid fa-phone ct_text_008000 fs-5"></i>
                                 </div>
                                 <div>
                                     <h5 class="mb-0 ct_fs_12">Phone</h5>
-                                    <p class="ct_fs_14 ct_fw_500 mb-0">+41 76 123 4567</p>
+                                    <p class="ct_fs_14 ct_fw_500 mb-0">{{requestDetail?.requester?.phone_number ||
+                                        'N/A'}}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Schedule -->
-
                     <div class="ct_schedule_box mt-4">
                         <h4 class="ct_fs_18 ct_fw_700">Scheduled Details</h4>
-                        <div class="d-flex gap-4 align-items-center">
+                        <div class="d-flex gap-4 align-items-center mt-4">
                             <div>
                                 <i class="fa-solid fa-calendar ct_fs_2563eb fs-5"></i>
                             </div>
                             <div>
                                 <h5 class="mb-0 ct_fs_12">Test Drive Date</h5>
-                                <p class="ct_fs_14 ct_fw_500 mb-0">24 Jul' 2025</p>
+                                <p class="ct_fs_14 ct_fw_500 mb-0">{{requestDetail?.preferred_date}}</p>
                             </div>
                         </div>
 
-                        <div class="d-flex gap-4 mt-4 align-items-center">
+                        <div class="d-flex gap-4 mt-3 align-items-center">
                             <div>
                                 <i class="fa-solid fa-clock ct_color_3e1cff fs-5"></i>
                             </div>
                             <div>
                                 <h5 class="mb-0 ct_fs_12">Time Slot</h5>
-                                <p class="ct_fs_14 ct_fw_500 mb-0">4:00 PM</p>
+                                <p class="ct_fs_14 ct_fw_500 mb-0">{{requestDetail?.preferred_time}}</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-4 mt-3 align-items-center" *ngIf="requestDetail?.message">
+                            <div>
+                                <i class="fa-solid fa-message text-secondary fs-5"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0 ct_fs_12">Message</h5>
+                                <p class="ct_fs_14 ct_fw_500 mb-0">{{requestDetail?.message}}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <div class="mt-4" *ngIf="requestDetail && requestDetail?.status?.toLowerCase() !== 'pending'">
+                <div class="ct_status_box w-100 text-center py-3 rounded" [ngClass]="{
+                    'status-rejected': requestDetail?.status?.toLowerCase() === 'rejected',
+                    'status-confirmed': requestDetail?.status?.toLowerCase() === 'confirmed',
+                    'status-pending': requestDetail?.status?.toLowerCase() === 'pending'
+                }">
+                    <i class="fa-solid fa-xmark me-2" *ngIf="requestDetail?.status?.toLowerCase() === 'rejected'"></i>
+                    <i class="fa-solid fa-check me-2" *ngIf="requestDetail?.status?.toLowerCase() === 'confirmed'"></i>
+                    <i class="fa-solid fa-clock me-2" *ngIf="requestDetail?.status?.toLowerCase() === 'pending'"></i>
+                    {{requestDetail?.status | titlecase}}
+                </div>
+            </div>
+
             <!-- ACTION BUTTONS -->
-            <div class="d-md-flex justify-content-between my-5 gap-2">
-                <button class="danger-btn-transparent w-100 shadow-sm mb-md-0 mb-2">
+            <div class="d-md-flex justify-content-between my-4 gap-3" *ngIf="requestDetail?.status?.toLowerCase() === 'pending'">
+                <button class="danger-btn-transparent w-100 shadow-sm mb-md-0 mb-2" (click)="changeStatus('reject')">
                     <i class="fa-solid fa-xmark me-2"></i> Reject Request
                 </button>
-                <button class="primary-btn w-100 shadow-sm mb-md-0 mb-2">
+                <button class="primary-btn w-100 shadow-sm mb-md-0 mb-2" data-bs-toggle="modal" data-bs-target="#rescheduleModal">
                     <i class="fa-regular fa-pen-to-square me-2"></i> Reschedule
                 </button>
-                <button class="success-btn w-100">
+                <button class="success-btn w-100" (click)="changeStatus('approve')">
                     <i class="fa-solid fa-check me-2"></i>
                     Confirm Booking
                 </button>
             </div>
         </div>
+
+        <div class="text-center mt-5" *ngIf="!requestDetail">
+            <div class="spinner-border text-danger" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
     </div>
+</div>
+
+<!-- Reschedule Modal -->
+<div class="modal fade" id="rescheduleModal" tabindex="-1" aria-labelledby="rescheduleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title ct_fs_24 ct_fw_700" id="rescheduleModalLabel">Reschedule Test Drive</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+            <div class="mb-3">
+                <label class="form-label ct_fs_14 ct_fw_600">Select New Date <span class="text-danger">*</span></label>
+                <input type="date" class="form-control ct_input" [(ngModel)]="rescheduleDate" name="resDate" [min]="minDate" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label ct_fs_14 ct_fw_600">Select New Time <span class="text-danger">*</span></label>
+                <input type="time" class="form-control ct_input" [(ngModel)]="rescheduleTime" name="resTime" required>
+            </div>
+            <small class="text-danger d-block mb-4" *ngIf="showRescheduleError">Please select both date and time for rescheduling.</small>
+            <div class="d-flex gap-3">
+                <button type="button" #cancelModalBtn class="btn btn-secondary w-100 ct_fw_600 py-2 rounded-3" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn-red w-100 ct_fw_600 py-2 rounded-3" (click)="changeStatus('reschedule')">Confirm Reschedule</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

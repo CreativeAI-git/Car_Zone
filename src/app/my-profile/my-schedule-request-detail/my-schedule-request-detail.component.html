@@ -159,17 +159,21 @@
 
                 <div class="mt-4" *ngIf="requestDetail">
                     <div class="ct_status_box w-100 text-center py-3 rounded" [ngClass]="{
-                        'status-rejected': requestDetail?.status?.toLowerCase() === 'rejected',
-                        'status-confirmed': requestDetail?.status?.toLowerCase() === 'confirmed',
-                        'status-pending': requestDetail?.status?.toLowerCase() === 'pending'
+                        'status-rejected': requestDetail?.buyer_side_status?.toLowerCase() === 'rejected',
+                        'status-confirmed': requestDetail?.buyer_side_status?.toLowerCase() === 'confirmed',
+                        'status-pending': requestDetail?.buyer_side_status?.toLowerCase() === 'pending',
+                        'status-reschedule': requestDetail?.buyer_side_status?.toLowerCase() === 'reschedule'
                     }">
                         <i class="fa-solid fa-xmark me-2"
-                            *ngIf="requestDetail?.status?.toLowerCase() === 'rejected'"></i>
+                            *ngIf="requestDetail?.buyer_side_status?.toLowerCase() === 'rejected'"></i>
                         <i class="fa-solid fa-check me-2"
-                            *ngIf="requestDetail?.status?.toLowerCase() === 'confirmed'"></i>
+                            *ngIf="requestDetail?.buyer_side_status?.toLowerCase() === 'confirmed'"></i>
                         <i class="fa-solid fa-clock me-2"
-                            *ngIf="requestDetail?.status?.toLowerCase() === 'pending'"></i>
-                        {{requestDetail?.status | titlecase}}
+                            *ngIf="requestDetail?.buyer_side_status?.toLowerCase() === 'pending'"></i>
+                        <i class="fa-solid fa-clock me-2"
+                            *ngIf="requestDetail?.buyer_side_status?.toLowerCase() === 'reschedule'"></i>
+                        {{requestDetail?.buyer_side_status == 'reschedule' ? 'Rescheduled' :
+                        requestDetail?.buyer_side_status | titlecase}}
                     </div>
                 </div>
 

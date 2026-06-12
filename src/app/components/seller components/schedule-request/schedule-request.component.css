@@ -1,0 +1,15 @@
+.my-listing-row__title {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1.25;
+    font-weight: 600;
+    color: #20242c;
+}
+
+.my-listing-row__price {
+    font-size: 24px;
+    font-weight: 600;
+    color: #a10d21;
+    font-family: var(--font-heading);
+    text-align: start;
+}

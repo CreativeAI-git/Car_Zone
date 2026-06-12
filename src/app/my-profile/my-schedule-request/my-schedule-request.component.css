@@ -181,6 +181,16 @@
       color: #ef4444;
 }
 
+.my-listing-row__status--pending {
+      background: #fdf6b2;
+      color: #c2960b;
+}
+
+.my-listing-row__status--reschedule {
+      background: #eaf6fd;
+      color: #00538a;
+}
+
 .my-listing-row__footer {
       display: flex;
       align-items: flex-start;

@@ -696,11 +696,8 @@ span.ct_step_circle.completed {
 .primary-btn {
   background-color: rgba(37, 99, 235, 1);
   box-shadow: 0px 10px 15px 0px rgba(37, 99, 235, 0.3);
-
-
-
   color: #fff;
-  padding: 20px;
+  padding: 10px 16px;
   border-radius: 12px;
   outline: none;
   border: none;
@@ -710,7 +707,7 @@ span.ct_step_circle.completed {
 .success-btn {
   background-color: rgba(22, 163, 74, 1);
   color: #fff;
-  padding: 20px;
+  padding: 10px 16px;
   border-radius: 12px;
   outline: none;
   border: none;
@@ -720,7 +717,7 @@ span.ct_step_circle.completed {
 .danger-btn-transparent {
   border: 2px solid #FECACA !important;
   /* border: 2px solid #FECACA; */
-  padding: 20px;
+  padding: 10px 16px;
   border-radius: 12px;
   outline: none;
   border: none;

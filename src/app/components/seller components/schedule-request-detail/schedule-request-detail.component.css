@@ -1,0 +1,29 @@
+.ct_status_box {
+    border: 1px solid transparent;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.ct_status_box.status-rejected {
+    background-color: #fff1f1;
+    border-color: #fca5a5;
+    color: #ef4444;
+}
+
+.ct_status_box.status-confirmed {
+    background-color: #ecfdf3;
+    border-color: #86efac;
+    color: #22c55e;
+}
+
+.ct_status_box.status-pending {
+    background-color: #fffbeb;
+    border-color: #fde047;
+    color: #eab308;
+}
+
+.ct_object_fit_cover {
+    object-fit: cover;
+}

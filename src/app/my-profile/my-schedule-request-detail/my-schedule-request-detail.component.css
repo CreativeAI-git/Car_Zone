@@ -36,6 +36,12 @@
     color: #eab308;
 }
 
+.ct_status_box.status-reschedule {
+    background: #eaf6fd;
+    color: #00538a;
+    border-color: #0267EB1A;
+}
+
 .ct_object_fit_cover {
     object-fit: cover;
 }
