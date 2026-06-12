@@ -1,0 +1,11 @@
+.my-listings-page {
+    padding-bottom: 40px;
+}
+
+.my-listings-shell {
+    background: #fff;
+    border: 1px solid #ececf2;
+    border-radius: 20px;
+    padding: 22px 24px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
+}
