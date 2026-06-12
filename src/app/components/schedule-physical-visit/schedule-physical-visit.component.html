@@ -38,12 +38,11 @@
                                             class="ct_color_8f0c1f">*</span></label>
                                     <ngx-intl-tel-input name="phone" [cssClass]="'form-control w-full ps-5 ct_pe_90'"
                                         [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
-                                        [searchCountryFlag]="true"
-                                        [customPlaceholder]="'Enter Your Phone Number'"
+                                        [searchCountryFlag]="true" [customPlaceholder]="'Enter Your Phone Number'"
                                         [onlyCountries]="allowedCountries"
                                         [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
-                                        [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry" [maxLength]="15"
-                                        [phoneValidation]="true" formControlName="phoneNumber">
+                                        [selectFirstCountry]="false" [selectedCountryISO]="selectedCountry"
+                                        [maxLength]="15" [phoneValidation]="true" formControlName="phoneNumber">
                                     </ngx-intl-tel-input>
                                     <small class="text-danger d-block mt-1"
                                         *ngIf="Form.get('phoneNumber')?.touched && Form.get('phoneNumber')?.invalid">
@@ -110,7 +109,8 @@
             <div class="col-lg-5 mt-lg-0 mt-4">
                 <div class="ct_right_main_box p-0" *ngIf="carData">
                     <div>
-                        <img [src]="carData?.images?.[0] || 'img/placeholder.png'" alt="" class="w-100 ct_border_right_16 ct_border_left_16" />
+                        <img [src]="carData?.images?.[0] || 'img/placeholder.png'" alt=""
+                            class="w-100 ct_border_right_16 ct_border_left_16 car-img" />
                     </div>
                     <div class="p-4">
                         <h3 class="ct_fs_24 ct_fw_500 mb-3">
@@ -119,9 +119,9 @@
                         <h5 class="ct_fs_32 ct_fw_700 mb-0 ct_color_8f0c1f">
                             {{carData?.vehicle?.selling_price | chfFormat}}
                         </h5>
-                        <p class="ct_fs_22 ct_fw_400 ct_color_1877F2 fst_italic" *ngIf="carData?.vehicle?.isLeasing">
+                        <!-- <p class="ct_fs_22 ct_fw_400 ct_color_1877F2 fst_italic" *ngIf="carData?.vehicle?.isLeasing">
                             {{carData?.vehicle?.leasing_value | chfFormat}} per month
-                        </p>
+                        </p> -->
                     </div>
                 </div>
             </div>

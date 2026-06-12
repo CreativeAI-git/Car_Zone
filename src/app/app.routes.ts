@@ -108,6 +108,14 @@ export const routes: Routes = [
                                     path: 'my-listings',
                                     loadComponent: () => import('./components/seller components/my-listings/my-listings.component').then(m => m.MyListingsComponent)
                               },
+                              {
+                                    path: 'my-schedule-request',
+                                    loadComponent: () => import('./my-profile/my-schedule-request/my-schedule-request.component').then(m => m.MyScheduleRequestComponent)
+                              },
+                              {
+                                    path: 'my-schedule-request-detail',
+                                    loadComponent: () => import('./my-profile/my-schedule-request-detail/my-schedule-request-detail.component').then(m => m.MyScheduleRequestDetailComponent)
+                              }
                         ]
                   },
                   {
