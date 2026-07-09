@@ -905,7 +905,6 @@ export class ListYourCarComponent {
   }
 
   onSubmit(): void {
-    debugger
     if (!this.carFormOne) return;
     if (this.submitInProgress) return;
     if (this.currentFormStep === 1 && this.activeVehicleTab === 'make-models' && this.stepOneViewState === 'result-list') {
