@@ -1,7 +1,7 @@
 export const environment = {
       production: false,
       // apiUrl: 'http://192.168.29.98:4000/api/',
-      apiUrl: 'http://192.168.29.104:4000/api/',
+      apiUrl: 'http://13.51.226.81:4000/api/',
 
       firebaseConfig: {
             apiKey: "AIzaSyBrgUOgzD8t49fhu6DqJlROjmvtI-QxaGc",
@@ -9,8 +9,8 @@ export const environment = {
             projectId: "carzone-94989",
             storageBucket: "carzone-94989.firebasestorage.app",
             messagingSenderId: "978911494264",
-            appId: "1:978911494264:web:fc3d4909ae3166bbb5ad8d",
-            measurementId: "G-VWTJG9VVY2",
+            appId: "1:978911494264:web:d006935d5bc6c751b5ad8d",
+            measurementId: "G-QRRNBHZ0KK",
             vapidKey: "BOiEc41vKhEWS3uzO1ZBOkuEAw-BegHGAj8DVC3qj_inuEbc_bmvN4hZpDZ23_bWFSw_SCBGAh4WZPlI8BECQ4U"
       }
 };

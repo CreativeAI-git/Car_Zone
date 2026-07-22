@@ -784,6 +784,7 @@
   "listing": {
     "slots": "Créneaux",
     "slotsBundle": "Pack de créneaux",
+    "upgradePlan": "Mettre à niveau le plan",
     "myListings": "Mes annonces",
     "listings": "Annonces",
     "requestAdditionalSlots": "Demander des emplacements supplémentaires",

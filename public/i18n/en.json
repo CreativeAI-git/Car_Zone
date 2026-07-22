@@ -1,4 +1,4 @@
-﻿{
+{
   "common": {
     "next": "Next",
     "select": "Select",
@@ -813,6 +813,7 @@
   "listing": {
     "slots": "Slots",
     "slotsBundle": "Slots Bundle",
+    "upgradePlan": "Upgrade Plan",
     "myListings": "My Listings",
     "listings": "Listings",
     "requestAdditionalSlots": "Request Additional Slots",

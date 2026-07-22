@@ -783,6 +783,7 @@
   "listing": {
     "slots": "Slot",
     "slotsBundle": "Pacchetto slot",
+    "upgradePlan": "Aggiorna piano",
     "myListings": "I miei annunci",
     "listings": "Annunci",
     "requestAdditionalSlots": "Richiedi slot aggiuntivi",

@@ -75,7 +75,6 @@ export class HomeComponent {
   ];
   bodyTypes: FilterOption[] = [];
   homeBodyTypeCards = [
-    { label: 'Wagon', icon: 'img/Wagon-1.png', aliases: ['wagon'] },
     { label: 'Convertible', icon: 'img/Convertible-2.png', aliases: ['convertible', 'cabriolet'] },
     { label: 'Sedan', icon: 'img/Sedan-1.png', aliases: ['sedan', 'saloon'] },
     { label: 'SUV / Off-road', icon: 'img/SUV-1.png', aliases: ['suv / off-road', 'suv/off-road', 'suv', 'off-road'] },
@@ -83,6 +82,7 @@ export class HomeComponent {
     { label: 'Pick-up', icon: 'img/Pickup-1.png', aliases: ['pick-up', 'pickup'] },
     { label: 'Van', icon: 'img/Van-1.png', aliases: ['van'] },
     { label: 'Compact car', icon: 'img/Compact car-1.png', aliases: ['compact car', 'city car', 'small car'] },
+    { label: 'Wagon', icon: 'img/Wagon-1.png', aliases: ['wagon'] }
   ];
   priceRangeAnalytics: any = { matching_vehicles: 0 };
   yearRangeAnalytics: any = {

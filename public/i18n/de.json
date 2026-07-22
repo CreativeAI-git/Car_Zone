@@ -802,6 +802,7 @@
   "listing": {
     "slots": "Slots",
     "slotsBundle": "Slot-Bündel",
+    "upgradePlan": "Plan aktualisieren",
     "myListings": "Meine Angebote",
     "listings": "Anzeigen",
     "requestAdditionalSlots": "Zusätzliche Slots anfordern",
