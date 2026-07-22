@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal, } from '@angular/core';
+import { Injectable, signal, effect } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { RoleService } from './role.service';
+import { UserService } from './user.service';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +15,23 @@ export class CommonService {
   userData = signal<any>(null);
   sellerData = signal<any>(null);
   currentUser = signal<any>(null);
-  constructor(private http: HttpClient, private router: Router, private roleService: RoleService) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private roleService: RoleService,
+    private userService: UserService
+  ) {
+    effect(() => {
+      const user = this.userData();
+      if (user && user.id) {
+        this.userService.updateUserProfile(
+          user.id,
+          user.fullName || user.name || '',
+          user.profileImage || user.avatarUrl || null
+        );
+      }
+    });
+  }
 
   get<T>(url: string, params?: any): Observable<T> {
     return this.http.get<T>(this.baseUrl + url, { params });

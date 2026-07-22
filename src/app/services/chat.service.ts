@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { collection, doc, query, orderBy, getDocs, addDoc, writeBatch, increment, onSnapshot, serverTimestamp, QueryDocumentSnapshot, DocumentData, Unsubscribe } from 'firebase/firestore';
+import { collection, doc, query, where, orderBy, limit, getDoc, getDocs, setDoc, updateDoc, writeBatch, increment, onSnapshot, serverTimestamp, QueryDocumentSnapshot, DocumentData, Unsubscribe } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 import { CommonService } from './common.service';
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {
-      private MESSAGES_LIMIT = 20;
+      private MESSAGES_LIMIT = 50;
 
       // per-room state
       private lastDocMap = new Map<string, QueryDocumentSnapshot<DocumentData> | null>();
@@ -15,104 +15,139 @@ export class ChatService {
 
       constructor(private firestore: Firestore, private service: CommonService) { }
 
+      buildChatId(uidA: string | number, uidB: string | number): string {
+            const toUidString = (uid: any) => uid == null ? '' : String(uid);
+            return [toUidString(uidA), toUidString(uidB)].sort().join('_');
+      }
+
+      async getOrCreateChat(currentUser: any, otherUser: any, carDetail?: any): Promise<string> {
+            const currentUid = String(currentUser.id || currentUser.uid);
+            const otherUid = String(otherUser.id || otherUser.uid);
+            const chatId = this.buildChatId(currentUid, otherUid);
+
+            const ref = doc(this.firestore, 'chats', chatId);
+            const snap = await getDoc(ref);
+
+            const otherUserAvatar = otherUser.profileImage || otherUser.avatarUrl || otherUser.avatar || '';
+            const otherUserName = otherUser.fullName || otherUser.name || '';
+            const currentUserAvatar = currentUser.profileImage || currentUser.avatarUrl || currentUser.avatar || '';
+            const currentUserName = currentUser.fullName || currentUser.name || '';
+
+            if (!snap.exists()) {
+                  const newChat = {
+                        participants: [currentUid, otherUid].sort(),
+                        participantsInfo: {
+                              [currentUid]: {
+                                    name: currentUserName,
+                                    avatarUrl: currentUserAvatar,
+                              },
+                              [otherUid]: {
+                                    name: otherUserName,
+                                    avatarUrl: otherUserAvatar,
+                              },
+                        },
+                        lastMessage: null,
+                        carDetail: carDetail || {},
+                        unreadCount: {
+                              [currentUid]: 0,
+                              [otherUid]: 0,
+                        },
+                        createdAt: serverTimestamp(),
+                        updatedAt: serverTimestamp(),
+                  };
+                  await setDoc(ref, newChat);
+            } else {
+                  const updateData: any = {
+                        participantsInfo: {
+                              [currentUid]: {
+                                    name: currentUserName,
+                                    avatarUrl: currentUserAvatar,
+                              },
+                              [otherUid]: {
+                                    name: otherUserName,
+                                    avatarUrl: otherUserAvatar,
+                              },
+                        }
+                  };
+                  if (carDetail) {
+                        updateData.carDetail = carDetail;
+                  }
+                  await updateDoc(ref, updateData);
+            }
+
+            return chatId;
+      }
+
       // ---------------- Send message ----------------
       async sendMessage(inputValue: string, currentUser: any, otherUser: any, roomId: string) {
             if (!inputValue?.trim()) return;
 
-            const senderId = String(currentUser.id);
-            const receiverId = String(otherUser.id);
-            const key = this.generateRandomString();
+            const senderUid = String(currentUser.id || currentUser.uid);
+            const recipientUid = String(otherUser.id || otherUser.uid);
+            const chatId = roomId;
 
-            // build message WITHOUT client-side createdAt (serverTimestamp will be used)
-            const myMsg = {
-                  sendBy: senderId,
-                  sendTo: receiverId,
-                  avatar: currentUser.profileImage || '',
-                  name: currentUser.fullName || currentUser.name || '',
+            // Ensure the parent chat document exists in Firestore first
+            await this.getOrCreateChat(currentUser, otherUser);
+
+            const batch = writeBatch(this.firestore);
+
+            const messagesCol = collection(this.firestore, 'chats', chatId, 'messages');
+            const messageRef = doc(messagesCol);
+            
+            const messageData = {
+                  chatId,
+                  senderId: senderUid,
                   type: 'text',
-                  seen: false,
-                  key,
-                  msg: inputValue.trim(),
-                  // no createdAt here: serverTimestamp will be added on addDoc
+                  text: inputValue.trim(),
+                  mediaUrl: '',
+                  thumbnailUrl: '',
+                  fileName: '',
+                  fileSize: 0,
+                  duration: 0,
+                  status: 'sent',
+                  createdAt: serverTimestamp(),
+                  readBy: [senderUid],
             };
 
-            // prepare usersList objects (use serverTimestamp in write)
-            const userList = {
-                  id: receiverId,
-                  Seen: true,
-                  name: otherUser.name,
-                  senderId,
-                  avatar: otherUser.avatar,
-                  lastMsg: inputValue.trim(),
-                  createdAt: serverTimestamp(),
-                  carImage: otherUser.carImage,
-                  carName: otherUser.carName,
-            };
+            batch.set(messageRef, messageData);
 
-            const otherUserList = {
-                  id: senderId,
-                  Seen: false,
-                  lastMsg: inputValue.trim(),
-                  senderId,
-                  createdAt: serverTimestamp(),
-                  mgsCount: increment(1),
-                  avatar: currentUser.profileImage || '',
-                  name: currentUser.fullName || currentUser.name || '',
-            };
-            await this.uploadMessage(myMsg, userList, otherUserList, senderId, receiverId, roomId);
+            const chatRef = doc(this.firestore, 'chats', chatId);
+            batch.update(chatRef, {
+                  lastMessage: {
+                        text: inputValue.trim(),
+                        type: 'text',
+                        senderId: senderUid,
+                        createdAt: serverTimestamp(),
+                  },
+                  updatedAt: serverTimestamp(),
+                  [`unreadCount.${recipientUid}`]: increment(1),
+            });
+
+            await batch.commit();
+            return messageRef.id;
       }
 
-      private async uploadMessage(
-            myMsg: any,
-            userList: any,
-            otherUserList: any,
-            senderId: string,
-            receiverId: string,
-            roomId: string
-      ) {
-            try {
-                  const chatRef = doc(this.firestore, 'chatroom', roomId);
-                  const userRef = doc(this.firestore, 'users', senderId, 'usersList', roomId);
-                  const otherUserRef = doc(this.firestore, 'users', receiverId, 'usersList', roomId);
-                  const chatMessagesRef = collection(chatRef, 'chats');
-
-                  const batch = writeBatch(this.firestore);
-                  batch.set(userRef, userList, { merge: true });
-                  batch.set(otherUserRef, otherUserList, { merge: true });
-
-                  // add message with server timestamp
-                  await Promise.all([
-                        addDoc(chatMessagesRef, { ...myMsg, createdAt: serverTimestamp() }),
-                        batch.commit(),
-                  ]);
-                  sessionStorage.removeItem('sellerData');
-                  this.service.sellerData.set(null)
-            } catch (err) {
-                  console.error('uploadMessage error:', err);
-                  throw err;
-            }
-      }
-
-      // ---------------- Pagination fetch ----------------
-      // currentMessages expected in "newest-first" order (desc). Component can reverse on render.
+      // ---------------- Fetch messages (one-time) ----------------
       async fetchMessages(roomId: string) {
             try {
-                  const chatRef = collection(this.firestore, 'chatroom', roomId, 'chats');
-
-                  // Get all messages ordered by creation time (ascending or descending as per your UI)
+                  const chatRef = collection(this.firestore, 'chats', roomId, 'messages');
                   const q = query(chatRef, orderBy('createdAt', 'desc'));
-
                   const snapshot = await getDocs(q);
 
                   if (!snapshot.empty) {
                         const messages = snapshot.docs.map((d) => {
                               const data = d.data() as any;
-                              const createdAt =
-                                    data.createdAt && (data.createdAt.toMillis ? data.createdAt.toMillis() : data.createdAt);
-                              return { id: d.id, ...data, createdAt };
+                              const createdAt = this.toMillis(data.createdAt);
+                              return {
+                                    id: d.id,
+                                    ...data,
+                                    sendBy: data.senderId || data.sendBy,
+                                    msg: data.text || data.msg,
+                                    createdAt
+                              };
                         });
 
-                        return { messages, hasMore: false }; // no pagination needed
+                        return { messages, hasMore: false };
                   } else {
                         return { messages: [], hasMore: false };
                   }
@@ -123,34 +158,37 @@ export class ChatService {
       }
 
       // ---------------- Real-time listener ----------------
-      // callback receives { type: 'initial'|'received'|'sent'|'modified'|'removed', data: any }
       listenToMessages(roomId: string, currentUserId: string, callback: (update: any) => void) {
-            // stop old listener for this room
             this.stopListening(roomId);
 
-            const chatsQuery = query(collection(this.firestore, 'chatroom', roomId, 'chats'), orderBy('createdAt', 'desc'));
+            const messagesRef = collection(this.firestore, 'chats', roomId, 'messages');
+            const q = query(messagesRef, orderBy('createdAt', 'desc'), limit(this.MESSAGES_LIMIT));
             let isInitialLoad = true;
             const processed = new Set<string>();
             this.processedIdsMap.set(roomId, processed);
 
-            const unsubscribe = onSnapshot(chatsQuery, (snapshot) => {
-                  // collect initial batch (added docs)
+            const unsubscribe = onSnapshot(q, (snapshot) => {
                   const initialBatch: any[] = [];
 
                   snapshot.docChanges().forEach((change) => {
                         const dataRaw = change.doc.data() as any;
-                        const createdAt = dataRaw.createdAt && (dataRaw.createdAt.toMillis ? dataRaw.createdAt.toMillis() : dataRaw.createdAt);
-                        const data = { id: change.doc.id, ...dataRaw, createdAt };
+                        const createdAt = this.toMillis(dataRaw.createdAt);
+                        const data = {
+                              id: change.doc.id,
+                              ...dataRaw,
+                              sendBy: dataRaw.senderId || dataRaw.sendBy,
+                              msg: dataRaw.text || dataRaw.msg,
+                              createdAt
+                        };
 
                         if (isInitialLoad && change.type === 'added') {
                               initialBatch.push(data);
                               return;
                         }
 
-                        // after initial load - handle mutations
                         if (change.type === 'added') {
                               if (!processed.has(data.id)) {
-                                    const type = String(data.sendBy) === String(currentUserId) ? 'sent' : 'received';
+                                    const type = String(data.senderId) === String(currentUserId) ? 'sent' : 'received';
                                     callback({ type, data });
                                     processed.add(data.id);
                               }
@@ -162,8 +200,8 @@ export class ChatService {
                   });
 
                   if (isInitialLoad) {
-                        // sort initial batch ascending by createdAt so consumer can render oldest->newest if required
-                        initialBatch.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+                        initialBatch.sort((a, b) => this.toMillis(a.createdAt) - this.toMillis(b.createdAt));
+                        initialBatch.forEach(item => processed.add(item.id));
                         callback({ type: 'initial', data: initialBatch });
                         isInitialLoad = false;
                   }
@@ -177,35 +215,14 @@ export class ChatService {
 
       async markAllMessagesSeen(userId: string, roomId: string, messages: any[] = []) {
             try {
-                  const db = this.firestore;
-
-                  // Reference to the user document inside 'usersList'
-                  const userListRef = doc(collection(db, 'users', String(userId), 'usersList'), String(roomId));
-
-                  // Update 'Seen' and 'mgsCount' fields
-                  const initialBatch = writeBatch(db);
-                  initialBatch.update(userListRef, { Seen: true, mgsCount: 0 });
-                  await initialBatch.commit();
-
-                  // Filter unseen messages for this user
-                  const unseenMessages = messages.filter(
-                        (msg: any) => msg.sendTo === userId && !msg.seen
-                  );
-
-                  if (unseenMessages.length > 0) {
-                        const batch = writeBatch(db);
-
-                        unseenMessages.forEach((msg: any) => {
-                              const msgRef = doc(collection(db, 'chatroom', String(roomId), 'chats'), String(msg.id));
-                              batch.update(msgRef, { seen: true });
-                        });
-
-                        await batch.commit();
-                  }
+                  const uid = String(userId);
+                  const chatRef = doc(this.firestore, 'chats', roomId);
+                  await updateDoc(chatRef, {
+                        [`unreadCount.${uid}`]: 0
+                  });
             } catch (error) {
-                  console.error('Error updating seen status and message count:', error);
+                  console.error('Error updating seen status:', error);
             }
-
       }
 
       stopListening(roomId: string) {
@@ -214,7 +231,6 @@ export class ChatService {
                   try { unsub(); } catch (e) { /* ignore */ }
                   this.unsubscribeMap.delete(roomId);
             }
-            // clear processed ids for the room as well
             this.processedIdsMap.delete(roomId);
       }
 
@@ -225,16 +241,24 @@ export class ChatService {
       // ---------------- Chat list (real-time) ----------------
       getChatList(userId: string): Observable<any[]> {
             return new Observable((observer) => {
-                  const userDocRef = doc(this.firestore, `users/${userId}`);
-                  const usersListRef = collection(userDocRef, 'usersList');
-                  const q = query(usersListRef, orderBy('createdAt', 'desc'));
+                  const currentUid = String(userId);
+                  const candidates = this.buildUidCandidates(currentUid);
+                  if (candidates.length === 0) {
+                        observer.next([]);
+                        return;
+                  }
+
+                  const chatsRef = collection(this.firestore, 'chats');
+                  const q = candidates.length === 1
+                        ? query(chatsRef, where('participants', 'array-contains', candidates[0]))
+                        : query(chatsRef, where('participants', 'array-contains-any', candidates));
 
                   const unsubscribe = onSnapshot(q, (snapshot) => {
                         const list = snapshot.docs.map(d => {
                               const data: any = d.data();
-                              const createdAt = data.createdAt && (data.createdAt.toMillis ? data.createdAt.toMillis() : data.createdAt);
+                              const createdAt = this.toMillis(data.updatedAt || data.createdAt);
                               return { id: d.id, ...data, createdAt };
-                        });
+                        }).sort((a, b) => this.toMillis(b.updatedAt || b.createdAt) - this.toMillis(a.updatedAt || a.createdAt));
                         observer.next(list);
                   }, (err) => {
                         console.error('getChatList onSnapshot error:', err);
@@ -247,9 +271,22 @@ export class ChatService {
             });
       }
 
-      // ---------------- utilities ----------------
-      private generateRandomString(length = 12) {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+      private buildUidCandidates(uid: any): any[] {
+            const candidates: any[] = [];
+            const uidString = uid == null ? '' : String(uid);
+            if (uidString) candidates.push(uidString);
+            const asNumber = Number(uid);
+            if (uid != null && uid !== '' && Number.isFinite(asNumber) && asNumber !== uid) {
+                  candidates.push(asNumber);
+            }
+            return [...new Set(candidates)];
+      }
+
+      private toMillis(value: any): number {
+            if (!value) return 0;
+            if (typeof value.toMillis === 'function') return value.toMillis();
+            if (typeof value.seconds === 'number') return value.seconds * 1000;
+            if (value instanceof Date) return value.getTime();
+            return 0;
       }
 }

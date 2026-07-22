@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { Subscription } from 'rxjs';
 import { CommonService } from '../../services/common.service';
@@ -11,11 +11,11 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-chats',
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, ChfFormatPipe, RouterLink],
   templateUrl: './chats.component.html',
   styleUrl: './chats.component.css'
 })
-export class ChatsComponent {
+export class ChatsComponent implements OnDestroy {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
   inputValue = '';
@@ -31,26 +31,49 @@ export class ChatsComponent {
   userData: any;
   sellerCarList: any[] = [];
   currentCar: any = {};
-  constructor(private chatService: ChatService, private commonService: CommonService, public location: Location, private loader: LoaderService, private translate: TranslateService) {
+
+  constructor(
+    private chatService: ChatService,
+    private commonService: CommonService,
+    public location: Location,
+    private loader: LoaderService,
+    private translate: TranslateService
+  ) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     effect(() => {
-      this.userData = this.commonService.userData()
+      this.userData = this.commonService.userData();
       const sellerData = JSON.parse(sessionStorage.getItem('sellerData') || '{}') || this.commonService.sellerData();
-      if (this.userData && sellerData) {
+      if (this.userData) {
         this.currentUserId = this.userData.id;
 
+        if (this.sub1) this.sub1.unsubscribe();
         this.sub1 = this.chatService.getChatList(this.userData.id).subscribe(list => {
-          this.chatList = list;
-          this.filteredChatList = list;
+          this.chatList = list.map(item => {
+            const otherUid = item.participants?.find((p: any) => String(p) !== String(this.userData.id)) || '';
+            const otherInfo = item.participantsInfo?.[otherUid] || {};
+            const unreadCount = item.unreadCount?.[this.userData.id] || 0;
+            return {
+              ...item,
+              name: otherInfo.name || '',
+              avatar: otherInfo.avatarUrl || '',
+              carImage: item.carDetail?.carImage || '',
+              carName: item.carDetail?.carName || '',
+              Seen: unreadCount === 0,
+              mgsCount: unreadCount
+            };
+          });
+          this.filteredChatList = this.chatList;
         });
-        this.loader.show()
-        setTimeout(() => {
-          if (sellerData.name) {
-            const existingChat = this.chatList.find(chat => chat.id == sellerData.id);
+
+        if (sellerData && sellerData.name) {
+          this.loader.show();
+          setTimeout(() => {
+            const existingChat = this.chatList.find(chat => chat.participants?.includes(String(sellerData.id)));
             if (existingChat) {
               this.openChat(existingChat, sellerData.carId);
             } else {
               this.getSellerCars(sellerData.id, sellerData.carId);
+              this.roomId = this.chatService.buildChatId(this.userData.id, sellerData.id);
               this.currentChat = {
                 id: sellerData.id,
                 name: sellerData.name,
@@ -59,12 +82,11 @@ export class ChatsComponent {
                 carName: sellerData.carName
               };
             }
-          }
-          this.loader.hide()
-        }, 1500);
-        this.roomId = sellerData.id < this.userData.id ? this.userData.id + '' + sellerData.id : sellerData.id + '' + this.userData.id;
+            this.loader.hide();
+          }, 1500);
+        }
       }
-    })
+    });
   }
 
   getSellerCars(sellerId: any, carId: any) {
@@ -72,24 +94,23 @@ export class ChatsComponent {
       if (carId) {
         this.sellerCarList = res.data.filter((car: any) => car.id != carId);
         this.currentCar = res.data.find((car: { id: any; }) => car.id == carId);
-      }
-      else {
+      } else {
         this.currentCar = null;
         this.sellerCarList = res.data;
         this.currentCar = res.data[0] || null;
       }
-    })
+    });
   }
 
   openChat(item: any, carId: any) {
-    this.getSellerCars(item.id, carId);
+    const otherUid = item.participants?.find((p: any) => String(p) !== String(this.userData.id)) || item.id;
+    this.getSellerCars(otherUid, carId);
     this.currentChat = item;
-    this.roomId = item.id < this.userData.id ? this.userData.id + '' + item.id : item.id + '' + this.userData.id;
+    this.roomId = item.id;
 
     this.messages = [];
     this.hasMore = true;
 
-    // this.loadMessages();
     this.listenRealTime();
     this.chatService.markAllMessagesSeen(this.userData.id, this.roomId, this.messages);
   }
@@ -98,9 +119,6 @@ export class ChatsComponent {
     const result = await this.chatService.fetchMessages(this.roomId);
     this.messages = result.messages;
     this.hasMore = result.hasMore;
-
-    console.log(this.messages);
-
     this.scrollToBottom();
   }
 
@@ -123,20 +141,22 @@ export class ChatsComponent {
   }
 
   async sendMessage() {
-
     if (!this.inputValue.trim()) return;
 
     await this.chatService.sendMessage(this.inputValue, this.userData, this.currentChat, this.roomId);
     this.inputValue = '';
-    this.listenRealTime();
   }
 
   scrollToBottom() {
     if (this.scrollContainer) {
-      this.scrollContainer.nativeElement.scrollTo({
-        top: this.scrollContainer.nativeElement.scrollHeight,
-        behavior: 'smooth'
-      });
+      setTimeout(() => {
+        try {
+          this.scrollContainer.nativeElement.scrollTo({
+            top: this.scrollContainer.nativeElement.scrollHeight,
+            behavior: 'smooth'
+          });
+        } catch (e) {}
+      }, 100);
     }
   }
 
@@ -151,8 +171,37 @@ export class ChatsComponent {
     }
   }
 
+  getChatCarTitle(item: any): string {
+    return item.carDetail?.carName || item.carName || '';
+  }
+
+  getChatPreview(item: any): string {
+    return item.lastMessage?.text || '';
+  }
+
+  isActiveChat(item: any): boolean {
+    return item.id === this.roomId;
+  }
+
+  getCurrentCarImage(): string {
+    return this.currentCar?.carImages?.[0] || this.currentChat?.carImage || '';
+  }
+
+  getCurrentCarTitle(): string {
+    if (this.currentCar?.brandName) {
+      return `${this.currentCar.brandName} ${this.currentCar.carModel || ''}`;
+    }
+    return this.currentChat?.carName || '';
+  }
+
+  closeCurrentChat() {
+    this.currentChat = null;
+    this.roomId = '';
+    if (this.unsubscribe) this.unsubscribe();
+  }
 
   timeAgo(dateString: string): string {
+    if (!dateString) return '';
     const now = new Date();
     const past = new Date(dateString);
     const diffMs = now.getTime() - past.getTime();
@@ -173,7 +222,6 @@ export class ChatsComponent {
     if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
     return 'just now';
   }
-
 
   ngOnDestroy() {
     if (this.unsubscribe) this.unsubscribe();
