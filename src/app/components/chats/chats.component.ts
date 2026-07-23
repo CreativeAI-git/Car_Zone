@@ -17,6 +17,7 @@ import { RouterLink } from '@angular/router';
 })
 export class ChatsComponent implements OnDestroy {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+  @ViewChild('messageInput') messageInputEl!: ElementRef<HTMLTextAreaElement>;
 
   inputValue = '';
   messages: any[] = [];
@@ -100,6 +101,8 @@ export class ChatsComponent implements OnDestroy {
         this.currentCar = res.data[0] || null;
       }
     });
+
+
   }
 
   openChat(item: any, carId: any) {
@@ -138,6 +141,8 @@ export class ChatsComponent implements OnDestroy {
         this.messages = this.messages.filter(m => m.id !== update.data.id);
       }
     });
+
+
   }
 
   async sendMessage() {
@@ -145,6 +150,23 @@ export class ChatsComponent implements OnDestroy {
 
     await this.chatService.sendMessage(this.inputValue, this.userData, this.currentChat, this.roomId);
     this.inputValue = '';
+    if (this.messageInputEl) {
+      this.messageInputEl.nativeElement.style.height = '48px';
+    }
+  }
+
+  onKeydown(event: KeyboardEvent) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.sendMessage();
+    }
+  }
+
+  adjustHeight(textarea: HTMLTextAreaElement) {
+    textarea.style.height = '48px';
+    const scrollHeight = textarea.scrollHeight;
+    const newHeight = Math.min(Math.max(scrollHeight, 48), 120);
+    textarea.style.height = `${newHeight}px`;
   }
 
   scrollToBottom() {
@@ -155,7 +177,7 @@ export class ChatsComponent implements OnDestroy {
             top: this.scrollContainer.nativeElement.scrollHeight,
             behavior: 'smooth'
           });
-        } catch (e) {}
+        } catch (e) { }
       }, 100);
     }
   }

@@ -1,7 +1,7 @@
 <section class="ct_mt_100 mb-5 ct_chat_page">
       <div class="container">
             <div class="row">
-                  <div class="col-lg-9 mb-4" [ngClass]="sellerCarList.length > 1 ? 'col-lg-9' : 'col-lg-12'">
+                  <div class="col-lg-12 mb-4">
                         <div class="chat-area ct_chatroom_layout">
                               <div class="chatlist ct_chatroom_chatlist ct_right_main_box bg-white"
                                     [class.ct_hide_on_mobile]="currentChat">
@@ -99,11 +99,11 @@
                                                                   </a>
                                                                   }
                                                                   }@else {
-                                                                  <div class="ct_chat_empty_list">
-                                                                        <div class="ct_chat_empty_icon"><i
+                                                                  <div class="ct_chat_empty_list text-center">
+                                                                        <div class="ct_chat_empty_icon text-center"><i
                                                                                     class="fa-regular fa-comments"></i>
                                                                         </div>
-                                                                        <h2 class="fw-bold text-dark mb-2 ct_fs_18">
+                                                                        <h2 class="text-dark mb-2 ct_fs_18">
                                                                               {{'chat.noChatFound' | translate}}</h2>
                                                                   </div>
                                                                   }
@@ -132,7 +132,8 @@
                                                                                     <h4 class="ct_fs_18 ct_fw_600 mb-0">
                                                                                           {{currentChat?.name}}</h4>
                                                                                     <p class="mb-0 ct_text_008000"><span
-                                                                                                class="online-dot"></span>Online
+                                                                                                class="online-dot"></span>
+                                                                                          Online
                                                                                     </p>
                                                                               </div>
                                                                         </div>
@@ -146,25 +147,39 @@
                                                                               </div>
                                                                               <div class="min-w-0">
                                                                                     <p
-                                                                                          class="ct_fs_18 ct_fw_600 text-limit-chat mb-0">
+                                                                                          class="ct_fs_15 ct_fw_600 text-limit-chat mb-0">
                                                                                           {{getCurrentCarTitle()}}</p>
                                                                                     @if(currentCar){
                                                                                     <p
-                                                                                          class="ct_fs_14 text-limit-chat mb-0">
-                                                                                          {{currentCar.totalPrice |
+                                                                                          class="ct_fs_12 text-limit-chat mb-0 text-muted opacity-75">
+                                                                                          @if(currentCar.selling_price)
+                                                                                          {
+                                                                                          {{currentCar.selling_price |
                                                                                           chfFormat}}
-                                                                                          @if(currentCar.registrationYear
+                                                                                          }
+                                                                                          @if(currentCar.first_registration_date
                                                                                           ||
                                                                                           currentCar.registration_year){
-                                                                                          |
-                                                                                          {{currentCar.registrationYear
+                                                                                          @if(currentCar.selling_price)
+                                                                                          { <span class="mx-1">|</span>
+                                                                                          }
+                                                                                          {{(currentCar.first_registration_date
+                                                                                          | date:'yyyy-MM')
                                                                                           ||
                                                                                           currentCar.registration_year}}
                                                                                           }
                                                                                           @if(currentCar.carMileage ||
-                                                                                          currentCar.car_mileage){ |
+                                                                                          currentCar.car_mileage){
+                                                                                          @if(currentCar.selling_price
+                                                                                          ||
+                                                                                          currentCar.first_registration_date
+                                                                                          ||
+                                                                                          currentCar.registration_year)
+                                                                                          { <span class="mx-1">|</span>
+                                                                                          }
                                                                                           {{currentCar.carMileage ||
-                                                                                          currentCar.car_mileage}} km }
+                                                                                          currentCar.car_mileage}} km
+                                                                                          }
                                                                                     </p>
                                                                                     }
                                                                               </div>
@@ -224,11 +239,12 @@
                                                                               <div><i class="fa-solid fa-paperclip"></i>
                                                                               </div>
                                                                         </label>
-                                                                        <input type="text" class="form-control"
+                                                                        <textarea #messageInput class="form-control"
                                                                               placeholder="{{'chat.yourMessage' | translate}}"
                                                                               [(ngModel)]="inputValue"
                                                                               [ngModelOptions]="{standalone: true}"
-                                                                              (keyup.enter)="sendMessage()" />
+                                                                              (keydown)="onKeydown($event)"
+                                                                              (input)="adjustHeight(messageInput)"></textarea>
                                                                         <button type="submit"
                                                                               class="ct_right_side_send_chat_btns btn-red border-0">
                                                                               {{'chat.send' | translate}} <i
@@ -261,43 +277,12 @@
                                                                   stroke-width="1.73913" stroke-linecap="round"
                                                                   stroke-linejoin="round" />
                                                       </svg>
-                                                      <div>
-                                                            <h4 class="ct_fs_20 ct_fw_600">{{'chat.messages' |
+                                                      <div class="text-center">
+                                                            <h4 class="ct_fs_20 ct_fw_600 mb-2">{{'chat.messages' |
                                                                   translate}}</h4>
-                                                            <p>{{ 'chat.clickOnAContactToViewMessages' | translate }}
+                                                            <p class="text-muted mb-4">{{
+                                                                  'chat.clickOnAContactToViewMessages' | translate }}
                                                             </p>
-                                                            <div class="">
-                                                                  <a
-                                                                        class="ct_purple_btn d-flex align-items-center gap-2">
-                                                                        <svg width="20" height="20" viewBox="0 0 20 20"
-                                                                              fill="none"
-                                                                              xmlns="http://www.w3.org/2000/svg">
-                                                                              <path fill-rule="evenodd"
-                                                                                    clip-rule="evenodd"
-                                                                                    d="M15.8447 16.039C13.1871 18.6968 9.25198 19.271 6.03167 17.7817C5.55627 17.5903 5.16651 17.4356 4.79598 17.4356C3.7639 17.4417 2.47927 18.4425 1.81162 17.7756C1.14396 17.1079 2.14545 15.8222 2.14545 14.7839C2.14545 14.4133 1.99688 14.0305 1.8055 13.5542C0.315505 10.3344 0.890529 6.39795 3.54805 3.74101C6.94052 0.347298 12.4522 0.347298 15.8447 3.74014C19.2432 7.1391 19.2371 12.6461 15.8447 16.039Z"
-                                                                                    stroke="white"
-                                                                                    stroke-width="1.30435"
-                                                                                    stroke-linecap="round"
-                                                                                    stroke-linejoin="round" />
-                                                                              <path d="M13.1203 10.2505H13.1281"
-                                                                                    stroke="white"
-                                                                                    stroke-width="1.73913"
-                                                                                    stroke-linecap="round"
-                                                                                    stroke-linejoin="round" />
-                                                                              <path d="M9.63595 10.2505H9.64377"
-                                                                                    stroke="white"
-                                                                                    stroke-width="1.73913"
-                                                                                    stroke-linecap="round"
-                                                                                    stroke-linejoin="round" />
-                                                                              <path d="M6.14962 10.2505H6.15745"
-                                                                                    stroke="white"
-                                                                                    stroke-width="1.73913"
-                                                                                    stroke-linecap="round"
-                                                                                    stroke-linejoin="round" />
-                                                                        </svg>
-                                                                        <span>{{'chat.newMessage' | translate}}</span>
-                                                                  </a>
-                                                            </div>
                                                       </div>
                                                 </div>
                                                 }
@@ -306,29 +291,7 @@
                               </div>
                         </div>
                   </div>
-                  @if(sellerCarList.length > 1){
-                  <div class="col-lg-3 mb-4">
-                        <div class="ct_right_side_card_listed">
-                              <h4 class="ct_fs_18 ct_text_red mb-1">{{ 'chat.moreCarsByTheSeller' | translate }}</h4>
-                              <p class="ct_fs_14 ct_text_op_6">Showing {{sellerCarList.length - 1}} more cars you might
-                                    like</p>
-                              <ul class="mt-4 ct_custom_scroll">
-                                    @for(car of sellerCarList; track car.id){
-                                    <li>
-                                          <a class="d-flex align-items-start gap-3" routerLink="/car-detail"
-                                                [queryParams]="{id: car.id}">
-                                                <img [src]="car.carImages[0]" alt="" class="ct_img_w_76">
-                                                <div>
-                                                      <h4 class="ct_fs_14 mb-1">{{car.brandName}} {{car.carModel}}</h4>
-                                                      <p class="mb-0 ct_text_red ">{{car.totalPrice | chfFormat}}</p>
-                                                </div>
-                                          </a>
-                                    </li>
-                                    }
-                              </ul>
-                        </div>
-                  </div>
-                  }
+
             </div>
       </div>
 </section>
