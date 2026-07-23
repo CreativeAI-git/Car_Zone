@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Firestore } from '@angular/fire/firestore';
 import { collection, doc, query, where, orderBy, limit, getDoc, getDocs, setDoc, updateDoc, writeBatch, increment, onSnapshot, serverTimestamp, QueryDocumentSnapshot, DocumentData, Unsubscribe } from 'firebase/firestore';
 import { Observable } from 'rxjs';
@@ -13,7 +14,11 @@ export class ChatService {
       private unsubscribeMap = new Map<string, Unsubscribe>();
       private processedIdsMap = new Map<string, Set<string>>();
 
-      constructor(private firestore: Firestore, private service: CommonService) { }
+      constructor(
+            private firestore: Firestore,
+            private service: CommonService,
+            private http: HttpClient
+      ) { }
 
       buildChatId(uidA: string | number, uidB: string | number): string {
             const toUidString = (uid: any) => uid == null ? '' : String(uid);
@@ -116,6 +121,75 @@ export class ChatService {
                   lastMessage: {
                         text: inputValue.trim(),
                         type: 'text',
+                        senderId: senderUid,
+                        createdAt: serverTimestamp(),
+                  },
+                  updatedAt: serverTimestamp(),
+                  [`unreadCount.${recipientUid}`]: increment(1),
+            });
+
+            await batch.commit();
+            return messageRef.id;
+      }
+
+      // ---------------- Upload attachment ----------------
+      uploadAttachment(formData: FormData): Observable<HttpEvent<any>> {
+            return this.http.post<any>(this.service.baseUrl + 'user/upload-chat-attachment', formData, {
+                  reportProgress: true,
+                  observe: 'events'
+            });
+      }
+
+      // ---------------- Send media message ----------------
+      async sendMediaMessage(params: {
+            chatId: string;
+            currentUser: any;
+            otherUser: any;
+            type: 'image' | 'video' | 'audio';
+            mediaUrl: string;
+            thumbnailUrl?: string;
+            fileName?: string;
+            fileSize?: number;
+            duration?: number;
+            clientMessageId?: string;
+      }) {
+            const senderUid = String(params.currentUser.id || params.currentUser.uid);
+            const recipientUid = String(params.otherUser.id || params.otherUser.uid);
+            const chatId = params.chatId;
+
+            await this.getOrCreateChat(params.currentUser, params.otherUser);
+
+            const batch = writeBatch(this.firestore);
+            const messagesCol = collection(this.firestore, 'chats', chatId, 'messages');
+            const messageRef = doc(messagesCol);
+
+            let previewText = '';
+            if (params.type === 'image') previewText = '📷 Photo';
+            else if (params.type === 'video') previewText = '🎥 Video';
+            else if (params.type === 'audio') previewText = '🎤 Audio';
+
+            const messageData = {
+                  chatId,
+                  senderId: senderUid,
+                  type: params.type,
+                  text: previewText,
+                  mediaUrl: params.mediaUrl || '',
+                  thumbnailUrl: params.thumbnailUrl || '',
+                  fileName: params.fileName || '',
+                  fileSize: params.fileSize || 0,
+                  duration: params.duration || 0,
+                  status: 'sent',
+                  createdAt: serverTimestamp(),
+                  readBy: [senderUid],
+            };
+
+            batch.set(messageRef, messageData);
+
+            const chatRef = doc(this.firestore, 'chats', chatId);
+            batch.update(chatRef, {
+                  lastMessage: {
+                        text: previewText,
+                        type: params.type,
                         senderId: senderUid,
                         createdAt: serverTimestamp(),
                   },

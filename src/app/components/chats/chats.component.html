@@ -201,27 +201,92 @@
                                                                               <li>
                                                                                     <div>
                                                                                           <div class="sender">
-                                                                                                <p
+                                                                                                <div
                                                                                                       class="ct_fs_14 mb-0">
-                                                                                                      {{item.msg}}
+                                                                                                      @if (item.type ===
+                                                                                                      'image') {
+                                                                                                      <img [src]="item.mediaUrl"
+                                                                                                            class="img-fluid rounded mb-1"
+                                                                                                            style="max-width: 250px; max-height: 250px; cursor: pointer; object-fit: cover;"
+                                                                                                            (click)="selectedPreviewMedia = {url: item.mediaUrl, type: 'image'}">
+                                                                                                      } @else if
+                                                                                                      (item.type ===
+                                                                                                      'video') {
+                                                                                                      <video [src]="item.mediaUrl"
+                                                                                                            controls
+                                                                                                            class="rounded mb-1"
+                                                                                                            style="max-width: 280px; max-height: 220px;"></video>
+                                                                                                      } @else if
+                                                                                                      (item.type ===
+                                                                                                      'audio') {
+                                                                                                      <audio [src]="item.mediaUrl"
+                                                                                                            controls
+                                                                                                            class="mb-1"
+                                                                                                            style="max-width: 250px;"></audio>
+                                                                                                      }
+                                                                                                      @if (item.msg &&
+                                                                                                      item.type !==
+                                                                                                      'image' &&
+                                                                                                      item.type !==
+                                                                                                      'video' &&
+                                                                                                      item.type !==
+                                                                                                      'audio') {
+                                                                                                      <p class="mb-0">
+                                                                                                            {{item.msg}}
+                                                                                                      </p>
+                                                                                                      }
                                                                                                       <span
                                                                                                             class="text-start d-block ct_fs_12 text-light me-1 text-nowrap opacity-75">{{item.createdAt
                                                                                                             |
                                                                                                             date:'shortTime'}}</span>
-                                                                                                </p>
+                                                                                                </div>
                                                                                           </div>
                                                                                     </div>
                                                                               </li>
                                                                               }@else{
                                                                               <li>
                                                                                     <div class="repaly">
-                                                                                          <p class="mb-0 ct_fs_14">
-                                                                                                {{item.msg}}
+                                                                                          <div class="mb-0 ct_fs_14">
+                                                                                                @if (item.type ===
+                                                                                                'image') {
+                                                                                                <img [src]="item.mediaUrl"
+                                                                                                      class="img-fluid rounded mb-1"
+                                                                                                      style="max-width: 250px; max-height: 250px; cursor: pointer; object-fit: cover;"
+                                                                                                      (click)="selectedPreviewMedia = {url: item.mediaUrl, type: 'image'}">
+                                                                                                } @else if (item.type
+                                                                                                === 'video') {
+                                                                                                <video [src]="item.mediaUrl"
+                                                                                                      controls
+                                                                                                      class="rounded mb-1"
+                                                                                                      style="max-width: 280px; max-height: 220px;"></video>
+                                                                                                } @else if (item.type
+                                                                                                === 'audio') {
+                                                                                                <audio [src]="item.mediaUrl"
+                                                                                                      controls
+                                                                                                      class="mb-1"
+                                                                                                      style="max-width: 250px;"></audio>
+                                                                                                }
+                                                                                                @if (item.msg &&
+                                                                                                item.type !== 'image' &&
+                                                                                                item.type !== 'video' &&
+                                                                                                item.type !== 'audio') {
+                                                                                                <p class="mb-0">
+                                                                                                      {{item.msg}}</p>
+                                                                                                }
+                                                                                                @if (item.upload ===
+                                                                                                'pending') {
+                                                                                                <div class="progress mt-1"
+                                                                                                      style="height: 4px; width: 100%;">
+                                                                                                      <div class="progress-bar bg-danger"
+                                                                                                            [style.width.%]="item.progress">
+                                                                                                      </div>
+                                                                                                </div>
+                                                                                                }
                                                                                                 <span
                                                                                                       class="text-end d-block ct_fs_12 text-muted me-1 text-nowrap">{{item.createdAt
                                                                                                       |
                                                                                                       date:'shortTime'}}</span>
-                                                                                          </p>
+                                                                                          </div>
                                                                                     </div>
                                                                               </li>
                                                                               }
@@ -230,15 +295,64 @@
                                                                   </div>
                                                             </div>
                                                             <div class="send-box">
-                                                                  <form action="" class="position-relative"
+                                                                  <!-- Hidden File Inputs -->
+                                                                  <input #imageInput type="file" accept="image/*"
+                                                                        class="d-none"
+                                                                        (change)="onFileSelected($event, 'image')">
+                                                                  <input #videoInput type="file" accept="video/*"
+                                                                        class="d-none"
+                                                                        (change)="onFileSelected($event, 'video')">
+
+                                                                  <form action=""
+                                                                        class="position-relative d-flex align-items-center gap-2"
                                                                         (submit)="$event.preventDefault(); sendMessage()">
-                                                                        <label for="upload_chat_img_2"
-                                                                              class="ct_upload_paper_click_img">
-                                                                              <input type="text" class="d-none"
-                                                                                    id="upload_chat_img_2">
-                                                                              <div><i class="fa-solid fa-paperclip"></i>
+                                                                        <div
+                                                                              class="d-flex align-items-center gap-2 ps-2">
+                                                                              <button type="button"
+                                                                                    class="btn btn-link text-secondary p-0 border-0"
+                                                                                    (click)="triggerImageUpload()"
+                                                                                    title="Attach Photo">
+                                                                                    <i
+                                                                                          class="fa-regular fa-image ct_fs_18"></i>
+                                                                              </button>
+                                                                              <button type="button"
+                                                                                    class="btn btn-link text-secondary p-0 border-0"
+                                                                                    (click)="triggerVideoUpload()"
+                                                                                    title="Attach Video">
+                                                                                    <i
+                                                                                          class="fa-solid fa-video ct_fs_18"></i>
+                                                                              </button>
+                                                                              @if (!isRecording) {
+                                                                              <button type="button"
+                                                                                    class="btn btn-link text-secondary p-0 border-0"
+                                                                                    (click)="startRecording()"
+                                                                                    title="Record Voice">
+                                                                                    <i
+                                                                                          class="fa-solid fa-microphone ct_fs_18"></i>
+                                                                              </button>
+                                                                              } @else {
+                                                                              <div
+                                                                                    class="d-flex align-items-center gap-1 bg-light rounded-pill px-2 py-1">
+                                                                                    <span
+                                                                                          class="text-danger fw-bold ct_fs_12"><i
+                                                                                                class="fa-solid fa-circle me-1 animate__animated animate__flash animate__infinite"></i>{{formatDuration(recordingDuration)}}</span>
+                                                                                    <button type="button"
+                                                                                          class="btn btn-sm btn-danger rounded-circle p-1 ms-1"
+                                                                                          (click)="stopRecording()"
+                                                                                          title="Send Audio">
+                                                                                          <i
+                                                                                                class="fa-solid fa-paper-plane ct_fs_12"></i>
+                                                                                    </button>
+                                                                                    <button type="button"
+                                                                                          class="btn btn-sm btn-link text-muted p-0 ms-1"
+                                                                                          (click)="cancelRecording()"
+                                                                                          title="Cancel">
+                                                                                          <i
+                                                                                                class="fa-solid fa-xmark"></i>
+                                                                                    </button>
                                                                               </div>
-                                                                        </label>
+                                                                              }
+                                                                        </div>
                                                                         <textarea #messageInput class="form-control"
                                                                               placeholder="{{'chat.yourMessage' | translate}}"
                                                                               [(ngModel)]="inputValue"
@@ -252,8 +366,31 @@
                                                                         </button>
                                                                   </form>
                                                             </div>
+
+                                                            <!-- Optional Image Lightbox Modal -->
+                                                            @if (selectedPreviewMedia) {
+                                                            <div class="modal fade show d-block"
+                                                                  style="background: rgba(0,0,0,0.85); z-index: 1050;"
+                                                                  (click)="selectedPreviewMedia = null">
+                                                                  <div class="modal-dialog modal-dialog-centered modal-lg"
+                                                                        (click)="$event.stopPropagation()">
+                                                                        <div
+                                                                              class="modal-content bg-transparent border-0 text-end">
+                                                                              <button type="button"
+                                                                                    class="btn-close btn-close-white ms-auto mb-2"
+                                                                                    (click)="selectedPreviewMedia = null"></button>
+                                                                              <div class="text-center">
+                                                                                    <img [src]="selectedPreviewMedia.url"
+                                                                                          class="img-fluid rounded"
+                                                                                          style="max-height: 80vh;">
+                                                                              </div>
+                                                                        </div>
+                                                                  </div>
+                                                            </div>
+                                                            }
                                                       </div>
                                                 </div>
+
                                                 }@else {
                                                 <div class="ct_empty_chat_box_content ct_chat_empty_state">
                                                       <svg width="123" height="123" viewBox="0 0 123 123" fill="none"

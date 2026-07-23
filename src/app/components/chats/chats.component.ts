@@ -1,4 +1,5 @@
 import { Component, effect, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { HttpEventType } from '@angular/common/http';
 import { ChatService } from '../../services/chat.service';
 import { Subscription } from 'rxjs';
 import { CommonService } from '../../services/common.service';
@@ -18,6 +19,8 @@ import { RouterLink } from '@angular/router';
 export class ChatsComponent implements OnDestroy {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
   @ViewChild('messageInput') messageInputEl!: ElementRef<HTMLTextAreaElement>;
+  @ViewChild('imageInput') imageInputEl!: ElementRef<HTMLInputElement>;
+  @ViewChild('videoInput') videoInputEl!: ElementRef<HTMLInputElement>;
 
   inputValue = '';
   messages: any[] = [];
@@ -32,6 +35,14 @@ export class ChatsComponent implements OnDestroy {
   userData: any;
   sellerCarList: any[] = [];
   currentCar: any = {};
+
+  // Media & Recording state
+  isRecording = false;
+  mediaRecorder: MediaRecorder | null = null;
+  audioChunks: Blob[] = [];
+  recordingTimer: any = null;
+  recordingDuration = 0;
+  selectedPreviewMedia: { url: string; type: 'image' | 'video' } | null = null;
 
   constructor(
     private chatService: ChatService,
@@ -198,7 +209,160 @@ export class ChatsComponent implements OnDestroy {
   }
 
   getChatPreview(item: any): string {
-    return item.lastMessage?.text || '';
+    const msg = item.lastMessage;
+    if (!msg) return '';
+    if (msg.text) return msg.text;
+    if (msg.type === 'image') return '📷 Photo';
+    if (msg.type === 'video') return '🎥 Video';
+    if (msg.type === 'audio') return '🎤 Audio';
+    return '';
+  }
+
+  triggerImageUpload() {
+    if (this.imageInputEl) {
+      this.imageInputEl.nativeElement.click();
+    }
+  }
+
+  triggerVideoUpload() {
+    if (this.videoInputEl) {
+      this.videoInputEl.nativeElement.click();
+    }
+  }
+
+  onFileSelected(event: Event, type: 'image' | 'video') {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+    const file = input.files[0];
+    this.uploadMediaFile(file, type);
+    input.value = '';
+  }
+
+  uploadMediaFile(file: File | Blob, type: 'image' | 'video' | 'audio', fileName?: string, duration?: number) {
+    if (!this.roomId || !this.currentChat) return;
+
+    const tempId = 'temp_' + Date.now();
+    const localUrl = URL.createObjectURL(file);
+    const resolvedFileName = fileName || (file instanceof File ? file.name : `${type}_${Date.now()}.${type === 'audio' ? 'm4a' : type === 'image' ? 'jpg' : 'mp4'}`);
+
+    const pendingMsg: any = {
+      id: tempId,
+      chatId: this.roomId,
+      senderId: this.currentUserId,
+      sendBy: this.currentUserId,
+      type,
+      mediaUrl: localUrl,
+      fileName: resolvedFileName,
+      fileSize: file.size,
+      duration: duration || 0,
+      status: 'sending',
+      upload: 'pending',
+      progress: 0,
+      createdAt: Date.now()
+    };
+
+    this.messages.push(pendingMsg);
+    this.scrollToBottom();
+
+    const formData = new FormData();
+    formData.append('attachment_type', type);
+    formData.append('chatAttachment', file, resolvedFileName);
+
+    this.chatService.uploadAttachment(formData).subscribe({
+      next: (event: any) => {
+        if (event.type === HttpEventType.UploadProgress && event.total) {
+          pendingMsg.progress = Math.round((100 * event.loaded) / event.total);
+        } else if (event.type === HttpEventType.Response) {
+          const res = event.body;
+          const mediaUrl = res?.data?.attachment_url || res?.data?.url || res?.attachment_url || res?.url || res?.data || '';
+          if (mediaUrl) {
+            this.chatService.sendMediaMessage({
+              chatId: this.roomId,
+              currentUser: this.userData,
+              otherUser: this.currentChat,
+              type,
+              mediaUrl,
+              fileName: resolvedFileName,
+              fileSize: file.size,
+              duration: duration || 0,
+              clientMessageId: tempId
+            }).then(() => {
+              this.messages = this.messages.filter(m => m.id !== tempId);
+            });
+          } else {
+            console.error('Failed to get attachment URL from upload response', res);
+            this.messages = this.messages.filter(m => m.id !== tempId);
+          }
+        }
+      },
+      error: (err) => {
+        console.error('Error uploading chat attachment:', err);
+        this.messages = this.messages.filter(m => m.id !== tempId);
+      }
+    });
+  }
+
+  async startRecording() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      this.audioChunks = [];
+      this.mediaRecorder = new MediaRecorder(stream);
+      this.recordingDuration = 0;
+      this.isRecording = true;
+
+      this.recordingTimer = setInterval(() => {
+        this.recordingDuration++;
+      }, 1000);
+
+      this.mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          this.audioChunks.push(event.data);
+        }
+      };
+
+      this.mediaRecorder.start();
+    } catch (err) {
+      console.error('Microphone access error:', err);
+      alert('Microphone access is required to record voice messages.');
+    }
+  }
+
+  stopRecording() {
+    if (!this.mediaRecorder || !this.isRecording) return;
+
+    this.mediaRecorder.onstop = () => {
+      clearInterval(this.recordingTimer);
+      const duration = this.recordingDuration;
+      this.isRecording = false;
+      this.recordingDuration = 0;
+
+      const audioBlob = new Blob(this.audioChunks, { type: 'audio/m4a' });
+      const tracks = this.mediaRecorder?.stream.getTracks();
+      tracks?.forEach(track => track.stop());
+
+      if (audioBlob.size > 0) {
+        this.uploadMediaFile(audioBlob, 'audio', `voice_${Date.now()}.m4a`, duration);
+      }
+    };
+
+    this.mediaRecorder.stop();
+  }
+
+  cancelRecording() {
+    if (this.mediaRecorder && this.isRecording) {
+      clearInterval(this.recordingTimer);
+      const tracks = this.mediaRecorder.stream.getTracks();
+      tracks.forEach(track => track.stop());
+      this.isRecording = false;
+      this.recordingDuration = 0;
+      this.audioChunks = [];
+    }
+  }
+
+  formatDuration(seconds: number): string {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   }
 
   isActiveChat(item: any): boolean {
@@ -248,5 +412,6 @@ export class ChatsComponent implements OnDestroy {
   ngOnDestroy() {
     if (this.unsubscribe) this.unsubscribe();
     if (this.sub1) this.sub1.unsubscribe();
+    this.cancelRecording();
   }
 }
