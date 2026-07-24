@@ -209,20 +209,51 @@
                                                                                                             class="img-fluid rounded mb-1"
                                                                                                             style="max-width: 250px; max-height: 250px; cursor: pointer; object-fit: cover;"
                                                                                                             (click)="selectedPreviewMedia = {url: item.mediaUrl, type: 'image'}">
-                                                                                                      } @else if
-                                                                                                      (item.type ===
-                                                                                                      'video') {
-                                                                                                      <video [src]="item.mediaUrl"
-                                                                                                            controls
-                                                                                                            class="rounded mb-1"
-                                                                                                            style="max-width: 280px; max-height: 220px;"></video>
+                                                                                                      } @else if (item.type === 'video') {
+                                                                                                            <div class="ct_video_player_card incoming" [class.playing]="item.isPlayingVideo">
+                                                                                                                  <video #videoEl [src]="item.mediaUrl" (ended)="onVideoEnded(item)" (click)="toggleVideo(item, videoEl)" class="ct_chat_video_el"></video>
+                                                                                                                  @if (!item.isPlayingVideo) {
+                                                                                                                  <button class="ct_video_play_overlay" (click)="toggleVideo(item, videoEl)" type="button">
+                                                                                                                        <i class="fa-solid fa-play"></i>
+                                                                                                                  </button>
+                                                                                                                  }
+                                                                                                                  <button class="ct_video_fullscreen_btn" (click)="$event.stopPropagation(); openFullscreenVideo(videoEl, item.mediaUrl)" type="button" title="Full Screen">
+                                                                                                                        <i class="fa-solid fa-expand"></i>
+                                                                                                                  </button>
+                                                                                                            </div>
                                                                                                       } @else if
                                                                                                       (item.type ===
                                                                                                       'audio') {
-                                                                                                      <audio [src]="item.mediaUrl"
-                                                                                                            controls
-                                                                                                            class="mb-1"
-                                                                                                            style="max-width: 250px;"></audio>
+                                                                                                      <div
+                                                                                                            class="ct_audio_player_card incoming">
+                                                                                                            <audio #audioEl
+                                                                                                                  [src]="item.mediaUrl"
+                                                                                                                  (timeupdate)="onAudioTimeUpdate(item, audioEl)"
+                                                                                                                  (ended)="onAudioEnded(item)"></audio>
+                                                                                                            <button
+                                                                                                                  type="button"
+                                                                                                                  class="ct_audio_play_btn"
+                                                                                                                  (click)="toggleAudio(item, audioEl)">
+                                                                                                                  <i class="fa-solid"
+                                                                                                                        [class.fa-play]="!item.isPlaying"
+                                                                                                                        [class.fa-pause]="item.isPlaying"></i>
+                                                                                                            </button>
+                                                                                                            <div
+                                                                                                                  class="ct_audio_track_wrapper">
+                                                                                                                  <input type="range"
+                                                                                                                        class="ct_audio_progress"
+                                                                                                                        [value]="item.progress || 0"
+                                                                                                                        min="0"
+                                                                                                                        max="100"
+                                                                                                                        (input)="seekAudio(item, audioEl, $event)">
+                                                                                                            </div>
+                                                                                                            <span
+                                                                                                                  class="ct_audio_duration">{{formatDuration(item.currentTime
+                                                                                                                  ||
+                                                                                                                  item.duration
+                                                                                                                  ||
+                                                                                                                  0)}}</span>
+                                                                                                      </div>
                                                                                                       }
                                                                                                       @if (item.msg &&
                                                                                                       item.type !==
@@ -235,12 +266,12 @@
                                                                                                             {{item.msg}}
                                                                                                       </p>
                                                                                                       }
-                                                                                                      <span
-                                                                                                            class="text-start d-block ct_fs_12 text-light me-1 text-nowrap opacity-75">{{item.createdAt
-                                                                                                            |
-                                                                                                            date:'shortTime'}}</span>
                                                                                                 </div>
                                                                                           </div>
+                                                                                          <span
+                                                                                                class="text-start d-block ct_fs_12 text-muted me-1 text-nowrap">{{item.createdAt
+                                                                                                |
+                                                                                                date:'shortTime'}}</span>
                                                                                     </div>
                                                                               </li>
                                                                               }@else{
@@ -253,18 +284,50 @@
                                                                                                       class="img-fluid rounded mb-1"
                                                                                                       style="max-width: 250px; max-height: 250px; cursor: pointer; object-fit: cover;"
                                                                                                       (click)="selectedPreviewMedia = {url: item.mediaUrl, type: 'image'}">
-                                                                                                } @else if (item.type
-                                                                                                === 'video') {
-                                                                                                <video [src]="item.mediaUrl"
-                                                                                                      controls
-                                                                                                      class="rounded mb-1"
-                                                                                                      style="max-width: 280px; max-height: 220px;"></video>
+                                                                                                } @else if (item.type === 'video') {
+                                                                                                <div class="ct_video_player_card outgoing" [class.playing]="item.isPlayingVideo">
+                                                                                                      <video #videoEl [src]="item.mediaUrl" (ended)="onVideoEnded(item)" (click)="toggleVideo(item, videoEl)" class="ct_chat_video_el"></video>
+                                                                                                      @if (!item.isPlayingVideo) {
+                                                                                                      <button class="ct_video_play_overlay" (click)="toggleVideo(item, videoEl)" type="button">
+                                                                                                            <i class="fa-solid fa-play"></i>
+                                                                                                      </button>
+                                                                                                      }
+                                                                                                      <button class="ct_video_fullscreen_btn" (click)="$event.stopPropagation(); openFullscreenVideo(videoEl, item.mediaUrl)" type="button" title="Full Screen">
+                                                                                                            <i class="fa-solid fa-expand"></i>
+                                                                                                      </button>
+                                                                                                </div>
                                                                                                 } @else if (item.type
                                                                                                 === 'audio') {
-                                                                                                <audio [src]="item.mediaUrl"
-                                                                                                      controls
-                                                                                                      class="mb-1"
-                                                                                                      style="max-width: 250px;"></audio>
+                                                                                                <div
+                                                                                                      class="ct_audio_player_card outgoing">
+                                                                                                      <audio #audioEl
+                                                                                                            [src]="item.mediaUrl"
+                                                                                                            (timeupdate)="onAudioTimeUpdate(item, audioEl)"
+                                                                                                            (ended)="onAudioEnded(item)"></audio>
+                                                                                                      <button
+                                                                                                            type="button"
+                                                                                                            class="ct_audio_play_btn"
+                                                                                                            (click)="toggleAudio(item, audioEl)">
+                                                                                                            <i class="fa-solid"
+                                                                                                                  [class.fa-play]="!item.isPlaying"
+                                                                                                                  [class.fa-pause]="item.isPlaying"></i>
+                                                                                                      </button>
+                                                                                                      <div
+                                                                                                            class="ct_audio_track_wrapper">
+                                                                                                            <input type="range"
+                                                                                                                  class="ct_audio_progress"
+                                                                                                                  [value]="item.progress || 0"
+                                                                                                                  min="0"
+                                                                                                                  max="100"
+                                                                                                                  (input)="seekAudio(item, audioEl, $event)">
+                                                                                                      </div>
+                                                                                                      <span
+                                                                                                            class="ct_audio_duration">{{formatDuration(item.currentTime
+                                                                                                            ||
+                                                                                                            item.duration
+                                                                                                            ||
+                                                                                                            0)}}</span>
+                                                                                                </div>
                                                                                                 }
                                                                                                 @if (item.msg &&
                                                                                                 item.type !== 'image' &&
@@ -282,12 +345,12 @@
                                                                                                       </div>
                                                                                                 </div>
                                                                                                 }
-                                                                                                <span
-                                                                                                      class="text-end d-block ct_fs_12 text-muted me-1 text-nowrap">{{item.createdAt
-                                                                                                      |
-                                                                                                      date:'shortTime'}}</span>
                                                                                           </div>
                                                                                     </div>
+                                                                                    <span
+                                                                                          class="text-end d-block ct_fs_12 text-muted me-1 text-nowrap">{{item.createdAt
+                                                                                          |
+                                                                                          date:'shortTime'}}</span>
                                                                               </li>
                                                                               }
                                                                               }
@@ -379,11 +442,18 @@
                                                                               <button type="button"
                                                                                     class="btn-close btn-close-white ms-auto mb-2"
                                                                                     (click)="selectedPreviewMedia = null"></button>
-                                                                              <div class="text-center">
-                                                                                    <img [src]="selectedPreviewMedia.url"
-                                                                                          class="img-fluid rounded"
-                                                                                          style="max-height: 80vh;">
-                                                                              </div>
+                                                                               <div class="text-center">
+                                                                                     @if (selectedPreviewMedia.type === 'image') {
+                                                                                     <img [src]="selectedPreviewMedia.url"
+                                                                                           class="img-fluid rounded"
+                                                                                           style="max-height: 80vh;">
+                                                                                     } @else if (selectedPreviewMedia.type === 'video') {
+                                                                                     <video [src]="selectedPreviewMedia.url"
+                                                                                           controls autoplay
+                                                                                           class="w-100 rounded"
+                                                                                           style="max-height: 80vh;"></video>
+                                                                                     }
+                                                                               </div>
                                                                         </div>
                                                                   </div>
                                                             </div>

@@ -372,9 +372,64 @@ export class ChatsComponent implements OnDestroy {
   }
 
   formatDuration(seconds: number): string {
+    if (!seconds || isNaN(seconds)) return '0:00';
     const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
+    const secs = Math.floor(seconds % 60);
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  }
+
+  toggleAudio(msg: any, audioEl: HTMLAudioElement) {
+    if (!audioEl) return;
+    if (msg.isPlaying) {
+      audioEl.pause();
+      msg.isPlaying = false;
+    } else {
+      this.messages.forEach(m => {
+        if (m.isPlaying && m !== msg) {
+          m.isPlaying = false;
+        }
+      });
+      audioEl.play();
+      msg.isPlaying = true;
+    }
+  }
+
+  onAudioTimeUpdate(msg: any, audioEl: HTMLAudioElement) {
+    if (!audioEl) return;
+    msg.currentTime = audioEl.currentTime;
+    msg.duration = audioEl.duration || msg.duration || 0;
+    msg.progress = audioEl.duration ? (audioEl.currentTime / audioEl.duration) * 100 : 0;
+  }
+
+  onAudioEnded(msg: any) {
+    msg.isPlaying = false;
+    msg.currentTime = 0;
+    msg.progress = 0;
+  }
+
+  seekAudio(msg: any, audioEl: HTMLAudioElement, event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = Number(input.value);
+    if (audioEl && audioEl.duration) {
+      audioEl.currentTime = (value / 100) * audioEl.duration;
+      msg.progress = value;
+      msg.currentTime = audioEl.currentTime;
+    }
+  }
+
+  toggleVideo(msg: any, videoEl: HTMLVideoElement) {
+    if (!videoEl) return;
+    if (msg.isPlayingVideo) {
+      videoEl.pause();
+      msg.isPlayingVideo = false;
+    } else {
+      videoEl.play();
+      msg.isPlayingVideo = true;
+    }
+  }
+
+  onVideoEnded(msg: any) {
+    msg.isPlayingVideo = false;
   }
 
   isActiveChat(item: any): boolean {
@@ -419,6 +474,18 @@ export class ChatsComponent implements OnDestroy {
     if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
     if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
     return 'just now';
+  }
+
+  openFullscreenVideo(videoEl?: HTMLVideoElement, url?: string) {
+    if (videoEl && videoEl.requestFullscreen) {
+      videoEl.requestFullscreen().catch(() => {
+        if (url) {
+          this.selectedPreviewMedia = { url, type: 'video' };
+        }
+      });
+    } else if (url) {
+      this.selectedPreviewMedia = { url, type: 'video' };
+    }
   }
 
   ngOnDestroy() {
