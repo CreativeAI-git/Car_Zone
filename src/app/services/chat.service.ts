@@ -22,12 +22,20 @@ export class ChatService {
 
       buildChatId(uidA: string | number, uidB: string | number): string {
             const toUidString = (uid: any) => uid == null ? '' : String(uid);
-            return [toUidString(uidA), toUidString(uidB)].sort().join('_');
+            const a = toUidString(uidA);
+            const b = toUidString(uidB);
+            return [a, b].sort((x, y) => Number(x) - Number(y) || x.localeCompare(y)).join('_');
       }
 
       async getOrCreateChat(currentUser: any, otherUser: any, carDetail?: any): Promise<string> {
             const currentUid = String(currentUser.id || currentUser.uid);
-            const otherUid = String(otherUser.id || otherUser.uid);
+            let otherUid = String(otherUser.id || otherUser.uid);
+
+            if (otherUser.participants && Array.isArray(otherUser.participants)) {
+                  const found = otherUser.participants.find((p: any) => String(p) !== currentUid);
+                  if (found) otherUid = String(found);
+            }
+
             const chatId = this.buildChatId(currentUid, otherUid);
 
             const ref = doc(this.firestore, 'chats', chatId);

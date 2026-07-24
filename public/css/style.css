@@ -2050,7 +2050,7 @@ a.add img {
 }
 
 .msg-body {
-  height: calc(100vh - 230px);
+  height: calc(100vh - 255px);
   overflow-y: auto;
 }
 
@@ -2138,7 +2138,7 @@ a.add img {
   -moz-appearance: none;
   appearance: none;
   border-radius: 12px;
-  padding-left: 35px;
+  /* padding-left: 35px; */
   height: 48px;
   transition: border-color 0.15sease-in-out, box-shadow 0.15sease-in-out;
 }

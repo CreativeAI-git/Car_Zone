@@ -60,11 +60,12 @@ export class ChatsComponent implements OnDestroy {
 
         if (this.sub1) this.sub1.unsubscribe();
         this.sub1 = this.chatService.getChatList(this.userData.id).subscribe(list => {
-          this.chatList = list.map(item => {
+          const uniqueChatsMap = new Map<string, any>();
+          list.forEach(item => {
             const otherUid = item.participants?.find((p: any) => String(p) !== String(this.userData.id)) || '';
             const otherInfo = item.participantsInfo?.[otherUid] || {};
             const unreadCount = item.unreadCount?.[this.userData.id] || 0;
-            return {
+            const mappedItem = {
               ...item,
               name: otherInfo.name || '',
               avatar: otherInfo.avatarUrl || '',
@@ -73,7 +74,12 @@ export class ChatsComponent implements OnDestroy {
               Seen: unreadCount === 0,
               mgsCount: unreadCount
             };
+            const key = otherUid || item.id;
+            if (!uniqueChatsMap.has(key)) {
+              uniqueChatsMap.set(key, mappedItem);
+            }
           });
+          this.chatList = Array.from(uniqueChatsMap.values());
           this.filteredChatList = this.chatList;
         });
 
@@ -93,6 +99,9 @@ export class ChatsComponent implements OnDestroy {
                 carImage: sellerData.carImage,
                 carName: sellerData.carName
               };
+              this.messages = [];
+              this.hasMore = true;
+              this.listenRealTime();
             }
             this.loader.hide();
           }, 1500);
@@ -119,7 +128,10 @@ export class ChatsComponent implements OnDestroy {
   openChat(item: any, carId: any) {
     const otherUid = item.participants?.find((p: any) => String(p) !== String(this.userData.id)) || item.id;
     this.getSellerCars(otherUid, carId);
-    this.currentChat = item;
+    this.currentChat = {
+      ...item,
+      id: otherUid
+    };
     this.roomId = item.id;
 
     this.messages = [];
@@ -140,7 +152,7 @@ export class ChatsComponent implements OnDestroy {
     if (this.unsubscribe) this.unsubscribe();
     this.unsubscribe = this.chatService.listenToMessages(this.roomId, this.currentUserId, update => {
       if (update.type === 'initial') {
-        this.messages = update.data;
+        this.messages = update.data.reverse();
         this.scrollToBottom();
       } else if (update.type === 'received' || update.type === 'sent') {
         this.messages.push(update.data);
