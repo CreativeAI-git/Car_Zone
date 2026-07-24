@@ -92,21 +92,27 @@ export class ChatService {
       }
 
       // ---------------- Send message ----------------
-      async sendMessage(inputValue: string, currentUser: any, otherUser: any, roomId: string) {
+      async sendMessage(inputValue: string, currentUser: any, otherUser: any, roomId: string, details: any) {
             if (!inputValue?.trim()) return;
 
             const senderUid = String(currentUser.id || currentUser.uid);
             const recipientUid = String(otherUser.id || otherUser.uid);
             const chatId = roomId;
 
-            // Ensure the parent chat document exists in Firestore first
-            await this.getOrCreateChat(currentUser, otherUser);
+            const carDetail = details ? {
+                  make: details?.brandName + ' ' + details?.carModel + ' ' + details?.version || '',
+                  price: details?.selling_price || '',
+                  mileage: details?.carMileage || '',
+                  image: details?.carImages?.[0] || '',
+            } : null;
+
+            await this.getOrCreateChat(currentUser, otherUser, carDetail);
 
             const batch = writeBatch(this.firestore);
 
             const messagesCol = collection(this.firestore, 'chats', chatId, 'messages');
             const messageRef = doc(messagesCol);
-            
+
             const messageData = {
                   chatId,
                   senderId: senderUid,
@@ -125,7 +131,7 @@ export class ChatService {
             batch.set(messageRef, messageData);
 
             const chatRef = doc(this.firestore, 'chats', chatId);
-            batch.update(chatRef, {
+            const updatePayload: any = {
                   lastMessage: {
                         text: inputValue.trim(),
                         type: 'text',
@@ -134,7 +140,13 @@ export class ChatService {
                   },
                   updatedAt: serverTimestamp(),
                   [`unreadCount.${recipientUid}`]: increment(1),
-            });
+            };
+
+            if (carDetail) {
+                  updatePayload.carDetail = carDetail;
+            }
+
+            batch.update(chatRef, updatePayload);
 
             await batch.commit();
             return messageRef.id;
@@ -160,12 +172,21 @@ export class ChatService {
             fileSize?: number;
             duration?: number;
             clientMessageId?: string;
+            currentCar?: any;
       }) {
             const senderUid = String(params.currentUser.id || params.currentUser.uid);
             const recipientUid = String(params.otherUser.id || params.otherUser.uid);
             const chatId = params.chatId;
 
-            await this.getOrCreateChat(params.currentUser, params.otherUser);
+            const details = params.currentCar;
+            const carDetail = details ? {
+                  make: details?.carName || '',
+                  price: details?.selling_price || '',
+                  mileage: details?.mileage || '',
+                  image: details?.carImage?.[0] || '',
+            } : null;
+
+            await this.getOrCreateChat(params.currentUser, params.otherUser, carDetail);
 
             const batch = writeBatch(this.firestore);
             const messagesCol = collection(this.firestore, 'chats', chatId, 'messages');

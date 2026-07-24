@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { doc, setDoc, getDoc, updateDoc, serverTimestamp, collection, query, where, getDocs, writeBatch } from 'firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc, serverTimestamp, collection, query, where, getDocs, writeBatch, onSnapshot } from 'firebase/firestore';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -75,5 +75,25 @@ export class UserService {
 
             await batch.commit();
         }
+    }
+
+    getUserSnapshot(uid: string | number, callback: (userData: any) => void) {
+        const uidStr = String(uid);
+        if (!uidStr) {
+            callback(null);
+            return () => {};
+        }
+
+        const userRef = doc(this.firestore, 'users', uidStr);
+        return onSnapshot(userRef, (docSnap) => {
+            if (docSnap.exists()) {
+                callback(docSnap.data());
+            } else {
+                callback(null);
+            }
+        }, (err) => {
+            console.error('User snapshot error:', err);
+            callback(null);
+        });
     }
 }

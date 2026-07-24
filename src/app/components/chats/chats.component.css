@@ -103,6 +103,10 @@
   transition: all 0.2s ease;
 }
 
+.online-dot.ct_offline {
+  background-color: #a1a1aa !important;
+}
+
 .ct_chat_car_summary:hover {
   background-color: #f1f3f5;
   border-color: #dee2e6;

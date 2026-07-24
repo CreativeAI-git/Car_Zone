@@ -36,7 +36,6 @@
                                                                                     <img class="img-fluid ct_img_40"
                                                                                           [src]="item.avatar || 'img/icons/user-circle-img.png'"
                                                                                           [alt]="item.name">
-                                                                                    <span class="active"></span>
                                                                               </div>
                                                                               <div class="flex-grow-1 ms-3 min-w-0">
                                                                                     <div
@@ -131,13 +130,17 @@
                                                                               <div>
                                                                                     <h4 class="ct_fs_18 ct_fw_600 mb-0">
                                                                                           {{currentChat?.name}}</h4>
-                                                                                    <p class="mb-0 ct_text_008000"><span
-                                                                                                class="online-dot"></span>
-                                                                                          Online
+                                                                                    <p class="mb-0"
+                                                                                          [ngClass]="currentChat?.online ? 'ct_text_008000' : 'text-secondary'">
+                                                                                          <span class="online-dot"
+                                                                                                [class.ct_offline]="!currentChat?.online"></span>
+                                                                                          {{ currentChat?.online ?
+                                                                                          'Online' : 'Offline' }}
                                                                                     </p>
                                                                               </div>
                                                                         </div>
-                                                                        @if(currentCar || currentChat?.carName){
+                                                                        @if(currentChat?.carDetail?.make || currentCar
+                                                                        || currentChat?.carName){
                                                                         <a class="d-flex align-items-center gap-2 justify-content-between ct_chat_car_summary"
                                                                               routerLink="/car-detail"
                                                                               [queryParams]="{id: currentCar?.id}">
@@ -149,36 +152,43 @@
                                                                                     <p
                                                                                           class="ct_fs_15 ct_fw_600 text-limit-chat mb-0">
                                                                                           {{getCurrentCarTitle()}}</p>
-                                                                                    @if(currentCar){
+                                                                                    @if(currentChat?.carDetail ||
+                                                                                    currentCar){
                                                                                     <p
                                                                                           class="ct_fs_12 text-limit-chat mb-0 text-muted opacity-75">
-                                                                                          @if(currentCar.selling_price)
+                                                                                          @if(currentChat?.carDetail?.price
+                                                                                          || currentCar?.selling_price)
                                                                                           {
-                                                                                          {{currentCar.selling_price |
+                                                                                          {{(currentChat?.carDetail?.price
+                                                                                          || currentCar?.selling_price)
+                                                                                          |
                                                                                           chfFormat}}
                                                                                           }
-                                                                                          @if(currentCar.first_registration_date
+                                                                                          @if(currentCar?.first_registration_date
                                                                                           ||
-                                                                                          currentCar.registration_year){
-                                                                                          @if(currentCar.selling_price)
+                                                                                          currentCar?.registration_year){
+                                                                                          @if(currentChat?.carDetail?.price
+                                                                                          || currentCar?.selling_price)
                                                                                           { <span class="mx-1">|</span>
                                                                                           }
-                                                                                          {{(currentCar.first_registration_date
-                                                                                          | date:'yyyy-MM')
-                                                                                          ||
-                                                                                          currentCar.registration_year}}
+                                                                                          {{(currentCar?.first_registration_date
+                                                                                          | date:'yyyy-MM') ||
+                                                                                          currentCar?.registration_year}}
                                                                                           }
-                                                                                          @if(currentCar.carMileage ||
-                                                                                          currentCar.car_mileage){
-                                                                                          @if(currentCar.selling_price
+                                                                                          @if(currentChat?.carDetail?.mileage
+                                                                                          || currentCar?.carMileage ||
+                                                                                          currentCar?.car_mileage){
+                                                                                          @if(currentChat?.carDetail?.price
+                                                                                          || currentCar?.selling_price
                                                                                           ||
-                                                                                          currentCar.first_registration_date
+                                                                                          currentCar?.first_registration_date
                                                                                           ||
-                                                                                          currentCar.registration_year)
+                                                                                          currentCar?.registration_year)
                                                                                           { <span class="mx-1">|</span>
                                                                                           }
-                                                                                          {{currentCar.carMileage ||
-                                                                                          currentCar.car_mileage}} km
+                                                                                          {{currentChat?.carDetail?.mileage
+                                                                                          || currentCar?.carMileage ||
+                                                                                          currentCar?.car_mileage}} km
                                                                                           }
                                                                                     </p>
                                                                                     }
@@ -186,10 +196,10 @@
                                                                         </a>
                                                                         }
                                                                   </div>
-                                                                  <button type="button" class="ct_chat_head_action"
+                                                                  <!-- <button type="button" class="ct_chat_head_action"
                                                                         aria-label="More actions">
                                                                         <i class="fa-solid fa-ban"></i>
-                                                                  </button>
+                                                                  </button> -->
                                                             </div>
                                                             <div class="modal-body px-0">
                                                                   <div class="msg-body ct_custom_scroll"
@@ -209,18 +219,36 @@
                                                                                                             class="img-fluid rounded mb-1"
                                                                                                             style="max-width: 250px; max-height: 250px; cursor: pointer; object-fit: cover;"
                                                                                                             (click)="selectedPreviewMedia = {url: item.mediaUrl, type: 'image'}">
-                                                                                                      } @else if (item.type === 'video') {
-                                                                                                            <div class="ct_video_player_card incoming" [class.playing]="item.isPlayingVideo">
-                                                                                                                  <video #videoEl [src]="item.mediaUrl" (ended)="onVideoEnded(item)" (click)="toggleVideo(item, videoEl)" class="ct_chat_video_el"></video>
-                                                                                                                  @if (!item.isPlayingVideo) {
-                                                                                                                  <button class="ct_video_play_overlay" (click)="toggleVideo(item, videoEl)" type="button">
-                                                                                                                        <i class="fa-solid fa-play"></i>
-                                                                                                                  </button>
-                                                                                                                  }
-                                                                                                                  <button class="ct_video_fullscreen_btn" (click)="$event.stopPropagation(); openFullscreenVideo(videoEl, item.mediaUrl)" type="button" title="Full Screen">
-                                                                                                                        <i class="fa-solid fa-expand"></i>
-                                                                                                                  </button>
-                                                                                                            </div>
+                                                                                                      } @else if
+                                                                                                      (item.type ===
+                                                                                                      'video') {
+                                                                                                      <div class="ct_video_player_card incoming"
+                                                                                                            [class.playing]="item.isPlayingVideo">
+                                                                                                            <video #videoEl
+                                                                                                                  [src]="item.mediaUrl"
+                                                                                                                  (ended)="onVideoEnded(item)"
+                                                                                                                  (click)="toggleVideo(item, videoEl)"
+                                                                                                                  class="ct_chat_video_el"></video>
+                                                                                                            @if
+                                                                                                            (!item.isPlayingVideo)
+                                                                                                            {
+                                                                                                            <button
+                                                                                                                  class="ct_video_play_overlay"
+                                                                                                                  (click)="toggleVideo(item, videoEl)"
+                                                                                                                  type="button">
+                                                                                                                  <i
+                                                                                                                        class="fa-solid fa-play"></i>
+                                                                                                            </button>
+                                                                                                            }
+                                                                                                            <button
+                                                                                                                  class="ct_video_fullscreen_btn"
+                                                                                                                  (click)="$event.stopPropagation(); openFullscreenVideo(videoEl, item.mediaUrl)"
+                                                                                                                  type="button"
+                                                                                                                  title="Full Screen">
+                                                                                                                  <i
+                                                                                                                        class="fa-solid fa-expand"></i>
+                                                                                                            </button>
+                                                                                                      </div>
                                                                                                       } @else if
                                                                                                       (item.type ===
                                                                                                       'audio') {
@@ -284,16 +312,33 @@
                                                                                                       class="img-fluid rounded mb-1"
                                                                                                       style="max-width: 250px; max-height: 250px; cursor: pointer; object-fit: cover;"
                                                                                                       (click)="selectedPreviewMedia = {url: item.mediaUrl, type: 'image'}">
-                                                                                                } @else if (item.type === 'video') {
-                                                                                                <div class="ct_video_player_card outgoing" [class.playing]="item.isPlayingVideo">
-                                                                                                      <video #videoEl [src]="item.mediaUrl" (ended)="onVideoEnded(item)" (click)="toggleVideo(item, videoEl)" class="ct_chat_video_el"></video>
-                                                                                                      @if (!item.isPlayingVideo) {
-                                                                                                      <button class="ct_video_play_overlay" (click)="toggleVideo(item, videoEl)" type="button">
-                                                                                                            <i class="fa-solid fa-play"></i>
+                                                                                                } @else if (item.type
+                                                                                                === 'video') {
+                                                                                                <div class="ct_video_player_card outgoing"
+                                                                                                      [class.playing]="item.isPlayingVideo">
+                                                                                                      <video #videoEl
+                                                                                                            [src]="item.mediaUrl"
+                                                                                                            (ended)="onVideoEnded(item)"
+                                                                                                            (click)="toggleVideo(item, videoEl)"
+                                                                                                            class="ct_chat_video_el"></video>
+                                                                                                      @if
+                                                                                                      (!item.isPlayingVideo)
+                                                                                                      {
+                                                                                                      <button
+                                                                                                            class="ct_video_play_overlay"
+                                                                                                            (click)="toggleVideo(item, videoEl)"
+                                                                                                            type="button">
+                                                                                                            <i
+                                                                                                                  class="fa-solid fa-play"></i>
                                                                                                       </button>
                                                                                                       }
-                                                                                                      <button class="ct_video_fullscreen_btn" (click)="$event.stopPropagation(); openFullscreenVideo(videoEl, item.mediaUrl)" type="button" title="Full Screen">
-                                                                                                            <i class="fa-solid fa-expand"></i>
+                                                                                                      <button
+                                                                                                            class="ct_video_fullscreen_btn"
+                                                                                                            (click)="$event.stopPropagation(); openFullscreenVideo(videoEl, item.mediaUrl)"
+                                                                                                            type="button"
+                                                                                                            title="Full Screen">
+                                                                                                            <i
+                                                                                                                  class="fa-solid fa-expand"></i>
                                                                                                       </button>
                                                                                                 </div>
                                                                                                 } @else if (item.type
@@ -442,18 +487,21 @@
                                                                               <button type="button"
                                                                                     class="btn-close btn-close-white ms-auto mb-2"
                                                                                     (click)="selectedPreviewMedia = null"></button>
-                                                                               <div class="text-center">
-                                                                                     @if (selectedPreviewMedia.type === 'image') {
-                                                                                     <img [src]="selectedPreviewMedia.url"
-                                                                                           class="img-fluid rounded"
-                                                                                           style="max-height: 80vh;">
-                                                                                     } @else if (selectedPreviewMedia.type === 'video') {
-                                                                                     <video [src]="selectedPreviewMedia.url"
-                                                                                           controls autoplay
-                                                                                           class="w-100 rounded"
-                                                                                           style="max-height: 80vh;"></video>
-                                                                                     }
-                                                                               </div>
+                                                                              <div class="text-center">
+                                                                                    @if (selectedPreviewMedia.type ===
+                                                                                    'image') {
+                                                                                    <img [src]="selectedPreviewMedia.url"
+                                                                                          class="img-fluid rounded"
+                                                                                          style="max-height: 80vh;">
+                                                                                    } @else if
+                                                                                    (selectedPreviewMedia.type ===
+                                                                                    'video') {
+                                                                                    <video [src]="selectedPreviewMedia.url"
+                                                                                          controls autoplay
+                                                                                          class="w-100 rounded"
+                                                                                          style="max-height: 80vh;"></video>
+                                                                                    }
+                                                                              </div>
                                                                         </div>
                                                                   </div>
                                                             </div>

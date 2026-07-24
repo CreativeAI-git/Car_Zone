@@ -1,6 +1,7 @@
 import { Component, effect, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { HttpEventType } from '@angular/common/http';
 import { ChatService } from '../../services/chat.service';
+import { UserService } from '../../services/user.service';
 import { Subscription } from 'rxjs';
 import { CommonService } from '../../services/common.service';
 import { CommonModule, Location } from '@angular/common';
@@ -32,6 +33,8 @@ export class ChatsComponent implements OnDestroy {
   filteredChatList: any[] = [];
   sub1!: Subscription;
   unsubscribe!: () => void;
+  userUnsubscribe!: () => void;
+  otherUserData: any = null;
   userData: any;
   sellerCarList: any[] = [];
   currentCar: any = {};
@@ -46,6 +49,7 @@ export class ChatsComponent implements OnDestroy {
 
   constructor(
     private chatService: ChatService,
+    private userService: UserService,
     private commonService: CommonService,
     public location: Location,
     private loader: LoaderService,
@@ -69,8 +73,8 @@ export class ChatsComponent implements OnDestroy {
               ...item,
               name: otherInfo.name || '',
               avatar: otherInfo.avatarUrl || '',
-              carImage: item.carDetail?.carImage || '',
-              carName: item.carDetail?.carName || '',
+              carImage: item.carDetail?.image || item.carDetail?.carImage || '',
+              carName: item.carDetail?.make || item.carDetail?.carName || '',
               Seen: unreadCount === 0,
               mgsCount: unreadCount
             };
@@ -81,6 +85,8 @@ export class ChatsComponent implements OnDestroy {
           });
           this.chatList = Array.from(uniqueChatsMap.values());
           this.filteredChatList = this.chatList;
+          console.log(this.chatList);
+
         });
 
         if (sellerData && sellerData.name) {
@@ -121,18 +127,32 @@ export class ChatsComponent implements OnDestroy {
         this.currentCar = res.data[0] || null;
       }
     });
-
-
   }
 
-  openChat(item: any, carId: any) {
+  openChat(item: any, carId?: any) {
     const otherUid = item.participants?.find((p: any) => String(p) !== String(this.userData.id)) || item.id;
-    this.getSellerCars(otherUid, carId);
+    if (carId) {
+      this.getSellerCars(otherUid, carId);
+    } else {
+      this.currentCar = null;
+      this.sellerCarList = [];
+    }
     this.currentChat = {
       ...item,
       id: otherUid
     };
     this.roomId = item.id;
+
+    if (this.userUnsubscribe) this.userUnsubscribe();
+    this.userUnsubscribe = this.userService.getUserSnapshot(otherUid, (userDoc) => {
+      this.otherUserData = userDoc;
+      if (userDoc) {
+        if (userDoc.name) this.currentChat.name = userDoc.name;
+        if (userDoc.avatarUrl) this.currentChat.avatar = userDoc.avatarUrl;
+        this.currentChat.online = !!userDoc.online;
+        this.currentChat.lastSeen = userDoc.lastSeen;
+      }
+    });
 
     this.messages = [];
     this.hasMore = true;
@@ -154,6 +174,7 @@ export class ChatsComponent implements OnDestroy {
       if (update.type === 'initial') {
         this.messages = update.data.reverse();
         this.scrollToBottom();
+        console.log('messages', this.messages);
       } else if (update.type === 'received' || update.type === 'sent') {
         this.messages.push(update.data);
         this.scrollToBottom();
@@ -171,7 +192,7 @@ export class ChatsComponent implements OnDestroy {
   async sendMessage() {
     if (!this.inputValue.trim()) return;
 
-    await this.chatService.sendMessage(this.inputValue, this.userData, this.currentChat, this.roomId);
+    await this.chatService.sendMessage(this.inputValue, this.userData, this.currentChat, this.roomId, this.currentCar);
     this.inputValue = '';
     if (this.messageInputEl) {
       this.messageInputEl.nativeElement.style.height = '48px';
@@ -217,7 +238,7 @@ export class ChatsComponent implements OnDestroy {
   }
 
   getChatCarTitle(item: any): string {
-    return item.carDetail?.carName || item.carName || '';
+    return item.carDetail?.make || item.carDetail?.carName || item.carName || '';
   }
 
   getChatPreview(item: any): string {
@@ -297,7 +318,8 @@ export class ChatsComponent implements OnDestroy {
               fileName: resolvedFileName,
               fileSize: file.size,
               duration: duration || 0,
-              clientMessageId: tempId
+              clientMessageId: tempId,
+              currentCar: this.currentCar
             }).then(() => {
               this.messages = this.messages.filter(m => m.id !== tempId);
             });
@@ -437,20 +459,22 @@ export class ChatsComponent implements OnDestroy {
   }
 
   getCurrentCarImage(): string {
-    return this.currentCar?.carImages?.[0] || this.currentChat?.carImage || '';
+    return this.currentCar?.carImages?.[0] || this.currentChat?.carDetail?.image || this.currentChat?.carImage || '';
   }
 
   getCurrentCarTitle(): string {
     if (this.currentCar?.brandName) {
       return `${this.currentCar.brandName} ${this.currentCar.carModel || ''}`;
     }
-    return this.currentChat?.carName || '';
+    return this.currentChat?.carDetail?.make || this.currentChat?.carName || '';
   }
 
   closeCurrentChat() {
     this.currentChat = null;
     this.roomId = '';
+    this.otherUserData = null;
     if (this.unsubscribe) this.unsubscribe();
+    if (this.userUnsubscribe) this.userUnsubscribe();
   }
 
   timeAgo(dateString: string): string {
@@ -490,6 +514,7 @@ export class ChatsComponent implements OnDestroy {
 
   ngOnDestroy() {
     if (this.unsubscribe) this.unsubscribe();
+    if (this.userUnsubscribe) this.userUnsubscribe();
     if (this.sub1) this.sub1.unsubscribe();
     this.cancelRecording();
   }
