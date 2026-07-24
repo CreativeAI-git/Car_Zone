@@ -78,7 +78,8 @@
                             </li>
                             <li class="d-flex gap-2 align-items-start">
                                 <img src="img/icons/power-brown.png" />
-                                <span>{{carData?.condition_value || ('common.notAvailable' | translate)}} </span>
+                                <span>{{(carData?.condition_value) + ' ps' || ('common.notAvailable' | translate)}}
+                                </span>
                             </li>
 
                             <li *ngIf="carData?.consumption" class="d-flex gap-2 align-items-start">

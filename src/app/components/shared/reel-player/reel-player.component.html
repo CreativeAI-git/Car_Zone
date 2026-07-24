@@ -55,7 +55,25 @@
                                                                   (wheel)="onDropdownWheel($event)"
                                                                   (touchstart)="onDropdownInteraction($event)"
                                                                   (touchmove)="onDropdownInteraction($event)">
-                                                                  @for (make of makeOptions; track make.value) {
+                                                                  <div class="reel-dropdown-search-wrap mb-2 sticky-top"
+                                                                        style="top: -8px; background: rgba(16, 16, 16, 0.98); padding-top: 4px; padding-bottom: 4px; z-index: 2;">
+                                                                        <div class="position-relative">
+                                                                              <input type="text"
+                                                                                    class="form-control form-control-sm text-white bg-dark border-secondary pe-4"
+                                                                                    placeholder="Search make..."
+                                                                                    [(ngModel)]="makeSearchQuery"
+                                                                                    (click)="$event.stopPropagation()"
+                                                                                    (keydown)="$event.stopPropagation()" />
+                                                                              @if (makeSearchQuery) {
+                                                                              <button type="button"
+                                                                                    class="btn btn-sm text-muted position-absolute end-0 top-50 translate-middle-y me-1 p-0 border-0"
+                                                                                    (click)="$event.stopPropagation(); makeSearchQuery = ''">
+                                                                                    <i class="fa-solid fa-xmark"></i>
+                                                                              </button>
+                                                                              }
+                                                                        </div>
+                                                                  </div>
+                                                                  @for (make of filteredMakeOptions; track make.value) {
                                                                   <label
                                                                         class="ct_custom_check reel-multi-dropdown__option">
                                                                         <input class="form-check-input" type="checkbox"
@@ -66,6 +84,11 @@
                                                                         <span
                                                                               class="reel-multi-dropdown__option-count">{{make.count}}</span>
                                                                   </label>
+                                                                  }
+                                                                  @if (filteredMakeOptions.length === 0) {
+                                                                  <div class="text-center text-muted py-2 ct_fs_12">
+                                                                        No makes found
+                                                                  </div>
                                                                   }
                                                             </div>
                                                             }
@@ -207,7 +230,25 @@
                                                                   (wheel)="onDropdownWheel($event)"
                                                                   (touchstart)="onDropdownInteraction($event)"
                                                                   (touchmove)="onDropdownInteraction($event)">
-                                                                  @for (make of makeOptions; track make.value) {
+                                                                  <div class="reel-dropdown-search-wrap mb-2 sticky-top"
+                                                                        style="top: -8px; background: rgba(16, 16, 16, 0.98); padding-top: 4px; padding-bottom: 4px; z-index: 2;">
+                                                                        <div class="position-relative">
+                                                                              <input type="text"
+                                                                                    class="form-control form-control-sm text-white bg-dark border-secondary pe-4"
+                                                                                    placeholder="Search make..."
+                                                                                    [(ngModel)]="makeSearchQuery"
+                                                                                    (click)="$event.stopPropagation()"
+                                                                                    (keydown)="$event.stopPropagation()" />
+                                                                              @if (makeSearchQuery) {
+                                                                              <button type="button"
+                                                                                    class="btn btn-sm text-muted position-absolute end-0 top-50 translate-middle-y me-1 p-0 border-0"
+                                                                                    (click)="$event.stopPropagation(); makeSearchQuery = ''">
+                                                                                    <i class="fa-solid fa-xmark"></i>
+                                                                              </button>
+                                                                              }
+                                                                        </div>
+                                                                  </div>
+                                                                  @for (make of filteredMakeOptions; track make.value) {
                                                                   <label
                                                                         class="ct_custom_check reel-multi-dropdown__option">
                                                                         <input class="form-check-input" type="checkbox"
@@ -218,6 +259,11 @@
                                                                         <span
                                                                               class="reel-multi-dropdown__option-count">{{make.count}}</span>
                                                                   </label>
+                                                                  }
+                                                                  @if (filteredMakeOptions.length === 0) {
+                                                                  <div class="text-center text-muted py-2 ct_fs_12">
+                                                                        No makes found
+                                                                  </div>
                                                                   }
                                                             </div>
                                                             }

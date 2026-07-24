@@ -120,7 +120,7 @@
                                           </li>
                                           <li class="d-flex gap-1 align-items-start">
                                                 <img src="img/icons/power-brown.png" />
-                                                <span> {{carData?.vehicle.power ||
+                                                <span> {{(carData?.vehicle.power) + ' ps' ||
                                                       ('common.notAvailable' | translate)}}
                                                 </span>
                                           </li>

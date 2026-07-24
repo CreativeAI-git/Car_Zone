@@ -39,6 +39,7 @@ export class ReelPlayerComponent implements AfterViewInit {
   isRefreshingFilters = false;
   showMakeDropdown = false;
   showBodyTypeDropdown = false;
+  makeSearchQuery = '';
   makeOptions: MakeModelOption[] = [];
   bodyTypes: Array<{ id: number | string; name: string; image: string; count: number }> = [];
   selectedMakeIds: Array<string | number> = [];
@@ -49,6 +50,15 @@ export class ReelPlayerComponent implements AfterViewInit {
     price_from: null as number | null,
     price_to: null as number | null
   };
+
+  get filteredMakeOptions(): MakeModelOption[] {
+    if (!this.makeSearchQuery || !this.makeSearchQuery.trim()) {
+      return this.makeOptions;
+    }
+    const query = this.makeSearchQuery.toLowerCase().trim();
+    return this.makeOptions.filter((item) => item.label.toLowerCase().includes(query));
+  }
+
   constructor(private service: CommonService, private authService: AuthService, private route: ActivatedRoute, public location: Location, private modalService: ModalService, private message: NzMessageService, private filterService: FilterService) {
     this.route.queryParamMap.subscribe(params => {
       this.reelId = params.get('id')
@@ -218,6 +228,7 @@ export class ReelPlayerComponent implements AfterViewInit {
     this.showMakeDropdown = !this.showMakeDropdown;
     if (this.showMakeDropdown) {
       this.showBodyTypeDropdown = false;
+      this.makeSearchQuery = '';
     }
   }
 
@@ -361,31 +372,26 @@ export class ReelPlayerComponent implements AfterViewInit {
     video.muted = false;
     video.volume = 1;
 
-    // Add these attributes to prevent power-saving pause
     video.setAttribute('playsinline', '');
     video.setAttribute('webkit-playsinline', '');
     video.setAttribute('disableremoteplayback', '');
 
-    // Add these styles to ensure video is considered "visible"
     video.style.objectFit = 'cover';
     video.style.width = '100%';
     video.style.height = '100%';
     video.style.display = 'block';
 
-    this.isPlaying = true
+    this.isPlaying = true;
     const playPromise = video.play();
 
     if (playPromise !== undefined) {
       playPromise
         .then(() => {
           console.log('Video playing successfully');
-          console.log('Video muted status:', video.muted);
-          console.log('Video paused status:', video.paused);
           this.monitorVideoPlayback(video);
         })
         .catch((error) => {
           console.warn('Autoplay failed:', error);
-          console.log('Video muted status on error:', video.muted);
         });
     }
   }
@@ -419,83 +425,32 @@ export class ReelPlayerComponent implements AfterViewInit {
       }
     }, 1000);
 
-    // Also listen for pause events
     video.addEventListener('pause', () => {
       console.log('Video was paused by browser');
       checkAndRestart();
     });
   }
 
-  // private addVideoPlayButton(video: HTMLVideoElement) {
-  //   // Remove existing play buttons
-  //   const existingButton = video.parentElement?.querySelector('.play-overlay');
-  //   if (existingButton) {
-  //     existingButton.remove();
-  //   }
-
-  //   // Add play button overlay
-  //   const playButton = document.createElement('div');
-  //   playButton.className = 'play-overlay';
-  //   playButton.innerHTML = '▶';
-  //   playButton.style.cssText = `
-  //     position: absolute;
-  //     top: 50%;
-  //     left: 50%;
-  //     transform: translate(-50%, -50%);
-  //     width: 60px;
-  //     height: 60px;
-  //     background: rgba(0,0,0,0.7);
-  //     border-radius: 50%;
-  //     display: flex;
-  //     align-items: center;
-  //     justify-content: center;
-  //     color: white;
-  //     font-size: 24px;
-  //     cursor: pointer;
-  //     z-index: 10;
-  //   `;
-
-  //   playButton.addEventListener('click', () => {
-  //     video.play().then(() => {
-  //       playButton.style.display = 'none';
-  //     });
-  //   });
-
-  //   video.parentElement?.style.setProperty('position', 'relative');
-  //   video.parentElement?.appendChild(playButton);
-  // }
-
-  // saveReel(item: any) {
-  //   item.isSavedReel = !item.isSavedReel
-  //   this.service.post('user/saveCarReels', { carId: item.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-  //   })
-  // }
   saveReel(item: any) {
-    // Optimistically toggle saved state
     item.isSavedReel = !item.isSavedReel;
 
     this.service.post('user/saveCarReels', { carId: item.id })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (res: any) => {
-          // ✅ Successfully saved reel
-        },
+        next: (res: any) => {},
         error: (err) => {
           console.error('Save reel API failed:', err);
-
-          // ❌ Revert the toggle if API fails
           item.isSavedReel = !item.isSavedReel;
-
-          // 🧩 Open login modal on error
           this.modalService.openLoginModal();
         }
       });
   }
 
   removeFromSaved(item: any) {
-    item.isSavedReel = !item.isSavedReel
-    this.service.delete('user/removeSavedCarsReel', { carId: item.id }).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-    })
+    item.isSavedReel = !item.isSavedReel;
+    this.service.delete('user/removeSavedCarsReel', { carId: item.id })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {});
   }
 
   togglePlay(video: HTMLVideoElement) {
@@ -507,7 +462,6 @@ export class ReelPlayerComponent implements AfterViewInit {
       video.pause();
     }
   }
-
 
   getSellerAvatar(item: any): string {
     return item?.sellerLogo || item?.profileImage || 'img/icons/user-circle-img.png';
