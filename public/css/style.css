@@ -2202,6 +2202,8 @@ a.add img {
   line-height: 1.5;
   text-transform: capitalize;
   margin-bottom: 0;
+  overflow: hidden;
+  max-width: 265px;
 }
 
 .ct_overlay_text_w_150 {

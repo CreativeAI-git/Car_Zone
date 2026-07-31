@@ -8,6 +8,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../services/modal.service';
 import { RoleModalComponent } from '../role-modal/role-modal.component';
+import { ChatService } from '../../../services/chat.service';
 
 @Component({
   selector: 'app-header',
@@ -24,6 +25,8 @@ export class HeaderComponent {
   destroy$ = new Subject<void>();
   selectedLang: string = 'en'
   token: any
+  unreadMessageCount: number = 0;
+  private chatService = inject(ChatService);
   constructor(private router: Router, public authService: AuthService, private commonService: CommonService, private translate: TranslateService, public modalService: ModalService, private renderer: Renderer2) {
     this.translate.setDefaultLang('en');
     this.token = this.authService.getToken();
@@ -33,9 +36,31 @@ export class HeaderComponent {
     if (this.authService.isLogedIn()) {
       this.commonService.getProfile()
     }
-    effect(() => {
-      this.userData = this.commonService.userData()
-    })
+    effect((onCleanup) => {
+      this.userData = this.commonService.userData();
+      this.roleService.currentLoggedInUserType(); // trigger immediately on login
+
+      let userId = this.userData?.id;
+      
+      if (!userId && this.authService.isLogedIn()) {
+         const userInfo = this.authService.getUserInfo();
+         userId = userInfo?.id || userInfo;
+      }
+
+      if (userId) {
+        const sub = this.chatService.getChatList(userId).subscribe(chats => {
+          this.unreadMessageCount = chats.reduce((acc, chat) => {
+            const count = chat.unreadCount?.[userId] || 0;
+            return acc + count;
+          }, 0);
+        });
+        onCleanup(() => {
+          sub.unsubscribe();
+        });
+      } else {
+        this.unreadMessageCount = 0;
+      }
+    });
   }
 
   listCar() {

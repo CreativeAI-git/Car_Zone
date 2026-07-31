@@ -16,8 +16,16 @@
                                           routerLink="/reels">{{ 'media.reels' | translate }}</a>
                               </li>
                               <li class="nav-item">
-                                    <a class="nav-link ct_fs_16 ct_fw_600" routerLink="/chats">{{ 'chat.chat' |
-                                          translate }}</a>
+                                    <a class="nav-link ct_fs_16 ct_fw_600 position-relative d-inline-block"
+                                          routerLink="/chats">
+                                          {{ 'chat.chat' | translate }}
+                                          @if(unreadMessageCount > 0) {
+                                          <span class="badge bg-danger rounded-circle position-absolute"
+                                                style="top: 5px; right: -10px; font-size: 10px; padding: 3px 6px;">
+                                                {{ unreadMessageCount > 99 ? '99+' : unreadMessageCount }}
+                                          </span>
+                                          }
+                                    </a>
                               </li>
                               @if(authService.isLogedIn()){
                               <li class="nav-item">
