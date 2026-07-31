@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Firestore } from '@angular/fire/firestore';
-import { collection, doc, query, where, orderBy, limit, getDoc, getDocs, setDoc, updateDoc, writeBatch, increment, onSnapshot, serverTimestamp, QueryDocumentSnapshot, DocumentData, Unsubscribe } from 'firebase/firestore';
+import { collection, doc, query, where, orderBy, limit, startAfter, getDoc, getDocs, setDoc, updateDoc, writeBatch, increment, onSnapshot, serverTimestamp, QueryDocumentSnapshot, DocumentData, Unsubscribe } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 import { CommonService } from './common.service';
 
@@ -116,6 +116,7 @@ export class ChatService {
             const messageData = {
                   chatId,
                   senderId: senderUid,
+                  otherUserId: recipientUid,
                   type: 'text',
                   text: inputValue.trim(),
                   mediaUrl: '',
@@ -160,16 +161,17 @@ export class ChatService {
             });
       }
 
-      // ---------------- Send media message ----------------
+      // ---------------- Send media/document message ----------------
       async sendMediaMessage(params: {
             chatId: string;
             currentUser: any;
             otherUser: any;
-            type: 'image' | 'video' | 'audio';
+            type: 'image' | 'video' | 'audio' | 'document';
             mediaUrl: string;
             thumbnailUrl?: string;
             fileName?: string;
             fileSize?: number;
+            mimeType?: string;
             duration?: number;
             clientMessageId?: string;
             currentCar?: any;
@@ -180,10 +182,10 @@ export class ChatService {
 
             const details = params.currentCar;
             const carDetail = details ? {
-                  make: details?.carName || '',
+                  make: details?.carName || details?.brandName || '',
                   price: details?.selling_price || '',
-                  mileage: details?.mileage || '',
-                  image: details?.carImage?.[0] || '',
+                  mileage: details?.mileage || details?.carMileage || '',
+                  image: details?.carImage?.[0] || details?.carImages?.[0] || '',
             } : null;
 
             await this.getOrCreateChat(params.currentUser, params.otherUser, carDetail);
@@ -196,21 +198,28 @@ export class ChatService {
             if (params.type === 'image') previewText = '📷 Photo';
             else if (params.type === 'video') previewText = '🎥 Video';
             else if (params.type === 'audio') previewText = '🎤 Audio';
+            else if (params.type === 'document') previewText = `📄 ${params.fileName || 'Document'}`;
 
-            const messageData = {
+            const messageData: any = {
                   chatId,
                   senderId: senderUid,
+                  otherUserId: recipientUid,
                   type: params.type,
                   text: previewText,
                   mediaUrl: params.mediaUrl || '',
                   thumbnailUrl: params.thumbnailUrl || '',
                   fileName: params.fileName || '',
                   fileSize: params.fileSize || 0,
+                  mimeType: params.mimeType || '',
                   duration: params.duration || 0,
                   status: 'sent',
                   createdAt: serverTimestamp(),
                   readBy: [senderUid],
             };
+
+            if (params.clientMessageId) {
+                  messageData.clientMessageId = params.clientMessageId;
+            }
 
             batch.set(messageRef, messageData);
 
@@ -230,14 +239,54 @@ export class ChatService {
             return messageRef.id;
       }
 
-      // ---------------- Fetch messages (one-time) ----------------
-      async fetchMessages(roomId: string) {
+      // ---------------- Fetch messages (paginated) ----------------
+      async fetchMessagesPaginated(roomId: string, pageSize: number = 20, lastDocSnapshot: QueryDocumentSnapshot<DocumentData> | null = null) {
             try {
                   const chatRef = collection(this.firestore, 'chats', roomId, 'messages');
-                  const q = query(chatRef, orderBy('createdAt', 'desc'));
+                  let q;
+                  if (lastDocSnapshot) {
+                        q = query(chatRef, orderBy('createdAt', 'desc'), startAfter(lastDocSnapshot), limit(pageSize));
+                  } else {
+                        q = query(chatRef, orderBy('createdAt', 'desc'), limit(pageSize));
+                  }
+
                   const snapshot = await getDocs(q);
 
                   if (!snapshot.empty) {
+                        const lastVisible = snapshot.docs[snapshot.docs.length - 1];
+                        const messages = snapshot.docs.map((d) => {
+                              const data = d.data() as any;
+                              const createdAt = this.toMillis(data.createdAt);
+                              return {
+                                    id: d.id,
+                                    ...data,
+                                    sendBy: data.senderId || data.sendBy,
+                                    msg: data.text || data.msg,
+                                    createdAt,
+                                    snapshotDoc: d
+                              };
+                        });
+
+                        const hasMore = snapshot.docs.length === pageSize;
+                        return { messages, lastVisible, hasMore };
+                  } else {
+                        return { messages: [], lastVisible: null, hasMore: false };
+                  }
+            } catch (err) {
+                  console.error('fetchMessagesPaginated error:', err);
+                  return { messages: [], lastVisible: null, hasMore: false };
+            }
+      }
+
+      // ---------------- Fetch messages (one-time fallback) ----------------
+      async fetchMessages(roomId: string) {
+            try {
+                  const chatRef = collection(this.firestore, 'chats', roomId, 'messages');
+                  const q = query(chatRef, orderBy('createdAt', 'desc'), limit(this.MESSAGES_LIMIT));
+                  const snapshot = await getDocs(q);
+
+                  if (!snapshot.empty) {
+                        const lastVisible = snapshot.docs[snapshot.docs.length - 1];
                         const messages = snapshot.docs.map((d) => {
                               const data = d.data() as any;
                               const createdAt = this.toMillis(data.createdAt);
@@ -250,13 +299,13 @@ export class ChatService {
                               };
                         });
 
-                        return { messages, hasMore: false };
+                        return { messages, lastVisible, hasMore: snapshot.docs.length === this.MESSAGES_LIMIT };
                   } else {
-                        return { messages: [], hasMore: false };
+                        return { messages: [], lastVisible: null, hasMore: false };
                   }
             } catch (err) {
                   console.error('fetchMessages error:', err);
-                  return { messages: [], hasMore: false };
+                  return { messages: [], lastVisible: null, hasMore: false };
             }
       }
 

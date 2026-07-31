@@ -10,10 +10,20 @@ import { LoaderService } from '../../services/loader.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ChfFormatPipe } from '../../pipes/chf-format.pipe';
 import { RouterLink } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { DocumentMessageComponent } from './document-message/document-message.component';
+import { ChatMessage } from '../../models/chat.model';
 
 @Component({
   selector: 'app-chats',
-  imports: [CommonModule, FormsModule, TranslateModule, ChfFormatPipe, RouterLink],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TranslateModule,
+    ChfFormatPipe,
+    RouterLink,
+    DocumentMessageComponent
+  ],
   templateUrl: './chats.component.html',
   styleUrl: './chats.component.css'
 })
@@ -22,10 +32,13 @@ export class ChatsComponent implements OnDestroy {
   @ViewChild('messageInput') messageInputEl!: ElementRef<HTMLTextAreaElement>;
   @ViewChild('imageInput') imageInputEl!: ElementRef<HTMLInputElement>;
   @ViewChild('videoInput') videoInputEl!: ElementRef<HTMLInputElement>;
+  @ViewChild('documentInput') documentInputEl!: ElementRef<HTMLInputElement>;
 
   inputValue = '';
   messages: any[] = [];
   hasMore = true;
+  lastVisibleDoc: any = null;
+  isLoadingOlderMessages = false;
   roomId = '';
   currentUserId = '';
   currentChat: any = null;
@@ -46,6 +59,7 @@ export class ChatsComponent implements OnDestroy {
   recordingTimer: any = null;
   recordingDuration = 0;
   selectedPreviewMedia: { url: string; type: 'image' | 'video' } | null = null;
+  selectedPreviewDocument: { url: string; fileName: string; mimeType: string } | null = null;
 
   constructor(
     private chatService: ChatService,
@@ -53,7 +67,8 @@ export class ChatsComponent implements OnDestroy {
     private commonService: CommonService,
     public location: Location,
     private loader: LoaderService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private nzMessage: NzMessageService
   ) {
     this.translate.use(localStorage.getItem('lang') || 'en');
     effect(() => {
@@ -156,14 +171,16 @@ export class ChatsComponent implements OnDestroy {
 
     this.messages = [];
     this.hasMore = true;
+    this.lastVisibleDoc = null;
 
     this.listenRealTime();
     this.chatService.markAllMessagesSeen(this.userData.id, this.roomId, this.messages);
   }
 
   async loadMessages() {
-    const result = await this.chatService.fetchMessages(this.roomId);
-    this.messages = result.messages;
+    const result = await this.chatService.fetchMessagesPaginated(this.roomId, 20);
+    this.messages = result.messages.reverse();
+    this.lastVisibleDoc = result.lastVisible;
     this.hasMore = result.hasMore;
     this.scrollToBottom();
   }
@@ -172,12 +189,24 @@ export class ChatsComponent implements OnDestroy {
     if (this.unsubscribe) this.unsubscribe();
     this.unsubscribe = this.chatService.listenToMessages(this.roomId, this.currentUserId, update => {
       if (update.type === 'initial') {
-        this.messages = update.data.reverse();
+        const pendingMsgs = this.messages.filter(m => m.status === 'sending' || m.status === 'failed');
+        const initialMsgs = update.data.reverse();
+        const existingIds = new Set(initialMsgs.map((m: any) => m.id));
+        const filteredPending = pendingMsgs.filter(m => !existingIds.has(m.id));
+
+        this.messages = [...initialMsgs, ...filteredPending];
         this.scrollToBottom();
         console.log('messages', this.messages);
       } else if (update.type === 'received' || update.type === 'sent') {
-        this.messages.push(update.data);
-        this.scrollToBottom();
+        const clientMsgId = update.data.clientMessageId;
+        if (clientMsgId) {
+          this.messages = this.messages.filter(m => m.id !== clientMsgId && m.clientMessageId !== clientMsgId);
+        }
+        const exists = this.messages.some(m => m.id === update.data.id);
+        if (!exists) {
+          this.messages.push(update.data);
+          this.scrollToBottom();
+        }
       } else if (update.type === 'modified') {
         const idx = this.messages.findIndex(m => m.id === update.data.id);
         if (idx !== -1) this.messages[idx] = update.data;
@@ -185,8 +214,49 @@ export class ChatsComponent implements OnDestroy {
         this.messages = this.messages.filter(m => m.id !== update.data.id);
       }
     });
+  }
 
+  onChatScroll(event: Event) {
+    const element = event.target as HTMLElement;
+    if (!element || this.isLoadingOlderMessages || !this.hasMore || !this.roomId) return;
 
+    if (element.scrollTop < 50) {
+      this.loadOlderMessages(element);
+    }
+  }
+
+  async loadOlderMessages(scrollEl?: HTMLElement) {
+    if (this.isLoadingOlderMessages || !this.hasMore || !this.roomId) return;
+    this.isLoadingOlderMessages = true;
+
+    const previousScrollHeight = scrollEl ? scrollEl.scrollHeight : 0;
+    const oldestMsgWithDoc = this.messages.find(m => m.snapshotDoc);
+    const startDoc = oldestMsgWithDoc ? oldestMsgWithDoc.snapshotDoc : this.lastVisibleDoc;
+
+    const result = await this.chatService.fetchMessagesPaginated(this.roomId, 20, startDoc);
+
+    if (result.messages && result.messages.length > 0) {
+      this.lastVisibleDoc = result.lastVisible;
+      this.hasMore = result.hasMore;
+
+      const existingIds = new Set(this.messages.map(m => m.id));
+      const olderMessages = result.messages.filter(m => !existingIds.has(m.id)).reverse();
+
+      if (olderMessages.length > 0) {
+        this.messages = [...olderMessages, ...this.messages];
+
+        if (scrollEl) {
+          setTimeout(() => {
+            const newScrollHeight = scrollEl.scrollHeight;
+            scrollEl.scrollTop = newScrollHeight - previousScrollHeight;
+          }, 50);
+        }
+      }
+    } else {
+      this.hasMore = false;
+    }
+
+    this.isLoadingOlderMessages = false;
   }
 
   async sendMessage() {
@@ -248,6 +318,7 @@ export class ChatsComponent implements OnDestroy {
     if (msg.type === 'image') return '📷 Photo';
     if (msg.type === 'video') return '🎥 Video';
     if (msg.type === 'audio') return '🎤 Audio';
+    if (msg.type === 'document') return `📄 ${msg.fileName || 'Document'}`;
     return '';
   }
 
@@ -261,6 +332,134 @@ export class ChatsComponent implements OnDestroy {
     if (this.videoInputEl) {
       this.videoInputEl.nativeElement.click();
     }
+  }
+
+  triggerDocumentUpload() {
+    if (this.documentInputEl) {
+      this.documentInputEl.nativeElement.click();
+    }
+  }
+
+  onDocumentSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+    const file = input.files[0];
+
+    const ext = file.name.split('.').pop()?.toLowerCase() || '';
+    const allowedExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx'];
+    if (!allowedExtensions.includes(ext)) {
+      this.nzMessage.error('Unsupported file format. Supported formats: PDF (.pdf), Word (.doc, .docx), Excel (.xls, .xlsx)');
+      input.value = '';
+      return;
+    }
+
+    this.uploadDocumentFile(file);
+    input.value = '';
+  }
+
+  getMimeTypeFromExt(fileName: string): string {
+    const ext = fileName.split('.').pop()?.toLowerCase();
+    switch (ext) {
+      case 'pdf': return 'application/pdf';
+      case 'doc': return 'application/msword';
+      case 'docx': return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+      case 'xls': return 'application/vnd.ms-excel';
+      case 'xlsx': return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+      default: return 'application/octet-stream';
+    }
+  }
+
+  uploadDocumentFile(file: File) {
+    if (!this.roomId || !this.currentChat) return;
+
+    const tempId = 'temp_' + Date.now();
+    const localUrl = URL.createObjectURL(file);
+    const mimeType = file.type || this.getMimeTypeFromExt(file.name);
+
+    const pendingMsg: ChatMessage = {
+      id: tempId,
+      clientMessageId: tempId,
+      chatId: this.roomId,
+      senderId: this.currentUserId,
+      sendBy: this.currentUserId,
+      type: 'document',
+      mediaUrl: localUrl,
+      fileName: file.name,
+      fileSize: file.size,
+      mimeType: mimeType,
+      status: 'sending',
+      uploadState: 'start',
+      progress: 0,
+      createdAt: Date.now(),
+      _rawFile: file
+    };
+
+    this.messages.push(pendingMsg);
+    this.scrollToBottom();
+
+    const formData = new FormData();
+    formData.append('attachment_type', 'document');
+    formData.append('chatAttachment', file, file.name);
+
+    this.chatService.uploadAttachment(formData).subscribe({
+      next: (event: any) => {
+        if (event.type === HttpEventType.UploadProgress && event.total) {
+          pendingMsg.uploadState = 'uploading';
+          pendingMsg.progress = Math.round((100 * event.loaded) / event.total);
+        } else if (event.type === HttpEventType.Response) {
+          const res = event.body;
+          const mediaUrl = res?.data?.attachment_url || res?.data?.url || res?.attachment_url || res?.url || res?.data || '';
+          if (mediaUrl) {
+            this.chatService.sendMediaMessage({
+              chatId: this.roomId,
+              currentUser: this.userData,
+              otherUser: this.currentChat,
+              type: 'document',
+              mediaUrl,
+              fileName: file.name,
+              fileSize: file.size,
+              mimeType: mimeType,
+              clientMessageId: tempId,
+              currentCar: this.currentCar
+            }).then(() => {
+              pendingMsg.uploadState = 'complete';
+              pendingMsg.status = 'sent';
+              pendingMsg.mediaUrl = mediaUrl;
+            }).catch((err) => {
+              console.error('Failed to send document message to Firestore', err);
+              pendingMsg.uploadState = 'failed';
+              pendingMsg.status = 'failed';
+              this.nzMessage.error('Failed to send document message');
+            });
+          } else {
+            console.error('Failed to get attachment URL from upload response', res);
+            pendingMsg.uploadState = 'failed';
+            pendingMsg.status = 'failed';
+            this.nzMessage.error('Document upload failed');
+          }
+        }
+      },
+      error: (err) => {
+        console.error('Error uploading document chat attachment:', err);
+        pendingMsg.uploadState = 'failed';
+        pendingMsg.status = 'failed';
+        this.nzMessage.error('Document upload failed');
+      }
+    });
+  }
+
+  retryDocumentUpload(msg: ChatMessage) {
+    if (msg._rawFile) {
+      this.messages = this.messages.filter(m => m.id !== msg.id);
+      this.uploadDocumentFile(msg._rawFile);
+    } else {
+      this.nzMessage.error('File context lost. Please re-select the document file.');
+    }
+  }
+
+  openDocumentPreview(msg: ChatMessage) {
+    if (!msg || !msg.mediaUrl) return;
+    window.open(msg.mediaUrl, '_blank');
   }
 
   onFileSelected(event: Event, type: 'image' | 'video') {

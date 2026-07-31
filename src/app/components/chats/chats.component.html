@@ -203,7 +203,7 @@
                                                             </div>
                                                             <div class="modal-body px-0">
                                                                   <div class="msg-body ct_custom_scroll"
-                                                                        #scrollContainer>
+                                                                        #scrollContainer (scroll)="onChatScroll($event)">
                                                                         <ul>
                                                                               @for (item of messages; track item.id ||
                                                                               $index) {
@@ -282,6 +282,15 @@
                                                                                                                   ||
                                                                                                                   0)}}</span>
                                                                                                       </div>
+                                                                                                      } @else if
+                                                                                                      (item.type ===
+                                                                                                      'document') {
+                                                                                                      <app-document-message
+                                                                                                            [message]="item"
+                                                                                                            [isOutgoing]="false"
+                                                                                                            (openPreview)="openDocumentPreview($event)"
+                                                                                                            (retryUpload)="retryDocumentUpload($event)">
+                                                                                                      </app-document-message>
                                                                                                       }
                                                                                                       @if (item.msg &&
                                                                                                       item.type !==
@@ -289,7 +298,9 @@
                                                                                                       item.type !==
                                                                                                       'video' &&
                                                                                                       item.type !==
-                                                                                                      'audio') {
+                                                                                                      'audio' &&
+                                                                                                      item.type !==
+                                                                                                      'document') {
                                                                                                       <p class="mb-0">
                                                                                                             {{item.msg}}
                                                                                                       </p>
@@ -373,16 +384,25 @@
                                                                                                             ||
                                                                                                             0)}}</span>
                                                                                                 </div>
+                                                                                                } @else if (item.type
+                                                                                                === 'document') {
+                                                                                                <app-document-message
+                                                                                                      [message]="item"
+                                                                                                      [isOutgoing]="true"
+                                                                                                      (openPreview)="openDocumentPreview($event)"
+                                                                                                      (retryUpload)="retryDocumentUpload($event)">
+                                                                                                </app-document-message>
                                                                                                 }
                                                                                                 @if (item.msg &&
                                                                                                 item.type !== 'image' &&
                                                                                                 item.type !== 'video' &&
-                                                                                                item.type !== 'audio') {
+                                                                                                item.type !== 'audio' &&
+                                                                                                item.type !== 'document') {
                                                                                                 <p class="mb-0">
                                                                                                       {{item.msg}}</p>
                                                                                                 }
                                                                                                 @if (item.upload ===
-                                                                                                'pending') {
+                                                                                                'pending' && item.type !== 'document') {
                                                                                                 <div class="progress mt-1"
                                                                                                       style="height: 4px; width: 100%;">
                                                                                                       <div class="progress-bar bg-danger"
@@ -410,6 +430,10 @@
                                                                   <input #videoInput type="file" accept="video/*"
                                                                         class="d-none"
                                                                         (change)="onFileSelected($event, 'video')">
+                                                                  <input #documentInput type="file"
+                                                                        accept=".pdf,.doc,.docx,.xls,.xlsx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                                        class="d-none"
+                                                                        (change)="onDocumentSelected($event)">
 
                                                                   <form action=""
                                                                         class="position-relative d-flex align-items-center gap-2"
@@ -429,6 +453,13 @@
                                                                                     title="Attach Video">
                                                                                     <i
                                                                                           class="fa-solid fa-video ct_fs_18"></i>
+                                                                              </button>
+                                                                              <button type="button"
+                                                                                    class="btn btn-link text-secondary p-0 border-0"
+                                                                                    (click)="triggerDocumentUpload()"
+                                                                                    title="Attach Document">
+                                                                                    <i
+                                                                                          class="fa-solid fa-paperclip ct_fs_18"></i>
                                                                               </button>
                                                                               @if (!isRecording) {
                                                                               <button type="button"
@@ -506,6 +537,7 @@
                                                                   </div>
                                                             </div>
                                                             }
+
                                                       </div>
                                                 </div>
 
