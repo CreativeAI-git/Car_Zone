@@ -19,7 +19,7 @@ export class SellerDetailComponent implements OnInit, OnDestroy {
   sellerId!: number;
   sellerDetails: any;
   loading: boolean = false;
-  
+
   isLoadingFilters: boolean = false;
   makeOptions: MakeModelOption[] = [];
   bodyTypes: any[] = [];
@@ -42,7 +42,7 @@ export class SellerDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadFilterOptions();
-    
+
     this.searchSubject.pipe(
       debounceTime(500),
       distinctUntilChanged(),
@@ -169,6 +169,14 @@ export class SellerDetailComponent implements OnInit, OnDestroy {
       maxPrice: null
     };
     this.getSellerDetails();
+  }
+
+  getFormattedUrl(url: string | null): string {
+    if (!url) return '#';
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    return 'https://' + url;
   }
 
   private loadSwiper(): void {

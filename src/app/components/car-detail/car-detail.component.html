@@ -506,9 +506,25 @@
 
                               <div class="row mt-4">
                                     <div class="">
-                                          <img [src]="carData?.seller.profileImage || 'img/icons/user-circle-img.png'"
-                                                class="seller-image" />
-                                          <h4 class="ct_fs_20 ct_fw_500 mt-2">{{carData?.seller.name}}</h4>
+                                          @if (carData?.seller?.accountType !== 'private' &&
+                                          carData?.seller?.sellerType !== 'private' &&
+                                          carData?.seller?.account_type !== 'private' &&
+                                          carData?.seller?.seller_type !== 'private') {
+                                          <a routerLink="/seller-detail" [queryParams]="{ id: carData?.seller?.id }"
+                                                class="text-decoration-none d-inline-block" style="cursor: pointer;">
+                                                <img [src]="carData?.seller.profileImage || 'img/icons/user-circle-img.png'"
+                                                      class="seller-image" />
+                                                <h4 class="ct_fs_20 ct_fw_500 mt-2 text-dark">{{carData?.seller.name}}
+                                                </h4>
+                                          </a>
+                                          } @else {
+                                          <div class="d-inline-block">
+                                                <img [src]="carData?.seller.profileImage || 'img/icons/user-circle-img.png'"
+                                                      class="seller-image" />
+                                                <h4 class="ct_fs_20 ct_fw_500 mt-2 text-dark">{{carData?.seller.name}}
+                                                </h4>
+                                          </div>
+                                          }
                                           @if (carData?.seller?.accountType !== 'private' &&
                                           carData?.seller?.sellerType !== 'private' &&
                                           carData?.seller?.account_type !== 'private' &&
@@ -633,9 +649,14 @@
                                           {{ 'vehicle.moreVehiclesFromThisSeller' | translate }}
                                     </h5>
                                     <!-- <a class="ct_color_3e1cff ct_fs_18">{{ 'vehicle.showAll' | translate }}</a> -->
+                                    @if (carData?.seller?.accountType !== 'private' &&
+                                    carData?.seller?.sellerType !== 'private' &&
+                                    carData?.seller?.account_type !== 'private' &&
+                                    carData?.seller?.seller_type !== 'private') {
                                     <a routerLink="/seller-detail" [queryParams]="{ id: carData?.seller?.id }"
                                           class="ct_color_3e1cff ct_fs_18">{{ 'vehicle.showAll'
                                           | translate }}</a>
+                                    }
                               </div>
                               <div class="seller-carousel CarSwiper">
                                     <div class="swiper-wrapper">

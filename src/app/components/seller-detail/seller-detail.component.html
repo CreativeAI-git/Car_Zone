@@ -34,7 +34,9 @@
                         </div>
                         <div class="d-flex align-items-center" *ngIf="sellerDetails.websiteUrl">
                             <img src="img/icons/web.png" class="me-1" />
-                            <p class="ct_fs_16 ct_fw_300 mb-0">{{ sellerDetails.websiteUrl }}</p>
+                            <a class="ct_fs_16 ct_fw_300 mb-0" [href]="getFormattedUrl(sellerDetails.websiteUrl)"
+                                target="_blank">{{
+                                sellerDetails.websiteUrl }}</a>
                         </div>
                     </div>
 
@@ -70,9 +72,7 @@
                                             Information
                                         </h5>
                                     </div>
-                                    <div>
-                                        <img src="img/icons/chevron-up-b.png" />
-                                    </div>
+
                                 </div>
                                 <p *ngIf="sellerDetails.description" style="white-space: pre-wrap;">
                                     {{ sellerDetails.description }}
@@ -194,9 +194,6 @@
                                             Services
                                         </h5>
                                     </div>
-                                    <div>
-                                        <img src="img/icons/chevron-up-b.png" />
-                                    </div>
                                 </div>
 
                                 <ul class="ps-0 mt-3" *ngIf="sellerDetails.services?.length">
@@ -214,9 +211,6 @@
                                         <h5 class="mb-0 ct_fs_20 ct_fw_500">
                                             <img src="img/icons/teams.png" /> Team
                                         </h5>
-                                    </div>
-                                    <div>
-                                        <img src="img/icons/chevron-up-b.png" />
                                     </div>
                                 </div>
 
@@ -251,9 +245,6 @@
                                         <h5 class="mb-0 ct_fs_20 ct_fw_500">
                                             <img src="img/icons/video.png" /> Video
                                         </h5>
-                                    </div>
-                                    <div>
-                                        <img src="img/icons/chevron-up-b.png" />
                                     </div>
                                 </div>
                                 <div class="position-relative">
@@ -347,7 +338,7 @@
 
                             <ng-container *ngIf="sellerDetails.cars?.length; else noCars">
                                 <div class="my-4" *ngFor="let car of sellerDetails.cars; let i = index">
-                                    <div class="row align-items-center">
+                                    <div class="row">
                                         <div class="col-lg-6">
                                             <div class="">
                                                 <div class="swiper mySwiperMain mySwiperMain-{{i}}">
@@ -498,9 +489,6 @@
                         <div>
                             <img src=" img/icons/timer-icon.png" />
                             Opening Timings
-                        </div>
-                        <div>
-                            <img src="img/icons/chevron-up-b.png" />
                         </div>
                     </div>
                     <table class="table opening-timing-table mt-2" *ngIf="sellerDetails.openingTimes?.length">
