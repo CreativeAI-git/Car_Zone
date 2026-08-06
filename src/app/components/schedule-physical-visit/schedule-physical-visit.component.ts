@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonService } from '../../services/common.service';
 import { AuthService } from '../../services/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -53,7 +53,8 @@ export class SchedulePhysicalVisitComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private toastr: NzMessageService,
     public validationErrorService: ValidationErrorService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private router: Router
   ) {
     this.Form = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(3)]],
@@ -143,6 +144,7 @@ export class SchedulePhysicalVisitComponent implements OnInit, OnDestroy {
           this.loading = false;
           this.toastr.success(res.message || 'Physical visit scheduled successfully!');
           this.Form.reset();
+          this.router.navigate(['/my-profile/my-schedule-request'])
         },
         error: (error: any) => {
           this.loading = false;
