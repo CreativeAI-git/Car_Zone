@@ -92,6 +92,10 @@ export class CommonService {
     });
   }
 
+  fetchSellerById(sellerId: string | number, params?: any): Observable<any> {
+    return this.http.get<any>(this.baseUrl + `user/fetchSellerById/${sellerId}`, { params });
+  }
+
   delete<T>(url: string, data?: any): Observable<T> {
     return this.http.delete<T>(this.baseUrl + url, { body: data });
   };

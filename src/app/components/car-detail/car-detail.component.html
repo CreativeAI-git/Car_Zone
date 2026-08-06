@@ -632,10 +632,11 @@
                                     <h5 class="ct_fs_20 ct_fw_600">
                                           {{ 'vehicle.moreVehiclesFromThisSeller' | translate }}
                                     </h5>
-                                    <a class="ct_color_3e1cff ct_fs_18">{{ 'vehicle.showAll' | translate }}</a>
-                                    <!-- <a routerLink="/seller-detail" class="ct_color_3e1cff ct_fs_18">{{ 'vehicle.showAll' | translate }}</a> -->
+                                    <!-- <a class="ct_color_3e1cff ct_fs_18">{{ 'vehicle.showAll' | translate }}</a> -->
+                                    <a routerLink="/seller-detail" [queryParams]="{ id: carData?.seller?.id }"
+                                          class="ct_color_3e1cff ct_fs_18">{{ 'vehicle.showAll'
+                                          | translate }}</a>
                               </div>
-
                               <div class="seller-carousel CarSwiper">
                                     <div class="swiper-wrapper">
                                           @for (item of carData?.suggestedCars; track $index) {
