@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { CommonService } from '../../services/common.service';
@@ -10,7 +10,7 @@ declare var Swiper: any;
 
 @Component({
   selector: 'app-seller-detail',
-  imports: [TranslateModule, CommonModule, FormsModule],
+  imports: [TranslateModule, CommonModule, FormsModule, RouterLink],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './seller-detail.component.html',
   styleUrl: './seller-detail.component.css'
@@ -36,6 +36,7 @@ export class SellerDetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private service: CommonService,
     private filterService: FilterService
   ) { }
@@ -204,5 +205,16 @@ export class SellerDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  goToCarDetail(carId: string | number) {
+    this.router.navigate(['/car-detail'], { queryParams: { id: carId } });
+  }
+
+  handleCarDetailKeydown(event: KeyboardEvent, carId: string | number) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.goToCarDetail(carId);
+    }
   }
 }

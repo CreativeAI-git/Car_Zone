@@ -361,22 +361,17 @@
                                         </div>
 
                                         <div class="col-lg-6">
-                                            <div class="car-content-right">
+                                            <div class="car-content-right cursor-pointer" role="link" tabindex="0"
+                                                (click)="goToCarDetail(car.id)"
+                                                (keydown)="handleCarDetailKeydown($event, car.id)">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <div>
                                                         <h3 class="ct_fs_25 ct_fw_600 mb-2">
-                                                            {{ car.brandName }} {{ car.carModel }}
+                                                            <a routerLink="/car-detail" [queryParams]="{id: car.id}"
+                                                                class="ct_fs_25 ct_fw_600 mb-2 text-black">
+                                                                {{ car.brandName }} {{ car.carModel }}
+                                                            </a>
                                                         </h3>
-                                                    </div>
-
-                                                    <div>
-                                                        <svg width="25" height="22" viewBox="0 0 25 22" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M2.79167 2.79008C3.30995 2.27178 3.92524 1.86065 4.60241 1.58015C5.27958 1.29965 6.00537 1.15527 6.73834 1.15527C7.47131 1.15527 8.1971 1.29965 8.87427 1.58015C9.55145 1.86065 10.1667 2.27178 10.685 2.79008L12.4664 4.57146L14.2478 2.79008C15.2947 1.74336 16.7145 1.15538 18.1949 1.15549C19.6753 1.15561 21.095 1.74381 22.1417 2.79069C23.1885 3.83758 23.7764 5.25739 23.7763 6.7378C23.7762 8.2182 23.188 9.63793 22.1411 10.6846L20.3597 12.4648L20.3756 12.4807L12.4823 20.3753L12.4664 20.3594L12.4505 20.3753L4.55716 12.4807L4.57305 12.4648L2.79167 10.6846C2.27319 10.1663 1.8619 9.55098 1.58129 8.8737C1.30068 8.19641 1.15625 7.47048 1.15625 6.73736C1.15625 6.00425 1.30068 5.27832 1.58129 4.60103C1.8619 3.92375 2.27319 3.30838 2.79167 2.79008Z"
-                                                                stroke="black" stroke-width="2.31068"
-                                                                stroke-linejoin="round" />
-                                                        </svg>
                                                     </div>
                                                 </div>
 

@@ -140,10 +140,31 @@
                                                             </div>
                                                             <div class="col-sm-7">
                                                                   <div class="mt-md-0 mt-3">
-                                                                        <img [src]="item.sellerDetails.profileImage || 'img/icons/user-circle-img.png'"
-                                                                              class="seller-image" />
-                                                                        <h4 class="ct_fs_20 ct_fw_500 mt-2">
-                                                                              {{item.sellerDetails.fullName}}</h4>
+                                                                        @if (item.sellerDetails.accountType !==
+                                                                        'private' &&
+                                                                        item.sellerDetails.sellerType !== 'private' &&
+                                                                        item.sellerDetails.account_type !== 'private' &&
+                                                                        item.sellerDetails.seller_type !== 'private') {
+                                                                        <a routerLink="/seller-detail"
+                                                                              [queryParams]="{ id: item.sellerDetails?.sellerId }"
+                                                                              class="text-decoration-none d-inline-block"
+                                                                              style="cursor: pointer;"
+                                                                              (click)="$event.stopPropagation()">
+                                                                              <img [src]="item.sellerDetails.profileImage || 'img/icons/user-circle-img.png'"
+                                                                                    class="seller-image" />
+                                                                              <h4
+                                                                                    class="ct_fs_20 ct_fw_500 mt-2 text-dark">
+                                                                                    {{item.sellerDetails.fullName}}</h4>
+                                                                        </a>
+                                                                        } @else {
+                                                                        <div class="d-inline-block">
+                                                                              <img [src]="item.sellerDetails.profileImage || 'img/icons/user-circle-img.png'"
+                                                                                    class="seller-image" />
+                                                                              <h4
+                                                                                    class="ct_fs_20 ct_fw_500 mt-2 text-dark">
+                                                                                    {{item.sellerDetails.fullName}}</h4>
+                                                                        </div>
+                                                                        }
                                                                         @if
                                                                         (item.sellerDetails.accountType !== 'private'
                                                                         &&
