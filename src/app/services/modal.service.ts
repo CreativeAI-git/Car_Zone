@@ -43,7 +43,7 @@ export class ModalService {
 
 
 
-      async openLoginModal(): Promise<void> {
+      async openRoleSelectionModal(): Promise<void> {
             await this.closeCurrentModal();
 
             const modalElement = document.getElementById('ct_login_modal');
@@ -58,6 +58,20 @@ export class ModalService {
             this.currentModal.show();
       }
 
+      async openLoginModal(): Promise<void> {
+            await this.closeCurrentModal();
+
+            const modalElement = document.getElementById('SignInModal');
+            if (!modalElement) return;
+
+            this.currentModal = new bootstrap.Modal(modalElement, {
+                  backdrop: 'static',
+                  keyboard: false,
+                  focus: true
+            });
+
+            this.currentModal.show();
+      }
 
       async openSignInModal(): Promise<void> {
             await this.closeCurrentModal();

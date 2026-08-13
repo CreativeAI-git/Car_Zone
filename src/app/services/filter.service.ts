@@ -55,7 +55,8 @@ export type FilterPayload = {
   transmission: number[];
   drive_type: number[];
   accident_vehicle: Array<string | number>;
-  mfk_warranty: Array<string | number>;
+  mfk: boolean;
+  warranty: boolean;
   exterior_color: number[];
   interior_color: number[];
   energy_efficiency: string[];
@@ -510,15 +511,7 @@ export class FilterService {
           valueKeys: ['id', 'code', 'name']
         }
       ),
-      warrantyList: this.mapFlexibleOptions(
-        this.normalizeItems(this.pickFirstDefined(metadataData, ['mfk_warranty', 'warranty', 'warranty_list'])).slice().sort(
-          (a: any, b: any) => Number(a?.id ?? 0) - Number(b?.id ?? 0)
-        ),
-        {
-          labelKeys: ['name', 'code'],
-          valueKeys: ['id', 'code', 'name']
-        }
-      ),
+      warrantyList: this.parseMfkWarranty(metadataData),
       accidentVehicleOptions: this.mapFlexibleOptions(
         this.normalizeItems(this.pickFirstDefined(metadataData, ['accident_vehicle'])),
         {
@@ -580,7 +573,8 @@ export class FilterService {
       transmission: [],
       drive_type: [],
       accident_vehicle: [],
-      mfk_warranty: [],
+      mfk: false,
+      warranty: false,
       exterior_color: [],
       interior_color: [],
       energy_efficiency: [],
@@ -834,7 +828,8 @@ export class FilterService {
     this.setIfValue(params, 'transmission', payload.transmission);
     this.setIfValue(params, 'drive_type', payload.drive_type);
     this.setIfValue(params, 'accident_vehicle', payload.accident_vehicle);
-    this.setIfValue(params, 'mfk_warrenty_id', payload.mfk_warranty);
+    this.setIfValue(params, 'mfk', payload.mfk ? 1 : null);
+    this.setIfValue(params, 'warranty', payload.warranty ? 1 : null);
     this.setIfValue(params, 'interior_color', payload.interior_color);
     this.setIfValue(params, 'exterior_color', payload.exterior_color);
     this.setIfValue(params, 'carCondition', payload.vehicle_condition);
@@ -890,8 +885,12 @@ export class FilterService {
       compactPayload['accident_vehicle'] = payload.accident_vehicle;
     }
 
-    if (payload.mfk_warranty.length > 0) {
-      compactPayload['mfk_warranty'] = payload.mfk_warranty;
+    if (payload.mfk) {
+      compactPayload['mfk'] = 1;
+    }
+
+    if (payload.warranty) {
+      compactPayload['warranty'] = 1;
     }
 
     if (payload.exterior_color.length > 0) {
@@ -1018,7 +1017,8 @@ export class FilterService {
       payload.transmission.length > 0 ||
       payload.drive_type.length > 0 ||
       payload.accident_vehicle.length > 0 ||
-      payload.mfk_warranty.length > 0 ||
+      payload.mfk ||
+      payload.warranty ||
       payload.exterior_color.length > 0 ||
       payload.interior_color.length > 0 ||
       payload.energy_efficiency.length > 0 ||
@@ -1435,6 +1435,30 @@ export class FilterService {
     }
 
     return [];
+  }
+
+  private parseMfkWarranty(metadataData: any): FilterOption[] {
+    const rawWarranty = this.pickFirstDefined(metadataData, ['mfk_warranty', 'warranty', 'warranty_list']);
+    if (rawWarranty && !Array.isArray(rawWarranty) && typeof rawWarranty === 'object') {
+      const options: FilterOption[] = [];
+      if (rawWarranty.mfk !== undefined) {
+        options.push({ label: 'Valid technical inspection', value: 'mfk', count: rawWarranty.mfk });
+      }
+      if (rawWarranty.warranty !== undefined) {
+        options.push({ label: 'With aarranty', value: 'warranty', count: rawWarranty.warranty });
+      }
+      return options;
+    }
+
+    return this.mapFlexibleOptions(
+      this.normalizeItems(rawWarranty).slice().sort(
+        (a: any, b: any) => Number(a?.id ?? 0) - Number(b?.id ?? 0)
+      ),
+      {
+        labelKeys: ['name', 'code'],
+        valueKeys: ['id', 'code', 'name']
+      }
+    );
   }
 
   private pickFirstDefined(source: any, keys: string[]): any {

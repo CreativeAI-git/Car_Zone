@@ -279,7 +279,8 @@ export class BrowseCarsComponent {
     count += payload.state_id.length;
     count += payload.drive_type.length;
     count += payload.accident_vehicle.length;
-    count += payload.mfk_warranty.length;
+    if (payload.mfk) count++;
+    if (payload.warranty) count++;
     count += payload.exterior_color.length;
     count += payload.interior_color.length;
     count += payload.energy_efficiency.length;

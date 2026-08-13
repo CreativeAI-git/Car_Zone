@@ -114,7 +114,6 @@ export class LogInComponent {
   }
 
   openModal() {
-    this.modal.openPrivateSignUpModal()
+    this.modal.openRoleSelectionModal()
   }
 }
-

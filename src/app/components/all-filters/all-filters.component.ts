@@ -705,7 +705,13 @@ export class AllFiltersComponent {
     this.transmissionId = [...(payload.transmission || [])];
     this.driveTypeId = [...(payload.drive_type || [])];
     this.accidentVehicleId = [...(payload.accident_vehicle || [])];
-    this.warrantyIds = [...(payload.mfk_warranty || [])];
+    this.warrantyIds = [];
+    if (payload.mfk) {
+      this.warrantyIds.push('mfk');
+    }
+    if (payload.warranty) {
+      this.warrantyIds.push('warranty');
+    }
     this.interiorColorId = [...(payload.interior_color || [])];
     this.exteriorColorId = [...(payload.exterior_color || [])];
     this.energyEfficiencyId = [...(payload.energy_efficiency || [])];
@@ -785,7 +791,8 @@ export class AllFiltersComponent {
       transmission: [...this.transmissionId],
       drive_type: [...this.driveTypeId],
       accident_vehicle: [...this.accidentVehicleId],
-      mfk_warranty: [...this.warrantyIds],
+      mfk: this.warrantyIds.includes('mfk'),
+      warranty: this.warrantyIds.includes('warranty'),
       exterior_color: [...this.exteriorColorId],
       interior_color: [...this.interiorColorId],
       energy_efficiency: [...this.energyEfficiencyId],
