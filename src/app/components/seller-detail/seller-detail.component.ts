@@ -127,7 +127,7 @@ export class SellerDetailComponent implements OnInit, OnDestroy {
 
   onMakeToggle(make: MakeModelOption, event: Event): void {
     const isChecked = (event.target as HTMLInputElement).checked;
-    const makeVal = String(make.value);
+    const makeVal = String(make.label);
     if (isChecked) {
       if (!this.filters.brandName.includes(makeVal)) {
         this.filters.brandName.push(makeVal);

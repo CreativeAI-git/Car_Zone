@@ -372,16 +372,38 @@
                                     <h4 class="ct_fs_20 ct_fw_600 mb-3">
                                           {{ 'vehicle.vehicleInspectionMfk' | translate }}
                                     </h4>
+                                    @if(carData?.mfkDetails) {
+                                    <div class="d-flex align-items-center mb-0">
+                                          <span class="rounded-circle me-2 d-inline-block"
+                                                [style.background-color]="carData?.mfkDetails?.indicator"
+                                                style="width: 14px; height: 14px; min-width: 14px;"></span>
+                                          <p class="mb-0">{{carData?.mfkDetails?.text}}</p>
+                                    </div>
+                                    } @else {
                                     <p>
                                           <img src="img/icons/right.png" class="me-2" />
                                           {{ 'vehicle.mfkForThisVehicleWasDoneOn' | translate:{ date:
                                           (carData?.vehicle.last_mfk_date |
                                           date:'dd.MM.yyyy') } }}
                                     </p>
+                                    }
                                     <hr class="my-4" />
 
                                     <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.warrantyAndReturns' | translate }}
                                     </h4>
+                                    @if(carData?.warrantyDetails) {
+                                    <div class="d-flex justify-content-between mb-2">
+                                          <div>{{ 'vehicle.warrantyIncluded' | translate }}</div>
+                                          @if(carData?.warrantyDetails?.warrantyIncluded){
+                                          <div class="ct_color_0acc0a">
+                                                {{ 'common.yes' | translate }} <img src="img/icons/right.png"
+                                                      class="ms-1" />
+                                          </div>
+                                          }
+                                    </div>
+                                    <p class="mb-1">{{carData?.warrantyDetails?.warrantyDescription}}</p>
+                                    <p class="mb-2 text-muted">{{carData?.warrantyDetails?.warrantyLabel}}</p>
+                                    } @else {
                                     <div class="d-flex gap-4 mb-2">
                                           <div class="w-25">{{ 'vehicle.warrantyIncluded' | translate }}</div>
                                           @if(carData?.vehicle.is_warranty_included){
@@ -403,6 +425,7 @@
                                           </div>
                                           }
                                     </div>
+                                    }
 
                                     <hr class="my-4" />
                                     <h4 class="ct_fs_20 ct_fw_600 mb-3">{{ 'vehicle.leasingCalculator' | translate }}

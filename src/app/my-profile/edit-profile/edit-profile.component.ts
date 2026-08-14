@@ -101,7 +101,7 @@ export class EditProfileComponent {
           services: this.userData.services,
           companyName: this.userData.companyName,
           companyAddress: this.userData.companyAddress,
-          commercialRegisterNumber: this.userData.commercialRegisterNumber,
+          commercialRegisterNumber: this.userData.commercialRegisterNumber || this.userData.commercial_register_number,
           legalForm: this.userData.legalForm,
           userType: this.userData.account_type,
         })
