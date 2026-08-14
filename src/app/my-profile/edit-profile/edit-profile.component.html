@@ -351,8 +351,8 @@
                                     <div>
                                           {{ 'profile.tapToUploadImages' | translate }}
                                     </div>
-                                    <input #showroomImagesInput type="file" id="fileInput" accept="image/*" multiple
-                                          hidden (change)="onShowroomImagesChange($event)" />
+                                    <input #showroomImagesInput type="file" id="fileInput" accept="image/*" hidden
+                                          (change)="onShowroomImagesChange($event)" />
                               </div>
 
                               <div class="upload-imgs ct_custom_scroll">
@@ -510,7 +510,7 @@
                               <div class="upload-videos mt-3">
                                     <div class="ct_single_uploaded_img mt-2 py-2">
                                           <div class="mobile-frame">
-                                                <video [src]="videoPreview" autoplay controls playsinline
+                                                <video [src]="videoPreview" controls playsinline
                                                       class="videoPreview"></video>
                                                 <button type="button" [title]="'common.remove' | translate"
                                                       (click)="removeFile()"

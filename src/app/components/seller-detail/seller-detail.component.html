@@ -299,8 +299,7 @@
                                                         (change)="onMakeToggle(make, $event)">
                                                     <label class="form-check-label ct_fs_14 ct_fw_400 ct_color_111"
                                                         [for]="'make_' + make.value">
-                                                        {{ make.label }} <span
-                                                            class="text-muted">({{make.count}})</span>
+                                                        {{ make.label }}
                                                     </label>
                                                 </div>
                                             </div>
@@ -318,7 +317,7 @@
                                                         class="form-check-label ct_fs_14 ct_fw_400 ct_color_111 d-flex align-items-center gap-2"
                                                         [for]="'bt_' + bt.id">
                                                         <img [src]="bt.image" width="30" height="" *ngIf="bt.image" />
-                                                        {{ bt.name }} <span class="text-muted">({{bt.count}})</span>
+                                                        {{ bt.name }}
                                                     </label>
                                                 </div>
                                             </div>
