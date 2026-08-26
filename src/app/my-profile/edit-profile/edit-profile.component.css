@@ -169,3 +169,14 @@ body.profile-no-scroll {
       color: #5f6470;
       line-height: 1.5;
 }
+
+.cover-img {
+      height: 200px;
+      width: 100%;
+}
+
+.cover-img img {
+      height: 200px;
+      width: 100%;
+      object-fit: cover;
+}

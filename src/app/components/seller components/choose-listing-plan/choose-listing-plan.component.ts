@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonService } from '../../../services/common.service';
 import { CommonModule, Location } from '@angular/common';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SubmitButtonComponent } from '../../shared/submit-button/submit-button.component';
+import { AuthService } from '../../../services/auth.service';
 
 type PlanDuration = 'monthly' | 'yearly';
 
@@ -34,12 +35,41 @@ export class ChooseListingPlanComponent {
   isUsed: boolean = false;
   Loading: boolean = false;
 
-  constructor(private service: CommonService, private message: NzMessageService, private translate: TranslateService, private location: Location,) {
+  constructor(
+    private service: CommonService,
+    private message: NzMessageService,
+    private translate: TranslateService,
+    private location: Location,
+    private route: ActivatedRoute,
+    private authService: AuthService
+  ) {
     this.translate.use(localStorage.getItem('lang') || 'en');
   }
 
   ngOnInit(): void {
-    this.getPlans()
+    this.checkAuthenticationToken();
+    this.getPlans();
+  }
+
+  checkAuthenticationToken() {
+    const token = this.route.snapshot.queryParamMap.get('authentication') || this.route.snapshot.queryParamMap.get('token');
+    if (token) {
+      localStorage.setItem('CarZoneToken', token);
+      try {
+        const payloadBase64 = token.split('.')[1];
+        if (payloadBase64) {
+          const base64 = payloadBase64.replace(/-/g, '+').replace(/_/g, '/');
+          const decodedPayload = JSON.parse(atob(base64));
+          const userInfo = decodedPayload?.data?.id || decodedPayload?.id || decodedPayload?.userId || decodedPayload?.data;
+          if (userInfo) {
+            this.authService.setValues(token, userInfo);
+          }
+        }
+      } catch (e) {
+        console.error('Error decoding authentication token:', e);
+      }
+      this.service.getProfile();
+    }
   }
 
   getPlans() {

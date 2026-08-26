@@ -207,14 +207,21 @@
       <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                   <div class="modal-header">
-                        <h5 class="modal-title">Application Under Review</h5>
+                        <h5 class="modal-title">
+                              {{ isCompanyRejected ? 'Application Rejected' : 'Application Under Review' }}
+                        </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                        <p class="mb-0">
-                              Your company account is currently being reviewed by our team. Once your application is
-                              approved, you will be able to access this feature and continue with listing your vehicles.
+                        <p class="mb-0" *ngIf="isCompanyRejected; else pendingMsg">
+                              Unfortunately, your company application has been rejected by our team. Please contact our support team for more information.
                         </p>
+                        <ng-template #pendingMsg>
+                              <p class="mb-0">
+                                    Your company account is currently being reviewed by our team. Once your application is
+                                    approved, you will be able to access this feature and continue with listing your vehicles.
+                              </p>
+                        </ng-template>
                   </div>
                   <div class="modal-footer border-0 pt-0">
                         <button type="button" class="btn-red" data-bs-dismiss="modal">OK</button>

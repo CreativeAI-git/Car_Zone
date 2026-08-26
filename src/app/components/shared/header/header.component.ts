@@ -63,6 +63,11 @@ export class HeaderComponent {
     });
   }
 
+  get isCompanyRejected(): boolean {
+    const status = String(this.userData?.companyApprovalStatus || '').toLowerCase();
+    return status === 'rejected' || status === '2';
+  }
+
   listCar() {
     if (!this.authService.isLogedIn()) {
       this.modalService.openLoginModal();

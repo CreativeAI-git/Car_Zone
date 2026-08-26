@@ -25,10 +25,9 @@ export class AppComponent {
   constructor(private router: Router, private loaderService: LoaderService, private notificationService: NotificationService) {
   }
   ngOnInit() {
-
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
-        // this.notificationService.requestPermission()
+        this.notificationService.requestPermission()
       }
     });
 

@@ -35,6 +35,15 @@ body.theme-dark {
   filter: invert(1);
 }
 
+/* Invert black section icons on seller detail page in dark theme */
+body.theme-dark img[src*="info-icon.png"],
+body.theme-dark img[src*="service-list-icon.png"],
+body.theme-dark img[src*="teams.png"],
+body.theme-dark img[src*="video.png"],
+body.theme-dark img[src*="timer-icon.png"] {
+  filter: invert(1);
+}
+
 .theme-dark .home-body-type-card {
   background-color: #1f1f1f !important;
   color: #e5e7eb;
