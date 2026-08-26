@@ -44,74 +44,49 @@
                                     @if(authService.isLogedIn()){
                                     <div class="dropdown">
                                           <a class="position-relative" id="notificationDropdown"
-                                                data-bs-toggle="dropdown">
+                                                data-bs-toggle="dropdown" (click)="onNotificationDropdownOpen()" style="cursor: pointer;">
                                                 <img src="img/icons/notification.png" width="24" />
-                                                <!-- <span class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle p-1"> 4 </span> -->
+                                                <span *ngIf="unreadNotificationCount > 0" class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle p-1" style="font-size: 10px; min-width: 18px;">
+                                                      {{ unreadNotificationCount }}
+                                                </span>
                                           </a>
                                           <div class="dropdown-menu p-0 notification-dropdown">
                                                 <!-- Header -->
-                                                <div
-                                                      class="d-flex justify-content-between align-items-center px-3 py-2">
-                                                      <p class="ct_fs_20 ct_fw_700 text-black">
-                                                            {{ 'notifications.notifications' | translate }} (4)
+                                                <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+                                                      <p class="ct_fs_20 ct_fw_700 text-black mb-0">
+                                                            {{ 'notifications.notifications' | translate }} ({{ notificationList.length }})
                                                       </p>
-                                                      <a class="ct_fs_14 ct_fs_600 ct_color_8f0c1f">{{
-                                                            'notifications.markReadAll' | translate }}</a>
+                                                      <div class="d-flex align-items-center gap-2">
+                                                            <a class="ct_fs_14 ct_fs_600 ct_color_8f0c1f" style="cursor: pointer;" (click)="clearAllNotifications(); $event.stopPropagation()">
+                                                                  Clear all
+                                                            </a>
+                                                      </div>
                                                 </div>
-                                                <!-- Notification Item -->
-                                                <a class="dropdown-item notification-item">
-                                                      <div>
-                                                            <strong>{{ 'common.newBuyerMessage' | translate }}</strong>
-                                                            <div class="text-muted small">
-                                                                  {{ 'header.notifications.newBuyerMessageBody' |
-                                                                  translate }}
+                                                <!-- Notification Item List -->
+                                                <div class="notification-list-scroll" style="max-height: 320px; overflow-y: auto;">
+                                                      <ng-container *ngIf="notificationList && notificationList.length > 0; else noNotifs">
+                                                            <a *ngFor="let item of notificationList" 
+                                                               class="dropdown-item notification-item d-flex justify-content-between align-items-start py-2 px-3 border-bottom text-wrap"
+                                                               [style.background-color]="!(item.is_read == 1 || item.is_read === true || item.isRead == 1 || item.isRead === true) ? '#fff5f5' : ''"
+                                                               (click)="onNotificationClick(item); $event.stopPropagation()">
+                                                                  <div class="me-2 flex-grow-1">
+                                                                        <strong class="d-block text-dark">{{ item.title || item.heading || item.type || 'Notification' }}</strong>
+                                                                        <div class="text-muted small text-wrap">
+                                                                              {{ item.message || item.body || item.description || item.notification_text || item.text || '' }}
+                                                                        </div>
+                                                                  </div>
+                                                                  <div class="text-end text-nowrap ms-2">
+                                                                        <span class="time small text-muted">{{ (item.createdAt || item.created_at) ? ((item.createdAt || item.created_at) | date:'shortTime') : '' }}</span>
+                                                                        <span *ngIf="!(item.is_read == 1 || item.is_read === true || item.isRead == 1 || item.isRead === true)" class="dot ms-1 bg-danger d-inline-block rounded-circle" style="width: 8px; height: 8px;"></span>
+                                                                  </div>
+                                                            </a>
+                                                      </ng-container>
+                                                      <ng-template #noNotifs>
+                                                            <div class="text-center py-4 text-muted small">
+                                                                  No notifications found.
                                                             </div>
-                                                      </div>
-                                                      <div class="text-end">
-                                                            <span class="time">{{ 'header.notifications.threeMinutes' |
-                                                                  translate }}</span> <span class="dot"></span>
-                                                      </div>
-                                                </a>
-                                                <a class="dropdown-item notification-item">
-                                                      <div>
-                                                            <strong>{{ 'common.listingExpiryWarning' | translate
-                                                                  }}</strong>
-                                                            <div class="text-muted small">
-                                                                  {{ 'header.notifications.listingExpiryBody' |
-                                                                  translate }}
-                                                            </div>
-                                                      </div>
-                                                      <div class="text-end">
-                                                            <span class="time">{{ 'common.12m' | translate }}</span>
-                                                            <span class="dot"></span>
-                                                      </div>
-                                                </a>
-                                                <a class="dropdown-item notification-item">
-                                                      <div>
-                                                            <strong>{{ 'common.newBuyerMessage' | translate }}</strong>
-                                                            <div class="text-muted small">
-                                                                  {{ 'header.notifications.newBuyerMessageBody' |
-                                                                  translate }}
-                                                            </div>
-                                                      </div>
-                                                      <div class="text-end">
-                                                            <span class="time">{{ 'header.notifications.threeMinutes' |
-                                                                  translate }}</span> <span class="dot"></span>
-                                                      </div>
-                                                </a>
-                                                <a class="dropdown-item notification-item">
-                                                      <div>
-                                                            <strong>{{ 'common.newBuyerMessage' | translate }}</strong>
-                                                            <div class="text-muted small">
-                                                                  {{ 'header.notifications.newBuyerMessageBody' |
-                                                                  translate }}
-                                                            </div>
-                                                      </div>
-                                                      <div class="text-end">
-                                                            <span class="time">{{ 'header.notifications.threeMinutes' |
-                                                                  translate }}</span> <span class="dot"></span>
-                                                      </div>
-                                                </a>
+                                                      </ng-template>
+                                                </div>
                                           </div>
                                     </div>
                                     }

@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../services/modal.service';
 import { RoleModalComponent } from '../role-modal/role-modal.component';
 import { ChatService } from '../../../services/chat.service';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-header',
@@ -26,7 +27,11 @@ export class HeaderComponent {
   selectedLang: string = 'en'
   token: any
   unreadMessageCount: number = 0;
+  notificationList: any[] = [];
+  unreadNotificationCount: number = 0;
   private chatService = inject(ChatService);
+  private notificationService = inject(NotificationService);
+
   constructor(private router: Router, public authService: AuthService, private commonService: CommonService, private translate: TranslateService, public modalService: ModalService, private renderer: Renderer2) {
     this.translate.setDefaultLang('en');
     this.token = this.authService.getToken();
@@ -34,8 +39,16 @@ export class HeaderComponent {
     this.selectedLang = localStorage.getItem('lang') || 'en';
 
     if (this.authService.isLogedIn()) {
-      this.commonService.getProfile()
+      this.commonService.getProfile();
+      this.fetchNotifications();
     }
+
+    this.notificationService.message$.pipe(takeUntil(this.destroy$)).subscribe((msg) => {
+      if (msg && this.authService.isLogedIn()) {
+        this.fetchNotifications();
+      }
+    });
+
     effect((onCleanup) => {
       this.userData = this.commonService.userData();
       this.roleService.currentLoggedInUserType(); // trigger immediately on login
@@ -61,6 +74,94 @@ export class HeaderComponent {
         this.unreadMessageCount = 0;
       }
     });
+  }
+
+  fetchNotifications() {
+    if (!this.authService.isLogedIn()) return;
+    this.commonService.get<any>('user/fetchNotificationByBuyersIds')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          this.handleNotificationResponse(res);
+        },
+        error: () => {
+          this.commonService.post<any, any>('user/fetchNotificationByBuyersIds', {})
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+              next: (res: any) => {
+                this.handleNotificationResponse(res);
+              },
+              error: () => {}
+            });
+        }
+      });
+  }
+
+  handleNotificationResponse(res: any) {
+    const list = res?.data?.allNotification || (Array.isArray(res?.data) ? res.data : (res?.data?.notifications || res?.notifications || []));
+    this.notificationList = list;
+    if (typeof res?.data?.unReadNotifications === 'number') {
+      this.unreadNotificationCount = res.data.unReadNotifications;
+    } else {
+      this.calculateUnreadNotifications();
+    }
+  }
+
+  calculateUnreadNotifications() {
+    this.unreadNotificationCount = this.notificationList.filter(n => {
+      return !(n.isRead == 1 || n.isRead === true || n.is_read == 1 || n.is_read === true || n.notificationStatus === 'READ');
+    }).length;
+  }
+
+  onNotificationDropdownOpen() {
+    this.fetchNotifications();
+    this.markAllAsRead();
+  }
+
+  markAllAsRead() {
+    this.commonService.post('user/readNotificationById', {})
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.unreadNotificationCount = 0;
+          this.notificationList.forEach(n => {
+            n.isRead = 1;
+            n.is_read = 1;
+            n.notificationStatus = 'READ';
+          });
+        }
+      });
+
+    this.unreadNotificationCount = 0;
+    this.notificationList.forEach(n => {
+      n.isRead = 1;
+      n.is_read = 1;
+      n.notificationStatus = 'READ';
+    });
+  }
+
+  onNotificationClick(item: any) {
+    if (item.carId) {
+      this.router.navigate(['/car-detail'], { queryParams: { id: item.carId } });
+    }
+  }
+
+  clearAllNotifications() {
+    this.commonService.delete('user/removeAllNotification')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationList = [];
+          this.unreadNotificationCount = 0;
+        },
+        error: () => {
+          this.notificationList = [];
+          this.unreadNotificationCount = 0;
+        }
+      });
+
+    this.notificationList = [];
+    this.unreadNotificationCount = 0;
   }
 
   get isCompanyRejected(): boolean {
